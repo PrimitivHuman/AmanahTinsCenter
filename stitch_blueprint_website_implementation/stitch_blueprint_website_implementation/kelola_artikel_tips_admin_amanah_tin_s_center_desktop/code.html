@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kelola Artikel &amp; Tips - Admin Portal Amanah Tin's Center Jagakarsa</title>
+<!-- Google Fonts: Outfit & Nunito Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&amp;family=Outfit:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#e8f2ff",
+            "inverse-surface": "#203243",
+            "on-surface-variant": "#40484d",
+            "surface-container-high": "#d9eaff",
+            "primary-fixed": "#c1e8ff",
+            "background": "#f7f9ff",
+            "on-primary": "#ffffff",
+            "secondary-fixed-dim": "#b1d275",
+            "tertiary-container": "#a5661f",
+            "surface-variant": "#d1e4fb",
+            "outline": "#70787e",
+            "tertiary-fixed": "#ffdcbf",
+            "on-tertiary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "surface-container-highest": "#d1e4fb",
+            "secondary-fixed": "#ccef8e",
+            "surface-container-low": "#edf4ff",
+            "surface": "#f7f9ff",
+            "on-tertiary-fixed": "#2d1600",
+            "inverse-primary": "#88d0f4",
+            "on-surface": "#091d2e",
+            "on-primary-fixed": "#001e2b",
+            "primary-container": "#2e7c9e",
+            "on-background": "#091d2e",
+            "primary": "#006384",
+            "surface-dim": "#c9dcf3",
+            "surface-tint": "#056687",
+            "tertiary": "#884e03",
+            "on-error": "#ffffff",
+            "outline-variant": "#bfc8ce",
+            "primary-fixed-dim": "#88d0f4",
+            "on-tertiary-container": "#fffbff",
+            "on-primary-fixed-variant": "#004d67",
+            "on-secondary-container": "#516d1c",
+            "on-secondary-fixed-variant": "#354e00",
+            "error-container": "#ffdad6",
+            "on-primary-container": "#fbfcff",
+            "surface-bright": "#f7f9ff",
+            "on-tertiary-fixed-variant": "#6a3b00",
+            "secondary": "#4b6716",
+            "on-error-container": "#93000a",
+            "on-secondary-fixed": "#131f00",
+            "tertiary-fixed-dim": "#ffb873",
+            "surface-container": "#e3efff",
+            "secondary-container": "#ccef8e",
+            "error": "#ba1a1a",
+            "surface-container-lowest": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.375rem",
+            "space-lg": "2rem",
+            "gutter-mobile": "1rem",
+            "space-xl": "3.5rem",
+            "margin-desktop-max": "5rem",
+            "margin-mobile": "1.25rem",
+            "space-md": "1.25rem",
+            "space-sm": "0.75rem",
+            "gutter": "1.5rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Outfit"],
+            "title-md": ["Outfit"],
+            "body-sm": ["Nunito Sans"],
+            "body-lg": ["Nunito Sans"],
+            "display-hero-mobile": ["Outfit"],
+            "headline-sm": ["Outfit"],
+            "headline-lg-mobile": ["Outfit"],
+            "label-lg": ["Nunito Sans"],
+            "display-hero": ["Outfit"],
+            "headline-lg": ["Outfit"],
+            "body-md": ["Nunito Sans"],
+            "label-md": ["Nunito Sans"],
+            "caption": ["Nunito Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "display-hero-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "0em", "fontWeight": "600" }],
+            "label-lg": ["15px", { "lineHeight": "22px", "letterSpacing": "0.01em", "fontWeight": "700" }],
+            "display-hero": ["48px", { "lineHeight": "58px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["36px", { "lineHeight": "46px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<div class="flex min-h-screen w-full">
+<!-- ASIDE SIDEBAR ADMIN PANEL -->
+<aside class="w-72 bg-surface-container-lowest flex-shrink-0 flex flex-col justify-between shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)] border-r border-outline-variant/30 z-20">
+<div>
+<!-- Brand Header Section -->
+<div class="px-space-md py-6 border-b border-outline-variant/20 flex flex-col gap-2">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-DEFAULT bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl" data-icon="child_care">child_care</span>
+</div>
+<div>
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight leading-tight block">Amanah Tin's Center</span>
+<span class="font-caption text-caption text-on-surface-variant block">Klinik Tumbuh Kembang Anak Jagakarsa</span>
+</div>
+</div>
+<!-- Status Online & Cabang Jagakarsa -->
+<div class="flex items-center gap-2 mt-2 px-3 py-1.5 rounded-full bg-secondary-container/30 w-fit">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary inline-block animate-pulse"></span>
+<span class="font-caption text-caption font-semibold text-on-secondary-container">Sistem Online • Jagakarsa</span>
+</div>
+</div>
+<!-- Navigation Menu -->
+<div class="px-space-md py-6">
+<p class="font-caption text-caption uppercase tracking-wider text-outline mb-3 px-3">Menu Manajemen Utama</p>
+<nav class="flex flex-col gap-1.5">
+<!-- Dashboard Ringkasan -->
+<a class="flex items-center gap-3.5 px-3.5 py-3 rounded-DEFAULT font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="dashboard">dashboard</span>
+<span>Dashboard Ringkasan</span>
+</a>
+<!-- Kelola Tim Kami -->
+<a class="flex items-center justify-between px-3.5 py-3 rounded-DEFAULT font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-all duration-200 group" href="#">
+<div class="flex items-center gap-3.5">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="diversity_3">diversity_3</span>
+<span>Kelola Tim Kami</span>
+</div>
+<span class="bg-surface-variant text-primary font-bold text-xs px-2.5 py-0.5 rounded-full font-label-md">8</span>
+</a>
+<!-- Kelola Artikel & Tips (AKTIF) -->
+<a class="flex items-center gap-3.5 px-3.5 py-3 rounded-DEFAULT font-label-lg text-label-lg bg-primary-container text-on-primary-container font-bold shadow-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="menu_book">menu_book</span>
+<span>Kelola Artikel &amp; Tips</span>
+</a>
+<!-- Pengaturan Klinik -->
+<a class="flex items-center gap-3.5 px-3.5 py-3 rounded-DEFAULT font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="settings">settings</span>
+<span>Pengaturan Klinik</span>
+</a>
+</nav>
+<!-- Tinjau Website Eksternal -->
+<div class="mt-8 pt-4 border-t border-outline-variant/20">
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-DEFAULT bg-surface-container-low/60 hover:bg-surface-container text-primary font-label-md text-label-md transition-all duration-200 group border border-outline-variant/30" href="#">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="open_in_new">open_in_new</span>
+<span>Tinjau Website Utama</span>
+</span>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- User Profile Card in Sidebar Bottom -->
+<div class="p-4 m-3 rounded-DEFAULT bg-surface-container-low border border-outline-variant/25">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-title-md font-bold text-sm ring-2 ring-primary/20">
+            SR
+          </div>
+<div class="overflow-hidden">
+<h4 class="font-title-md text-title-md text-sm font-bold text-on-surface truncate">Siti Rahmawati, S.Psi.</h4>
+<p class="font-caption text-caption text-on-surface-variant truncate">Lead Clinical Admin</p>
+</div>
+<button class="ml-auto text-outline hover:text-error transition-colors p-1" title="Keluar">
+<span class="material-symbols-outlined text-lg" data-icon="logout">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- TOPBAR NAVIGATION & HEADER UTILITY -->
+<header class="bg-surface-container-lowest/90 backdrop-blur-md sticky top-0 z-30 px-8 py-3.5 flex items-center justify-between shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)]">
+<!-- Breadcrumb & Clinic Location Indicator -->
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md">
+<span class="hover:text-primary cursor-pointer transition-colors">Admin Portal</span>
+<span class="material-symbols-outlined text-xs text-outline" data-icon="chevron_right">chevron_right</span>
+<span class="hover:text-primary cursor-pointer transition-colors">Manajemen Konten</span>
+<span class="material-symbols-outlined text-xs text-outline" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">Kelola Artikel &amp; Tips</span>
+</div>
+<!-- Search Bar, Backup Status, and Notification Center -->
+<div class="flex items-center gap-4">
+<!-- Search Input -->
+<div class="relative w-80">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-lg" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant/40 rounded-full pl-10 pr-4 py-2 text-sm font-body-sm focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary text-on-surface transition-all placeholder:text-outline" placeholder="Cari judul, topik, atau penulis..." type="text"/>
+</div>
+<!-- Backup Status Indicator -->
+<div class="hidden lg:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="cloud_done">cloud_done</span>
+<span>Tersimpan Otomatis • 09:42 WIB</span>
+</div>
+<!-- Notification Bell -->
+<button class="relative p-2 rounded-full hover:bg-surface-container-low text-on-surface-variant transition-colors" title="Pemberitahuan">
+<span class="material-symbols-outlined text-2xl" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-tertiary-container rounded-full border-2 border-surface-container-lowest"></span>
+</button>
+</div>
+</header>
+<!-- PAGE CONTENT WRAPPER -->
+<div class="p-8 max-w-7xl w-full mx-auto space-y-6">
+<!-- HEADER HALAMAN & ACTIONS -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2">
+<div>
+<div class="flex items-center gap-2.5 mb-1.5">
+<span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-md text-label-md font-semibold">Pusat Edukasi Orang Tua</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-caption text-caption text-outline">Kanal Publikasi Terpercaya</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Manajemen Artikel &amp; Tips Edukasi</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mt-1">
+              Publikasikan panduan perkembangan anak, tips stimulasi di rumah, dan informasi klinis terpercaya untuk orang tua.
+            </p>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-3 flex-shrink-0">
+<!-- Ekspor Daftar Artikel -->
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-full border border-outline-variant bg-surface-container-lowest text-on-surface font-label-lg text-label-lg hover:bg-surface-container-low active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined text-lg text-outline" data-icon="file_download">file_download</span>
+<span>Ekspor Daftar Artikel</span>
+</button>
+<!-- Tulis Artikel Baru (Primary Pill CTA) -->
+<button class="flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary text-on-primary font-label-lg text-label-lg shadow-md hover:bg-primary-container active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined text-lg" data-icon="edit_note">edit_note</span>
+<span>+ Tulis Artikel Baru</span>
+</button>
+</div>
+</div>
+<!-- STATISTIK SINGKAT ARTIKEL (4 MINI CARDS) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Total Artikel -->
+<div class="bg-surface-container-lowest p-5 rounded-DEFAULT border border-outline-variant/30 shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)] hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Artikel</span>
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="article">article</span>
+</div>
+</div>
+<div class="mt-3">
+<div class="font-headline-md text-headline-md font-bold text-on-surface">14 Terbit</div>
+<div class="flex items-center gap-1.5 mt-1 text-secondary font-caption text-caption font-semibold">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span>+2 artikel bulan ini</span>
+</div>
+</div>
+</div>
+<!-- Draf Disimpan -->
+<div class="bg-surface-container-lowest p-5 rounded-DEFAULT border border-outline-variant/30 shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)] hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Draf Disimpan</span>
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed/30 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-xl" data-icon="edit_document">edit_document</span>
+</div>
+</div>
+<div class="mt-3">
+<div class="font-headline-md text-headline-md font-bold text-on-surface">3 Draf</div>
+<div class="flex items-center gap-1.5 mt-1 text-tertiary font-caption text-caption">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+<span>Menunggu telaah medis</span>
+</div>
+</div>
+</div>
+<!-- Total Pembaca -->
+<div class="bg-surface-container-lowest p-5 rounded-DEFAULT border border-outline-variant/30 shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)] hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Pembaca</span>
+<div class="w-10 h-10 rounded-full bg-secondary-container/40 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-xl" data-icon="visibility">visibility</span>
+</div>
+</div>
+<div class="mt-3">
+<div class="font-headline-md text-headline-md font-bold text-on-surface">28.300 Kali</div>
+<div class="flex items-center gap-1.5 mt-1 text-secondary font-caption text-caption font-semibold">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+<span>Edukasi menjangkau orang tua</span>
+</div>
+</div>
+</div>
+<!-- Kategori Terpopuler -->
+<div class="bg-surface-container-lowest p-5 rounded-DEFAULT border border-outline-variant/30 shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)] hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Kategori Terpopuler</span>
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="local_fire_department">local_fire_department</span>
+</div>
+</div>
+<div class="mt-3">
+<div class="font-title-md text-title-md font-bold text-primary truncate">Wicara &amp; Parenting</div>
+<div class="flex items-center gap-1.5 mt-1 text-on-surface-variant font-caption text-caption">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="pie_chart">pie_chart</span>
+<span>65% pembaca terbanyak</span>
+</div>
+</div>
+</div>
+</div>
+<!-- FILTER TABS & STATUS SELECTOR -->
+<div class="bg-surface-container-lowest p-4 rounded-DEFAULT border border-outline-variant/30 shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)] flex flex-col md:flex-row md:items-center justify-between gap-4">
+<!-- Kategori Tabs -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+<!-- Tab: Semua Artikel (Active) -->
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md font-bold shadow-sm flex items-center gap-2 flex-shrink-0">
+<span>Semua Artikel</span>
+<span class="bg-on-primary/20 text-on-primary text-xs px-2 py-0.5 rounded-full">14</span>
+</button>
+<!-- Tab: Terapi Wicara -->
+<button class="px-4 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-md text-label-md transition-colors flex items-center gap-2 flex-shrink-0">
+<span>Terapi Wicara</span>
+<span class="bg-outline-variant/30 text-on-surface text-xs px-2 py-0.5 rounded-full">5</span>
+</button>
+<!-- Tab: Terapi Okupasi -->
+<button class="px-4 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-md text-label-md transition-colors flex items-center gap-2 flex-shrink-0">
+<span>Terapi Okupasi</span>
+<span class="bg-outline-variant/30 text-on-surface text-xs px-2 py-0.5 rounded-full">3</span>
+</button>
+<!-- Tab: Sensori Integrasi -->
+<button class="px-4 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-md text-label-md transition-colors flex items-center gap-2 flex-shrink-0">
+<span>Sensori Integrasi</span>
+<span class="bg-outline-variant/30 text-on-surface text-xs px-2 py-0.5 rounded-full">2</span>
+</button>
+<!-- Tab: Tips Parenting -->
+<button class="px-4 py-2 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-md text-label-md transition-colors flex items-center gap-2 flex-shrink-0">
+<span>Tips Parenting</span>
+<span class="bg-outline-variant/30 text-on-surface text-xs px-2 py-0.5 rounded-full">4</span>
+</button>
+</div>
+<!-- Secondary Filters (Status & Sorting) -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2">
+<label class="font-caption text-caption text-outline whitespace-nowrap" for="statusFilter">Status:</label>
+<select class="bg-surface-container-low border border-outline-variant/30 text-on-surface font-label-md text-label-md rounded-full py-1.5 pl-3 pr-8 focus:ring-1 focus:ring-primary focus:border-primary" id="statusFilter">
+<option selected="">Semua Status</option>
+<option>Terbit (Published)</option>
+<option>Draf (Draft)</option>
+<option>Diarsipkan (Archived)</option>
+</select>
+</div>
+<div class="flex items-center gap-2">
+<label class="font-caption text-caption text-outline whitespace-nowrap" for="sortFilter">Urutkan:</label>
+<select class="bg-surface-container-low border border-outline-variant/30 text-on-surface font-label-md text-label-md rounded-full py-1.5 pl-3 pr-8 focus:ring-1 focus:ring-primary focus:border-primary" id="sortFilter">
+<option selected="">Terbaru Ditambahkan</option>
+<option>Pembaca Terbanyak</option>
+<option>Judul A-Z</option>
+</select>
+</div>
+</div>
+</div>
+<!-- TABEL MANAJEMEN ARTIKEL & TIPS -->
+<div class="bg-surface-container-lowest rounded-DEFAULT border border-outline-variant/30 shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)] overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/70 border-b border-outline-variant/30 text-on-surface-variant font-label-md text-label-md">
+<th class="py-4 px-6 font-bold" scope="col">Artikel &amp; Ringkasan</th>
+<th class="py-4 px-4 font-bold" scope="col">Kategori</th>
+<th class="py-4 px-4 font-bold" scope="col">Penulis / Reviewer Medis</th>
+<th class="py-4 px-4 font-bold" scope="col">Tanggal Terbit</th>
+<th class="py-4 px-4 font-bold" scope="col">Pembaca</th>
+<th class="py-4 px-4 font-bold" scope="col">Status</th>
+<th class="py-4 px-6 font-bold text-center" scope="col">Aksi Tindakan</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-body-sm text-body-sm">
+<!-- Baris 1: Terapi Wicara Milestone -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3.5">
+<img class="w-14 h-14 rounded-DEFAULT object-cover flex-shrink-0 border border-outline-variant/30" data-alt="A warm and gentle clinical photograph of a female pediatric speech therapist smiling warmly while practicing interactive flashcard games with a young toddler in a light-filled play clinic. Soft pastel teal and off-white room aesthetics with natural wood toys creating a reassuring atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuedOwWFsQxjdy-NYWG6MN21wUxFbp6mDKTw1e5OwFj6vbh2OECcC8zue9ALB5p5KQ9pcwB75OH677nNUCLgqvQgpuM4hqu9kzFO9YwOkHeJue0Rx478fB5R756h730CYn0tPZOTmoE7cm_NXIbuhf34Hm-XHAd76kVio7us3AznXuI2Q7At2M3nai_hXIQHPEmYJH83oOkxQ0foRhOGy90kJlGBxz5IFNXizrZ-c"/>
+<div>
+<a class="font-title-md text-title-md text-on-surface font-bold hover:text-primary transition-colors block line-clamp-1" href="#">
+                          Tanda-Tanda Anak Membutuhkan Terapi Wicara &amp; Kapan Waktu yang Tepat
+                        </a>
+<p class="font-caption text-caption text-on-surface-variant line-clamp-1 mt-0.5">
+                          Panduan lengkap mengenali speech delay vs speech disorder pada usia emas balita.
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-3 py-1 rounded-full font-label-md text-label-md bg-primary-fixed text-on-primary-fixed font-semibold">
+                      Terapi Wicara
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="font-label-lg text-label-lg text-on-surface">dr. Sarah Anindita, Sp.A</div>
+<div class="font-caption text-caption text-outline">Spesialis Tumbuh Kembang</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
+                    14 Okt 2024
+                  </td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-semibold text-on-surface">
+<span class="material-symbols-outlined text-outline text-base" data-icon="visibility">visibility</span>
+<span>4.820</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-caption text-caption font-bold bg-secondary-container text-on-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                      Terbit
+                    </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Pratinjau Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Edit Konten">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-error hover:bg-error-container/40 transition-colors" title="Hapus Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Baris 2: Stimulasi Motorik di Rumah -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3.5">
+<img class="w-14 h-14 rounded-DEFAULT object-cover flex-shrink-0 border border-outline-variant/30" data-alt="An occupational therapy activity session showing a child balancing on a soft colorful sensory obstacle cushion under the supervision of a caring female therapist. High key soft morning daylight inside a modern bright clinic with pastel mint and cream color tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArZaXp0s3d1ZtQwbRDcOLdoY-qr-dqRjoLr-nHYjsiREeheCqpMiRkXD6nTnFwgebvBju2_f9bLoBkpwgQpTksX9ZOQvdgm0zeVCo4-lW2FTzijfcgAc8B1JX4AD5q-FXC5anPVs5bl9PGnJcsmKeuKXsaKKXEBYT88RbD9MhOt86CeJEMw2VBeunYusWR6c6u-ihCvcKDw4qQ7fdNIBX7TdCOHGnkPYgE1H_tOwM"/>
+<div>
+<a class="font-title-md text-title-md text-on-surface font-bold hover:text-primary transition-colors block line-clamp-1" href="#">
+                          Tips Stimulasi Motorik Kasar &amp; Halus Anak di Rumah Tanpa Gadget
+                        </a>
+<p class="font-caption text-caption text-on-surface-variant line-clamp-1 mt-0.5">
+                          Aktivitas motorik harian yang memperkuat koordinasi tangan, jari, dan postur tubuh anak.
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-3 py-1 rounded-full font-label-md text-label-md bg-tertiary-fixed text-on-tertiary-fixed font-semibold">
+                      Terapi Okupasi
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="font-label-lg text-label-lg text-on-surface">Artin Ristriawan, S.Tr.Kes</div>
+<div class="font-caption text-caption text-outline">Terapis Okupasi Klinis</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
+                    08 Okt 2024
+                  </td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-semibold text-on-surface">
+<span class="material-symbols-outlined text-outline text-base" data-icon="visibility">visibility</span>
+<span>3.150</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-caption text-caption font-bold bg-secondary-container text-on-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                      Terbit
+                    </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Pratinjau Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Edit Konten">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-error hover:bg-error-container/40 transition-colors" title="Hapus Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Baris 3: Pentingnya Konsistensi Terapi -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3.5">
+<img class="w-14 h-14 rounded-DEFAULT object-cover flex-shrink-0 border border-outline-variant/30" data-alt="A caring psychologist talking warmly with a mother and her young son in a welcoming consultation space. Clean Scandinavian minimal clinic interior with soft daylight, potted plants, and reassuring soft pastel decor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAex53rxVWMUgILfZEpcGpWncoOjI0wCJRaSsYhbICyDHfmugx92YY_q3EQjpftCukm3N2hr1okpcL5F7EIKHp1WpnFAM5knSPEWvD5QhOw2dLNTACZPthA7DfpD-Z3tQKr44nG9RiD_KmrRmRQTBSFtlK-s4Fgj91mnBHsjgC1UIQ0RyPz0HNsYvMJgQpikReLk3sou9dQRsQEKrXHvXYJjuaHWLIik6MbeBOxvd4"/>
+<div>
+<a class="font-title-md text-title-md text-on-surface font-bold hover:text-primary transition-colors block line-clamp-1" href="#">
+                          Pentingnya Konsistensi dalam Terapi Tumbuh Kembang: Kolaborasi Rumah &amp; Klinik
+                        </a>
+<p class="font-caption text-caption text-on-surface-variant line-clamp-1 mt-0.5">
+                          Mengapa kesinambungan stimulasi antara sesi klinik dan rutinitas rumah menentukan keberhasilan anak.
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-3 py-1 rounded-full font-label-md text-label-md bg-surface-variant text-primary font-semibold">
+                      Tips Parenting
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="font-label-lg text-label-lg text-on-surface">Siti Rahmawati, S.Psi.</div>
+<div class="font-caption text-caption text-outline">Psikolog Anak Jagakarsa</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
+                    01 Okt 2024
+                  </td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-semibold text-on-surface">
+<span class="material-symbols-outlined text-outline text-base" data-icon="visibility">visibility</span>
+<span>5.940</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-caption text-caption font-bold bg-secondary-container text-on-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                      Terbit
+                    </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Pratinjau Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Edit Konten">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-error hover:bg-error-container/40 transition-colors" title="Hapus Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Baris 4: Sensori Integrasi Tantrum vs Sensory Meltdown -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3.5">
+<img class="w-14 h-14 rounded-DEFAULT object-cover flex-shrink-0 border border-outline-variant/30" data-alt="A child happily playing on a sensory suspended swing hammock in a professional pediatric sensory integration room. Cheerful pastel surroundings, calming soft lighting, and protective safety mats in a child clinic setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfDFbL7GFKZgQbRYQxOh_ZHFRYoBvegIfviNwVv4RDbRYOuQI6SfQ6117sujEKEspUTjGlsXRQBQkkl_qo1h9dHUTT8kGWB0d34RxdXrDNH0RJ6NsxyKh6UAfHo-T1_XHjRqMiA33Pl_4Yg7ZpB7_o-amf0HQKxY6XBSrRIeM_iRRmThbUIhT2nYW3MZJJ-vZwn5JKfWscDpOWt8hlTT_6UuMgBwVeL5BJzN8PGSM"/>
+<div>
+<a class="font-title-md text-title-md text-on-surface font-bold hover:text-primary transition-colors block line-clamp-1" href="#">
+                          Sensory Meltdown vs Tantrum Biasa: Bagaimana Membedakan &amp; Menanganinya?
+                        </a>
+<p class="font-caption text-caption text-on-surface-variant line-clamp-1 mt-0.5">
+                          Memahami respon neurologis anak terhadap overload sensori serta strategi menenangkannya dengan welas asih.
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-3 py-1 rounded-full font-label-md text-label-md bg-secondary-fixed text-on-secondary-fixed-variant font-semibold">
+                      Sensori Integrasi
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="font-label-lg text-label-lg text-on-surface">Artin Ristriawan, S.Tr.Kes</div>
+<div class="font-caption text-caption text-outline">Terapis Okupasi Klinis</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
+                    25 Sep 2024
+                  </td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-semibold text-on-surface">
+<span class="material-symbols-outlined text-outline text-base" data-icon="visibility">visibility</span>
+<span>2.680</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-caption text-caption font-bold bg-secondary-container text-on-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                      Terbit
+                    </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Pratinjau Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Edit Konten">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-error hover:bg-error-container/40 transition-colors" title="Hapus Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Baris 5: Komunikasi Positif (Status: Draf) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group bg-surface-container-low/20">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3.5">
+<img class="w-14 h-14 rounded-DEFAULT object-cover flex-shrink-0 border border-outline-variant/30 opacity-80" data-alt="A father reading an illustrated storybook with his four-year-old daughter on a comfortable cozy reading rug. Gentle warm ambient lighting, modern home sanctuary setting with wooden shelves and soft textiles." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnsMePCepUVGUeFd_0Gqbo9Jb7c_cXFLkKUBlL3ZMkTnlnTgd0mgUhiFdLp5iV-lBrL8pGHcFjPRyuznivkH25J4EBH127b73w5TRCwSEZ0aeGhUAlt6cpoO6TemQfnW_rD56hg4OgblAvTllYK2yzCX6G9IFMfKoI5MqIgA_a5MpxhxHRN5HgmpnAyXX4-BY7DEzA3dyLZ2I4_DBOscUkVRaiZ51JB69UwsyViFk"/>
+<div>
+<div class="flex items-center gap-2">
+<a class="font-title-md text-title-md text-on-surface font-bold hover:text-primary transition-colors block line-clamp-1" href="#">
+                            Cara Membangun Komunikasi Positif &amp; Mengurangi Frustrasi pada Anak Speech Delay
+                          </a>
+<span class="text-xs px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold">Draf</span>
+</div>
+<p class="font-caption text-caption text-on-surface-variant line-clamp-1 mt-0.5">
+                          Metode responsif dan teknik jeda kalimat untuk merangsang respons verbal anak tanpa paksaan.
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-3 py-1 rounded-full font-label-md text-label-md bg-surface-variant text-primary font-semibold">
+                      Tips Parenting
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="font-label-lg text-label-lg text-on-surface">Siti Rahmawati, S.Psi.</div>
+<div class="font-caption text-caption text-outline">Psikolog Anak Jagakarsa</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
+<span class="italic text-outline">Belum Terbit</span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="text-outline font-caption text-caption">-</span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-caption text-caption font-bold bg-tertiary-fixed text-on-tertiary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                      Draf
+                    </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Pratinjau Draf">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Lanjutkan Menulis">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-error hover:bg-error-container/40 transition-colors" title="Hapus Draf">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Baris 6: Red Flags Perkembangan Motorik Bayi -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3.5">
+<img class="w-14 h-14 rounded-DEFAULT object-cover flex-shrink-0 border border-outline-variant/30" data-alt="A pediatrician conducting a gentle developmental reflex check on an infant on a sterile yet warm padded table. Soft daylight pouring through modern hospital windows with warm pastel mint tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCggNOtLBdLI6t6UCh9OVo8lIid9py_3OEiVUUIiEAxWEqDaLArxq_BAZa8EsnyqCynqspaLuTQi_gVCJhjoPK2Gaxn_C0P1VHNV_1srKODXyz3DUOL4fs2jRoh8mVnse9YDRBSkDM6ADdeYep0Xiz2w4pgPjwdrNSoxl9xEaEl288g4ciHRFqc2kUltiBAzs-dpAR0fH9ODmphFQs5uyXbH0i60I-jf7l1-atQDkw"/>
+<div>
+<a class="font-title-md text-title-md text-on-surface font-bold hover:text-primary transition-colors block line-clamp-1" href="#">
+                          Red Flags Perkembangan Motorik Anak Usia 0-24 Bulan yang Wajib Diwaspadai
+                        </a>
+<p class="font-caption text-caption text-on-surface-variant line-clamp-1 mt-0.5">
+                          Checklist penting untuk orang tua mengenali keterlambatan tengkurap, duduk, merangkak, hingga berjalan.
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-3 py-1 rounded-full font-label-md text-label-md bg-tertiary-fixed text-on-tertiary-fixed font-semibold">
+                      Terapi Okupasi
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="font-label-lg text-label-lg text-on-surface">dr. Sarah Anindita, Sp.A</div>
+<div class="font-caption text-caption text-outline">Spesialis Tumbuh Kembang</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
+                    18 Sep 2024
+                  </td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-semibold text-on-surface">
+<span class="material-symbols-outlined text-outline text-base" data-icon="visibility">visibility</span>
+<span>4.110</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-caption text-caption font-bold bg-secondary-container text-on-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                      Terbit
+                    </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Pratinjau Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Edit Konten">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-error hover:bg-error-container/40 transition-colors" title="Hapus Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Baris 7: Nutrisi Otak & Kemampuan Fokus -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3.5">
+<img class="w-14 h-14 rounded-DEFAULT object-cover flex-shrink-0 border border-outline-variant/30" data-alt="A bright healthy breakfast bowl with colorful fruits, nuts, and yogurt in a serene sunny kitchen setting. Soft organic food photography highlighting natural brain health ingredients for growing children." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlydjrvqFARIwVZp3esw5w0qSdPDETshAvHZ41DPBkrS2op8HzBAe4AWkttR4HGCQxdncoR2niv_rHjmKp2tRq3LmFNqzciyWTRTK25GR_clKGRAl_TJ0vwRHK-U8-L5pK8kxSLJaIb9wWBKIPGgRraRYZQ02D1rcJyRyq3ZEt8C7HMnF1lz0DtbBiaDOqfyL43EzV_q38oIOBZnRN1uQtgOKjy3U5zLNwXpDvezc"/>
+<div>
+<a class="font-title-md text-title-md text-on-surface font-bold hover:text-primary transition-colors block line-clamp-1" href="#">
+                          Hubungan Pola Makan, Kualitas Tidur, dan Rentang Konsentrasi Belajar Balita
+                        </a>
+<p class="font-caption text-caption text-on-surface-variant line-clamp-1 mt-0.5">
+                          Tinjauan nutrisi seimbang dan regulasi istirahat malam dalam mendukung fokus terapi di klinik.
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-3 py-1 rounded-full font-label-md text-label-md bg-surface-variant text-primary font-semibold">
+                      Tips Parenting
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="font-label-lg text-label-lg text-on-surface">dr. Sarah Anindita, Sp.A</div>
+<div class="font-caption text-caption text-outline">Spesialis Tumbuh Kembang</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
+                    12 Sep 2024
+                  </td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-semibold text-on-surface">
+<span class="material-symbols-outlined text-outline text-base" data-icon="visibility">visibility</span>
+<span>3.420</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-caption text-caption font-bold bg-secondary-container text-on-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                      Terbit
+                    </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Pratinjau Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Edit Konten">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-error hover:bg-error-container/40 transition-colors" title="Hapus Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Baris 8: Menstimulasi Bicaranya Anak Pemalu -->
+<tr class="hover:bg-surface-container-low/40 transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3.5">
+<img class="w-14 h-14 rounded-DEFAULT object-cover flex-shrink-0 border border-outline-variant/30" data-alt="A pediatric speech therapist demonstrating mirror expression and joyful phonetic tongue exercises with an attentive toddler girl. Warm inviting therapy environment with pastel sky-blue accent walls." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt_POmdGjfqpNijud9oUXna-12m8k1v2vA7gwaFfasv3E7kX-VxD6PrtR164QgeaZ7i_RELSBr8HCQyZOSbeGjTYTY6uKcUVRIEE7PTCWJ_KVbouEnOFVMO0A3VaVM22PBYMK66cmlb7VSka7F66R1PpcnZm8-I5cGZpfdLCBv1iV29a1mr9q7Plg0-d4OpLWXdRWmjJRKZlTpzOP05VbEEPHuzU_G48iJ6gN0P74"/>
+<div>
+<a class="font-title-md text-title-md text-on-surface font-bold hover:text-primary transition-colors block line-clamp-1" href="#">
+                          5 Permainan Seru di Rumah untuk Memancing Kosa Kata Pertama si Kecil
+                        </a>
+<p class="font-caption text-caption text-on-surface-variant line-clamp-1 mt-0.5">
+                          Trik bermain cilukba, tebak suara binatang, dan menyanyi interaktif yang mengasah kesiapan wicara.
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-3 py-1 rounded-full font-label-md text-label-md bg-primary-fixed text-on-primary-fixed font-semibold">
+                      Terapi Wicara
+                    </span>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="font-label-lg text-label-lg text-on-surface">Artin Ristriawan, S.Tr.Kes</div>
+<div class="font-caption text-caption text-outline">Terapis Wicara &amp; Okupasi</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap text-on-surface-variant">
+                    05 Sep 2024
+                  </td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-1.5 font-semibold text-on-surface">
+<span class="material-symbols-outlined text-outline text-base" data-icon="visibility">visibility</span>
+<span>4.180</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-caption text-caption font-bold bg-secondary-container text-on-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                      Terbit
+                    </span>
+</td>
+<td class="py-4 px-6 whitespace-nowrap text-center">
+<div class="flex items-center justify-center gap-1">
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Pratinjau Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Edit Konten">
+<span class="material-symbols-outlined text-lg" data-icon="edit">edit</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-error hover:bg-error-container/40 transition-colors" title="Hapus Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- PAGINATION FOOTER -->
+<div class="p-4 bg-surface-container-low/40 border-t border-outline-variant/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="font-body-sm text-body-sm text-on-surface-variant">
+              Menampilkan <span class="font-bold text-on-surface">1 - 8</span> dari <span class="font-bold text-on-surface">14 artikel</span> terdaftar
+            </div>
+<div class="flex items-center gap-1.5">
+<!-- Previous Page -->
+<button class="px-3 py-1.5 rounded-full border border-outline-variant/40 bg-surface-container-lowest text-outline font-label-md text-label-md cursor-not-allowed flex items-center gap-1" disabled="">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+<span>Sebelumnya</span>
+</button>
+<!-- Page 1 (Active) -->
+<button class="w-9 h-9 rounded-full bg-primary text-on-primary font-bold font-label-md text-label-md flex items-center justify-center shadow-sm">
+                1
+              </button>
+<!-- Page 2 -->
+<button class="w-9 h-9 rounded-full bg-surface-container-lowest border border-outline-variant/40 hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center justify-center transition-colors">
+                2
+              </button>
+<!-- Next Page -->
+<button class="px-3 py-1.5 rounded-full border border-outline-variant/40 bg-surface-container-lowest hover:bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center gap-1 transition-colors">
+<span>Berikutnya</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- QUICK NOTIFICATION & CONTENT GUIDELINE CARD -->
+<div class="p-6 rounded-DEFAULT bg-primary-fixed/30 border border-primary/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary flex-shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="verified">verified</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md font-bold text-on-primary-fixed">Standar Telaah Medis Klinis Jagakarsa</h4>
+<p class="font-body-sm text-body-sm text-on-primary-fixed-variant mt-0.5">
+                Semua artikel edukasi harus melewati verifikasi dokter spesialis anak atau terapis berlisensi sebelum dipublikasikan ke portal publik.
+              </p>
+</div>
+</div>
+<button class="px-5 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md font-bold hover:bg-primary-container transition-colors whitespace-nowrap">
+            Panduan Editorial
+          </button>
+</div>
+</div>
+<!-- FOOTER ADMIN -->
+<footer class="mt-auto px-8 py-5 border-t border-outline-variant/20 bg-surface-container-lowest flex flex-col sm:flex-row items-center justify-between gap-3 text-on-surface-variant font-caption text-caption">
+<p>© 2025 Amanah Tin's Center. Seluruh hak cipta dilindungi undang-undang. • Jagakarsa, Jakarta Selatan</p>
+<div class="flex items-center gap-4 text-outline">
+<a class="hover:text-primary transition-colors" href="#">Bantuan IT</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Kebijakan Privasi Rekam Medis</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Versi Portal 2.4.0</a>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

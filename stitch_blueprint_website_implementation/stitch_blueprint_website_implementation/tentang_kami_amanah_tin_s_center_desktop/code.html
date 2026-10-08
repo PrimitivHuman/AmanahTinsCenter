@@ -1,0 +1,549 @@
+<!DOCTYPE html><html class="light" lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Tentang Kami - Amanah Tin's Center</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..800;1,6..12,300..800&amp;family=Outfit:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@100..900&amp;family=Outfit:wght@100..900&amp;display=swap" rel="stylesheet">
+<!-- Tailwind Play CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary": "#884e03",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed-dim": "#ffb873",
+            "surface-container-high": "#d9eaff",
+            "on-surface": "#091d2e",
+            "outline-variant": "#bfc8ce",
+            "surface-bright": "#f7f9ff",
+            "on-error": "#ffffff",
+            "inverse-primary": "#88d0f4",
+            "on-primary-fixed": "#001e2b",
+            "on-tertiary-fixed-variant": "#6a3b00",
+            "background": "#f7f9ff",
+            "on-primary-fixed-variant": "#004d67",
+            "surface-container-low": "#edf4ff",
+            "surface-tint": "#056687",
+            "on-secondary-fixed": "#131f00",
+            "surface-variant": "#d1e4fb",
+            "surface-container": "#e3efff",
+            "on-tertiary-fixed": "#2d1600",
+            "primary-fixed-dim": "#88d0f4",
+            "on-secondary": "#ffffff",
+            "on-secondary-container": "#516d1c",
+            "primary-fixed": "#c1e8ff",
+            "secondary-container": "#ccef8e",
+            "on-secondary-fixed-variant": "#354e00",
+            "surface": "#f7f9ff",
+            "primary": "#006384",
+            "secondary-fixed-dim": "#b1d275",
+            "on-surface-variant": "#40484d",
+            "on-primary-container": "#fbfcff",
+            "surface-dim": "#c9dcf3",
+            "on-primary": "#ffffff",
+            "on-background": "#091d2e",
+            "inverse-on-surface": "#e8f2ff",
+            "outline": "#70787e",
+            "tertiary-fixed": "#ffdcbf",
+            "error-container": "#ffdad6",
+            "surface-container-highest": "#d1e4fb",
+            "on-error-container": "#93000a",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#2e7c9e",
+            "secondary": "#4b6716",
+            "on-tertiary-container": "#fffbff",
+            "error": "#ba1a1a",
+            "inverse-surface": "#203243",
+            "tertiary-container": "#a5661f",
+            "secondary-fixed": "#ccef8e"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "1.25rem",
+            "gutter": "1.5rem",
+            "margin": "2rem",
+            "space-lg": "2rem",
+            "space-sm": "0.75rem",
+            "margin-desktop-max": "5rem",
+            "space-xl": "3.5rem",
+            "space-md": "1.25rem",
+            "gutter-mobile": "1rem",
+            "space-xs": "0.375rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Outfit"],
+            "display-hero": ["Outfit"],
+            "caption": ["Nunito Sans"],
+            "body-sm": ["Nunito Sans"],
+            "title-md": ["Outfit"],
+            "body-md": ["Nunito Sans"],
+            "headline-md": ["Outfit"],
+            "label-md": ["Nunito Sans"],
+            "body-lg": ["Nunito Sans"],
+            "label-lg": ["Nunito Sans"],
+            "display-hero-mobile": ["Outfit"],
+            "headline-lg-mobile": ["Outfit"],
+            "headline-lg": ["Outfit"]
+          },
+          "fontSize": {
+            "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+            "display-hero": ["48px", {"lineHeight": "58px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "caption": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+            "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "title-md": ["18px", {"lineHeight": "26px", "fontWeight": "600"}],
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+            "label-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+            "label-lg": ["15px", {"lineHeight": "22px", "letterSpacing": "0.01em", "fontWeight": "700"}],
+            "display-hero-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "headline-lg-mobile": ["26px", {"lineHeight": "34px", "letterSpacing": "0em", "fontWeight": "600"}],
+            "headline-lg": ["36px", {"lineHeight": "46px", "letterSpacing": "-0.015em", "fontWeight": "600"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar Component (Source: Shared Components JSON) -->
+<header class="bg-surface-container-lowest/90 dark:bg-surface/90 backdrop-blur-md text-primary dark:text-inverse-primary docked full-width top-0 sticky z-50 shadow-sm border-b border-outline-variant/30 dark:border-outline/20">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 w-full">
+<!-- Brand Logo / Headline -->
+<a class="shrink-0 mr-4 text-headline-sm font-headline-sm font-bold text-primary dark:text-inverse-primary flex items-center gap-2 transition-transform active:scale-95 duration-150" href="{{DATA:SCREEN:SCREEN_11}}">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="child_care">child_care</span>
+</div>
+<div class="flex flex-col">
+<span class="leading-none text-headline-sm font-headline-sm font-bold tracking-tight">Amanah Tin's Center</span>
+<span class="font-caption text-caption text-on-surface-variant font-normal tracking-wide">Pusat Terapi Tumbuh Kembang Anak</span>
+</div>
+</a>
+<!-- Desktop Nav Cluster -->
+<nav class="hidden md:flex items-center gap-4 lg:gap-6 flex-nowrap">
+<a class="text-sm font-medium whitespace-nowrap px-2 py-1 text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_11}}">Beranda</a>
+<a class="text-sm font-medium whitespace-nowrap px-2 py-1 text-primary dark:text-inverse-primary font-bold border-b-2 border-primary dark:border-inverse-primary pb-0.5" href="{{DATA:SCREEN:SCREEN_9}}">Tentang Kami</a>
+<a class="text-sm font-medium whitespace-nowrap px-2 py-1 text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_10}}">Layanan</a>
+<a class="text-sm font-medium whitespace-nowrap px-2 py-1 text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_6}}">Tim Kami</a>
+<a class="text-sm font-medium whitespace-nowrap px-2 py-1 text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_7}}">Artikel &amp; Tips</a>
+<a class="text-sm font-medium whitespace-nowrap px-2 py-1 text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_8}}">Jadwal &amp; Pendaftaran</a>
+<a class="text-sm font-medium whitespace-nowrap px-2 py-1 text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_11}}#kontak">Kontak</a>
+</nav>
+<!-- Trailing Action Button -->
+<div class="flex items-center shrink-0 ml-3">
+<a class="bg-primary hover:bg-primary-container text-on-primary text-sm font-medium whitespace-nowrap px-4 py-2 rounded-full transition-all duration-200 active:scale-95 shadow-sm inline-flex items-center gap-1.5" href="{{DATA:SCREEN:SCREEN_8}}">
+<span class="">Daftar Sekarang</span>
+<span class="material-symbols-outlined text-lg" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</header>
+<main class="w-full">
+<!-- Hero Title Banner & Breadcrumb Section -->
+<section class="bg-gradient-to-b from-surface-container-low via-surface-container-lowest to-background pt-10 pb-12 border-b border-outline-variant/20">
+<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin">
+<!-- Breadcrumb -->
+<nav aria-label="Breadcrumb" class="mb-4">
+<ol class="flex items-center gap-2 text-label-md font-label-md text-on-surface-variant">
+<li class="">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="{{DATA:SCREEN:SCREEN_11}}">
+<span class="material-symbols-outlined text-sm" data-icon="home">home</span>
+                Beranda
+              </a>
+</li>
+<li class="flex items-center text-outline-variant">
+<span class="material-symbols-outlined text-base" data-icon="chevron_right">chevron_right</span>
+</li>
+<li aria-current="page" class="font-bold text-primary">Tentang Kami</li>
+</ol>
+</nav>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-3xl">
+<span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-container-high text-primary text-label-md font-label-md mb-3 border border-outline-variant/30">
+<span class="material-symbols-outlined text-base" data-icon="verified">verified</span>
+              Pusat Edukasi &amp; Terapi Terpercaya Sejak 2018
+            </span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mb-3">Tentang Kami</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+              Mengenal lebih dekat perjalanan, visi, misi, dan nilai-nilai luhur yang memandu kami dalam mendampingi langkah setiap buah hati menuju potensi optimalnya.
+            </p>
+</div>
+<div class="hidden lg:flex items-center gap-3 bg-surface-container-lowest px-5 py-3 rounded-2xl border border-outline-variant/30 shadow-sm">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-2xl" data-icon="psychology">psychology</span>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface">500+ Anak Terdampingi</p>
+<p class="font-caption text-caption text-on-surface-variant">Pendekatan komprehensif &amp; ramah anak</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Showcase Foto Fasilitas Klinik & Tim -->
+<section class="max-w-7xl mx-auto px-margin-mobile md:px-margin -mt-4 mb-space-xl">
+<div class="relative bg-surface-container-lowest rounded-xl p-4 md:p-6 border border-outline-variant/30 shadow-sm overflow-hidden">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch">
+<!-- Large Main Clinic Environment Image -->
+<div class="md:col-span-8 relative rounded-2xl overflow-hidden min-h-[360px] md:min-h-[440px] group">
+<img alt="Fasilitas Ruang Terapi Ramah Anak Amanah Tin's Center" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A clean, luminous, and cheerful pediatric occupational therapy clinic in South Jakarta with soft pastel-tinted walls, high safety padded rubber floors, colorful sensory integration climbing blocks, wooden low tables, and natural diffused daylight creating a nurturing, premium, and friendly medical ambiance with high-key lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGHaeXj5FSPH8qWwJyC4ep546jMQik-lsrp_2N6PyTb95luOGo-Kxs5Ip0f3MmD7YaB17RrEZEKEAc3ICbleGScW_2FewRBXRKieHDQ1XdO_ifE3ngnOjgaRH1N5-VRR8y073_4EvbLgVpMhmWDYRa1v-veSsXcoJWtA8FmudxOlq4e54X2jKh9S0le8jGb3oBD8crTdwOHa204yrgguOc-xgoRjbq3a_Am-dT3Ig">
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface/60 via-transparent to-transparent"></div>
+<!-- Accreditation Badge Floating Overlay -->
+<div class="absolute top-5 left-5 inline-flex items-center gap-2 bg-surface-container-lowest/95 backdrop-blur-md px-4 py-2 rounded-full border border-outline-variant/30 shadow-md">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-lg text-label-lg text-primary font-bold">Klinik Terakreditasi &amp; Nyaman</span>
+</div>
+<!-- Context Caption Overlay -->
+<div class="absolute bottom-6 left-6 right-6 text-white">
+<p class="font-title-md text-title-md text-white font-bold mb-1">Ruang Sensori Integrasi &amp; Terapi Wicara Berstandar</p>
+<p class="font-body-sm text-body-sm text-white/90">Dirancang khusus dengan material ramah anak guna membangun rasa aman, stimulasi motorik, dan kenyamanan interaksi terapeutik.</p>
+</div>
+</div>
+<!-- Secondary Image Grid: Therapist Interaction & Play Corner -->
+<div class="md:col-span-4 flex flex-col gap-5">
+<div class="relative rounded-2xl overflow-hidden flex-1 min-h-[200px] group border border-outline-variant/20">
+<img alt="Sesi Terapi Interaktif" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A caring female pediatric therapist wearing an apron warmly interacting with a smiling young toddler during a sensory play session with safe non-toxic building blocks in a bright modern clinic room illuminated by warm daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxCcerp34ElrQCVyON58j1OscFg5MR9BsX7NdyFuGBoq6gB_FQOvA-lWaeVbV9BvTm2Qcsps-FJ-mncTnN1N9sM92Mv6vWdfqmtu8xL6IgBvEh0EXzr0H6q1rFlZ2O-ihMCyARgKGqHpAN7clyp9nJ1_2y3BJKkXyCLJn0gEnzqrmDFcKNnPQffyN7W6nwv4bm9bQppfRk6_SrOmP3AtjPzGcblTWq-o6urXk1s7I">
+<div class="absolute inset-0 bg-on-surface/20"></div>
+<div class="absolute bottom-3 left-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md px-3.5 py-2 rounded-xl border border-outline-variant/20">
+<span class="font-label-md text-label-md text-primary font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base" data-icon="sentiment_very_satisfied">sentiment_very_satisfied</span>
+                  Terapis Hangat &amp; Tersertifikasi
+                </span>
+</div>
+</div>
+<div class="relative rounded-2xl overflow-hidden flex-1 min-h-[200px] group border border-outline-variant/20">
+<img alt="Ruang Observasi dan Diskusi Keluarga" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="An inviting, clean child consultation and parental observation room with comfortable ergonomic seating, pediatric sensory development toys neatly organized on wooden shelves, and bright uplifting soft pastel wall decor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4gtk40GZi1NAmfUL5OIVkQd4vSYwYZR3sEKjDIs0FfoMv4LcutzmKXlSUAM8egPp_D_GhLUxZ-yI7ruxNIQGT_QnLRU8ICZ5TLjm4DIcSdmHdD83O9mLuA840DclKm0nJbdAZ67PiNrlFrbFPPBe0DDLXyaQhZ8oeYHlqB0GNKxLB-tE5ECfXAJHUtVAlRzA7JtFX2VfylDYCo2gf56tMbCACftxjHWOkLoPnsZE">
+<div class="absolute inset-0 bg-on-surface/20"></div>
+<div class="absolute bottom-3 left-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md px-3.5 py-2 rounded-xl border border-outline-variant/20">
+<span class="font-label-md text-label-md text-primary font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base" data-icon="family_restroom">family_restroom</span>
+                  Kemitraan Orang Tua &amp; Anak
+                </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Profil Pendiri Section (2 Kolom) -->
+<section class="max-w-7xl mx-auto px-margin-mobile md:px-margin mb-space-xl">
+<div class="bg-surface-container-lowest rounded-xl p-8 md:p-12 border border-outline-variant/30 shadow-sm relative overflow-hidden">
+<!-- Soft decorative background accent -->
+<div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-secondary-fixed/30 filter blur-3xl pointer-events-none"></div>
+<div class="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-primary-fixed/30 filter blur-3xl pointer-events-none"></div>
+<div class="relative grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+<!-- Kolom Foto Pendiri -->
+<div class="lg:col-span-5 flex flex-col items-center">
+<div class="relative w-full max-w-md">
+<div class="relative rounded-2xl overflow-hidden border-4 border-surface-container-lowest shadow-md">
+<img alt="Bapak Artin Ristriawan dan Ibu Hertin Nurfarida" class="w-full h-[400px] object-cover" data-alt="A respectful, professional yet warm Indonesian couple portrait of Bapak Artin Ristriawan and Ibu Hertin Nurfarida smiling genuinely in a clean bright studio clinic office with soft sage green and sky blue tones, projecting deep dedication to children development." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG20WWfa82PFEV3OYgsQt0Bchnns6_zW43xro8OLR_9j2dBD71RQyHdwt77ZPA7Zn0W6wm_y-oTX9XOQ6FTjfdJoezkOT_JPS4GGAJLSlr0M4qfM7EtiyRbpoJv5mGVxbeqbToY0zclQRSBmIEsFRcZES7mvwJa78PdllsOgxQltUosqfgKS-RyOPhHEtqI0UA_9UyK1XcN3qZipayd9S9cKKojyPmG9orG5hrohE">
+</div>
+<!-- Founder Badge Tag -->
+<div class="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-surface-container-lowest px-6 py-3 rounded-full border border-outline-variant/30 shadow-md text-center whitespace-nowrap">
+<p class="font-label-lg text-label-lg text-primary font-bold">Didirikan Oleh</p>
+<p class="font-body-sm text-body-sm text-on-surface font-semibold">Bapak Artin Ristriawan &amp; Ibu Hertin Nurfarida</p>
+</div>
+</div>
+</div>
+<!-- Kolom Kisah Pendirian & Nilai -->
+<div class="lg:col-span-7 flex flex-col justify-center">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high text-primary text-label-md font-label-md w-fit mb-4">
+<span class="material-symbols-outlined text-sm" data-icon="history_edu">history_edu</span>
+              Kisah di Balik Amanah Tin's Center
+            </div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-5 leading-tight">
+              Lahir dari Empati Tulus untuk Masa Depan Setiap Anak
+            </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4 leading-relaxed">
+              Amanah Tin's Center (ATC) didirikan oleh <strong>Bapak Artin Ristriawan</strong> dan <strong>Ibu Hertin Nurfarida</strong> atas dasar panggilan hati dan kepedulian mendalam terhadap tantangan tumbuh kembang yang dihadapi banyak keluarga di Indonesia.
+            </p>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+              Melihat kekhawatiran para orang tua ketika menghadapi keterlambatan bicara (speech delay), gangguan pemrosesan sensori, hingga kendala fokus dan motorik, kami mendirikan klinik ini sebagai rumah tumbuh kembang yang aman, bebas dari stigma, dan berlandaskan kasih sayang. Kami percaya bahwa setiap anak dianugerahi keunikan serta tempo perkembangan masing-masing yang patut dihargai dan didukung dengan intervensi ilmiah yang tepat.
+            </p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-outline-variant/30">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-xl" data-icon="favorite">favorite</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Pendekatan Holistik</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Menyelaraskan emosi anak, metode terapi, dan keterlibatan orang tua.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-xl" data-icon="school">school</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Klinisi Tersertifikasi</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Lulusan universitas ternama dengan sertifikasi profesi resmi.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Visi & Misi Berdampingan (Side-by-Side Cards) -->
+<section class="max-w-7xl mx-auto px-margin-mobile md:px-margin mb-space-xl">
+<div class="text-center max-w-2xl mx-auto mb-10">
+<span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-container-high text-primary text-label-md font-label-md mb-2 border border-outline-variant/20">
+<span class="material-symbols-outlined text-base" data-icon="flag">flag</span>
+          Arah Perjalanan Kami
+        </span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Visi &amp; Misi Utama</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Komitmen berkelanjutan untuk menghadirkan layanan terapi pediatrik bermutu tinggi, terjangkau, dan humanis.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+<!-- Kartu Visi -->
+<div class="bg-surface-container-lowest rounded-xl p-8 md:p-10 border border-outline-variant/30 shadow-sm relative overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary-fixed/30 rounded-bl-full pointer-events-none"></div>
+<div>
+<div class="w-14 h-14 rounded-2xl bg-surface-container-high flex items-center justify-center text-primary mb-6 shadow-sm">
+<span class="material-symbols-outlined text-3xl" data-icon="lightbulb">lightbulb</span>
+</div>
+<span class="font-label-md text-label-md text-primary font-bold uppercase tracking-wider">Cita-Cita Luhur</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1 mb-4">Visi Kami</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+              Menjadi pusat terapi tumbuh kembang anak terdepan, terpercaya, dan berkarakter di Indonesia yang berorientasi pada pencapaian potensi terbaik setiap anak melalui pelayanan yang profesional, hangat, dan berbasis bukti klinis modern.
+            </p>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/20 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="stars">stars</span>
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">Berlandaskan integritas, inovasi metode, dan kasih sayang tulus.</span>
+</div>
+</div>
+<!-- Kartu Misi -->
+<div class="bg-surface-container-lowest rounded-xl p-8 md:p-10 border border-outline-variant/30 shadow-sm relative overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary-fixed/30 rounded-bl-full pointer-events-none"></div>
+<div>
+<div class="w-14 h-14 rounded-2xl bg-secondary-fixed flex items-center justify-center text-secondary mb-6 shadow-sm">
+<span class="material-symbols-outlined text-3xl" data-icon="assignment_turned_in">assignment_turned_in</span>
+</div>
+<span class="font-label-md text-label-md text-secondary font-bold uppercase tracking-wider">Langkah Nyata</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1 mb-4">Misi Kami</h3>
+<ul class="space-y-4">
+<li class="flex items-start gap-3.5">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-base" data-icon="check">check</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+<strong>Pelayanan Berkualitas:</strong> Memberikan layanan terapi wicara, sensori integrasi, okupasi, dan psikologi anak yang berkesinambungan dan terstandarisasi.
+                </p>
+</li>
+<li class="flex items-start gap-3.5">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-base" data-icon="check">check</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+<strong>Dukungan Holistik:</strong> Mendorong stimulasi komprehensif yang mencakup fisik, emosi, kognitif, dan kemandirian sosial anak secara terpadu.
+                </p>
+</li>
+<li class="flex items-start gap-3.5">
+<div class="w-6 h-6 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-base" data-icon="check">check</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+<strong>Edukasi &amp; Kemitraan:</strong> Membangun kolaborasi erat dengan orang tua dan guru melalui evaluasi berkala dan modul pendampingan harian di rumah.
+                </p>
+</li>
+</ul>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/20 flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-2xl" data-icon="handshake">handshake</span>
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">Tumbuh bersama keluarga untuk hasil terapi yang optimal.</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Nilai Kami (Horizontal 4-Column Grid) -->
+<section class="max-w-7xl mx-auto px-margin-mobile md:px-margin mb-space-xl">
+<div class="text-center max-w-2xl mx-auto mb-10">
+<span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-container-high text-primary text-label-md font-label-md mb-2 border border-outline-variant/20">
+<span class="material-symbols-outlined text-base" data-icon="workspace_premium">workspace_premium</span>
+          Fondasi Kebajikan
+        </span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Nilai-Nilai Kami</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Empat pilar nilai yang menuntun etika kerja tim klinisi dan terapis kami dalam setiap sesi terapi.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Pillar 1: Amanah (Kepercayaan) -->
+<div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center text-primary mb-4 transition-transform group-hover:scale-110 duration-200">
+<span class="material-symbols-outlined text-3xl" data-icon="security">security</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-1">Amanah</h3>
+<span class="font-label-md text-label-md text-primary font-bold mb-3">(Kepercayaan)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Menjaga integritas dan kepercayaan penuh yang dititipkan oleh orang tua dengan keterbukaan laporan dan evaluasi berkala yang jujur.
+          </p>
+</div>
+<!-- Pillar 2: Profesional (Integritas) -->
+<div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group">
+<div class="w-16 h-16 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary mb-4 transition-transform group-hover:scale-110 duration-200">
+<span class="material-symbols-outlined text-3xl" data-icon="verified_user">verified_user</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-1">Profesional</h3>
+<span class="font-label-md text-label-md text-secondary font-bold mb-3">(Integritas)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Menerapkan protokol klinis tervalidasi, sertifikasi berkelanjutan, serta pengawasan mutu berkala bagi seluruh praktisi terapi kami.
+          </p>
+</div>
+<!-- Pillar 3: Peduli (Empati) -->
+<div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group">
+<div class="w-16 h-16 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary mb-4 transition-transform group-hover:scale-110 duration-200">
+<span class="material-symbols-outlined text-3xl" data-icon="volunteer_activism">volunteer_activism</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-1">Peduli</h3>
+<span class="font-label-md text-label-md text-tertiary font-bold mb-3">(Empati)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Mendengarkan dengan hati, memperlakukan anak laksana keluarga sendiri, dan memberikan ruang emosional yang ramah tanpa penghakiman.
+          </p>
+</div>
+<!-- Pillar 4: Berkembang (Inovasi) -->
+<div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant/30 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center text-primary mb-4 transition-transform group-hover:scale-110 duration-200">
+<span class="material-symbols-outlined text-3xl" data-icon="trending_up">trending_up</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface mb-1">Berkembang</h3>
+<span class="font-label-md text-label-md text-primary font-bold mb-3">(Inovasi)</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Terus memperbarui instrumen sensori, teknologi penunjang terapi, dan modul edukasi orang tua yang adaptif mengikuti perkembangan zaman.
+          </p>
+</div>
+</div>
+</section>
+<!-- Banner Konsultasi / Call to Action (Sage Green / Pastel Warmth) -->
+<section class="max-w-7xl mx-auto px-margin-mobile md:px-margin mb-space-xl" id="daftar">
+<div class="bg-gradient-to-r from-surface-container-high via-surface-container-low to-secondary-fixed/40 rounded-xl p-8 md:p-12 border border-outline-variant/30 shadow-sm relative overflow-hidden">
+<div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+<div class="max-w-2xl text-center md:text-left">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-lowest text-secondary font-label-md text-label-md font-bold mb-3 shadow-xs">
+<span class="material-symbols-outlined text-base" data-icon="chat">chat</span>
+              Konsultasi Bebas Tekanan
+            </span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-3">
+              Ingin Berkonsultasi Mengenai Tumbuh Kembang Anak Anda?
+            </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+              Tim asesmen kami siap mendengar cerita Ayah dan Bunda serta membantu merancang jalur stimulasi yang tepat untuk ananda.
+            </p>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+<!-- Tombol WhatsApp Hijau Sage (Secondary) -->
+<a class="bg-secondary hover:bg-secondary-container hover:text-on-secondary-fixed text-on-secondary text-label-lg font-label-lg px-8 py-3.5 rounded-full transition-all duration-200 active:scale-95 shadow-sm inline-flex items-center gap-2.5" href="https://wa.me/6281234567890" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-xl" data-icon="chat_bubble">chat_bubble</span>
+<span class="">Hubungi WhatsApp Kami</span>
+</a>
+<!-- Secondary Outline CTA -->
+<a class="bg-surface-container-lowest hover:bg-surface-container-high text-primary border border-outline-variant/40 text-label-lg font-label-lg px-6 py-3.5 rounded-full transition-all duration-200 active:scale-95 inline-flex items-center gap-2" href="{{DATA:SCREEN:SCREEN_8}}">
+<span class="material-symbols-outlined text-xl" data-icon="calendar_month">calendar_month</span>
+<span class="">Lihat Jadwal Terapis</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component (Source: Shared Components JSON) -->
+<footer class="bg-surface-container-high dark:bg-surface-container-highest text-primary dark:text-inverse-primary w-full rounded-t-xl border-t border-outline-variant/30 dark:border-outline/20">
+<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-xl flex flex-col gap-space-lg w-full">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- Brand & Address Block -->
+<div class="md:col-span-5 flex flex-col gap-3">
+<div class="text-title-md font-title-md font-bold text-primary dark:text-inverse-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-2xl" data-icon="child_care">child_care</span>
+<span class="">Amanah Tin's Center</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-sm">
+            Pusat terapi tumbuh kembang terpadu untuk anak di Jagakarsa, Jakarta Selatan. Menghadirkan lingkungan aman, stimulasi tepat, dan terapis berdedikasi tinggi.
+          </p>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant mt-2">
+<span class="material-symbols-outlined text-base" data-icon="location_on">location_on</span>
+<span class="">Jl. Raya Jagakarsa No. 12, Jagakarsa, Jakarta Selatan 12620</span>
+</div>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-base" data-icon="call">call</span>
+<span class="">(021) 1234 5678 / WhatsApp: 0812-3456-7890</span>
+</div>
+</div>
+<!-- Links Navigation from JSON -->
+<div class="md:col-span-4 flex flex-col gap-3">
+<h4 class="font-title-md text-title-md font-bold text-primary dark:text-inverse-primary">Tautan Cepat</h4>
+<ul class="grid grid-cols-2 gap-2 text-body-sm font-body-sm">
+<li class="">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_11}}">Beranda</a>
+</li>
+<li class="">
+<a class="text-primary dark:text-inverse-primary font-semibold" href="{{DATA:SCREEN:SCREEN_9}}">Tentang Kami</a>
+</li>
+<li class="">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_10}}">Layanan Terapi</a>
+</li>
+<li class="">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_8}}">Jadwal &amp; Pendaftaran</a>
+</li>
+<li class="">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_7}}">Artikel &amp; Tips</a>
+</li>
+<li class="">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_11}}#kontak">Kontak Jagakarsa</a>
+</li>
+</ul>
+</div>
+<!-- Working Hours & Commitment -->
+<div class="md:col-span-3 flex flex-col gap-3">
+<h4 class="font-title-md text-title-md font-bold text-primary dark:text-inverse-primary">Jam Layanan</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Senin - Jumat: 08.00 - 17.00 WIB<br>
+            Sabtu: 08.00 - 15.00 WIB<br>
+            Minggu &amp; Hari Libur Nasional: Tutup (Konsultasi via WA tetap dibuka)
+          </p>
+<div class="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-lowest text-primary text-caption font-caption border border-outline-variant/30">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+            Pendaftaran Baru Selalu Terbuka
+          </div>
+</div>
+</div>
+<!-- Copyright Sub-bar -->
+<div class="pt-6 border-t border-outline-variant/30 dark:border-outline/20 flex flex-col sm:flex-row items-center justify-between text-caption font-caption text-on-surface-variant gap-4">
+<p class="">© 2025 Amanah Tin's Center. Seluruh hak cipta dilindungi undang-undang.</p>
+<div class="flex items-center gap-4">
+<a class="hover:text-primary transition-colors" href="#">Kebijakan Privasi</a>
+<span class="">•</span>
+<a class="hover:text-primary transition-colors" href="#">Syarat &amp; Ketentuan</a>
+</div>
+</div>
+</div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+</body></html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pengaturan Klinik - Amanah Tin's Center Admin Portal</title>
+<!-- Fonts: Outfit (Headings) & Nunito Sans (Body) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..800;1,6..12,300..800&amp;family=Outfit:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#e8f2ff",
+            "inverse-surface": "#203243",
+            "on-surface-variant": "#40484d",
+            "surface-container-high": "#d9eaff",
+            "primary-fixed": "#c1e8ff",
+            "background": "#f7f9ff",
+            "on-primary": "#ffffff",
+            "secondary-fixed-dim": "#b1d275",
+            "tertiary-container": "#a5661f",
+            "surface-variant": "#d1e4fb",
+            "outline": "#70787e",
+            "tertiary-fixed": "#ffdcbf",
+            "on-tertiary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "surface-container-highest": "#d1e4fb",
+            "secondary-fixed": "#ccef8e",
+            "surface-container-low": "#edf4ff",
+            "surface": "#f7f9ff",
+            "on-tertiary-fixed": "#2d1600",
+            "inverse-primary": "#88d0f4",
+            "on-surface": "#091d2e",
+            "on-primary-fixed": "#001e2b",
+            "primary-container": "#2e7c9e",
+            "on-background": "#091d2e",
+            "primary": "#006384",
+            "surface-dim": "#c9dcf3",
+            "surface-tint": "#056687",
+            "tertiary": "#884e03",
+            "on-error": "#ffffff",
+            "outline-variant": "#bfc8ce",
+            "primary-fixed-dim": "#88d0f4",
+            "on-tertiary-container": "#fffbff",
+            "on-primary-fixed-variant": "#004d67",
+            "on-secondary-container": "#516d1c",
+            "on-secondary-fixed-variant": "#354e00",
+            "error-container": "#ffdad6",
+            "on-primary-container": "#fbfcff",
+            "surface-bright": "#f7f9ff",
+            "on-tertiary-fixed-variant": "#6a3b00",
+            "secondary": "#4b6716",
+            "on-error-container": "#93000a",
+            "on-secondary-fixed": "#131f00",
+            "tertiary-fixed-dim": "#ffb873",
+            "surface-container": "#e3efff",
+            "secondary-container": "#ccef8e",
+            "error": "#ba1a1a",
+            "surface-container-lowest": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.375rem",
+            "space-lg": "2rem",
+            "gutter-mobile": "1rem",
+            "space-xl": "3.5rem",
+            "margin-desktop-max": "5rem",
+            "margin-mobile": "1.25rem",
+            "space-md": "1.25rem",
+            "space-sm": "0.75rem",
+            "gutter": "1.5rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Outfit"],
+            "title-md": ["Outfit"],
+            "body-sm": ["Nunito Sans"],
+            "body-lg": ["Nunito Sans"],
+            "display-hero-mobile": ["Outfit"],
+            "headline-sm": ["Outfit"],
+            "headline-lg-mobile": ["Outfit"],
+            "label-lg": ["Nunito Sans"],
+            "display-hero": ["Outfit"],
+            "headline-lg": ["Outfit"],
+            "body-md": ["Nunito Sans"],
+            "label-md": ["Nunito Sans"],
+            "caption": ["Nunito Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "display-hero-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "0em", "fontWeight": "600" }],
+            "label-lg": ["15px", { "lineHeight": "22px", "letterSpacing": "0.01em", "fontWeight": "700" }],
+            "display-hero": ["48px", { "lineHeight": "58px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["36px", { "lineHeight": "46px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex selection:bg-primary/20 selection:text-primary">
+<!-- ==================== SIDEBAR ADMIN ==================== -->
+<aside class="w-72 bg-surface-container-lowest border-r border-outline-variant/30 flex flex-col justify-between shrink-0 h-screen sticky top-0 z-40 shadow-sm transition-all">
+<div class="p-6 flex flex-col gap-6">
+<!-- Clinic Brand Header -->
+<div class="flex items-start gap-3">
+<div class="w-11 h-11 rounded-2xl bg-surface-container flex items-center justify-center text-primary shadow-sm border border-outline-variant/30 shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="child_care">child_care</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">Amanah Tin's Center</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-caption text-caption text-secondary font-semibold">Jagakarsa Center Terhubung</span>
+</div>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav class="flex flex-col gap-1.5 pt-2">
+<span class="font-caption text-caption text-outline px-3 tracking-wider font-semibold">MENU UTAMA</span>
+<!-- Item: Dashboard Ringkasan -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors group" href="#dashboard">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-label-lg font-medium">Dashboard Ringkasan</span>
+</a>
+<!-- Item: Kelola Tim Kami -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors group" href="#tim">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="groups">groups</span>
+<span class="font-label-lg text-label-lg font-medium">Kelola Tim Kami</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-primary font-caption text-caption font-bold">8</span>
+</a>
+<!-- Item: Kelola Artikel & Tips -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-DEFAULT text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors group" href="#artikel">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="menu_book">menu_book</span>
+<span class="font-label-lg text-label-lg font-medium">Kelola Artikel &amp; Tips</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-primary font-caption text-caption font-bold">14</span>
+</a>
+<!-- Item: Pengaturan Klinik (AKTIF) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-DEFAULT bg-primary-container text-on-primary font-bold shadow-sm" href="#pengaturan">
+<span class="material-symbols-outlined text-on-primary" data-icon="settings" data-weight="fill" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-label-lg text-label-lg">Pengaturan Klinik</span>
+</a>
+<div class="my-3 border-t border-outline-variant/30"></div>
+<span class="font-caption text-caption text-outline px-3 tracking-wider font-semibold">EKSTERNAL</span>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-DEFAULT text-primary hover:bg-surface-container-low transition-colors group" href="#preview-website" target="_blank">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="open_in_new">open_in_new</span>
+<span class="font-label-lg text-label-lg font-semibold">Tinjau Website Utama</span>
+</div>
+<span class="material-symbols-outlined text-sm text-outline group-hover:translate-x-0.5 transition-transform" data-icon="chevron_right">chevron_right</span>
+</a>
+</nav>
+</div>
+<!-- Admin User Profile Footnote -->
+<div class="p-4 border-t border-outline-variant/30 bg-surface-container-low/60 m-3 rounded-DEFAULT flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold border border-primary/20">
+<span class="font-title-md text-title-md">SR</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface leading-tight">Siti Rahmawati, S.Psi.</span>
+<span class="font-caption text-caption text-outline">Kepala Cabang Jagakarsa</span>
+</div>
+</div>
+<button class="text-outline hover:text-error transition-colors p-1.5 rounded-lg hover:bg-surface-container" title="Keluar Akun" type="button">
+<span class="material-symbols-outlined text-xl" data-icon="logout">logout</span>
+</button>
+</div>
+</aside>
+<!-- ==================== MAIN CONTENT WRAPPER ==================== -->
+<div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+<!-- TopBar Header -->
+<header class="h-20 bg-surface-container-lowest border-b border-outline-variant/30 px-8 flex items-center justify-between sticky top-0 z-30 shadow-sm backdrop-blur-md">
+<!-- Breadcrumb -->
+<div class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
+<span>Admin Portal</span>
+<span class="material-symbols-outlined text-sm text-outline-variant" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold font-label-md text-label-md">Pengaturan Klinik</span>
+</div>
+<!-- Quick Search & Actions -->
+<div class="flex items-center gap-4">
+<!-- Search Input Bar -->
+<div class="relative w-80">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg" data-icon="search">search</span>
+<input class="w-full pl-9 pr-4 py-2 bg-surface-container-low/70 border border-outline-variant/40 rounded-full text-body-sm font-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" placeholder="Cari preferensi atau setting..." type="text"/>
+</div>
+<!-- Sync / Backup Status Chip -->
+<div class="hidden xl:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-secondary-container/40 border border-secondary/20">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="cloud_done">cloud_done</span>
+<span class="font-caption text-caption text-on-secondary-container font-semibold">Tersinkron: 2 menit lalu</span>
+</div>
+<!-- Notifications Action -->
+<button class="relative p-2.5 rounded-full text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error ring-2 ring-surface-container-lowest"></span>
+</button>
+</div>
+</header>
+<!-- Page Body Container -->
+<main class="p-8 max-w-6xl w-full mx-auto space-y-6">
+<!-- Section Title & Subtitle Banner -->
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2 border-b border-outline-variant/30">
+<div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">Pengaturan &amp; Konfigurasi Klinik</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 max-w-3xl">
+            Kelola profil resmi klinik, kontak WhatsApp pendaftaran, jam operasional, alamat Jagakarsa, dan akun staf pengelola.
+          </p>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-caption text-caption font-bold">
+<span class="material-symbols-outlined text-sm" data-icon="verified">verified</span>
+            Cabang Resmi Jagakarsa
+          </span>
+</div>
+</div>
+<!-- Horizontal Navigation Tabs -->
+<div class="border-b border-outline-variant/30">
+<nav aria-label="Tabs" class="flex space-x-6 overflow-x-auto scrollbar-none">
+<!-- Active Tab: Profil & Identitas Klinik -->
+<button class="font-label-lg text-label-lg text-primary border-b-2 border-primary pb-3.5 font-bold flex items-center gap-2 whitespace-nowrap" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="storefront">storefront</span>
+            Profil &amp; Identitas Klinik
+          </button>
+<!-- Inactive Tabs -->
+<button class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary border-b-2 border-transparent pb-3.5 font-semibold flex items-center gap-2 whitespace-nowrap transition-colors" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="schedule">schedule</span>
+            Jam Operasional &amp; Kuota
+          </button>
+<button class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary border-b-2 border-transparent pb-3.5 font-semibold flex items-center gap-2 whitespace-nowrap transition-colors" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="chat">chat</span>
+            Kontak &amp; Tautan WhatsApp
+          </button>
+<button class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary border-b-2 border-transparent pb-3.5 font-semibold flex items-center gap-2 whitespace-nowrap transition-colors" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="badge">badge</span>
+            Manajemen Akun Staf &amp; Hak Akses
+          </button>
+<button class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary border-b-2 border-transparent pb-3.5 font-semibold flex items-center gap-2 whitespace-nowrap transition-colors" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="security">security</span>
+            Keamanan &amp; Backup Data
+          </button>
+</nav>
+</div>
+<!-- Form Container Bento Panels -->
+<form class="space-y-6">
+<!-- ==================== BAGIAN 1: INFORMASI DASAR KLINIK ==================== -->
+<section class="bg-surface-container-lowest rounded-lg p-7 border border-outline-variant/30 shadow-sm space-y-6">
+<div class="flex items-center gap-3 pb-4 border-b border-outline-variant/20">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="apartment">apartment</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Bagian 1: Informasi Dasar Klinik</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Identitas utama yang ditampilkan pada kartu profil publik dan header situs.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Nama Resmi Klinik -->
+<div class="space-y-2">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Nama Resmi Klinik <span class="text-error">*</span></label>
+<input class="w-full px-4 py-3 bg-surface border border-outline-variant/50 rounded-DEFAULT font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all" placeholder="Contoh: Amanah Tin's Center (ATC) Jagakarsa" type="text" value="Amanah Tin's Center (ATC) Jagakarsa"/>
+<span class="font-caption text-caption text-outline">Nama lengkap terdaftar pada izin operasional Dinas Kesehatan.</span>
+</div>
+<!-- Tagline / Slogan -->
+<div class="space-y-2">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Tagline / Slogan Ramah Anak</label>
+<input class="w-full px-4 py-3 bg-surface border border-outline-variant/50 rounded-DEFAULT font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all" placeholder="Slogan atau visi ramah anak..." type="text" value="Pusat Terapi Tumbuh Kembang &amp; Stimulasi Anak Terpercaya"/>
+<span class="font-caption text-caption text-outline">Muncul di samping judul dan metadata pencarian Google.</span>
+</div>
+<!-- Logo Klinik & Favicon Preview -->
+<div class="md:col-span-2 space-y-2">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Logo Klinik &amp; Favicon</label>
+<div class="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-DEFAULT bg-surface-container-low/40 border border-outline-variant/40">
+<div class="w-20 h-20 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 p-2 flex items-center justify-center shadow-sm shrink-0">
+<div class="w-full h-full rounded-xl bg-surface-container flex flex-col items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" data-icon="child_care">child_care</span>
+<span class="text-[9px] font-bold tracking-tighter">ATC</span>
+</div>
+</div>
+<div class="flex-1 space-y-1 text-center sm:text-left">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Logo Utama Terpasang</span>
+<p class="font-caption text-caption text-outline">Format disarankan: PNG transparan atau SVG resolusi minimal 512x512 px. Maksimal 2MB.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 bg-surface-container-lowest border border-outline-variant/60 hover:border-primary text-primary font-label-md text-label-md font-bold rounded-full hover:bg-surface-container-low transition-all" type="button">
+                    Ganti Logo
+                  </button>
+<button class="p-2 text-outline hover:text-error rounded-full hover:bg-surface transition-colors" title="Hapus Gambar" type="button">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Deskripsi Singkat untuk Website -->
+<div class="md:col-span-2 space-y-2">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Deskripsi Singkat untuk Website</label>
+<textarea class="w-full px-4 py-3 bg-surface border border-outline-variant/50 rounded-DEFAULT font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all resize-none" rows="3">Layanan terapi okupasi, wicara, sensori integrasi, dan konsultasi psikologi anak profesional di Jagakarsa dengan lingkungan bermain yang aman, hangat, dan menyenangkan.</textarea>
+<div class="flex justify-between items-center">
+<span class="font-caption text-caption text-outline">Deskripsi ramah orang tua pada kartu landing page dan media sosial.</span>
+<span class="font-caption text-caption text-outline">162 / 300 karakter</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== BAGIAN 2: ALAMAT & KONTAK PENDAFTARAN RESMI ==================== -->
+<section class="bg-surface-container-lowest rounded-lg p-7 border border-outline-variant/30 shadow-sm space-y-6">
+<div class="flex items-center gap-3 pb-4 border-b border-outline-variant/20">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="contact_phone">contact_phone</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Bagian 2: Alamat &amp; Kontak Pendaftaran Resmi</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Kanal komunikasi penting bagi orang tua untuk konsultasi dan reservasi jadwal.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Alamat Lengkap -->
+<div class="md:col-span-2 space-y-2">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Alamat Lengkap Sentra Jagakarsa <span class="text-error">*</span></label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-3.5 text-outline text-lg" data-icon="location_on">location_on</span>
+<input class="w-full pl-11 pr-4 py-3 bg-surface border border-outline-variant/50 rounded-DEFAULT font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all" type="text" value="Jl. Raya Jagakarsa No. 12, Jagakarsa, Jakarta Selatan 12620"/>
+</div>
+<span class="font-caption text-caption text-outline">Alamat ini disematkan langsung pada Google Maps dan panduan navigasi orang tua.</span>
+</div>
+<!-- WhatsApp Admin Resmi -->
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface font-semibold">Nomor WhatsApp Admin Resmi <span class="text-error">*</span></label>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-caption text-caption font-bold">Terhubung ke CTA Web</span>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-secondary text-lg" data-icon="chat">chat</span>
+<input class="w-full pl-11 pr-4 py-3 bg-surface border border-outline-variant/50 rounded-DEFAULT font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all" type="text" value="+62 812-3456-7890"/>
+</div>
+<span class="font-caption text-caption text-outline">Tombol "Konsultasi WhatsApp" di website utama akan langsung mengarah ke nomor ini.</span>
+</div>
+<!-- Nomor Telepon Landline -->
+<div class="space-y-2">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Nomor Telepon Landline (Klinik)</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-lg" data-icon="call">call</span>
+<input class="w-full pl-11 pr-4 py-3 bg-surface border border-outline-variant/50 rounded-DEFAULT font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all" placeholder="(021) 1234 5678" type="text" value="(021) 1234 5678"/>
+</div>
+<span class="font-caption text-caption text-outline">Telepon meja resepsionis untuk konfirmasi jadwal darurat.</span>
+</div>
+<!-- Email Resmi -->
+<div class="md:col-span-2 space-y-2">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Email Korespondensi Resmi</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-lg" data-icon="mail">mail</span>
+<input class="w-full pl-11 pr-4 py-3 bg-surface border border-outline-variant/50 rounded-DEFAULT font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all" placeholder="admin@amanahtinscenter.id" type="email" value="info@amanahtinscenter.id"/>
+</div>
+<span class="font-caption text-caption text-outline">Digunakan untuk pengiriman berkas rekam medis evaluasi asesmen anak.</span>
+</div>
+</div>
+</section>
+<!-- ==================== BAGIAN 3: JAM LAYANAN & HARI PRAKTIK ==================== -->
+<section class="bg-surface-container-lowest rounded-lg p-7 border border-outline-variant/30 shadow-sm space-y-6">
+<div class="flex items-center gap-3 pb-4 border-b border-outline-variant/20">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="event_available">event_available</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold">Bagian 3: Jam Layanan &amp; Hari Praktik</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Jadwal operasional harian terapis dan ketersediaan kuota asesmen.</p>
+</div>
+</div>
+<!-- Schedule Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+<!-- Hari Praktik Reguler -->
+<div class="p-4 rounded-DEFAULT bg-surface-container-low/40 border border-outline-variant/40 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="calendar_month">calendar_month</span>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Senin s/d Sabtu</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-caption text-caption font-bold">Buka Praktik</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex-1">
+<span class="font-caption text-caption text-outline block">Jam Mulai</span>
+<input class="w-full mt-1 px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded-lg font-body-sm text-body-sm font-semibold text-on-surface focus:outline-none" type="text" value="08:00 WIB"/>
+</div>
+<span class="text-outline pt-5">-</span>
+<div class="flex-1">
+<span class="font-caption text-caption text-outline block">Jam Selesai</span>
+<input class="w-full mt-1 px-3 py-2 bg-surface-container-lowest border border-outline-variant/40 rounded-lg font-body-sm text-body-sm font-semibold text-on-surface focus:outline-none" type="text" value="17:00 WIB"/>
+</div>
+</div>
+</div>
+<!-- Hari Libur -->
+<div class="p-4 rounded-DEFAULT bg-surface-container-low/40 border border-outline-variant/40 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-xl" data-icon="event_busy">event_busy</span>
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Minggu &amp; Hari Libur Nasional</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-outline font-caption text-caption font-bold">Tutup</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant pt-2">
+                Pendaftaran pesan WhatsApp tetap aktif otomatis, namun asesmen tatap muka diliburkan untuk sterilisasi ruang sensori.
+              </p>
+</div>
+<!-- Catatan Jadwal Sesi Asesmen Awal -->
+<div class="md:col-span-2 space-y-2">
+<label class="block font-label-md text-label-md text-on-surface font-semibold">Catatan Jadwal Sesi Asesmen Awal &amp; Konsultasi Dokter</label>
+<textarea class="w-full px-4 py-3 bg-surface border border-outline-variant/50 rounded-DEFAULT font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/25 focus:border-primary transition-all resize-none" rows="2">Sesi asesmen perkembangan anak diwajibkan reservasi H-2 melalui WhatsApp. Kuota dibatasi maksimal 6 anak per hari demi ketelitian observasi psikolog &amp; terapis.</textarea>
+<span class="font-caption text-caption text-outline">Catatan ini akan tampil di bawah kalender formulir jadwal reservasi orang tua.</span>
+</div>
+</div>
+</section>
+<!-- ==================== BAGIAN 4: TOMBOL SIMPAN & SYNC FOOTER ==================== -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-5 border border-outline-variant/30 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 sticky bottom-4 z-20 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-container/50 flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-xl" data-icon="sync">sync</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Semua perubahan langsung disinkronkan ke <span class="font-bold text-on-surface">Website Publik</span> secara realtime.
+            </p>
+</div>
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<button class="flex-1 sm:flex-none px-6 py-3 rounded-full border border-outline-variant/60 hover:bg-surface-container-low text-on-surface-variant font-label-lg text-label-lg font-semibold transition-all" type="reset">
+              Batal / Reset ke Semula
+            </button>
+<button class="flex-1 sm:flex-none px-8 py-3 rounded-full bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg font-bold shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 group" type="submit">
+<span>Simpan Pengaturan</span>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</form>
+</main>
+<!-- Administrative Tiny Footer -->
+<footer class="mt-auto py-6 px-8 border-t border-outline-variant/20 text-center">
+<p class="font-caption text-caption text-outline">
+        © 2025 Amanah Tin's Center Jagakarsa. Sistem Manajemen Operasional Internal Klinik Tumbuh Kembang.
+      </p>
+</footer>
+</div>
+</body></html>

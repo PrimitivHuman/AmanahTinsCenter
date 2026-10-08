@@ -1,0 +1,19 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # 1. API requests -> backend/public/index.php
+    RewriteRule ^api(/.*)?$ backend/public/index.php [L,QSA]
+
+    # 2. Storage requests -> backend/public/storage
+    RewriteRule ^storage/(.*)$ backend/public/storage/$1 [L]
+
+    # 3. Serve physical files from frontend/dist if exist
+    RewriteCond %{DOCUMENT_ROOT}/frontend/dist%{REQUEST_URI} -f
+    RewriteRule ^(.*)$ frontend/dist/$1 [L]
+
+    # 4. Fallback to index.php for router handling
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
+</IfModule>

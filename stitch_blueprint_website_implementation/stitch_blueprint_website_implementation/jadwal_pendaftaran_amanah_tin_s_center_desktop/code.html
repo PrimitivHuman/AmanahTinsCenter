@@ -1,0 +1,509 @@
+<!DOCTYPE html><html class="light" lang="id" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Jadwal &amp; Pendaftaran - Amanah Tin's Center</title>
+<!-- Google Fonts: Outfit & Nunito Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..800;1,6..12,300..800&amp;family=Outfit:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS with form plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary": "#884e03",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed-dim": "#ffb873",
+            "surface-container-high": "#d9eaff",
+            "on-surface": "#091d2e",
+            "outline-variant": "#bfc8ce",
+            "surface-bright": "#f7f9ff",
+            "on-error": "#ffffff",
+            "inverse-primary": "#88d0f4",
+            "on-primary-fixed": "#001e2b",
+            "on-tertiary-fixed-variant": "#6a3b00",
+            "background": "#f7f9ff",
+            "on-primary-fixed-variant": "#004d67",
+            "surface-container-low": "#edf4ff",
+            "surface-tint": "#056687",
+            "on-secondary-fixed": "#131f00",
+            "surface-variant": "#d1e4fb",
+            "surface-container": "#e3efff",
+            "on-tertiary-fixed": "#2d1600",
+            "primary-fixed-dim": "#88d0f4",
+            "on-secondary": "#ffffff",
+            "on-secondary-container": "#516d1c",
+            "primary-fixed": "#c1e8ff",
+            "secondary-container": "#ccef8e",
+            "on-secondary-fixed-variant": "#354e00",
+            "surface": "#f7f9ff",
+            "primary": "#006384",
+            "secondary-fixed-dim": "#b1d275",
+            "on-surface-variant": "#40484d",
+            "on-primary-container": "#fbfcff",
+            "surface-dim": "#c9dcf3",
+            "on-primary": "#ffffff",
+            "on-background": "#091d2e",
+            "inverse-on-surface": "#e8f2ff",
+            "outline": "#70787e",
+            "tertiary-fixed": "#ffdcbf",
+            "error-container": "#ffdad6",
+            "surface-container-highest": "#d1e4fb",
+            "on-error-container": "#93000a",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#2e7c9e",
+            "secondary": "#4b6716",
+            "on-tertiary-container": "#fffbff",
+            "error": "#ba1a1a",
+            "inverse-surface": "#203243",
+            "tertiary-container": "#a5661f",
+            "secondary-fixed": "#ccef8e"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "1.25rem",
+            "gutter": "1.5rem",
+            "margin": "2rem",
+            "space-lg": "2rem",
+            "space-sm": "0.75rem",
+            "margin-desktop-max": "5rem",
+            "space-xl": "3.5rem",
+            "space-md": "1.25rem",
+            "gutter-mobile": "1rem",
+            "space-xs": "0.375rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Outfit"],
+            "display-hero": ["Outfit"],
+            "caption": ["Nunito Sans"],
+            "body-sm": ["Nunito Sans"],
+            "title-md": ["Outfit"],
+            "body-md": ["Nunito Sans"],
+            "headline-md": ["Outfit"],
+            "label-md": ["Nunito Sans"],
+            "body-lg": ["Nunito Sans"],
+            "label-lg": ["Nunito Sans"],
+            "display-hero-mobile": ["Outfit"],
+            "headline-lg-mobile": ["Outfit"],
+            "headline-lg": ["Outfit"]
+          },
+          "fontSize": {
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "display-hero": ["48px", { "lineHeight": "58px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "label-lg": ["15px", { "lineHeight": "22px", "letterSpacing": "0.01em", "fontWeight": "700" }],
+            "display-hero-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "0em", "fontWeight": "600" }],
+            "headline-lg": ["36px", { "lineHeight": "46px", "letterSpacing": "-0.015em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md selection:bg-secondary-container selection:text-on-secondary-fixed">
+<!-- TopAppBar Component (from JSON anchor) -->
+<header class="bg-surface-container-lowest/90 dark:bg-surface/90 backdrop-blur-md text-primary dark:text-inverse-primary docked full-width top-0 sticky z-50 shadow-sm border-b border-outline-variant/30 dark:border-outline/20">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20 w-full">
+<!-- Brand Logo -->
+<a class="shrink-0 mr-4 text-headline-sm font-headline-sm font-bold text-primary dark:text-inverse-primary flex items-center gap-2 group" href="#">
+<span class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary shadow-sm group-hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="child_care">child_care</span>
+</span>
+<span class="tracking-tight text-primary font-headline-sm text-headline-sm font-bold">Amanah Tin's Center</span>
+</a>
+<!-- Desktop Navigation Links (with Jadwal & Pendaftaran active state) -->
+<nav class="hidden md:flex items-center gap-4 lg:gap-6 flex-nowrap"><a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors text-sm font-medium whitespace-nowrap px-2 py-1" href="{{DATA:SCREEN:SCREEN_11}}">Beranda</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors text-sm font-medium whitespace-nowrap px-2 py-1" href="{{DATA:SCREEN:SCREEN_9}}">Tentang Kami</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors text-sm font-medium whitespace-nowrap px-2 py-1" href="{{DATA:SCREEN:SCREEN_10}}">Layanan</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors text-sm font-medium whitespace-nowrap px-2 py-1" href="{{DATA:SCREEN:SCREEN_6}}">Tim Kami</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors text-sm font-medium whitespace-nowrap px-2 py-1" href="{{DATA:SCREEN:SCREEN_7}}">Artikel &amp; Tips</a>
+<a class="text-primary dark:text-inverse-primary font-bold text-sm whitespace-nowrap px-2 py-1 transition-colors" href="{{DATA:SCREEN:SCREEN_8}}">Jadwal &amp; Pendaftaran</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors text-sm font-medium whitespace-nowrap px-2 py-1" href="{{DATA:SCREEN:SCREEN_11}}#kontak">Kontak</a></nav>
+<!-- Trailing Action -->
+<div class="flex items-center shrink-0 ml-3">
+<a class="bg-primary text-on-primary hover:bg-primary-container px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 active:scale-95 shadow-sm flex items-center gap-1.5 shrink-0 whitespace-nowrap" href="{{DATA:SCREEN:SCREEN_8}}">
+<span class="">Daftar Sekarang</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow w-full max-w-7xl mx-auto px-margin-mobile md:px-margin pt-6 pb-space-xl">
+<!-- Breadcrumb & Page Title Banner -->
+<div class="mb-8">
+<!-- Breadcrumb -->
+<nav class="flex items-center gap-2 text-caption font-caption text-on-surface-variant mb-3">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="{{DATA:SCREEN:SCREEN_11}}">
+<span class="material-symbols-outlined text-sm" data-icon="home">home</span>
+<span class="">Beranda</span>
+</a>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-semibold">Jadwal &amp; Pendaftaran</span>
+</nav>
+<!-- Title & Subtitle Card with soft daylight tone -->
+<div class="relative bg-surface-container-low rounded-lg p-6 md:p-8 border border-outline-variant/30 overflow-hidden">
+<div class="relative z-10 max-w-2xl">
+<div class="inline-flex items-center gap-1.5 bg-secondary-container text-on-secondary-fixed px-3 py-1 rounded-full text-caption font-caption mb-3">
+<span class="material-symbols-outlined text-sm" data-icon="event_available">event_available</span>
+            Penerimaan Sesi Terapi Baru Aktif
+          </div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Jadwal &amp; Pendaftaran</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
+            Mudah dan cepat untuk memulai perjalanan tumbuh kembang anak Anda bersama tim terapis klinis berizin dan berpengalaman di Jagakarsa, Jakarta Selatan.
+          </p>
+</div>
+<div class="absolute -right-8 -bottom-10 w-48 h-48 bg-primary-fixed/30 rounded-full blur-2xl pointer-events-none"></div>
+</div>
+</div>
+<!-- 2-Column Balanced Master Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- KOLOM KIRI: Cara Mendaftar & Trust Assurance Card (7 cols) -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<!-- Step by Step "Cara Mendaftar" -->
+<div class="bg-surface-container-lowest rounded-lg p-6 md:p-8 border border-outline-variant/30 shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)]">
+<div class="flex items-center justify-between pb-5 border-b border-outline-variant/20 mb-6">
+<div class="flex items-center gap-3">
+<span class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="format_list_numbered">format_list_numbered</span>
+</span>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Cara Mendaftar</h2>
+<p class="font-caption text-caption text-on-surface-variant">3 langkah praktis tanpa antrean panjang</p>
+</div>
+</div>
+<span class="hidden sm:inline-flex bg-surface-container text-primary px-3 py-1 rounded-full text-caption font-caption font-semibold">
+              Respon &lt; 15 Menit
+            </span>
+</div>
+<!-- Vertical Timeline Steps -->
+<div class="space-y-6 relative before:absolute before:left-5 before:top-4 before:bottom-4 before:w-0.5 before:bg-outline-variant/30">
+<!-- Step 1 -->
+<div class="relative flex items-start gap-4 group">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary font-headline-sm text-headline-sm font-bold flex items-center justify-center shrink-0 z-10 shadow-sm ring-4 ring-surface-container-lowest">
+                1
+              </div>
+<div class="bg-surface-container-low rounded-DEFAULT p-5 flex-grow border border-outline-variant/20 hover:border-primary/40 transition-colors">
+<div class="flex items-center justify-between mb-1.5">
+<h3 class="font-title-md text-title-md text-primary">Hubungi Kami</h3>
+<span class="material-symbols-outlined text-primary text-xl" data-icon="chat">chat</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                  Konsultasi awal secara santai melalui WhatsApp atau panggilan telepon. Ceritakan kebutuhan, observasi, dan riwayat perkembangan si kecil kepada koordinator layanan kami.
+                </p>
+<div class="mt-3 flex items-center gap-2 text-caption font-caption text-secondary font-semibold">
+<span class="material-symbols-outlined text-base" data-icon="check_circle">check_circle</span>
+<span class="">Tersedia panduan asesmen awal gratis</span>
+</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative flex items-start gap-4 group">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary font-headline-sm text-headline-sm font-bold flex items-center justify-center shrink-0 z-10 shadow-sm ring-4 ring-surface-container-lowest">
+                2
+              </div>
+<div class="bg-surface-container-low rounded-DEFAULT p-5 flex-grow border border-outline-variant/20 hover:border-primary/40 transition-colors">
+<div class="flex items-center justify-between mb-1.5">
+<h3 class="font-title-md text-title-md text-primary">Pilih Jadwal Sesi</h3>
+<span class="material-symbols-outlined text-primary text-xl" data-icon="calendar_month">calendar_month</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                  Tim kami akan membantu menyesuaikan jadwal terapeutik yang ideal: Sesi Pagi (08.30 - 11.30 WIB), Sesi Siang (13.00 - 15.00 WIB), atau Sesi Sore (15.30 - 17.00 WIB) sesuai kenyamanan anak.
+                </p>
+<!-- Available sessions pill cluster -->
+<div class="mt-3 flex flex-wrap gap-2">
+<span class="px-2.5 py-1 rounded-full bg-surface-container-lowest text-primary text-caption font-caption font-semibold border border-outline-variant/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="wb_sunny">wb_sunny</span> Pagi (Aktif)
+                  </span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-lowest text-primary text-caption font-caption font-semibold border border-outline-variant/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="light_mode">light_mode</span> Siang (Aktif)
+                  </span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-lowest text-primary text-caption font-caption font-semibold border border-outline-variant/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="routine">routine</span> Sore (Terbatas)
+                  </span>
+</div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative flex items-start gap-4 group">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary font-headline-sm text-headline-sm font-bold flex items-center justify-center shrink-0 z-10 shadow-sm ring-4 ring-surface-container-lowest">
+                3
+              </div>
+<div class="bg-surface-container-low rounded-DEFAULT p-5 flex-grow border border-outline-variant/20 hover:border-primary/40 transition-colors">
+<div class="flex items-center justify-between mb-1.5">
+<h3 class="font-title-md text-title-md text-primary">Konfirmasi &amp; Rekam Medis</h3>
+<span class="material-symbols-outlined text-primary text-xl" data-icon="assignment_turned_in">assignment_turned_in</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                  Lakukan konfirmasi jadwal final dan pengisian formulir rekam medis awal secara digital atau langsung di resepsionis klinik Jagakarsa untuk penyusunan target terapi individual.
+                </p>
+<div class="mt-3 flex items-center gap-2 text-caption font-caption text-secondary font-semibold">
+<span class="material-symbols-outlined text-base" data-icon="verified_user">verified_user</span>
+<span class="">Data privasi keluarga dijamin aman dan terenkripsi</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Kartu Komitmen Klinik Ramah Anak -->
+<div class="bg-surface-container-lowest rounded-lg p-6 border border-outline-variant/30 shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)] flex items-center gap-5">
+<div class="w-14 h-14 rounded-full bg-secondary-container text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="sentiment_very_satisfied">sentiment_very_satisfied</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface">Lingkungan Terapi Non-Stigma &amp; Hangat</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Ruang bermain sensori terstandar, alat evaluasi terakreditasi, dan komunikasi terbuka dengan orang tua pada setiap akhir sesi terapi.
+            </p>
+</div>
+</div>
+</div>
+<!-- KOLOM KANAN: Kartu Hubungi Kami Terpadu (5 cols) -->
+<div class="lg:col-span-5 flex flex-col gap-6" id="daftar-form">
+<div class="bg-surface-container-lowest rounded-lg p-6 md:p-8 border border-outline-variant/30 shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)] relative">
+<!-- Card Header -->
+<div class="pb-5 border-b border-outline-variant/20 mb-6 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-10 h-10 rounded-full bg-surface-container-high text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+</span>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Hubungi Kami</h2>
+<p class="font-caption text-caption text-on-surface-variant">Layanan Informasi &amp; Pendaftaran</p>
+</div>
+</div>
+<!-- Operational Badge -->
+<div class="inline-flex items-center gap-1.5 bg-secondary-container/80 text-secondary px-3 py-1 rounded-full text-caption font-caption font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+              Buka Sekarang
+            </div>
+</div>
+<!-- Channel Info Matrix -->
+<div class="space-y-4">
+<!-- WhatsApp -->
+<a class="flex items-center gap-4 p-3.5 rounded-DEFAULT bg-surface-container-low hover:bg-surface-variant/70 border border-outline-variant/20 transition-all duration-200 group" href="https://wa.me/6281234567890" target="_blank">
+<div class="w-11 h-11 rounded-full bg-secondary-container text-secondary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-xl" data-icon="phone_iphone">phone_iphone</span>
+</div>
+<div class="flex-grow">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider block">WhatsApp Resmi</span>
+<span class="font-title-md text-title-md text-primary font-bold">0812-3456-7890</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</a>
+<!-- Telepon Kantor -->
+<a class="flex items-center gap-4 p-3.5 rounded-DEFAULT bg-surface-container-low hover:bg-surface-variant/70 border border-outline-variant/20 transition-all duration-200 group" href="tel:02112345678">
+<div class="w-11 h-11 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-xl" data-icon="call">call</span>
+</div>
+<div class="flex-grow">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider block">Telepon Klinik</span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">(021) 1234 5678</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</a>
+<!-- Email -->
+<a class="flex items-center gap-4 p-3.5 rounded-DEFAULT bg-surface-container-low hover:bg-surface-variant/70 border border-outline-variant/20 transition-all duration-200 group" href="mailto:info@amanah-tinscenter.id">
+<div class="w-11 h-11 rounded-full bg-surface-container-high text-primary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-xl" data-icon="mail">mail</span>
+</div>
+<div class="flex-grow">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider block">Surel Korespondensi</span>
+<span class="font-body-md text-body-md text-on-surface font-semibold truncate block">info@amanah-tinscenter.id</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</a>
+<!-- Alamat & Lokasi -->
+<div class="flex items-start gap-4 p-3.5 rounded-DEFAULT bg-surface-container-low border border-outline-variant/20">
+<div class="w-11 h-11 rounded-full bg-tertiary-fixed text-tertiary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-xl" data-icon="location_on">location_on</span>
+</div>
+<div class="flex-grow">
+<span class="font-caption text-caption text-on-surface-variant uppercase tracking-wider block">Alamat Klinik Jagakarsa</span>
+<p class="font-body-sm text-body-sm text-on-surface font-semibold mt-0.5">
+                  Jl. Raya Jagakarsa No. 12, Jagakarsa, Jakarta Selatan 12620
+                </p>
+<p class="font-caption text-caption text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="directions_subway">directions_subway</span>
+                  5 menit dari Stasiun Lenteng Agung (Akses Mudah)
+                </p>
+</div>
+</div>
+<!-- Jam Operasional -->
+<div class="p-4 rounded-DEFAULT bg-surface-bright border border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="schedule">schedule</span>
+<div>
+<span class="font-caption text-caption text-on-surface-variant block">Jam Kerja Operasional</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Senin – Sabtu: 08.00 – 17.00 WIB</span>
+</div>
+</div>
+<span class="text-caption font-caption text-on-surface-variant font-medium">Minggu: Tutup</span>
+</div>
+</div>
+<!-- CTA Utama Pendaftaran -->
+<div class="mt-6 pt-5 border-t border-outline-variant/20">
+<a class="w-full bg-primary hover:bg-primary-container text-on-primary py-3.5 px-6 rounded-full font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-md transition-all duration-200 active:scale-95 group" href="https://wa.me/6281234567890?text=Halo%20Amanah%20Tin's%20Center,%20saya%20ingin%20mendaftarkan%20anak%20saya%20untuk%20jadwal%20terapi" target="_blank">
+<span class="">Daftar Sekarang Melalui WhatsApp</span>
+<span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform" data-icon="send">send</span>
+</a>
+<p class="text-center font-caption text-caption text-on-surface-variant mt-2.5">
+              Tanpa biaya pendaftaran awal untuk screening konsultasi pertama.
+            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Motivational Banner: 'Langkah kecil hari ini, untuk perubahan besar esok hari' -->
+<section class="mt-12 bg-surface-container-low rounded-xl p-8 md:p-10 border border-outline-variant/30 shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)] relative overflow-hidden">
+<!-- Decorative Pastel Blobs -->
+<div class="absolute -right-16 -top-16 w-64 h-64 bg-secondary-fixed/40 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute left-1/3 -bottom-20 w-72 h-72 bg-primary-fixed/30 rounded-full blur-3xl pointer-events-none"></div>
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Text & Action (7 cols) -->
+<div class="lg:col-span-7 flex flex-col items-start gap-4">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container-lowest text-primary border border-outline-variant/30 text-caption font-caption font-semibold">
+<span class="material-symbols-outlined text-sm" data-icon="favorite">favorite</span>
+            Pendampingan Tumbuh Kembang Penuh Kasih Sayang
+          </div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface leading-tight tracking-tight">
+            “Langkah kecil hari ini, untuk perubahan besar esok hari.”
+          </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl leading-relaxed">
+            Setiap anak berhak mendapatkan stimulasi dan dukungan terbaik di usia emasnya. Bersama tim terapis wicara, okupasi, dan sensori integrasi Amanah Tin's Center, mari ciptakan masa depan yang mandiri dan bahagia.
+          </p>
+<div class="flex flex-wrap items-center gap-4 pt-2">
+<a class="bg-secondary text-on-secondary hover:bg-secondary/90 px-7 py-3 rounded-full font-label-lg text-label-lg transition-all duration-200 active:scale-95 shadow-sm flex items-center gap-2" href="https://wa.me/6281234567890" target="_blank">
+<span class="material-symbols-outlined text-xl" data-icon="chat_bubble">chat_bubble</span>
+<span class="">Hubungi Tim Terapis via WhatsApp</span>
+</a>
+<a class="text-primary hover:text-primary-container font-label-lg text-label-lg inline-flex items-center gap-1 transition-colors" href="{{DATA:SCREEN:SCREEN_6}}">
+<span class="">Pelajari Profil Terapis Kami</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Authentic Therapy Photography (5 cols) -->
+<div class="lg:col-span-5 relative">
+<div class="relative rounded-lg overflow-hidden border-4 border-surface-container-lowest shadow-[0px_14px_32px_-6px_rgba(43,61,79,0.08)] bg-surface-variant">
+<img class="w-full h-72 md:h-80 object-cover" data-alt="A warm, brightly lit pediatric therapy clinic interior featuring a friendly female pediatric therapist wearing a soft pastel hijab gently guiding an attentive young Asian child playing with colorful wooden building blocks on a light natural wood table. High-key natural daylight floods through large windows creating a clean, welcoming, and reassuring atmosphere with soft sage green and sky blue educational toys." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBW5aiE46CHrY7P30aLPhueJPHbKfo9L51mvGP_VQkrM1PMYKBTu9RO_xNt84_oFH2wun-shmI9OZv5ybYp4x7KPf1VTkgWEb_0VA4auC2Wpfgf_otPSDGE-8LV7nU-quujFnm-JZVwZTPIN6xXNM6czA8fbsGMm5Cp7rBgSHgF2WXJbZVc4ar4pyh19CjtiD6EuGoVAb84tnadvAGMTfBQ_5CfWsaBCEMbdQyadWs">
+<!-- Badge Overlay -->
+<div class="absolute bottom-4 left-4 right-4 bg-surface-container-lowest/90 backdrop-blur-md p-3.5 rounded-DEFAULT border border-outline-variant/30 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-xl" data-icon="verified">verified</span>
+</div>
+<div>
+<p class="font-caption text-caption text-on-surface-variant font-medium">Fasilitas Jagakarsa</p>
+<p class="font-body-sm text-body-sm font-bold text-on-surface">Peralatan Terapi Sensori &amp; Okupasi Lengkap</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Component (from JSON anchor) -->
+<footer class="bg-surface-container-high dark:bg-surface-container-highest w-full rounded-t-xl border-t border-outline-variant/30 dark:border-outline/20 mt-auto">
+<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-xl flex flex-col gap-space-lg w-full">
+<!-- Top Tier: Brand, Info, and Links -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- Brand Summary (5 cols) -->
+<div class="md:col-span-5 flex flex-col gap-3">
+<div class="text-title-md font-title-md font-bold text-primary dark:text-inverse-primary flex items-center gap-2">
+<span class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="child_care">child_care</span>
+</span>
+<span class="">Amanah Tin's Center</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-sm leading-relaxed">
+            Pusat Terapi Tumbuh Kembang Anak tepercaya di Jagakarsa, Jakarta Selatan. Menyediakan Terapi Wicara, Terapi Okupasi, Sensori Integrasi, dan Konseling Psikologi Anak dengan pendekatan holistik dan penuh empati.
+          </p>
+<div class="flex items-center gap-3 mt-1 text-on-surface-variant">
+<a aria-label="Instagram" class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center hover:text-primary transition-colors border border-outline-variant/30" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="photo_camera">photo_camera</span>
+</a>
+<a aria-label="WhatsApp" class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center hover:text-primary transition-colors border border-outline-variant/30" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="chat">chat</span>
+</a>
+<a aria-label="Lokasi Maps" class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center hover:text-primary transition-colors border border-outline-variant/30" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="pin_drop">pin_drop</span>
+</a>
+</div>
+</div>
+<!-- Quick Navigation Links (4 cols) -->
+<div class="md:col-span-4 flex flex-col gap-2.5">
+<h4 class="font-title-md text-title-md text-primary dark:text-inverse-primary">Tautan Cepat</h4>
+<ul class="space-y-2 font-body-sm text-body-sm">
+<li class="">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_11}}">Beranda</a>
+</li>
+<li class="">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_9}}">Tentang Kami</a>
+</li>
+<li class="">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_10}}">Layanan Terapi</a>
+</li>
+<li class="">
+<a class="text-primary dark:text-inverse-primary font-semibold" href="{{DATA:SCREEN:SCREEN_8}}">Jadwal &amp; Pendaftaran</a>
+</li>
+<li class="">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_7}}">Artikel &amp; Tips</a>
+</li>
+<li class="">
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors" href="{{DATA:SCREEN:SCREEN_11}}#kontak">Kontak Jagakarsa</a>
+</li>
+</ul>
+</div>
+<!-- Kontak Langsung (3 cols) -->
+<div class="md:col-span-3 flex flex-col gap-2.5">
+<h4 class="font-title-md text-title-md text-primary dark:text-inverse-primary">Kontak Klinik</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Jl. Raya Jagakarsa No. 12, Jakarta Selatan
+          </p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<strong>Telp:</strong> (021) 1234 5678<br>
+<strong>WhatsApp:</strong> 0812-3456-7890
+          </p>
+<div class="inline-flex items-center gap-1.5 text-caption font-caption text-secondary font-bold mt-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+            Senin - Sabtu (08.00 - 17.00 WIB)
+          </div>
+</div>
+</div>
+<!-- Bottom Tier: Copyright -->
+<div class="pt-6 border-t border-outline-variant/30 dark:border-outline/20 flex flex-col md:flex-row items-center justify-between gap-4 font-caption text-caption text-on-surface-variant">
+<p class="">© 2025 Amanah Tin's Center. Seluruh hak cipta dilindungi undang-undang.</p>
+<div class="flex items-center gap-6">
+<a class="hover:text-primary transition-colors" href="#">Kebijakan Privasi Rekam Medis</a>
+<a class="hover:text-primary transition-colors" href="#">Syarat &amp; Ketentuan Sesi</a>
+</div>
+</div>
+</div>
+</footer>
+
+
+
+
+
+
+
+
+</body></html>

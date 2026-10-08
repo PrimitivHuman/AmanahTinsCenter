@@ -1,0 +1,2035 @@
+<template>
+  <PublicLayout>
+    <div class="article-detail-page">
+      <!-- ==================== BREADCRUMBS & TOP NAV-BACK STRIP ==================== -->
+      <div class="breadcrumb-strip">
+        <div class="container breadcrumb-container">
+          <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+            <router-link to="/" class="bc-link">
+              <span class="material-symbols-outlined bc-icon">home</span>
+              <span>Beranda</span>
+            </router-link>
+            <span class="bc-sep">/</span>
+            <router-link to="/artikel" class="bc-link">Artikel &amp; Tips</router-link>
+            <span class="bc-sep">/</span>
+            <span class="bc-active">Tanda-Tanda Anak Membutuhkan Terapi Wicara</span>
+          </nav>
+          <router-link to="/artikel" class="back-link">
+            <span class="material-symbols-outlined back-icon">arrow_back</span>
+            <span>Kembali ke Semua Artikel</span>
+          </router-link>
+        </div>
+      </div>
+
+      <!-- ==================== ARTICLE HERO / META HEADER ==================== -->
+      <section class="article-hero-section">
+        <div class="container">
+          <!-- Badges Category -->
+          <div class="hero-badges">
+            <span class="badge-pill badge-primary">
+              <span class="material-symbols-outlined badge-icon">record_voice_over</span>
+              <span>Terapi Wicara (TW)</span>
+            </span>
+            <span class="badge-pill badge-secondary">
+              <span class="material-symbols-outlined badge-icon">escalator_warning</span>
+              <span>Tumbuh Kembang Anak</span>
+            </span>
+            <span class="badge-pill badge-neutral">
+              <span class="material-symbols-outlined badge-icon">schedule</span>
+              <span>5 Menit Baca</span>
+            </span>
+          </div>
+
+          <!-- Main Headline -->
+          <h1 class="article-main-title">
+            Tanda-Tanda Anak Membutuhkan Terapi Wicara &amp; Kapan Waktu yang Tepat untuk Asesmen
+          </h1>
+
+          <!-- Author and Medical Review Metadata Bar -->
+          <div class="meta-bar-card">
+            <div class="meta-bar-left">
+              <!-- Author Info -->
+              <div class="author-block">
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU3-885dqF_tiS4mE8mmL9b176cS2g-gjkrzg2t5i7RMtdaPZrO6ejLFQ9SYezy1MLaj9_opLwt_YNSWijncIScNgmKBa1qsqe-nqS_BGlw4N-v8X2jWRtMAAn8OIcjLCRPepUf6LHgnCZY65JIA50w-ejuy4P_MkwhYG8mCwJGHdLqaEKWVFob1con6xdH_Z31Iq7p87V8diQrVL0Am-Vu2rEkPLyzZ9kl3R_tRQ"
+                  alt="Nabila Maharani"
+                  class="author-avatar-img"
+                />
+                <div>
+                  <h4 class="author-title-name">Nabila Maharani, S.Tr.Kes</h4>
+                  <p class="author-title-role">Terapis Wicara Senior Amanah Tin's Center</p>
+                </div>
+              </div>
+
+              <div class="meta-divider"></div>
+
+              <!-- Medical Reviewer -->
+              <div class="reviewer-badge">
+                <span class="material-symbols-outlined verified-icon">verified</span>
+                <span>Ditinjau medis: <strong>dr. Raden Sarah Amalia, Sp.A</strong></span>
+              </div>
+
+              <div class="meta-divider"></div>
+
+              <!-- Date -->
+              <div class="date-block">
+                <span class="material-symbols-outlined date-icon">calendar_today</span>
+                <span>12 Mei 2025</span>
+              </div>
+            </div>
+
+            <!-- Social Share Strip -->
+            <div class="meta-bar-right">
+              <span class="share-label">Bagikan:</span>
+              <button @click="shareWhatsApp" class="share-btn share-btn-wa" title="Bagikan ke WhatsApp">
+                <span class="material-symbols-outlined">chat</span>
+              </button>
+              <button @click="shareGeneral" class="share-btn share-btn-social" title="Bagikan ke Media Sosial">
+                <span class="material-symbols-outlined">share</span>
+              </button>
+              <button @click="copyLink" class="share-btn share-btn-link" title="Salin Tautan Artikel">
+                <span class="material-symbols-outlined">link</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Featured Image Card -->
+          <div class="featured-image-frame">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO1kXEDRGcl9uLHHIxuzrHbMEVCebsxbPxzaaTqtVCXQy9bUlwDcZPdhw47bJrhz8Prdhk2l-txkJMZ2rADTKo_hiQVaX4kw2nXAwrXXkg3VzxJEdiO7eI13V6VMGi1Zx0esHjvzza0Q32HUg_wXx738DcL-nG5zugVbs0eXq3YI3SHIInta1wpVtve2zwmSJG4NXSNusz1yJutx9OLw8Me1odCBesAAbJrPCynY8"
+              alt="Tanda-Tanda Anak Membutuhkan Terapi Wicara"
+              class="featured-img"
+            />
+            <div class="image-caption-pill">
+              <span class="material-symbols-outlined caption-cam-icon">photo_camera</span>
+              <span>Sesi stimulasi interaktif di Ruang Terapi Wicara Jagakarsa</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== MAIN EDITORIAL BODY + STICKY SIDEBAR ==================== -->
+      <main class="article-body-section">
+        <div class="container">
+          <div class="article-grid">
+            <!-- Left: Main Article Content (8 Cols) -->
+            <article class="article-content-col">
+              <!-- Lead Paragraph Box -->
+              <div class="editorial-card lead-card">
+                <p class="lead-text">
+                  Mendengar kata pertama dari buah hati adalah salah satu momen yang paling dinantikan oleh setiap Ayah dan Bunda. Namun, tidak sedikit orang tua yang mulai merasa cemas ketika Si Kecil tampak belum berbicara sebanyak teman sebayanya. Apakah ini keterlambatan bicara biasa, atau tanda bahwa ananda memerlukan pendampingan dari <router-link to="/layanan/terapi-wicara" class="text-link">Terapis Wicara profesional</router-link>?
+                </p>
+                <p class="lead-sub">
+                  Memahami tonggak capaian (milestone) komunikasi dan tanda bahaya (red flags) secara obyektif adalah langkah awal paling bijak untuk memberikan intervensi tepat pada masa emas perkembangan otak anak.
+                </p>
+              </div>
+
+              <!-- Section 1: Milestone Usia -->
+              <section class="editorial-card section-milestone">
+                <div class="section-title-row">
+                  <div class="step-num-circle circle-blue">1</div>
+                  <h2 class="editorial-h2">Milestone Perkembangan Bicara Sesuai Rentang Usia</h2>
+                </div>
+                <p class="section-lead-desc">
+                  Keterampilan komunikasi anak berkembang secara bertahap, dimulai dari vokalisasi sederhana hingga kemampuan merangkai kalimat bermakna:
+                </p>
+                <div class="stages-stack">
+                  <div class="stage-item">
+                    <span class="material-symbols-outlined stage-check">check_circle</span>
+                    <div>
+                      <h4 class="stage-title">Usia 12 Bulan (1 Tahun)</h4>
+                      <p class="stage-desc">
+                        Mulai mengoceh (babbling) dengan intonasi beragam, menoleh saat dipanggil namanya, memahami kata sederhana seperti "tidak" atau "kemari", serta mengucapkan minimal 1–2 kata bermakna (misal: "Mama", "Papa", "Air").
+                      </p>
+                    </div>
+                  </div>
+                  <div class="stage-item">
+                    <span class="material-symbols-outlined stage-check">check_circle</span>
+                    <div>
+                      <h4 class="stage-title">Usia 18 Bulan (1.5 Tahun)</h4>
+                      <p class="stage-desc">
+                        Memiliki perbendaharaan setidaknya 10 hingga 20 kata bermakna, menunjuk bagian tubuh atau gambar saat ditanya, serta meniru kata-kata sederhana dari orang dewasa di sekitarnya.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="stage-item">
+                    <span class="material-symbols-outlined stage-check">check_circle</span>
+                    <div>
+                      <h4 class="stage-title">Usia 24 Bulan (2 Tahun)</h4>
+                      <p class="stage-desc">
+                        Menguasai minimal 50 kata tunggal, mulai menggabungkan 2 kata (misal: "Mau minum", "Mama gendong"), serta memahami instruksi 2 langkah yang tidak rumit.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="stage-item">
+                    <span class="material-symbols-outlined stage-check">check_circle</span>
+                    <div>
+                      <h4 class="stage-title">Usia 3 Tahun (36 Bulan)</h4>
+                      <p class="stage-desc">
+                        Mampu berbicara menggunakan 3 sampai 4 kata dalam satu kalimat, bicaranya 75% dipahami oleh orang luar keluarga, dan gemar bertanya "Apa ini?" atau "Kenapa?".
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Section 2: Red Flags -->
+              <section class="editorial-card section-redflags">
+                <div class="section-title-row">
+                  <div class="step-num-circle circle-red">2</div>
+                  <h2 class="editorial-h2">Gejala Red Flags yang Perlu Diwaspadai Segera</h2>
+                </div>
+                <p class="section-lead-desc">
+                  Apabila orang tua mendapati satu atau lebih tanda berikut pada Si Kecil, jangan menunda konsultasi dengan dokter anak atau terapis wicara:
+                </p>
+                <div class="redflags-grid">
+                  <div class="redflag-card">
+                    <div class="warning-circle">
+                      <span class="material-symbols-outlined">warning</span>
+                    </div>
+                    <div>
+                      <h4 class="redflag-title">Kontak Mata Minim</h4>
+                      <p class="redflag-desc">Anak jarang menatap mata lawan bicara ketika diajak berinteraksi atau tidak merespons panggilan namanya pada usia 12 bulan.</p>
+                    </div>
+                  </div>
+                  <div class="redflag-card">
+                    <div class="warning-circle">
+                      <span class="material-symbols-outlined">warning</span>
+                    </div>
+                    <div>
+                      <h4 class="redflag-title">Tidak Ada Gestur Menunjuk</h4>
+                      <p class="redflag-desc">Pada usia 12–14 bulan, anak belum mampu melambaikan tangan, menunjuk objek yang diinginkan, atau menggelengkan kepala.</p>
+                    </div>
+                  </div>
+                  <div class="redflag-card">
+                    <div class="warning-circle">
+                      <span class="material-symbols-outlined">warning</span>
+                    </div>
+                    <div>
+                      <h4 class="redflag-title">Kosakata Sangat Terbatas</h4>
+                      <p class="redflag-desc">Belum mengucapkan kata konsisten di usia 18 bulan atau kurang dari 20 kata di usia 2 tahun.</p>
+                    </div>
+                  </div>
+                  <div class="redflag-card">
+                    <div class="warning-circle">
+                      <span class="material-symbols-outlined">warning</span>
+                    </div>
+                    <div>
+                      <h4 class="redflag-title">Artikulasi Sangat Tidak Jelas</h4>
+                      <p class="redflag-desc">Di usia 3 tahun, ucapan anak sulit dimengerti bahkan oleh pengasuh utama atau sering hanya berupa gumaman tak jelas.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Section 3: Mitos vs Fakta -->
+              <section class="editorial-card section-myths">
+                <div class="section-title-row">
+                  <div class="step-num-circle circle-green">3</div>
+                  <h2 class="editorial-h2">Mitos vs Fakta Seputar Keterlambatan Bicara</h2>
+                </div>
+                <p class="section-lead-desc">
+                  Banyak kekeliruan umum di masyarakat yang membuat orang tua menunda pemeriksaan penting:
+                </p>
+                <div class="myths-stack">
+                  <div class="myth-fact-box">
+                    <div class="myth-side">
+                      <span class="myth-tag myth-tag-error">Mitos Keliru &#10060;</span>
+                      <p class="myth-text">"Nanti juga bisa ngomong sendiri kok, anak laki-laki memang wajar telat sampai umur 4 tahun."</p>
+                    </div>
+                    <div class="fact-side">
+                      <span class="myth-tag myth-tag-success">Fakta Klinis &#10004;&#65039;</span>
+                      <p class="fact-text">Karakteristik gender tidak boleh menjadi pembenaran keterlambatan milestone. Usia 0–3 tahun adalah <em>golden period</em> plastisitas otak, penanganan lebih dini memberikan prognosis jauh lebih baik.</p>
+                    </div>
+                  </div>
+                  <div class="myth-fact-box">
+                    <div class="myth-side">
+                      <span class="myth-tag myth-tag-error">Mitos Keliru &#10060;</span>
+                      <p class="myth-text">"Nonton video edukatif di gadget berjam-jam bisa bikin anak cepat pandai bahasa Inggris dan bicara."</p>
+                    </div>
+                    <div class="fact-side">
+                      <span class="myth-tag myth-tag-success">Fakta Klinis &#10004;&#65039;</span>
+                      <p class="fact-text">Komunikasi membutuhkan interaksi dua arah (reciprocal interaction). Paparan layar pasif berlebih justru merupakan salah satu penyebab utama speech delay pada balita modern.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Quotation Box -->
+              <div class="editorial-quote-box">
+                <span class="material-symbols-outlined quote-icon">format_quote</span>
+                <div>
+                  <blockquote class="quote-text">
+                    "Setiap anak berkembang dengan ritmenya masing-masing, namun intervensi dini adalah hadiah terbaik untuk masa depan komunikasi ananda."
+                  </blockquote>
+                  <p class="quote-author">&mdash; Filosofi Pendampingan Amanah Tin's Center</p>
+                </div>
+              </div>
+
+              <!-- Section 4: Proses Asesmen -->
+              <section class="editorial-card section-process">
+                <div class="section-title-row">
+                  <div class="step-num-circle circle-blue">4</div>
+                  <h2 class="editorial-h2">Bagaimana Proses Asesmen di Amanah Tin's Center?</h2>
+                </div>
+                <p class="section-lead-desc">
+                  Di klinik kami di Jagakarsa, asesmen terapi wicara dirancang agar anak merasa seperti bermain, bukan sedang diuji:
+                </p>
+                <div class="process-steps-row">
+                  <div class="process-step-box">
+                    <div class="p-icon-wrap">
+                      <span class="material-symbols-outlined">history_edu</span>
+                    </div>
+                    <h4 class="p-title">1. Wawancara Orang Tua</h4>
+                    <p class="p-desc">Menggali riwayat kelahiran, nutrisi, oral-motor, dan kebiasaan sehari-hari.</p>
+                  </div>
+                  <div class="process-step-box">
+                    <div class="p-icon-wrap">
+                      <span class="material-symbols-outlined">toys</span>
+                    </div>
+                    <h4 class="p-title">2. Observasi Play-Based</h4>
+                    <p class="p-desc">Evaluasi kemampuan reseptif, ekspresif, artikulasi, dan respon sensorik saat bermain.</p>
+                  </div>
+                  <div class="process-step-box">
+                    <div class="p-icon-wrap">
+                      <span class="material-symbols-outlined">clinical_notes</span>
+                    </div>
+                    <h4 class="p-title">3. Rencana Terapi Holistik</h4>
+                    <p class="p-desc">Penyusunan target individual program (IEP) bersama keluarga yang fleksibel dan terukur.</p>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Section 5: Tips Stimulasi Sederhana di Rumah -->
+              <section class="editorial-card section-tips">
+                <div class="section-title-row">
+                  <div class="step-num-circle circle-green">5</div>
+                  <h2 class="editorial-h2">Tips Stimulasi Sederhana di Rumah untuk Ayah &amp; Bunda</h2>
+                </div>
+                <ul class="tips-list">
+                  <li class="tip-item">
+                    <span class="material-symbols-outlined tip-check">check_circle</span>
+                    <span><strong>Lakukan Self-Talk dan Parallel-Talk:</strong> Ceritakan apa yang sedang Ayah/Bunda lakukan ("Bunda sedang memotong wortel oranye") dan apa yang sedang anak kerjakan.</span>
+                  </li>
+                  <li class="tip-item">
+                    <span class="material-symbols-outlined tip-check">check_circle</span>
+                    <span><strong>Beri Waktu untuk Merespons (Wait Time):</strong> Saat bertanya, tunggu 5–10 detik sebelum mengulang pertanyaan agar otak anak memiliki waktu memproses dan merangkai respon.</span>
+                  </li>
+                  <li class="tip-item">
+                    <span class="material-symbols-outlined tip-check">check_circle</span>
+                    <span><strong>Batasi Layar Gadget:</strong> Utamakan interaksi kontak mata dan aktivitas sensori nyata seperti bernyanyi bersama atau membaca buku bergambar.</span>
+                  </li>
+                </ul>
+              </section>
+
+              <!-- Author Bio Card -->
+              <div class="author-bio-card">
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO_eXTf-6df-kEJpSjWGcZCvK_q33Tqw4KzllImsUqCr1Jqr-5VjGlfhnPtQ5tJ0bQro9IQXTDIun33l4HwnEb085m_5xLSiSnQVXgQhro0Ei_wFw7Lzgc_ghgdZPFBxD0UBl7vLC2E3Zfk9cunUc26vVwqoB3JfA8p76U_aE_O7lfcBnqk3dG-ogB05LBn95ByMEAZwcofdopY3GptRfale9r8SO8lJJuPrQGONs"
+                  alt="Nabila Maharani"
+                  class="bio-avatar-img"
+                />
+                <div class="bio-content">
+                  <span class="bio-role-badge">Penulis Artikel</span>
+                  <h3 class="bio-name">Nabila Maharani, S.Tr.Kes</h3>
+                  <p class="bio-specialty">Terapis Wicara &amp; Gangguan Komunikasi Pediatrik</p>
+                  <p class="bio-text">
+                    Nabila telah berpengalaman lebih dari 6 tahun mendampingi ratusan anak dengan speech delay, autisme, down syndrome, dan gangguan artikulasi di wilayah Jakarta Selatan. Percaya bahwa setiap anak memiliki cara unik untuk terhubung dengan dunia.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Tags & Save Strip -->
+              <div class="tags-action-bar">
+                <div class="tags-wrap">
+                  <span class="tags-label">Topik:</span>
+                  <span class="tag-pill">#TerapiWicara</span>
+                  <span class="tag-pill">#SpeechDelay</span>
+                  <span class="tag-pill">#ParentingAnak</span>
+                  <span class="tag-pill">#TumbuhKembang</span>
+                </div>
+                <button @click="saveArticle" class="btn-save-article">
+                  <span class="material-symbols-outlined">bookmark</span>
+                  <span>{{ isSaved ? 'Tersimpan' : 'Simpan Artikel' }}</span>
+                </button>
+              </div>
+            </article>
+
+            <!-- Right: Sticky Sidebar (4 Cols) -->
+            <aside class="article-sidebar-col">
+              <div class="sidebar-sticky-wrap">
+                <!-- Widget 1: CTA Asesmen Jagakarsa -->
+                <div class="sidebar-widget widget-cta">
+                  <div class="widget-icon-box">
+                    <span class="material-symbols-outlined">medical_services</span>
+                  </div>
+                  <h3 class="widget-title">Khawatir dengan Bicara Si Kecil?</h3>
+                  <p class="widget-desc">
+                    Jadwalkan sesi konsultasi dan asesmen komprehensif bersama tim terapis profesional di klinik Amanah Tin's Center Jagakarsa.
+                  </p>
+                  <div class="widget-actions">
+                    <router-link to="/jadwal-pendaftaran" class="btn-widget-primary">
+                      <span>Daftar Asesmen Awal</span>
+                      <span class="material-symbols-outlined">arrow_forward</span>
+                    </router-link>
+                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" class="btn-widget-secondary">
+                      <span class="material-symbols-outlined">chat</span>
+                      <span>Tanya Terlebih Dahulu via WA</span>
+                    </a>
+                  </div>
+                  <div class="widget-location-row">
+                    <span class="material-symbols-outlined loc-icon">location_on</span>
+                    <span>Jl. Raya Jagakarsa No. 12, Jakarta Selatan</span>
+                  </div>
+                </div>
+
+                <!-- Widget 2: Download PDF Checklist -->
+                <div class="sidebar-widget widget-download">
+                  <div class="download-head">
+                    <div class="download-icon-circle">
+                      <span class="material-symbols-outlined">download</span>
+                    </div>
+                    <div>
+                      <h4 class="download-title">Panduan Gratis untuk Orang Tua</h4>
+                      <span class="download-type">E-Booklet PDF (A4)</span>
+                    </div>
+                  </div>
+                  <p class="download-desc">
+                    Unduh Lembar Pantau Mandiri: <em>"Checklist Tumbuh Kembang &amp; Milestone Bicara 0–5 Tahun"</em> untuk diprint di rumah.
+                  </p>
+                  <button @click="downloadChecklist" class="btn-download-pdf">
+                    <span class="material-symbols-outlined">picture_as_pdf</span>
+                    <span>Unduh Gratis (PDF)</span>
+                  </button>
+                </div>
+
+                <!-- Widget 3: Artikel Terkait Lainnya -->
+                <div class="sidebar-widget widget-related">
+                  <h3 class="related-widget-title">
+                    <span class="material-symbols-outlined">auto_stories</span>
+                    <span>Artikel Terkait Lainnya</span>
+                  </h3>
+                  <div class="related-list">
+                    <router-link
+                      v-for="item in displayRelated"
+                      :key="item.slug"
+                      :to="`/artikel/${item.slug}`"
+                      class="related-link-card"
+                    >
+                      <img :src="item.thumbnail" :alt="item.title" class="related-thumb" />
+                      <div>
+                        <h5 class="related-card-title">{{ item.title }}</h5>
+                        <span class="related-card-date">{{ item.date }}</span>
+                      </div>
+                    </router-link>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </main>
+
+      <!-- ==================== BOTTOM RECOMMENDED ARTICLES GRID ==================== -->
+      <section class="section-bottom-articles">
+        <div class="container">
+          <div class="bottom-header">
+            <div>
+              <span class="section-eyebrow">Rekomendasi Bacaan</span>
+              <h2 class="bottom-title">Artikel Edukatif Pilihan untuk Bunda</h2>
+            </div>
+            <router-link to="/artikel" class="btn-view-all-articles">
+              <span>Lihat Semua Artikel</span>
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </router-link>
+          </div>
+
+          <div class="bottom-articles-grid">
+            <article
+              v-for="rec in bottomArticles"
+              :key="rec.slug"
+              class="rec-card"
+            >
+              <div class="rec-thumb-wrap">
+                <img :src="rec.thumbnail" :alt="rec.title" class="rec-thumb" />
+              </div>
+              <div class="rec-body">
+                <div>
+                  <div class="rec-meta">
+                    <span class="rec-cat-pill" :class="rec.catClass">{{ rec.category }}</span>
+                    <span class="rec-date">{{ rec.date }}</span>
+                  </div>
+                  <h3 class="rec-title">{{ rec.title }}</h3>
+                  <p class="rec-desc">{{ rec.desc }}</p>
+                </div>
+                <router-link :to="`/artikel/${rec.slug}`" class="rec-read-more">
+                  <span>Baca Selengkapnya</span>
+                  <span class="material-symbols-outlined">chevron_right</span>
+                </router-link>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== CLINIC REGISTRATION BANNER ==================== -->
+      <section class="section-reg-banner" id="daftar-form">
+        <div class="container">
+          <div class="reg-banner-card">
+            <div class="reg-left">
+              <span class="reg-pill">
+                <span class="material-symbols-outlined">local_hospital</span>
+                <span>Layanan Terpadu Jagakarsa</span>
+              </span>
+              <h2 class="reg-title">
+                Mulai Perjalanan Tumbuh Kembang Si Kecil Bersama Kami
+              </h2>
+              <p class="reg-desc">
+                Dapatkan evaluasi yang ramah, hangat, dan akurat dari tim terapis multidisiplin Amanah Tin's Center. Jadwalkan asesmen awal atau konsultasikan pertanyaan Anda hari ini.
+              </p>
+              <div class="reg-trust-items">
+                <div class="trust-check">
+                  <span class="material-symbols-outlined">check_circle</span>
+                  <span>Terapis Tersertifikasi</span>
+                </div>
+                <div class="trust-check">
+                  <span class="material-symbols-outlined">check_circle</span>
+                  <span>Jadwal Fleksibel</span>
+                </div>
+                <div class="trust-check">
+                  <span class="material-symbols-outlined">check_circle</span>
+                  <span>Ruang Ramah Anak</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="reg-right">
+              <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" class="btn-banner-wa">
+                <span class="material-symbols-outlined">chat</span>
+                <span>Hubungi WhatsApp Klinik</span>
+              </a>
+              <router-link to="/jadwal-pendaftaran" class="btn-banner-register">
+                <span class="material-symbols-outlined">event</span>
+                <span>Isi Formulir Pendaftaran</span>
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </PublicLayout>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import PublicLayout from '../layouts/PublicLayout.vue'
+
+const isSaved = ref(false)
+
+// Sidebar related articles
+const displayRelated = [
+  {
+    slug: 'tips-stimulasi-motorik-halus',
+    title: 'Tips Stimulasi Motorik Halus Anak di Rumah dengan Alat Sederhana',
+    date: '5 Mei 2025',
+    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAFT9R7iYuudAAi6vLqKZxYm6UU_OYOezKXCHBKszlL2fHh65wkfTvCdIYGWoAJmSQPAwAGBC4zm1VGM3F-ceyb4emvi5v6Gcx7JVuntEZa9nCn9SsTQeaxF2TzI9PEBdrHt5MVcNCBQ2Wp8R42EB3LpRSPJ_NRl5Lv3uy3QUz9wT0qepTxMaD4YgxekiWT-VDsKfLtj1gmfO_GXy6gj-0a8mMgq64bgxOPaGSo1go'
+  },
+  {
+    slug: 'pentingnya-konsistensi-terapi',
+    title: 'Pentingnya Konsistensi dalam Terapi Tumbuh Kembang Anak',
+    date: '28 April 2025',
+    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDo1OGbId-kJf3iMYUvbKUva385-cgCtEd2sji0ewcnnI9nbRqLpYP4sxlyLPe6li_n1sNmTsPeLOfBw8T3NGUkjWKVipxZf8f9aSvk3ZoHnoc9CmVqabLk81hlj4_W45Tu8ac8Bl4PL7uVae3VIjypQQqasfM_bDXzixoQjrflfi8Ke0huIUDlcqnJaKWIpgAi-pTBD5EPEBgjFr6oKSdYopp8CbatIyLfLaVMOX4'
+  },
+  {
+    slug: 'komunikasi-positif-bebas-tantrum',
+    title: 'Cara Membangun Komunikasi Positif Bebas Tantrum dengan Balita',
+    date: '20 April 2025',
+    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB8F5sUYUnLQvI1Zg5TI3tj3_lLUyMOAEhvTZB0g49gpbdvC3rJX2KRagYnse5wmtQ31qEVq-Eh6eQWrPwZK0e-ihstytpVFz6e429d_cD2VubXz2ZH0yfpv340lPgXM5CMT2fnHDBVjr1xGmtxH7QDd8L5-psCDU4L862qeTYfE9IKrubL_uzgYn5BUwTMMvzGg294KN0b9ABLCSWlKzeiXnLdPn8mqbyzsfBiORs'
+  }
+]
+
+// Bottom 3 recommended articles
+const bottomArticles = [
+  {
+    slug: 'tips-stimulasi-motorik-halus',
+    category: 'Sensori Integrasi',
+    catClass: 'rec-cat-green',
+    date: '5 Mei 2025',
+    title: 'Tips Stimulasi Motorik Halus & Sensori di Rumah',
+    desc: 'Panduan praktis melatih koordinasi jemari dan fokus anak prasekolah dengan material aman yang ada di dapur.',
+    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBMyv4x_t3aLNzqHqBfyLTLVFLQMaeBY6kq887jZg-xpAnmZFREQ2hY5Cl_D4LhKI_wA_Gh1Lo0HsPeHsmgSzVJL9_F682ElXn8pVDudZ-LR5DggTPPPx5GsIcMa_0o8c33Zsoa5oQrvOgbDaldaFUy44BeoZa5MPnVDwEH9o25WVmKqOc6BFy4WY_bcOwUP3gK8J23fe43IjNxM29LPpSlCuwmKUSAb-RWPrSY5Gk'
+  },
+  {
+    slug: 'pentingnya-konsistensi-terapi',
+    category: 'Psikologi Anak',
+    catClass: 'rec-cat-blue',
+    date: '28 April 2025',
+    title: 'Pentingnya Konsistensi dalam Terapi Tumbuh Kembang',
+    desc: 'Mengapa jadwal sesi rutin dan peran aktif orang tua di rumah menjadi kunci keberhasilan terapi anak.',
+    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD959aa55wDamdcp01tUsdk4bJj2k1GJD512TROT6fvLdA6VZqBasnJ1RFS8DyVO6fMJ_KRKiCunvUHF6RAAJVPNvv0xSOwCFtZUn5n8Mvzx4Hqw-GjzT6qbDxVbwDRVDO965NzXOeveMvIr6IGpZLVQYgwdHFPMkJpKAcf9V-zA4yC_oDBSk3qAEQ7MpL2SXjzlQjajMLJJs97Ves3uoUWFpReHgXwfT5qEby33es'
+  },
+  {
+    slug: 'komunikasi-positif-bebas-tantrum',
+    category: 'Parenting',
+    catClass: 'rec-cat-neutral',
+    date: '20 April 2025',
+    title: 'Cara Membangun Komunikasi Positif dengan Balita',
+    desc: 'Strategi meredakan frustrasi anak saat sulit mengekspresikan keinginannya dan menumbuhkan rasa percaya diri.',
+    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAmnkUU35JUkcj0Hw0LGOkTad_P7xJ2R750DBHkBNoZFEtiaajhNPCJIdeLFmKQ_swOC7Tjp2l-jw2mxM13XnUvUbU68VyGvw_iTVexA634DwffQt8cYhEh3fLNlevp7_E1VFKWRXd3iNpZ_gqvcnZzOFYmVYjWXkf7OrkcVDujrJuAJvkvKHTowqWBFnuOUzur_YV--NGQvQBsTh5jb7vcJ955qkFrqEQ3g9EVGnA'
+  }
+]
+
+function shareWhatsApp() {
+  const url = window.location.href
+  const text = encodeURIComponent(`Baca artikel menarik: "Tanda-Tanda Anak Membutuhkan Terapi Wicara & Kapan Waktu yang Tepat untuk Asesmen" di Amanah Tin's Center: ${url}`)
+  window.open(`https://wa.me/?text=${text}`, '_blank')
+}
+
+function shareGeneral() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'Tanda-Tanda Anak Membutuhkan Terapi Wicara & Kapan Waktu yang Tepat untuk Asesmen',
+      url: window.location.href
+    }).catch(() => {})
+  } else {
+    copyLink()
+  }
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href)
+  alert('Tautan artikel berhasil disalin ke clipboard!')
+}
+
+function saveArticle() {
+  isSaved.value = !isSaved.value
+  alert(isSaved.value ? 'Artikel berhasil disimpan ke daftar bacaan Anda!' : 'Artikel dihapus dari daftar simpan.')
+}
+
+function downloadChecklist() {
+  alert('Mengunduh "Checklist Tumbuh Kembang & Milestone Bicara 0–5 Tahun" (PDF)...')
+}
+</script>
+
+<style scoped>
+/* ==================== GLOBAL HELPERS ==================== */
+.article-detail-page {
+  background-color: var(--background);
+  color: var(--on-surface);
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ==================== BREADCRUMBS ==================== */
+.breadcrumb-strip {
+  background-color: rgba(237, 244, 255, 0.6);
+  border-bottom: 1px solid rgba(191, 200, 206, 0.25);
+  padding: 0.75rem 0;
+}
+
+.breadcrumb-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 13.5px;
+}
+
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--on-surface-variant);
+  flex-wrap: wrap;
+}
+
+.bc-link {
+  color: var(--on-surface-variant);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.15s;
+}
+
+.bc-link:hover {
+  color: var(--primary);
+}
+
+.bc-icon {
+  font-size: 16px;
+}
+
+.bc-sep {
+  color: var(--outline-variant);
+  font-size: 13px;
+}
+
+.bc-active {
+  color: var(--primary);
+  font-weight: 600;
+  max-width: 440px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.back-link:hover {
+  color: var(--primary-container);
+}
+
+.back-icon {
+  font-size: 17px;
+  transition: transform 0.2s;
+}
+
+.back-link:hover .back-icon {
+  transform: translateX(-3px);
+}
+
+/* ==================== ARTICLE HERO ==================== */
+.article-hero-section {
+  padding: 2.25rem 0 2.5rem;
+  background: linear-gradient(180deg, rgba(237, 244, 255, 0.4) 0%, var(--background) 100%);
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1rem;
+}
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-icon {
+  font-size: 14px;
+}
+
+.badge-primary {
+  background: var(--primary-fixed);
+  color: var(--on-primary-fixed);
+}
+
+.badge-secondary {
+  background: var(--secondary-fixed);
+  color: var(--on-secondary-fixed);
+}
+
+.badge-neutral {
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+}
+
+.article-main-title {
+  font-family: var(--font-headline);
+  font-size: clamp(26px, 3.2vw, 38px);
+  font-weight: 700;
+  line-height: 1.28;
+  color: var(--on-surface);
+  max-width: 980px;
+  letter-spacing: -0.015em;
+  margin-bottom: 1.5rem;
+}
+
+/* Meta Bar Card */
+.meta-bar-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding: 1rem 1.5rem;
+  background: var(--surface-container-lowest);
+  border-radius: 1rem;
+  border: 1px solid rgba(191, 200, 206, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.meta-bar-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.author-block {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.author-avatar-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-fixed);
+}
+
+.author-title-name {
+  font-family: var(--font-headline);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--on-surface);
+  line-height: 1.2;
+}
+
+.author-title-role {
+  font-size: 11.5px;
+  color: var(--on-surface-variant);
+}
+
+.meta-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(191, 200, 206, 0.4);
+}
+
+.reviewer-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 13px;
+  color: var(--secondary);
+  background: rgba(204, 239, 142, 0.3);
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.verified-icon {
+  font-size: 16px;
+  font-variation-settings: 'FILL' 1;
+}
+
+.date-block {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 12.5px;
+  color: var(--on-surface-variant);
+}
+
+.date-icon {
+  font-size: 15px;
+}
+
+.meta-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.share-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--on-surface-variant);
+  margin-right: 0.25rem;
+}
+
+.share-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.share-btn .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.share-btn-wa {
+  background: rgba(204, 239, 142, 0.5);
+  color: var(--secondary);
+}
+
+.share-btn-wa:hover {
+  background: var(--secondary-fixed);
+  transform: translateY(-2px);
+}
+
+.share-btn-social {
+  background: rgba(193, 232, 255, 0.5);
+  color: var(--primary);
+}
+
+.share-btn-social:hover {
+  background: var(--primary-fixed);
+  transform: translateY(-2px);
+}
+
+.share-btn-link {
+  background: var(--surface-container);
+  color: var(--on-surface);
+}
+
+.share-btn-link:hover {
+  background: var(--surface-container-high);
+  transform: translateY(-2px);
+}
+
+/* Featured Image Frame */
+.featured-image-frame {
+  margin-top: 2rem;
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: var(--surface-container);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 99, 132, 0.1);
+  max-height: 460px;
+}
+
+.featured-img {
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+  display: block;
+}
+
+.image-caption-pill {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 12px;
+  color: var(--on-surface);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.caption-cam-icon {
+  font-size: 16px;
+  color: var(--primary);
+}
+
+/* ==================== ARTICLE CONTENT GRID ==================== */
+.article-body-section {
+  padding: 3rem 0 4rem;
+  background: var(--background);
+}
+
+.article-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.article-content-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.editorial-card {
+  background: var(--surface-container-lowest);
+  border-radius: 1.25rem;
+  padding: 2rem;
+  border: 1px solid rgba(191, 200, 206, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.lead-card {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+.lead-text {
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--on-surface);
+  font-weight: 500;
+}
+
+.text-link {
+  color: var(--primary);
+  font-weight: 700;
+  text-decoration: underline;
+  transition: color 0.15s;
+}
+
+.text-link:hover {
+  color: var(--primary-container);
+}
+
+.lead-sub {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--on-surface-variant);
+  margin-top: 1rem;
+}
+
+/* Headings inside content */
+.section-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.step-num-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-headline);
+  font-size: 17px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.circle-blue {
+  background: var(--primary-fixed);
+  color: var(--primary);
+}
+
+.circle-red {
+  background: var(--error-container);
+  color: var(--error);
+}
+
+.circle-green {
+  background: var(--secondary-fixed);
+  color: var(--secondary);
+}
+
+.editorial-h2 {
+  font-family: var(--font-headline);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--on-surface);
+  line-height: 1.3;
+}
+
+.section-lead-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--on-surface-variant);
+  margin-bottom: 1.5rem;
+}
+
+/* Milestone Stages Stack */
+.stages-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stage-item {
+  padding: 1rem 1.25rem;
+  border-radius: 0.875rem;
+  background: rgba(237, 244, 255, 0.7);
+  border-left: 4px solid var(--primary);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+}
+
+.stage-check {
+  font-size: 20px;
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.stage-title {
+  font-family: var(--font-headline);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: 0.25rem;
+}
+
+.stage-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--on-surface-variant);
+}
+
+/* Red Flags 2x2 Grid */
+.redflags-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.redflag-card {
+  padding: 1.25rem;
+  border-radius: 0.875rem;
+  background: var(--surface-container-low);
+  border: 1px solid rgba(191, 200, 206, 0.35);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+}
+
+.warning-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(186, 26, 26, 0.1);
+  color: var(--error);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.warning-circle .material-symbols-outlined {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.redflag-title {
+  font-family: var(--font-headline);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: 0.25rem;
+}
+
+.redflag-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--on-surface-variant);
+}
+
+/* Myths vs Facts */
+.myths-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.myth-fact-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 0.875rem;
+  overflow: hidden;
+  border: 1px solid rgba(191, 200, 206, 0.4);
+}
+
+.myth-side {
+  background: rgba(255, 218, 214, 0.35);
+  padding: 1.25rem;
+  border-right: 1px solid rgba(191, 200, 206, 0.3);
+}
+
+.fact-side {
+  background: rgba(204, 239, 142, 0.25);
+  padding: 1.25rem;
+}
+
+.myth-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.myth-tag-error {
+  color: var(--error);
+}
+
+.myth-tag-success {
+  color: var(--secondary);
+}
+
+.myth-text {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--on-surface);
+  line-height: 1.5;
+}
+
+.fact-text {
+  font-size: 13.5px;
+  color: var(--on-surface-variant);
+  line-height: 1.55;
+}
+
+/* Quotation Box */
+.editorial-quote-box {
+  padding: 2rem;
+  border-radius: 1.25rem;
+  background: rgba(217, 234, 255, 0.45);
+  border: 2px dashed rgba(0, 99, 132, 0.3);
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.quote-icon {
+  font-size: 38px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.quote-text {
+  font-family: var(--font-headline);
+  font-size: 18px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--on-surface);
+  line-height: 1.6;
+}
+
+.quote-author {
+  margin-top: 0.75rem;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Process Section */
+.process-steps-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.process-step-box {
+  padding: 1.25rem;
+  border-radius: 0.875rem;
+  background: var(--surface-container-low);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.p-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(0, 99, 132, 0.1);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.p-icon-wrap .material-symbols-outlined {
+  font-size: 24px;
+}
+
+.p-title {
+  font-family: var(--font-headline);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: 0.25rem;
+}
+
+.p-desc {
+  font-size: 12px;
+  color: var(--on-surface-variant);
+  line-height: 1.5;
+}
+
+/* Tips List */
+.tips-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--on-surface-variant);
+}
+
+.tip-check {
+  font-size: 20px;
+  color: var(--secondary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Author Bio Card */
+.author-bio-card {
+  padding: 2rem;
+  border-radius: 1.25rem;
+  background: var(--surface-container-low);
+  border: 1px solid rgba(191, 200, 206, 0.35);
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.bio-avatar-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--surface-container-lowest);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.bio-content {
+  flex: 1;
+}
+
+.bio-role-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--primary-fixed);
+  color: var(--on-primary-fixed);
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  margin-bottom: 0.35rem;
+}
+
+.bio-name {
+  font-family: var(--font-headline);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.bio-specialty {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.bio-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--on-surface-variant);
+}
+
+/* Tags & Save Strip */
+.tags-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(191, 200, 206, 0.3);
+}
+
+.tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tags-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--on-surface-variant);
+}
+
+.tag-pill {
+  font-size: 12px;
+  color: var(--on-surface-variant);
+  background: var(--surface-container);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.btn-save-article {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: var(--surface-container);
+  color: var(--on-surface);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-save-article:hover {
+  background: var(--surface-container-high);
+}
+
+.btn-save-article .material-symbols-outlined {
+  font-size: 16px;
+}
+
+/* ==================== STICKY SIDEBAR ==================== */
+.sidebar-sticky-wrap {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sidebar-widget {
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* Widget 1: CTA Asesmen */
+.widget-cta {
+  background: var(--surface-container-low);
+  border: 1px solid rgba(0, 99, 132, 0.2);
+}
+
+.widget-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 99, 132, 0.25);
+}
+
+.widget-icon-box .material-symbols-outlined {
+  font-size: 24px;
+}
+
+.widget-title {
+  font-family: var(--font-headline);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.widget-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--on-surface-variant);
+  margin-bottom: 1.25rem;
+}
+
+.widget-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-widget-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 99, 132, 0.2);
+  transition: all 0.2s;
+}
+
+.btn-widget-primary:hover {
+  background: var(--primary-container);
+  transform: translateY(-2px);
+}
+
+.btn-widget-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--secondary);
+  color: var(--on-secondary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(75, 103, 22, 0.2);
+  transition: all 0.2s;
+}
+
+.btn-widget-secondary:hover {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+  transform: translateY(-2px);
+}
+
+.widget-location-row {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(191, 200, 206, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  font-size: 11.5px;
+  color: var(--on-surface-variant);
+}
+
+.loc-icon {
+  font-size: 16px;
+  color: var(--secondary);
+}
+
+/* Widget 2: Download PDF */
+.widget-download {
+  background: var(--surface-container-lowest);
+  border: 1px solid rgba(191, 200, 206, 0.35);
+}
+
+.download-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.download-icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--secondary-fixed);
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.download-icon-circle .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.download-title {
+  font-family: var(--font-headline);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--on-surface);
+  line-height: 1.2;
+}
+
+.download-type {
+  font-size: 11.5px;
+  color: var(--on-surface-variant);
+}
+
+.download-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--on-surface-variant);
+  margin-bottom: 1rem;
+}
+
+.btn-download-pdf {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 2px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  padding: 0.65rem 1rem;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-download-pdf:hover {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+/* Widget 3: Related Articles */
+.widget-related {
+  background: var(--surface-container-lowest);
+  border: 1px solid rgba(191, 200, 206, 0.35);
+}
+
+.related-widget-title {
+  font-family: var(--font-headline);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--on-surface);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.related-widget-title .material-symbols-outlined {
+  font-size: 20px;
+  color: var(--primary);
+}
+
+.related-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.related-link-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-bottom: 0.875rem;
+  border-bottom: 1px solid rgba(191, 200, 206, 0.25);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.related-link-card:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.related-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 0.75rem;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.related-card-title {
+  font-family: var(--font-headline);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--on-surface);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.15s;
+}
+
+.related-link-card:hover .related-card-title {
+  color: var(--primary);
+}
+
+.related-card-date {
+  font-size: 11.5px;
+  color: var(--on-surface-variant);
+  display: block;
+  margin-top: 0.25rem;
+}
+
+/* ==================== BOTTOM RECOMMENDED ARTICLES ==================== */
+.section-bottom-articles {
+  padding: 4rem 0;
+  background: rgba(237, 244, 255, 0.5);
+  border-top: 1px solid rgba(191, 200, 206, 0.3);
+}
+
+.bottom-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+}
+
+.section-eyebrow {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+}
+
+.bottom-title {
+  font-family: var(--font-headline);
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-top: 0.25rem;
+}
+
+.btn-view-all-articles {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+
+.btn-view-all-articles:hover {
+  color: var(--primary-container);
+}
+
+.bottom-articles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.rec-card {
+  background: var(--surface-container-lowest);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid rgba(191, 200, 206, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.rec-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(43, 61, 79, 0.08);
+}
+
+.rec-thumb-wrap {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--surface-container);
+}
+
+.rec-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.rec-card:hover .rec-thumb {
+  transform: scale(1.05);
+}
+
+.rec-body {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.rec-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
+}
+
+.rec-cat-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+}
+
+.rec-cat-green {
+  background: var(--secondary-fixed);
+  color: var(--on-secondary-fixed);
+}
+
+.rec-cat-blue {
+  background: var(--primary-fixed);
+  color: var(--on-primary-fixed);
+}
+
+.rec-cat-neutral {
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+}
+
+.rec-date {
+  font-size: 11.5px;
+  color: var(--on-surface-variant);
+}
+
+.rec-title {
+  font-family: var(--font-headline);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--on-surface);
+  line-height: 1.35;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.rec-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--on-surface-variant);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.rec-read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  margin-top: 1rem;
+  transition: gap 0.2s;
+}
+
+.rec-read-more:hover {
+  gap: 0.5rem;
+}
+
+/* ==================== REGISTRATION BANNER ==================== */
+.section-reg-banner {
+  padding: 4rem 0;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+  color: var(--on-primary);
+}
+
+.reg-banner-card {
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  border-radius: 1.5rem;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 99, 132, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+}
+
+.reg-left {
+  max-width: 640px;
+}
+
+.reg-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: var(--secondary-fixed);
+  color: var(--on-secondary-fixed);
+  padding: 0.35rem 0.875rem;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 0.875rem;
+}
+
+.reg-pill .material-symbols-outlined {
+  font-size: 16px;
+}
+
+.reg-title {
+  font-family: var(--font-headline);
+  font-size: clamp(24px, 2.8vw, 32px);
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.25;
+}
+
+.reg-desc {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--on-surface-variant);
+  margin-top: 0.75rem;
+}
+
+.reg-trust-items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.trust-check {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.trust-check .material-symbols-outlined {
+  font-size: 18px;
+  color: var(--secondary);
+  font-variation-settings: 'FILL' 1;
+}
+
+.reg-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  flex-shrink: 0;
+  min-width: 260px;
+}
+
+.btn-banner-wa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  background: var(--secondary);
+  color: var(--on-secondary);
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-size: 14.5px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(75, 103, 22, 0.25);
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.btn-banner-wa:hover {
+  background: var(--secondary-container);
+  color: var(--on-secondary-container);
+  transform: translateY(-2px);
+}
+
+.btn-banner-register {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-size: 14.5px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 99, 132, 0.25);
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.btn-banner-register:hover {
+  background: var(--primary-container);
+  transform: translateY(-2px);
+}
+
+/* ==================== RESPONSIVE BREAKPOINTS ==================== */
+@media (max-width: 1024px) {
+  .article-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .sidebar-sticky-wrap {
+    position: static;
+  }
+  .reg-banner-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+  }
+  .reg-right {
+    width: 100%;
+    flex-direction: row;
+  }
+  .bottom-articles-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .meta-bar-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .meta-divider {
+    display: none;
+  }
+  .redflags-grid {
+    grid-template-columns: 1fr;
+  }
+  .myth-fact-box {
+    grid-template-columns: 1fr;
+  }
+  .myth-side {
+    border-right: none;
+    border-bottom: 1px solid rgba(191, 200, 206, 0.3);
+  }
+  .process-steps-row {
+    grid-template-columns: 1fr;
+  }
+  .bottom-articles-grid {
+    grid-template-columns: 1fr;
+  }
+  .reg-right {
+    flex-direction: column;
+  }
+  .author-bio-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .featured-img {
+    height: 300px;
+  }
+}
+</style>

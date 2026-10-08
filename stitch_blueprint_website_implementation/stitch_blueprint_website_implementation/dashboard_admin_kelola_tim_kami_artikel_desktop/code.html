@@ -1,0 +1,1151 @@
+<!DOCTYPE html><html class="light" lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>CMS &amp; Admin Panel - Amanah Tin's Center</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..900;1,6..12,300..900&amp;family=Outfit:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error-container": "#ffdad6",
+            "tertiary-container": "#a5661f",
+            "on-surface": "#091d2e",
+            "on-primary-fixed-variant": "#004d67",
+            "on-secondary-fixed": "#131f00",
+            "outline": "#70787e",
+            "on-surface-variant": "#40484d",
+            "secondary-fixed": "#ccef8e",
+            "primary-fixed": "#c1e8ff",
+            "surface-dim": "#c9dcf3",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-high": "#d9eaff",
+            "on-primary": "#ffffff",
+            "secondary": "#4b6716",
+            "surface-container-low": "#edf4ff",
+            "on-error-container": "#93000a",
+            "on-background": "#091d2e",
+            "on-secondary-container": "#516d1c",
+            "surface-container-highest": "#d1e4fb",
+            "tertiary-fixed": "#ffdcbf",
+            "surface-container": "#e3efff",
+            "surface-tint": "#056687",
+            "on-primary-fixed": "#001e2b",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed-variant": "#6a3b00",
+            "secondary-fixed-dim": "#b1d275",
+            "surface-bright": "#f7f9ff",
+            "tertiary-fixed-dim": "#ffb873",
+            "inverse-surface": "#203243",
+            "tertiary": "#884e03",
+            "on-tertiary-fixed": "#2d1600",
+            "primary-container": "#2e7c9e",
+            "error": "#ba1a1a",
+            "inverse-on-surface": "#e8f2ff",
+            "surface": "#f7f9ff",
+            "outline-variant": "#bfc8ce",
+            "surface-variant": "#d1e4fb",
+            "on-secondary-fixed-variant": "#354e00",
+            "on-tertiary-container": "#fffbff",
+            "inverse-primary": "#88d0f4",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "secondary-container": "#ccef8e",
+            "on-primary-container": "#fbfcff",
+            "primary": "#006384",
+            "primary-fixed-dim": "#88d0f4",
+            "background": "#f7f9ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-mobile": "1rem",
+            "space-sm": "0.75rem",
+            "space-xl": "3.5rem",
+            "margin": "2rem",
+            "space-xs": "0.375rem",
+            "margin-mobile": "1.25rem",
+            "gutter": "1.5rem",
+            "margin-desktop-max": "5rem",
+            "space-lg": "2rem",
+            "space-md": "1.25rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Outfit"],
+            "body-sm": ["Nunito Sans"],
+            "label-md": ["Nunito Sans"],
+            "display-hero": ["Outfit"],
+            "headline-md": ["Outfit"],
+            "label-lg": ["Nunito Sans"],
+            "caption": ["Nunito Sans"],
+            "title-md": ["Outfit"],
+            "headline-lg-mobile": ["Outfit"],
+            "display-hero-mobile": ["Outfit"],
+            "headline-lg": ["Outfit"],
+            "body-md": ["Nunito Sans"],
+            "body-lg": ["Nunito Sans"]
+          },
+          "fontSize": {
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "display-hero": ["48px", { "lineHeight": "58px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "label-lg": ["15px", { "lineHeight": "22px", "letterSpacing": "0.01em", "fontWeight": "700" }],
+            "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+            "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "0em", "fontWeight": "600" }],
+            "display-hero-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-lg": ["36px", { "lineHeight": "46px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1;
+    }
+    /* Subtle custom scrollbar for dashboard */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #edf4ff;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #bfc8ce;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #006384;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ================= SIDEBAR NAVIGASI ADMIN ================= -->
+<aside class="w-72 bg-surface-container-lowest border-r border-outline-variant/30 flex flex-col justify-between shrink-0 h-screen sticky top-0 z-40 transition-all">
+<!-- Top Branding & Navigation -->
+<div class="p-space-md flex flex-col gap-space-md">
+<!-- Clinic Logo & Brand Shield -->
+<div class="flex items-center justify-between pb-space-sm border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-headline-sm" data-icon="child_care">child_care</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-title-md font-bold text-primary tracking-tight leading-none">Amanah Tin's</span>
+<span class="font-caption text-caption text-on-surface-variant">Child Development Center</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-[11px] font-bold">
+          v1.2
+        </span>
+</div>
+<!-- Live Clinical Sync Status Pill -->
+<div class="px-3 py-2 rounded-lg bg-surface-container-low border border-outline-variant/30 flex items-center gap-2">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
+</span>
+<span class="font-caption text-caption text-on-surface-variant font-medium">Jagakarsa Center Terhubung</span>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-1.5 mt-2">
+<!-- Dashboard Ringkasan -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-all group" href="#ringkasan">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-body-sm font-semibold">Dashboard Ringkasan</span>
+</div>
+</a>
+<!-- Kelola Tim Kami (Active state) -->
+<button class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg bg-primary-fixed text-on-primary-fixed font-bold shadow-sm transition-all group text-left" id="nav-team-btn" onclick="switchTab('team')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary fill" data-icon="clinical_notes" style="font-variation-settings: 'FILL' 1;">clinical_notes</span>
+<span class="font-label-lg text-body-sm">Kelola Tim Kami</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-primary text-on-primary text-caption font-bold" id="badge-team">8 Terapis</span>
+</button>
+<!-- Kelola Artikel & Tips -->
+<button class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-all group text-left" id="nav-article-btn" onclick="switchTab('article')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="menu_book">menu_book</span>
+<span class="font-label-lg text-body-sm font-semibold">Kelola Artikel &amp; Tips</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary text-caption font-semibold">14 Artikel</span>
+</button>
+<!-- Pengaturan Jadwal & Ruang Terapi -->
+
+<!-- Pengaturan Klinik -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-all group" href="#pengaturan">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="tune">tune</span>
+<span class="font-label-lg text-body-sm font-semibold">Pengaturan Klinik</span>
+</div>
+</a>
+<div class="my-2 border-t border-outline-variant/20"></div>
+<!-- Tinjau Website Utama -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-lg text-primary bg-surface-container-low/60 hover:bg-surface-container hover:text-primary transition-all" href="#preview-portal">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="open_in_new">open_in_new</span>
+<span class="font-label-lg text-body-sm font-semibold">Tinjau Website Utama</span>
+</div>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</nav>
+</div>
+<!-- User Profile Footer di Sidebar -->
+<div class="p-space-md border-t border-outline-variant/30 bg-surface-container-low/40">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 overflow-hidden">
+<div class="relative shrink-0">
+<img class="w-10 h-10 rounded-full object-cover border-2 border-surface-container-lowest shadow-sm" data-alt="Close up professional portrait photo of an Indonesian pediatric clinical coordinator female psychologist with a friendly warm smile wearing modern modest attire inside a brightly lit therapy clinic in South Jakarta" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9dXCMQk2sDo2Ey6pGTuvIV862WBPa6AFMr22WY-aKDd4Wl4InrhHavZEtJR8DPow8IUVHJzBU07KtTUu632hWgKpOHBkBIjzDDSuYkAv_y90KC1MnzrqzEvWGM2Mu2HLQ9u_fKqomqjxUfNOBaq-JfeNK3wUpf95kNR24lVDgQgUyzqwZ5V2ct5WhjWxIhmKBulkcU2Ef97lhLda9mP-vG78laCbjlDKnFkn_Oj0">
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-secondary rounded-full ring-2 ring-white"></span>
+</div>
+<div class="flex flex-col truncate">
+<span class="font-label-lg text-body-sm font-bold text-on-surface truncate">Siti Rahmawati, S.Psi</span>
+<span class="font-caption text-caption text-outline truncate">Admin Koordinator</span>
+</div>
+</div>
+<button class="p-2 text-outline hover:text-error hover:bg-error-container/40 rounded-lg transition-colors" title="Keluar / Logout">
+<span class="material-symbols-outlined text-xl" data-icon="logout">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- ================= MAIN VIEWPORT CONTAINER ================= -->
+<div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+<!-- Topbar Header Admin -->
+<header class="h-20 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 px-margin flex items-center justify-between sticky top-0 z-30 shadow-sm">
+<div class="flex items-center gap-6">
+<!-- Breadcrumb Navigation -->
+<div class="flex items-center gap-2 font-caption text-body-sm text-outline">
+<span class="hover:text-primary transition-colors cursor-pointer">Admin Portal</span>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface font-semibold" id="topbar-current-page">Manajemen Tim Terapi &amp; Tenaga Ahli</span>
+</div>
+<!-- Global Search Bar with Live Filter UX -->
+<div class="relative hidden xl:block w-80">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-lg" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface rounded-full border border-outline-variant/40 text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Cari nama terapis, STR, atau judul tips..." type="text">
+</div>
+</div>
+<!-- Action Cluster: Backup Indicator, Notification, Primary Action -->
+<div class="flex items-center gap-3">
+<!-- DB Backup Pill -->
+<div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container text-primary font-caption text-caption font-semibold">
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="cloud_done">cloud_done</span>
+<span class="">Backup Otomatis: 09:45 WIB</span>
+</div>
+<!-- Notifications -->
+<button class="relative p-2.5 rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<!-- Quick Dynamic Action Buttons based on context -->
+<div class="flex items-center gap-2 pl-2">
+<button class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-full font-label-lg text-body-sm font-semibold hover:bg-primary-container transition-all active:scale-95 shadow-sm" onclick="toggleModal('modal-add-therapist')">
+<span class="material-symbols-outlined text-lg" data-icon="person_add">person_add</span>
+<span class="">+ Tambah Terapis</span>
+</button>
+
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="p-space-lg flex flex-col gap-space-lg max-w-7xl mx-auto w-full">
+<!-- Segment Selector Banner -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-2 border-b border-outline-variant/20">
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface tracking-tight" id="main-view-title">
+            Manajemen Tim Klinis &amp; Terapis
+          </h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+            Kelola legalitas STR, jadwal konsul, spesialisasi intervensi anak, dan bio profil tim Amanah Tin's Center.
+          </p>
+</div>
+<!-- Segmented Tab Switcher (Contemporary Soft UI Pill) -->
+
+</div>
+<!-- ================= SECTION 1: TIM KAMI (TERAPIS & TENAGA AHLI) ================= -->
+<div class="flex flex-col gap-space-lg" id="section-team">
+<!-- Top Metrics Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<!-- Metric 1: Total Terapis -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)]">
+<div class="flex flex-col">
+<span class="font-caption text-body-sm text-on-surface-variant font-medium">Total Terapis Terdaftar</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-lg text-3xl font-bold text-primary">8</span>
+<span class="font-caption text-caption text-secondary font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle">check_circle</span> 100% Aktif
+                </span>
+</div>
+<span class="font-caption text-[11px] text-outline mt-1">Cabang Jagakarsa, Jaksel</span>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-primary-fixed/60 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="badge">badge</span>
+</div>
+</div>
+<!-- Metric 2: Sertifikasi & STR -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)]">
+<div class="flex flex-col">
+<span class="font-caption text-body-sm text-on-surface-variant font-medium">Terapis Ber-STR &amp; SIP</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-lg text-3xl font-bold text-secondary">8 / 8</span>
+<span class="font-caption text-caption bg-secondary-container px-2 py-0.5 rounded-full text-on-secondary-container font-bold">Terverifikasi</span>
+</div>
+<span class="font-caption text-[11px] text-outline mt-1">Kemenkes &amp; IBI / IKATWI</span>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-secondary-container/50 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="verified_user">verified_user</span>
+</div>
+</div>
+<!-- Metric 3: Sesi Praktik Pekan Ini -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)]"><div class="flex flex-col"><span class="font-caption text-body-sm text-on-surface-variant font-medium">Spesialisasi Klinis</span><div class="flex items-baseline gap-2 mt-1"><span class="font-headline-lg text-3xl font-bold text-primary">4</span><span class="font-caption text-caption text-primary font-bold">Bidang Terapi</span></div><span class="font-caption text-[11px] text-outline mt-1">TW, OT, Sensori &amp; Psikolog</span></div><div class="w-12 h-12 rounded-2xl bg-surface-container-high text-primary flex items-center justify-center"><span class="material-symbols-outlined text-2xl" data-icon="psychology">psychology</span></div></div>
+<!-- Metric 4: Kepuasan Orang Tua -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)]">
+<div class="flex flex-col">
+<span class="font-caption text-body-sm text-on-surface-variant font-medium">Indeks Kepuasan Ortu</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-lg text-3xl font-bold text-tertiary">4.96</span>
+<span class="font-caption text-caption text-tertiary font-bold">/ 5.0</span>
+</div>
+<span class="font-caption text-[11px] text-outline mt-1">Berdasarkan 94 kuisioner</span>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-tertiary-fixed text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl fill" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+</div>
+<!-- Filter & Control Bar for Therapists -->
+<div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 flex flex-wrap items-center justify-between gap-4">
+<div class="flex flex-wrap items-center gap-2">
+<!-- Filter Chips -->
+<button class="px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-caption font-bold shadow-sm">
+              Semua Spesialisasi (8)
+            </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-md text-caption font-semibold transition-colors">
+              Terapi Wicara (TW)
+            </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-md text-caption font-semibold transition-colors">
+              Terapi Okupasi (OT)
+            </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-md text-caption font-semibold transition-colors">
+              Sensory Integration (SI)
+            </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-md text-caption font-semibold transition-colors">
+              Psikolog Anak &amp; Tumbuh Kembang
+            </button>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-outline-variant/40 hover:bg-surface-container text-body-sm font-semibold text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="tune">tune</span>
+<span class="">Filter Status</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-outline-variant/40 hover:bg-surface-container text-body-sm font-semibold text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="download">download</span>
+<span class="">Ekspor Data</span>
+</button>
+</div>
+</div>
+<!-- Therapists Grid Cards / Table Structure -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+<!-- Card 1: Artin Ristriawan -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30 flex flex-col justify-between hover:shadow-[0px_14px_32px_-6px_rgba(43,61,79,0.08)] transition-all group">
+<div>
+<div class="flex items-start justify-between">
+<div class="relative">
+<img class="w-16 h-16 rounded-2xl object-cover border border-outline-variant/20 shadow-sm" data-alt="Warm welcoming portrait of a professional Indonesian male speech therapist wearing clean mint medical tunic smiling reassuringly in a bright child sensory therapy room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlgeDpwgHXwJrxLrvSV_RuMyErNj2E-S-_T_L9XmdB1TXn8BwZfzBUrECZVVYgRIOpKpJ-xh3H_sDeTMr9tplcBscXQetRZe91lLy2-0d9UjBr6AETMoQ67nezyvW830VdqhxySM_zkTUT1pLAj04KmYoWDEnmR-5T04UIWUa1JPylXQv9Y_b7L3oC1gk5ntCciAOMUkTpLIN977GFP5moZkCJqCabCBE9M5i4q2A">
+<span class="absolute -bottom-1 -right-1 w-4 h-4 bg-secondary rounded-full ring-2 ring-white flex items-center justify-center text-[10px] text-white">✓</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-[11px] font-bold">
+                    Aktif Praktik
+                  </span>
+</div>
+</div>
+<div class="mt-4">
+<h2 class="font-headline-sm text-title-md font-bold text-on-surface group-hover:text-primary transition-colors leading-snug">
+                  Artin Ristriawan, S.Tr.Kes
+                </h2>
+<p class="font-caption text-body-sm text-primary font-semibold mt-0.5">
+                  Spesialis Terapi Wicara (TW)
+                </p>
+<div class="mt-2 text-caption text-outline flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="card_membership">card_membership</span>
+<span class="">STR: 120852123-9821</span>
+</div>
+<div class="mt-1 text-caption text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="schedule">schedule</span>
+<span class="">Senin, Rabu, Jumat (08:30 - 15:30)</span>
+</div>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-outline-variant/20 flex items-center justify-between"><span class="text-caption font-bold text-on-surface-variant">Pengalaman: 6 Thn</span><div class="flex items-center gap-1"><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Detail Profil"><span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span></button><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Edit Profil"><span class="material-symbols-outlined text-lg" data-icon="edit">edit</span></button><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-on-surface transition-colors" title="Opsi"><span class="material-symbols-outlined text-lg" data-icon="more_vert">more_vert</span></button></div></div>
+</div>
+<!-- Card 2: dr. Sarah Anindita, Sp.A -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30 flex flex-col justify-between hover:shadow-[0px_14px_32px_-6px_rgba(43,61,79,0.08)] transition-all group">
+<div>
+<div class="flex items-start justify-between">
+<div class="relative">
+<img class="w-16 h-16 rounded-2xl object-cover border border-outline-variant/20 shadow-sm" data-alt="Professional portrait of an Indonesian female pediatrician doctor wearing white physician coat with stethoscope and soft warm lighting inside modern clinical clinic office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcTbgc47gZMtVQkSJSqi-oqQta0_QVcGwzXItUYsHENiq1htC0g5QZsoP4cYUEg5Pjl24lhpZRCI_FVYQWF9JgctGW0Vb-5oboptGWov3n-pu-bhDQxBqQD06mpOQaMRDqV89nZi2gzkawph1a8Sv9-fhi1_u9lrpR5Mc5EPRjuNkKzDoZJT0u3dxJT3uj5GsuC68Mw7c5VGpULvsihSkcD0IQ0HrMz4K8tCbo0OY">
+<span class="absolute -bottom-1 -right-1 w-4 h-4 bg-secondary rounded-full ring-2 ring-white flex items-center justify-center text-[10px] text-white">✓</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-[11px] font-bold">
+                  Aktif Praktik
+                </span>
+</div>
+<div class="mt-4">
+<h2 class="font-headline-sm text-title-md font-bold text-on-surface group-hover:text-primary transition-colors leading-snug">
+                  dr. Sarah Anindita, Sp.A
+                </h2>
+<p class="font-caption text-body-sm text-primary font-semibold mt-0.5">
+                  Dokter Spesialis Anak (Tumbuh Kembang)
+                </p>
+<div class="mt-2 text-caption text-outline flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="card_membership">card_membership</span>
+<span class="">SIP: 3171/008/SIP/2021</span>
+</div>
+<div class="mt-1 text-caption text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="schedule">schedule</span>
+<span class="">Selasa &amp; Sabtu (09:00 - 13:00)</span>
+</div>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-outline-variant/20 flex items-center justify-between"><span class="text-caption font-bold text-on-surface-variant">Pengalaman: 9 Thn</span><div class="flex items-center gap-1"><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Detail Profil"><span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span></button><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Edit Profil"><span class="material-symbols-outlined text-lg" data-icon="edit">edit</span></button><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-on-surface transition-colors" title="Opsi"><span class="material-symbols-outlined text-lg" data-icon="more_vert">more_vert</span></button></div></div>
+</div>
+<!-- Card 3: Nabila Putri, A.Md.OT -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30 flex flex-col justify-between hover:shadow-[0px_14px_32px_-6px_rgba(43,61,79,0.08)] transition-all group">
+<div>
+<div class="flex items-start justify-between">
+<div class="relative">
+<img class="w-16 h-16 rounded-2xl object-cover border border-outline-variant/20 shadow-sm" data-alt="Portrait of an energetic young Indonesian female occupational therapist in pediatric healthcare uniform posing in colorful sensory gym playground therapy clinic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh8DjfpB-p8LzGCCLUXqDDwwWkHnJ9jxkyjeodROT1Z7XtUzfULExbfmbHnKtAkTRI1WTMiDh2VdYm2ntABkCX4g6o5rseGot1VINDMZoXMvsh24KpbnUugc-cA_Rq68zGf6EB2hq-bL6tztp3RbpjGdu-hnjIPGcVkEVWy0ZZQHQwX7yf77UIFmkS_-ngFxXT4fdbOTvjRRhCaGeGUJat30Lsk79aKWvVb3WbDbM">
+<span class="absolute -bottom-1 -right-1 w-4 h-4 bg-secondary rounded-full ring-2 ring-white flex items-center justify-center text-[10px] text-white">✓</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-[11px] font-bold">
+                  Aktif Praktik
+                </span>
+</div>
+<div class="mt-4">
+<h2 class="font-headline-sm text-title-md font-bold text-on-surface group-hover:text-primary transition-colors leading-snug">
+                  Nabila Putri, A.Md.OT
+                </h2>
+<p class="font-caption text-body-sm text-primary font-semibold mt-0.5">
+                  Okupasi Terapi &amp; Sensori Integrasi
+                </p>
+<div class="mt-2 text-caption text-outline flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="card_membership">card_membership</span>
+<span class="">STR: 140932881-2290</span>
+</div>
+<div class="mt-1 text-caption text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="schedule">schedule</span>
+<span class="">Setiap Hari Kerja (09:00 - 16:00)</span>
+</div>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-outline-variant/20 flex items-center justify-between"><span class="text-caption font-bold text-on-surface-variant">Pengalaman: 5 Thn</span><div class="flex items-center gap-1"><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Detail Profil"><span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span></button><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Edit Profil"><span class="material-symbols-outlined text-lg" data-icon="edit">edit</span></button><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-on-surface transition-colors" title="Opsi"><span class="material-symbols-outlined text-lg" data-icon="more_vert">more_vert</span></button></div></div>
+</div>
+<!-- Card 4: Bagas Wicaksono, M.Psi., Psikolog -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30 flex flex-col justify-between hover:shadow-[0px_14px_32px_-6px_rgba(43,61,79,0.08)] transition-all group">
+<div>
+<div class="flex items-start justify-between">
+<div class="relative">
+<img class="w-16 h-16 rounded-2xl object-cover border border-outline-variant/20 shadow-sm" data-alt="Portrait of an empathetic Indonesian male child psychologist sitting in comfortable consulting room with educational toys and pastel aesthetic background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZgbiz2keYZmF_upLYLDkEBd23IfHBlbSoyWKIMzLSTeONDLeFuO0p27gB5ffIRcFO5n3azztjp-SsFwR_jYHfUvG1wwWRSrdpwX30YS-fhZjWD3rBBoA5dECi_wFyTgfyV399OTUoteeGWnOn2QpOMCGKfZeemHRFjhj00ofkYSLGUXx05BpPTwAAyvMP8alZNzObizWtHQLQrGQg_EPlVrCGpMES2EBVGoahdFk">
+<span class="absolute -bottom-1 -right-1 w-4 h-4 bg-tertiary-container rounded-full ring-2 ring-white flex items-center justify-center text-[10px] text-white">!</span>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-md text-[11px] font-bold">
+                  Cuti Pelatihan
+                </span>
+</div>
+<div class="mt-4">
+<h2 class="font-headline-sm text-title-md font-bold text-on-surface group-hover:text-primary transition-colors leading-snug">
+                  Bagas Wicaksono, M.Psi
+                </h2>
+<p class="font-caption text-body-sm text-primary font-semibold mt-0.5">
+                  Psikolog Anak &amp; Perilaku Remaja
+                </p>
+<div class="mt-2 text-caption text-outline flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="card_membership">card_membership</span>
+<span class="">SIPP: 2020-044-HIMPSI</span>
+</div>
+<div class="mt-1 text-caption text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="schedule">schedule</span>
+<span class="">Kembali Praktik: 12 Nov 2025</span>
+</div>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-outline-variant/20 flex items-center justify-between"><span class="text-caption font-bold text-outline">Pengalaman: 7 Thn</span><div class="flex items-center gap-1"><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Detail Profil"><span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span></button><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Edit Profil"><span class="material-symbols-outlined text-lg" data-icon="edit">edit</span></button><button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-on-surface transition-colors" title="Opsi"><span class="material-symbols-outlined text-lg" data-icon="more_vert">more_vert</span></button></div></div>
+</div>
+</div>
+<!-- Comprehensive Therapists Directory Table for Full Precision -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)]">
+<div class="p-5 border-b border-outline-variant/20 flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-title-md font-bold text-on-surface">Data Lengkap Tim Medis &amp; Terapis</h3>
+<p class="font-caption text-caption text-outline">Pembaruan sertifikasi berkala untuk standar operasional klinik</p>
+</div>
+<span class="text-caption text-outline">Menampilkan 8 dari 8 tenaga ahli</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-caption uppercase tracking-wider border-b border-outline-variant/20">
+<th class="py-3.5 px-5">Terapis &amp; Gelar</th>
+<th class="py-3.5 px-4">Spesialisasi</th>
+<th class="py-3.5 px-4">No. Registrasi STR / SIP</th>
+<th class="py-3.5 px-4">Hari Praktik</th>
+<th class="py-3.5 px-4">Status</th>
+<th class="py-3.5 px-5 text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 text-body-sm font-body-sm">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-3.5 px-5 flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-sm">AR</div>
+<div>
+<div class="font-bold text-on-surface">Artin Ristriawan, S.Tr.Kes</div>
+<div class="text-caption text-outline">Bergabung sejak Jan 2022</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-semibold text-caption">Terapi Wicara</span>
+</td>
+<td class="py-3.5 px-4 font-mono text-caption text-on-surface-variant">120852123-9821</td>
+<td class="py-3.5 px-4 text-caption text-on-surface-variant">Sen, Rab, Jum</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Aktif
+                    </span>
+</td>
+<td class="py-3.5 px-5 text-right">
+<div class="inline-flex items-center gap-2">
+<button class="text-primary hover:underline font-semibold text-caption">Edit</button>
+<span class="text-outline-variant">|</span>
+<button class="text-on-surface-variant hover:text-primary font-semibold text-caption">Detail</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-3.5 px-5 flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed text-secondary flex items-center justify-center font-bold text-sm">SA</div>
+<div>
+<div class="font-bold text-on-surface">dr. Sarah Anindita, Sp.A</div>
+<div class="text-caption text-outline">Konsultan Medis Pediatrik</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-secondary font-semibold text-caption">Spesialis Anak</span>
+</td>
+<td class="py-3.5 px-4 font-mono text-caption text-on-surface-variant">3171/008/SIP/2021</td>
+<td class="py-3.5 px-4 text-caption text-on-surface-variant">Selasa &amp; Sabtu</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Aktif
+                    </span>
+</td>
+<td class="py-3.5 px-5 text-right">
+<div class="inline-flex items-center gap-2">
+<button class="text-primary hover:underline font-semibold text-caption">Edit</button>
+<span class="text-outline-variant">|</span>
+<button class="text-on-surface-variant hover:text-primary font-semibold text-caption">Detail</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-3.5 px-5 flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-bold text-sm">NP</div>
+<div>
+<div class="font-bold text-on-surface">Nabila Putri, A.Md.OT</div>
+<div class="text-caption text-outline">Head of Sensory Gym</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-semibold text-caption">Okupasi Terapi (OT)</span>
+</td>
+<td class="py-3.5 px-4 font-mono text-caption text-on-surface-variant">140932881-2290</td>
+<td class="py-3.5 px-4 text-caption text-on-surface-variant">Sen - Jum</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Aktif
+                    </span>
+</td>
+<td class="py-3.5 px-5 text-right">
+<div class="inline-flex items-center gap-2">
+<button class="text-primary hover:underline font-semibold text-caption">Edit</button>
+<span class="text-outline-variant">|</span>
+<button class="text-on-surface-variant hover:text-primary font-semibold text-caption">Detail</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-3.5 px-5 flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-tertiary-fixed text-tertiary flex items-center justify-center font-bold text-sm">BW</div>
+<div>
+<div class="font-bold text-on-surface">Bagas Wicaksono, M.Psi</div>
+<div class="text-caption text-outline">Konseling Keluarga &amp; Anak</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-tertiary font-semibold text-caption">Psikologi Anak</span>
+</td>
+<td class="py-3.5 px-4 font-mono text-caption text-on-surface-variant">2020-044-HIMPSI</td>
+<td class="py-3.5 px-4 text-caption text-outline">Cuti studi</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-[11px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Cuti
+                    </span>
+</td>
+<td class="py-3.5 px-5 text-right">
+<div class="inline-flex items-center gap-2">
+<button class="text-primary hover:underline font-semibold text-caption">Edit</button>
+<span class="text-outline-variant">|</span>
+<button class="text-on-surface-variant hover:text-primary font-semibold text-caption">Detail</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- ================= SECTION 2: ARTIKEL & TIPS (PARENTING & EDUKASI) ================= -->
+<div class="hidden flex-col gap-space-lg" id="section-article">
+<!-- Top Metrics for Articles -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)]">
+<div class="flex flex-col">
+<span class="font-caption text-body-sm text-on-surface-variant font-medium">Artikel Terpublikasi</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-lg text-3xl font-bold text-primary">14</span>
+<span class="font-caption text-caption text-secondary font-bold">Live di Website</span>
+</div>
+<span class="font-caption text-[11px] text-outline mt-1">SEO Health Score: 96%</span>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-primary-fixed/60 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="article">article</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)]">
+<div class="flex flex-col">
+<span class="font-caption text-body-sm text-on-surface-variant font-medium">Draf / Menunggu Review</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-lg text-3xl font-bold text-tertiary">2</span>
+<span class="font-caption text-caption bg-tertiary-fixed px-2 py-0.5 rounded-full text-tertiary font-bold">Dalam Penyusunan</span>
+</div>
+<span class="font-caption text-[11px] text-outline mt-1">Oleh Tim Terapis</span>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-tertiary-fixed text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="pending_actions">pending_actions</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)]">
+<div class="flex flex-col">
+<span class="font-caption text-body-sm text-on-surface-variant font-medium">Total Pembaca Bulan Ini</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-lg text-3xl font-bold text-secondary">3,420</span>
+<span class="font-caption text-caption text-secondary font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span> +24%
+                </span>
+</div>
+<span class="font-caption text-[11px] text-outline mt-1">Rata-rata 4.2 menit baca</span>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-secondary-container/50 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="visibility">visibility</span>
+</div>
+</div>
+</div>
+<!-- Article Control Bar -->
+<div class="bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 flex flex-wrap items-center justify-between gap-4">
+<div class="flex flex-wrap items-center gap-2">
+<button class="px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-caption font-bold shadow-sm">
+              Semua Artikel (16)
+            </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-md text-caption font-semibold transition-colors">
+              Edukasi Terapi Wicara
+            </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-md text-caption font-semibold transition-colors">
+              Stimulasi Sensori &amp; Motorik
+            </button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-md text-caption font-semibold transition-colors">
+              Parenting &amp; Tumbuh Kembang
+            </button>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary text-on-primary text-body-sm font-bold shadow-sm hover:bg-primary-container transition-all" onclick="toggleModal('modal-add-article')">
+<span class="material-symbols-outlined text-lg" data-icon="post_add">post_add</span>
+<span class="">Buat Artikel Baru</span>
+</button>
+</div>
+</div>
+<!-- Articles CMS Table -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 overflow-hidden shadow-[0px_8px_24px_-4px_rgba(58,134,168,0.06)]">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-caption uppercase tracking-wider border-b border-outline-variant/20">
+<th class="py-3.5 px-5">Artikel &amp; Konten</th>
+<th class="py-3.5 px-4">Kategori Tag</th>
+<th class="py-3.5 px-4">Penulis &amp; Reviewer</th>
+<th class="py-3.5 px-4">Tanggal Rilis</th>
+<th class="py-3.5 px-4">Status</th>
+<th class="py-3.5 px-5 text-right">Kelola</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 text-body-sm font-body-sm">
+<!-- Article 1 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 px-5">
+<div class="flex items-center gap-3.5">
+<img class="w-16 h-12 rounded-xl object-cover border border-outline-variant/30 shrink-0" data-alt="Close up photograph of a toddler happily engaged in speech therapy articulation exercise with colorful flashcards guided by a gentle therapist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk4sNiv2Awrh-JPUWe1UCxr8TCdG3BoDLy4hxJ6Qr2VFBQYvJbDD_Jo8nQNsmClDf0Y78qedcjXgk7bgtqjgSGRrW-KVxlJbjHP1nBO9JdpCEjZumuAqgY60OPJOFVopNy5JFOXibZe8jfK_04CD_b2S4Aa6001agI-imq6JJSvaGgsminVnSFagD9EZ0d15GWCD7FZZ_IcPZkHdEXMDkmLBFqTm7TctfodA2ip9U">
+<div>
+<a class="font-bold text-on-surface hover:text-primary transition-colors text-body-md line-clamp-1" href="#">
+                          Tanda-Tanda Anak Membutuhkan Terapi Wicara Sejak Dini
+                        </a>
+<p class="text-caption text-outline line-clamp-1 mt-0.5">
+                          Mengenali milestone terlambat bicara (speech delay) pada usia 18-24 bulan...
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed text-caption font-bold">
+                      Terapi Wicara
+                    </span>
+</td>
+<td class="py-4 px-4">
+<div class="font-semibold text-on-surface text-caption">Artin Ristriawan, S.Tr.Kes</div>
+<div class="text-[11px] text-outline">Reviewed by dr. Sarah, Sp.A</div>
+</td>
+<td class="py-4 px-4 text-caption text-on-surface-variant">
+                    02 Nov 2025
+                    <div class="text-[11px] text-outline">1,240 pembaca</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Published
+                    </span>
+</td>
+<td class="py-4 px-5 text-right">
+<div class="inline-flex items-center gap-1.5">
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Edit Konten">
+<span class="material-symbols-outlined text-lg" data-icon="edit_document">edit_document</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Pratinjau Live">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-error-container text-outline hover:text-error transition-colors" title="Hapus Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Article 2 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 px-5">
+<div class="flex items-center gap-3.5">
+<img class="w-16 h-12 rounded-xl object-cover border border-outline-variant/30 shrink-0" data-alt="Overhead photo of colorful sensory integration textured toys play dough and soft tactile balls arranged neatly for pediatric fine motor exercises" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW3MkJG1g8ff8Kd8r2D45tGtpDQOyxQe1JHIDMZjnd59AX3vzsBSczp-yfmS-5TG0s_uAxes4m7_z4Q7SumD_L5i4pbOuu9eOE2WTnQ_P8XP_TmQcb9eqPvMwODIUpuc9JwNAZapGP8rGXhI7ILYq4S8YBaapjbLcjs9PcoHIH-6IT5xBuytx_V5Sgx_dUK_b-gMKXCzx7zXafGROpjs1WTLa0BLbmVxEORJpEy4o">
+<div>
+<a class="font-bold text-on-surface hover:text-primary transition-colors text-body-md line-clamp-1" href="#">
+                          7 Tips Stimulasi Sensori Motorik Kasar di Rumah Tanpa Alat Mahal
+                        </a>
+<p class="text-caption text-outline line-clamp-1 mt-0.5">
+                          Panduan praktis orang tua memanfaatkan bantal, matras, dan tekstur alam...
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container text-caption font-bold">
+                      Sensori &amp; Okupasi
+                    </span>
+</td>
+<td class="py-4 px-4">
+<div class="font-semibold text-on-surface text-caption">Nabila Putri, A.Md.OT</div>
+<div class="text-[11px] text-outline">Tim Klinis Amanah Tin's</div>
+</td>
+<td class="py-4 px-4 text-caption text-on-surface-variant">
+                    28 Okt 2025
+                    <div class="text-[11px] text-outline">890 pembaca</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Published
+                    </span>
+</td>
+<td class="py-4 px-5 text-right">
+<div class="inline-flex items-center gap-1.5">
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Edit Konten">
+<span class="material-symbols-outlined text-lg" data-icon="edit_document">edit_document</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Pratinjau Live">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-error-container text-outline hover:text-error transition-colors" title="Hapus Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Article 3 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 px-5">
+<div class="flex items-center gap-3.5">
+<img class="w-16 h-12 rounded-xl object-cover border border-outline-variant/30 shrink-0" data-alt="Warm mother comforting a young child gently hugging on a cozy armchair highlighting emotional bonding and gentle parenting communication" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVZXZcwqWm2Av-zH9CUIGqin5QW8B8w6IS4lbixhNTNUBNLvrnJMfHdYWtpbUBdCwDz8-xzTvZSu_QIYoFLyUWzzRDTtR8r0gVvUOh8Nkp0f3fN12iGLxdEtBL1nd2qhTE-6LjqikCKqBm1KhIgnSMBDgbO8Cvrq3Q2P8g5b_sugP5cj4ovnOFBoZGZ_q7bpGD5WHu3kwzBydbV5t0W8v53PYPBDIpGoT4jIlT9Vs">
+<div>
+<a class="font-bold text-on-surface hover:text-primary transition-colors text-body-md line-clamp-1" href="#">
+                          Menghadapi Tantrum Sensorik vs Emosional: Cara Bijak Merespons
+                        </a>
+<p class="text-caption text-outline line-clamp-1 mt-0.5">
+                          Perbedaan esensial saat anak mengalami sensory overload dibanding perilaku menuntut...
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-2.5 py-1 rounded-full bg-surface-container-high text-primary text-caption font-bold">
+                      Psikologi Anak
+                    </span>
+</td>
+<td class="py-4 px-4">
+<div class="font-semibold text-on-surface text-caption">Siti Rahmawati, S.Psi</div>
+<div class="text-[11px] text-outline">Admin Koordinator</div>
+</td>
+<td class="py-4 px-4 text-caption text-on-surface-variant">
+                    15 Okt 2025
+                    <div class="text-[11px] text-outline">1,290 pembaca</div>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Published
+                    </span>
+</td>
+<td class="py-4 px-5 text-right">
+<div class="inline-flex items-center gap-1.5">
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Edit Konten">
+<span class="material-symbols-outlined text-lg" data-icon="edit_document">edit_document</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-primary transition-colors" title="Pratinjau Live">
+<span class="material-symbols-outlined text-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-error-container text-outline hover:text-error transition-colors" title="Hapus Artikel">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Article 4 (Draft) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors bg-surface-container-low/20">
+<td class="py-4 px-5">
+<div class="flex items-center gap-3.5">
+<div class="w-16 h-12 rounded-xl bg-surface-container-highest border border-outline-variant/30 flex items-center justify-center text-outline shrink-0">
+<span class="material-symbols-outlined" data-icon="image">image</span>
+</div>
+<div>
+<a class="font-bold text-on-surface hover:text-primary transition-colors text-body-md line-clamp-1" href="#">
+                          [DRAF] Protokol Skrining Tumbuh Kembang Denver II di Jagakarsa
+                        </a>
+<p class="text-caption text-outline line-clamp-1 mt-0.5">
+                          Rancangan SOP baru untuk alur intake konsultasi calon pasien baru...
+                        </p>
+</div>
+</div>
+</td>
+<td class="py-4 px-4">
+<span class="px-2.5 py-1 rounded-full bg-tertiary-fixed text-tertiary text-caption font-bold">
+                      Internal SOP
+                    </span>
+</td>
+<td class="py-4 px-4">
+<div class="font-semibold text-on-surface text-caption">dr. Sarah Anindita, Sp.A</div>
+<div class="text-[11px] text-tertiary font-bold">Perlu Review Tim</div>
+</td>
+<td class="py-4 px-4 text-caption text-outline">
+                    Disimpan Kemarin
+                  </td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-tertiary font-label-md text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Draft
+                    </span>
+</td>
+<td class="py-4 px-5 text-right">
+<div class="inline-flex items-center gap-1.5">
+<button class="px-3 py-1 rounded-full bg-primary text-on-primary text-caption font-bold shadow-sm hover:bg-primary-container">
+                        Lanjutkan Draf
+                      </button>
+<button class="p-1.5 rounded-lg hover:bg-error-container text-outline hover:text-error transition-colors" title="Hapus Draf">
+<span class="material-symbols-outlined text-lg" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Admin Footer Navigation & Compliance Anchor -->
+<footer class="mt-auto border-t border-outline-variant/30 bg-surface-container-high py-6 px-margin">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2 text-caption text-outline">
+<span class="font-bold text-primary">Amanah Tin's Center</span>
+<span class="">•</span>
+<span class="">© 2025 Amanah Tin's Center. Seluruh hak cipta dilindungi undang-undang.</span>
+</div>
+<div class="flex items-center gap-4 text-caption font-semibold text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Kebijakan Privasi Rekam Medis</a>
+<span class="">•</span>
+<a class="hover:text-primary transition-colors" href="#">Panduan Etika Konseling</a>
+<span class="">•</span>
+<a class="hover:text-primary transition-colors" href="#">Helpdesk IT Jagakarsa</a>
+</div>
+</div>
+</footer>
+</div>
+<!-- ================= MODAL: TAMBAH TERAPIS BARU ================= -->
+<div class="fixed inset-0 z-50 hidden bg-on-surface/40 backdrop-blur-sm flex items-center justify-center p-4" id="modal-add-therapist">
+<div class="bg-surface-container-lowest w-full max-w-2xl rounded-3xl border border-outline-variant/30 shadow-[0px_24px_48px_-12px_rgba(43,61,79,0.16)] overflow-hidden animate-in fade-in zoom-in duration-200">
+<!-- Modal Header -->
+<div class="px-6 py-5 border-b border-outline-variant/20 flex items-center justify-between bg-surface-container-low/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-title-md font-bold text-on-surface">Tambah Terapis / Dokter Baru</h3>
+<p class="font-caption text-caption text-outline">Lengkapi kredensial medis dan spesialisasi tumbuh kembang anak</p>
+</div>
+</div>
+<button class="p-1.5 text-outline hover:text-on-surface rounded-full hover:bg-surface-container transition-colors" onclick="toggleModal('modal-add-therapist')">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<!-- Modal Body (Form Fields) -->
+<form class="p-6 flex flex-col gap-4 max-h-[75vh] overflow-y-auto" onsubmit="event.preventDefault(); toggleModal('modal-add-therapist'); alert('Data terapis baru berhasil disimpan!');">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Nama Lengkap & Gelar -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-caption text-on-surface-variant font-bold">Nama Lengkap &amp; Gelar Medis</label>
+<input class="px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Contoh: Rian Pratama, S.Tr.Kes" required="" type="text">
+</div>
+<!-- Spesialisasi Terapi -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-caption text-on-surface-variant font-bold">Spesialisasi Klinis</label>
+<select class="px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+<option value="tw">Terapi Wicara (TW)</option>
+<option value="ot">Okupasi Terapi (OT)</option>
+<option value="si">Sensory Integration (SI)</option>
+<option value="psi">Psikolog Anak</option>
+<option value="spa">Dokter Spesialis Anak (Sp.A)</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Nomor STR / SIP -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-caption text-on-surface-variant font-bold">Nomor STR / SIP Kemenkes</label>
+<input class="px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="16 Digit No. Registrasi STR" required="" type="text">
+</div>
+<!-- Masa Berlaku STR -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-caption text-on-surface-variant font-bold">Masa Berlaku STR</label>
+<input class="px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" type="date">
+</div>
+</div>
+<!-- Jadwal Praktik & Hari Operasional -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-caption text-on-surface-variant font-bold">Jadwal Praktik Mingguan</label>
+<div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+<label class="flex items-center gap-2 p-2 rounded-lg border border-outline-variant/30 text-caption font-semibold cursor-pointer hover:bg-surface-container">
+<input checked="" class="rounded text-primary focus:ring-primary" type="checkbox"> Sen
+            </label>
+<label class="flex items-center gap-2 p-2 rounded-lg border border-outline-variant/30 text-caption font-semibold cursor-pointer hover:bg-surface-container">
+<input checked="" class="rounded text-primary focus:ring-primary" type="checkbox"> Sel
+            </label>
+<label class="flex items-center gap-2 p-2 rounded-lg border border-outline-variant/30 text-caption font-semibold cursor-pointer hover:bg-surface-container">
+<input checked="" class="rounded text-primary focus:ring-primary" type="checkbox"> Rab
+            </label>
+<label class="flex items-center gap-2 p-2 rounded-lg border border-outline-variant/30 text-caption font-semibold cursor-pointer hover:bg-surface-container">
+<input checked="" class="rounded text-primary focus:ring-primary" type="checkbox"> Kam
+            </label>
+<label class="flex items-center gap-2 p-2 rounded-lg border border-outline-variant/30 text-caption font-semibold cursor-pointer hover:bg-surface-container">
+<input checked="" class="rounded text-primary focus:ring-primary" type="checkbox"> Jum
+            </label>
+<label class="flex items-center gap-2 p-2 rounded-lg border border-outline-variant/30 text-caption font-semibold cursor-pointer hover:bg-surface-container">
+<input class="rounded text-primary focus:ring-primary" type="checkbox"> Sab
+            </label>
+</div>
+</div>
+<!-- Bio Singkat Pendekatan Terapis -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-caption text-on-surface-variant font-bold">Ringkasan Pendekatan Terapi (Ditampilkan di Web Ortu)</label>
+<textarea class="px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Jelaskan pengalaman spesifik menangani keterlambatan bicara, sensori taktil, atau pendekatan bermain ramah anak..." rows="3"></textarea>
+</div>
+<!-- Unggah Foto Profil -->
+<div class="p-4 rounded-xl border border-dashed border-outline-variant/50 bg-surface-container-low/30 flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" data-icon="cloud_upload">cloud_upload</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-caption font-bold text-on-surface">Unggah Foto Resmi Terapis</p>
+<p class="font-caption text-caption text-outline">Format JPG/PNG dengan pencahayaan ramah anak (Maks. 2MB)</p>
+</div>
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/50 hover:bg-surface text-caption font-bold" type="button">Pilih File</button>
+</div>
+<!-- Modal Footer Actions -->
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-end gap-3">
+<button class="px-5 py-2.5 rounded-full border border-outline-variant/50 text-body-sm font-semibold hover:bg-surface-container transition-colors" onclick="toggleModal('modal-add-therapist')" type="button">
+            Batalkan
+          </button>
+<button class="px-6 py-2.5 rounded-full bg-primary text-on-primary text-body-sm font-bold shadow-md hover:bg-primary-container transition-all" type="submit">
+            Simpan &amp; Terbitkan Profil Terapis
+          </button>
+</div>
+</form>
+</div>
+</div>
+<!-- ================= MODAL: TULIS ARTIKEL BARU ================= -->
+<div class="fixed inset-0 z-50 hidden bg-on-surface/40 backdrop-blur-sm flex items-center justify-center p-4" id="modal-add-article">
+<div class="bg-surface-container-lowest w-full max-w-2xl rounded-3xl border border-outline-variant/30 shadow-[0px_24px_48px_-12px_rgba(43,61,79,0.16)] overflow-hidden">
+<!-- Header -->
+<div class="px-6 py-5 border-b border-outline-variant/20 flex items-center justify-between bg-surface-container-low/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-title-md font-bold text-on-surface">Editor Tips &amp; Edukasi Orang Tua</h3>
+<p class="font-caption text-caption text-outline">Publikasikan panduan praktis penanganan tumbuh kembang anak di rumah</p>
+</div>
+</div>
+<button class="p-1.5 text-outline hover:text-on-surface rounded-full hover:bg-surface-container transition-colors" onclick="toggleModal('modal-add-article')">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<!-- Form Body -->
+<form class="p-6 flex flex-col gap-4 max-h-[75vh] overflow-y-auto" onsubmit="event.preventDefault(); toggleModal('modal-add-article'); alert('Artikel berhasil dipublikasikan!');">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-caption text-on-surface-variant font-bold">Judul Artikel Edukasi</label>
+<input class="px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Contoh: Stimulasi Bicara 15 Menit Sehari untuk Anak Speech Delay" required="" type="text">
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-caption text-on-surface-variant font-bold">Kategori Artikel</label>
+<select class="px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+<option>Edukasi Terapi Wicara</option>
+<option>Stimulasi Sensori &amp; Okupasi</option>
+<option>Parenting &amp; Emosi Anak</option>
+<option>Gizi &amp; Tumbuh Kembang</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-caption text-on-surface-variant font-bold">Penulis / Terapis Pendamping</label>
+<select class="px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+<option>Artin Ristriawan, S.Tr.Kes</option>
+<option>dr. Sarah Anindita, Sp.A</option>
+<option>Nabila Putri, A.Md.OT</option>
+<option>Siti Rahmawati, S.Psi</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="font-label-md text-caption text-on-surface-variant font-bold">Isi Konten Artikel</label>
+<textarea class="px-3.5 py-2.5 rounded-xl border border-outline-variant/40 bg-surface text-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Tuliskan materi edukatif yang menenangkan dan aplikatif untuk orang tua..." rows="5"></textarea>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-end gap-3">
+<button class="px-5 py-2.5 rounded-full border border-outline-variant/50 text-body-sm font-semibold hover:bg-surface-container transition-colors" onclick="toggleModal('modal-add-article')" type="button">
+            Simpan Sebagai Draf
+          </button>
+<button class="px-6 py-2.5 rounded-full bg-secondary text-on-secondary text-body-sm font-bold shadow-md hover:opacity-90 transition-all" type="submit">
+            Publikasikan ke Website
+          </button>
+</div>
+</form>
+</div>
+</div>
+<!-- Micro-interactions Script -->
+<script>
+    function switchTab(target) {
+      const sectionTeam = document.getElementById('section-team');
+      const sectionArticle = document.getElementById('section-article');
+      const tabBtnTeam = document.getElementById('tab-btn-team');
+      const tabBtnArticle = document.getElementById('tab-btn-article');
+      const navTeamBtn = document.getElementById('nav-team-btn');
+      const navArticleBtn = document.getElementById('nav-article-btn');
+      const mainViewTitle = document.getElementById('main-view-title');
+      const topbarCurrentPage = document.getElementById('topbar-current-page');
+
+      if (target === 'team') {
+        sectionTeam.classList.remove('hidden');
+        sectionTeam.classList.add('flex');
+        sectionArticle.classList.add('hidden');
+        sectionArticle.classList.remove('flex');
+
+        // Segment Pill styling
+        tabBtnTeam.className = 'flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2 rounded-full font-label-lg text-body-sm font-bold bg-surface-container-lowest text-primary shadow-sm transition-all';
+        tabBtnArticle.className = 'flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2 rounded-full font-label-lg text-body-sm font-semibold text-on-surface-variant hover:text-primary transition-all';
+
+        // Sidebar state
+        navTeamBtn.className = 'w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg bg-primary-fixed text-on-primary-fixed font-bold shadow-sm transition-all group text-left';
+        navArticleBtn.className = 'w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-all group text-left';
+
+        // Titles
+        mainViewTitle.innerText = 'Manajemen Tim Klinis & Terapis';
+        topbarCurrentPage.innerText = 'Manajemen Tim Terapi & Tenaga Ahli';
+      } else {
+        sectionArticle.classList.remove('hidden');
+        sectionArticle.classList.add('flex');
+        sectionTeam.classList.add('hidden');
+        sectionTeam.classList.remove('flex');
+
+        // Segment Pill styling
+        tabBtnArticle.className = 'flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2 rounded-full font-label-lg text-body-sm font-bold bg-surface-container-lowest text-primary shadow-sm transition-all';
+        tabBtnTeam.className = 'flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2 rounded-full font-label-lg text-body-sm font-semibold text-on-surface-variant hover:text-primary transition-all';
+
+        // Sidebar state
+        navArticleBtn.className = 'w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg bg-primary-fixed text-on-primary-fixed font-bold shadow-sm transition-all group text-left';
+        navTeamBtn.className = 'w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-all group text-left';
+
+        // Titles
+        mainViewTitle.innerText = 'Manajemen Artikel & Edukasi Orang Tua';
+        topbarCurrentPage.innerText = 'Kelola Artikel & Tips Parenting';
+      }
+    }
+
+    function toggleModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+  </script>
+
+
+</body></html>

@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Allow direct pass-through for API and storage
+  RewriteRule ^api - [L]
+  RewriteRule ^storage - [L]
+
+  # If file or folder exists, serve directly
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Fallback to index.html for Vue Router SPA
+  RewriteRule ^ index.html [L]
+</IfModule>

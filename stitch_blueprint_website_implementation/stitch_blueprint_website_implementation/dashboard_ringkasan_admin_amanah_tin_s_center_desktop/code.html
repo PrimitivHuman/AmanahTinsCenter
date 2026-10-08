@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard Ringkasan Admin - Amanah Tin's Center Jagakarsa</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Outfit & Nunito Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300..800;1,6..12,300..800&amp;family=Outfit:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration Verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#e8f2ff",
+            "inverse-surface": "#203243",
+            "on-surface-variant": "#40484d",
+            "surface-container-high": "#d9eaff",
+            "primary-fixed": "#c1e8ff",
+            "background": "#f7f9ff",
+            "on-primary": "#ffffff",
+            "secondary-fixed-dim": "#b1d275",
+            "tertiary-container": "#a5661f",
+            "surface-variant": "#d1e4fb",
+            "outline": "#70787e",
+            "tertiary-fixed": "#ffdcbf",
+            "on-tertiary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "surface-container-highest": "#d1e4fb",
+            "secondary-fixed": "#ccef8e",
+            "surface-container-low": "#edf4ff",
+            "surface": "#f7f9ff",
+            "on-tertiary-fixed": "#2d1600",
+            "inverse-primary": "#88d0f4",
+            "on-surface": "#091d2e",
+            "on-primary-fixed": "#001e2b",
+            "primary-container": "#2e7c9e",
+            "on-background": "#091d2e",
+            "primary": "#006384",
+            "surface-dim": "#c9dcf3",
+            "surface-tint": "#056687",
+            "tertiary": "#884e03",
+            "on-error": "#ffffff",
+            "outline-variant": "#bfc8ce",
+            "primary-fixed-dim": "#88d0f4",
+            "on-tertiary-container": "#fffbff",
+            "on-primary-fixed-variant": "#004d67",
+            "on-secondary-container": "#516d1c",
+            "on-secondary-fixed-variant": "#354e00",
+            "error-container": "#ffdad6",
+            "on-primary-container": "#fbfcff",
+            "surface-bright": "#f7f9ff",
+            "on-tertiary-fixed-variant": "#6a3b00",
+            "secondary": "#4b6716",
+            "on-error-container": "#93000a",
+            "on-secondary-fixed": "#131f00",
+            "tertiary-fixed-dim": "#ffb873",
+            "surface-container": "#e3efff",
+            "secondary-container": "#ccef8e",
+            "error": "#ba1a1a",
+            "surface-container-lowest": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.375rem",
+            "space-lg": "2rem",
+            "gutter-mobile": "1rem",
+            "space-xl": "3.5rem",
+            "margin-desktop-max": "5rem",
+            "margin-mobile": "1.25rem",
+            "space-md": "1.25rem",
+            "space-sm": "0.75rem",
+            "gutter": "1.5rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Outfit"],
+            "title-md": ["Outfit"],
+            "body-sm": ["Nunito Sans"],
+            "body-lg": ["Nunito Sans"],
+            "display-hero-mobile": ["Outfit"],
+            "headline-sm": ["Outfit"],
+            "headline-lg-mobile": ["Outfit"],
+            "label-lg": ["Nunito Sans"],
+            "display-hero": ["Outfit"],
+            "headline-lg": ["Outfit"],
+            "body-md": ["Nunito Sans"],
+            "label-md": ["Nunito Sans"],
+            "caption": ["Nunito Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "display-hero-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "0em", "fontWeight": "600" }],
+            "label-lg": ["15px", { "lineHeight": "22px", "letterSpacing": "0.01em", "fontWeight": "700" }],
+            "display-hero": ["48px", { "lineHeight": "58px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["36px", { "lineHeight": "46px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "caption": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+          }
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Left Sidebar Panel -->
+<aside class="w-72 bg-surface-container-lowest border-r border-outline-variant/30 flex flex-col justify-between shrink-0 h-screen sticky top-0 z-40 transition-all duration-300">
+<div class="flex flex-col">
+<!-- Clinic Brand Header -->
+<div class="p-6 border-b border-outline-variant/20 flex flex-col gap-2">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-DEFAULT bg-primary-fixed flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined text-[26px]">child_care</span>
+</div>
+<div class="flex flex-col">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight leading-snug">Amanah Tin's Center</h1>
+<span class="font-caption text-caption text-on-surface-variant font-medium">Child Development Center v1.2</span>
+</div>
+</div>
+<!-- Status Pill -->
+<div class="mt-2 inline-flex items-center gap-2 px-3 py-1 bg-secondary-container/50 border border-secondary/30 rounded-full w-fit">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-caption text-caption text-on-secondary-container font-semibold">Jagakarsa Center Terhubung</span>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav class="p-4 flex flex-col gap-1.5 mt-2">
+<!-- Dashboard Ringkasan (Active Highlighted) -->
+<a class="flex items-center justify-between px-4 py-3 rounded-full bg-primary-fixed text-primary font-semibold shadow-sm transition-all" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard Ringkasan</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</a>
+<!-- Kelola Tim Kami -->
+<a class="flex items-center justify-between px-4 py-3 rounded-full text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="font-label-lg text-label-lg">Kelola Tim Kami</span>
+</div>
+<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-surface-container-high text-primary">8 Terapis</span>
+</a>
+<!-- Kelola Artikel & Tips -->
+<a class="flex items-center justify-between px-4 py-3 rounded-full text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">menu_book</span>
+<span class="font-label-lg text-label-lg">Kelola Artikel &amp; Tips</span>
+</div>
+<span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-surface-container-high text-primary">14 Artikel</span>
+</a>
+<!-- Pengaturan Klinik -->
+<a class="flex items-center justify-between px-4 py-3 rounded-full text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[22px]">settings</span>
+<span class="font-label-lg text-label-lg">Pengaturan Klinik</span>
+</div>
+</a>
+<!-- Divider -->
+<div class="my-3 border-t border-outline-variant/30 px-2"></div>
+<!-- Tinjau Website Utama Link -->
+<a class="flex items-center justify-between px-4 py-2.5 rounded-full text-on-surface-variant hover:bg-surface-container-low hover:text-primary transition-colors group" href="#" target="_blank">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary">open_in_new</span>
+<span class="font-label-md text-label-md">Tinjau Website Utama</span>
+</div>
+<span class="material-symbols-outlined text-sm text-outline group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</a>
+</nav>
+</div>
+<!-- Admin Profile & Logout Section -->
+<div class="p-4 border-t border-outline-variant/20 bg-surface-container-lowest/80">
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-low/70">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-title-md text-title-md shrink-0 shadow-sm">
+            SR
+          </div>
+<div class="flex flex-col truncate">
+<span class="font-label-md text-label-md text-on-surface font-bold truncate">Siti Rahmawati, S.Psi</span>
+<span class="font-caption text-caption text-on-surface-variant truncate">Admin Koordinator</span>
+</div>
+</div>
+<button class="p-2 text-outline hover:text-error hover:bg-error-container/40 rounded-full transition-colors flex items-center justify-center" title="Keluar dari Sistem">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrap -->
+<div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+<!-- TopBar Header -->
+<header class="bg-surface-container-lowest/90 backdrop-blur-md sticky top-0 z-30 px-8 py-3.5 flex items-center justify-between border-b border-outline-variant/20 shadow-sm">
+<!-- Breadcrumb -->
+<div class="flex items-center gap-2">
+<span class="font-body-sm text-body-sm text-on-surface-variant font-medium">Admin Portal</span>
+<span class="material-symbols-outlined text-sm text-outline">chevron_right</span>
+<span class="font-label-lg text-label-lg font-bold text-primary">Dashboard Ringkasan</span>
+</div>
+<!-- Center & Right Utilities -->
+<div class="flex items-center gap-4">
+<!-- Search Field -->
+<div class="relative w-80">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant/40 rounded-full font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Cari terapis, artikel, data log..." type="text"/>
+</div>
+<!-- Auto Backup Pill Status -->
+<div class="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-surface-container rounded-full text-on-surface-variant border border-outline-variant/30">
+<span class="material-symbols-outlined text-secondary text-[18px]">cloud_done</span>
+<span class="font-caption text-caption font-semibold">Backup Otomatis: 09:45 WIB</span>
+</div>
+<!-- Notification Bell -->
+<button class="relative p-2 rounded-full text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary"></span>
+</button>
+<!-- Fast Profile Link -->
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-surface-container transition-colors">
+<div class="w-7 h-7 rounded-full bg-secondary-fixed text-on-secondary-fixed font-bold flex items-center justify-center text-xs">
+            SR
+          </div>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Jagakarsa Center</span>
+<span class="material-symbols-outlined text-sm text-outline">arrow_drop_down</span>
+</button>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="p-8 max-w-[1400px] w-full mx-auto flex flex-col gap-8">
+<!-- Welcome Banner -->
+<section class="bg-gradient-to-r from-surface-container-low via-surface-container-lowest to-surface-container-low p-6 md:p-8 rounded-DEFAULT border border-outline-variant/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+<div class="flex flex-col gap-2">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-fixed text-primary font-caption text-caption font-bold w-fit">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+            Portal Operasional Resmi
+          </div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">
+            Selamat Datang, Siti Rahmawati! 👋
+          </h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+            Berikut rangkuman aktivitas operasional, performa konten edukatif, dan status klinik hari ini di Amanah Tin's Center Jagakarsa.
+          </p>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<a class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-on-primary font-label-lg text-label-lg shadow-sm hover:shadow-md hover:bg-primary-container transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            Input Jadwal Baru
+          </a>
+</div>
+</section>
+<!-- KPI Metrics (4 Cards) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+<!-- Metric 1: Total Terapis Aktif -->
+<div class="bg-surface-container-lowest p-6 rounded-DEFAULT border border-outline-variant/30 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant font-semibold">Total Terapis Aktif</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">medical_services</span>
+</div>
+</div>
+<div class="my-4">
+<div class="font-display-hero-mobile text-display-hero-mobile font-bold text-primary">8 Terapis</div>
+<div class="flex items-center gap-1.5 mt-1 text-secondary font-semibold font-caption text-caption">
+<span class="material-symbols-outlined text-sm">verified</span>
+              100% STR &amp; SIP terverifikasi
+            </div>
+</div>
+<div class="pt-3 border-t border-outline-variant/20 flex items-center justify-between text-caption text-outline">
+<span>Klinik Jagakarsa</span>
+<span class="text-primary font-semibold hover:underline cursor-pointer">Lihat Daftar →</span>
+</div>
+</div>
+<!-- Metric 2: Total Artikel Publikasi -->
+<div class="bg-surface-container-lowest p-6 rounded-DEFAULT border border-outline-variant/30 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant font-semibold">Total Artikel Publikasi</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">article</span>
+</div>
+</div>
+<div class="my-4">
+<div class="font-display-hero-mobile text-display-hero-mobile font-bold text-primary">14 Artikel</div>
+<div class="flex items-center gap-1.5 mt-1 text-on-surface-variant font-caption text-caption font-medium">
+<span class="material-symbols-outlined text-sm text-tertiary-container">category</span>
+              4 Kategori Parenting &amp; Terapi (+2 draft)
+            </div>
+</div>
+<div class="pt-3 border-t border-outline-variant/20 flex items-center justify-between text-caption text-outline">
+<span>Blog &amp; Edukasi</span>
+<span class="text-primary font-semibold hover:underline cursor-pointer">Kelola Konten →</span>
+</div>
+</div>
+<!-- Metric 3: Kunjungan Website -->
+<div class="bg-surface-container-lowest p-6 rounded-DEFAULT border border-outline-variant/30 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant font-semibold">Kunjungan Website</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">trending_up</span>
+</div>
+</div>
+<div class="my-4">
+<div class="font-display-hero-mobile text-display-hero-mobile font-bold text-primary">12.450</div>
+<div class="flex items-center gap-1.5 mt-1 text-secondary font-semibold font-caption text-caption">
+<span class="material-symbols-outlined text-sm">arrow_upward</span>
+              +18% dari bulan lalu
+            </div>
+</div>
+<div class="pt-3 border-t border-outline-variant/20 flex items-center justify-between text-caption text-outline">
+<span>Bulan Berjalan (Feb 2025)</span>
+<span class="text-primary font-semibold hover:underline cursor-pointer">Analitik Detail →</span>
+</div>
+</div>
+<!-- Metric 4: Rating Kepuasan -->
+<div class="bg-surface-container-lowest p-6 rounded-DEFAULT border border-outline-variant/30 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant font-semibold">Rating Kepuasan Orang Tua</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-tertiary-container">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<div class="my-4">
+<div class="font-display-hero-mobile text-display-hero-mobile font-bold text-primary">4.96 <span class="text-headline-sm font-headline-sm text-outline">/ 5.0</span></div>
+<div class="flex items-center gap-1.5 mt-1 text-on-surface-variant font-caption text-caption font-medium">
+<span class="material-symbols-outlined text-sm text-secondary">thumb_up</span>
+              Berdasarkan 94 ulasan klinik
+            </div>
+</div>
+<div class="pt-3 border-t border-outline-variant/20 flex items-center justify-between text-caption text-outline">
+<span>Ulasan Google &amp; Form</span>
+<span class="text-primary font-semibold hover:underline cursor-pointer">Buka Feedback →</span>
+</div>
+</div>
+</section>
+<!-- 2-Column Core Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Column: Aktivitas, Log & Distribusi Tim (7 cols) -->
+<div class="lg:col-span-7 flex flex-col gap-8">
+<!-- Recent Activity & Log Section -->
+<div class="bg-surface-container-lowest rounded-DEFAULT border border-outline-variant/30 p-6 shadow-sm">
+<div class="flex items-center justify-between mb-5">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">history</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Pembaruan &amp; Log Sistem Terkini</h3>
+</div>
+<button class="font-caption text-caption text-primary font-bold hover:underline">Semua Log</button>
+</div>
+<!-- List of activities -->
+<div class="flex flex-col divide-y divide-outline-variant/20">
+<!-- Item 1: Terapis Baru Diperbarui -->
+<div class="py-3.5 flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high/60 flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Pembaruan Profil Terapis</span>
+<span class="font-caption text-caption text-outline">15 menit yang lalu</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                    Data kompetensi &amp; STR terapis <strong class="text-primary">Artin Ristriawan, S.Tr.Kes (Terapis Wicara)</strong> berhasil disinkronisasi ke katalog publik.
+                  </p>
+<div class="mt-2 flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full bg-secondary-fixed/50 text-on-secondary-fixed text-xs font-semibold">Terapis Wicara</span>
+<span class="text-xs text-outline">Oleh Admin: Siti R.</span>
+</div>
+</div>
+</div>
+<!-- Item 2: Artikel Baru Dipublikasi -->
+<div class="py-3.5 flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high/60 flex items-center justify-center text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">post_add</span>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Artikel Edukasi Diterbitkan</span>
+<span class="font-caption text-caption text-outline">2 jam yang lalu</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                    Artikel baru berjudul <strong class="text-primary">"7 Tanda Awal Anak Butuh Terapi Wicara &amp; Stimulasi Rumah"</strong> telah live di portal edukasi orang tua.
+                  </p>
+<div class="mt-2 flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-primary text-xs font-semibold">Parenting &amp; Terapi</span>
+<span class="text-xs text-outline">Dibaca 48x</span>
+</div>
+</div>
+</div>
+<!-- Item 3: Perubahan Jam Operasional -->
+<div class="py-3.5 flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high/60 flex items-center justify-center text-tertiary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">schedule</span>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Pembaruan Jadwal Terapi Jagakarsa</span>
+<span class="font-caption text-caption text-outline">Kemarin, 16:30 WIB</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                    Penyesuaian sesi sore okupasi &amp; sensori integrasi di Ruang Terapi B untuk slot hari Sabtu dikonfirmasi.
+                  </p>
+<div class="mt-2 flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-xs font-semibold">Operasional Sesi</span>
+</div>
+</div>
+</div>
+<!-- Item 4: Backup Data Sistem -->
+<div class="py-3.5 flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high/60 flex items-center justify-center text-primary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">cloud_sync</span>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Backup Basis Data Terjadwal</span>
+<span class="font-caption text-caption text-outline">Hari ini, 09:45 WIB</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                    Data rekam asesmen awal dan registrasi pasien Jagakarsa berhasil dienkripsi dan diarsipkan ke cloud server.
+                  </p>
+<div class="mt-2 flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant text-xs font-semibold">System Otomatis</span>
+<span class="text-xs text-secondary font-semibold">Status: Berhasil (24.8 MB)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Distribusi Spesialisasi Tim Terapis -->
+<div class="bg-surface-container-lowest rounded-DEFAULT border border-outline-variant/30 p-6 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Distribusi Spesialisasi Tim Terapis</h3>
+<p class="font-caption text-caption text-on-surface-variant">Total 8 praktisi profesional terdaftar di Jagakarsa</p>
+</div>
+</div>
+<span class="font-caption text-caption text-secondary font-bold bg-secondary-container/40 px-2.5 py-1 rounded-full">Kapasitas Penuh</span>
+</div>
+<!-- Progress Matrix / Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+<!-- Wicara -->
+<div class="p-4 rounded-xl bg-surface-container-low/60 border border-outline-variant/20 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Terapi Wicara (TW)</span>
+<span class="text-primary font-bold font-title-md text-title-md">3 Terapis</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 my-2 overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 37.5%;"></div>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">Fokus: Keterlambatan bicara &amp; artikulasi</span>
+</div>
+<!-- Okupasi -->
+<div class="p-4 rounded-xl bg-surface-container-low/60 border border-outline-variant/20 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Terapi Okupasi (TO)</span>
+<span class="text-primary font-bold font-title-md text-title-md">2 Terapis</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 my-2 overflow-hidden">
+<div class="bg-secondary h-2 rounded-full" style="width: 25%;"></div>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">Fokus: Kemandirian &amp; motorik halus</span>
+</div>
+<!-- Sensori Integrasi -->
+<div class="p-4 rounded-xl bg-surface-container-low/60 border border-outline-variant/20 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Sensori Integrasi (SI)</span>
+<span class="text-primary font-bold font-title-md text-title-md">2 Terapis</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 my-2 overflow-hidden">
+<div class="bg-tertiary-container h-2 rounded-full" style="width: 25%;"></div>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">Fokus: Regulasi sensori &amp; keseimbangan</span>
+</div>
+<!-- Psikolog Anak -->
+<div class="p-4 rounded-xl bg-surface-container-low/60 border border-outline-variant/20 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Psikolog Perkembangan</span>
+<span class="text-primary font-bold font-title-md text-title-md">1 Psikolog</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 my-2 overflow-hidden">
+<div class="bg-primary-container h-2 rounded-full" style="width: 12.5%;"></div>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">Fokus: Asesmen emosi, perilaku &amp; kognitif</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Quick Actions & Status Sistem (5 cols) -->
+<div class="lg:col-span-5 flex flex-col gap-8">
+<!-- Quick Actions Admin Card -->
+<div class="bg-surface-container-lowest rounded-DEFAULT border border-outline-variant/30 p-6 shadow-sm">
+<div class="flex items-center gap-2.5 mb-4">
+<div class="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Aksi Cepat Admin</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-5">
+              Pintasan cepat untuk memperbarui data klinis, mempublikasikan tips tumbuh kembang, dan pelaporan berkala.
+            </p>
+<div class="flex flex-col gap-3">
+<!-- Action 1: Tambah Terapis -->
+<a class="flex items-center justify-between p-3.5 rounded-xl border border-outline-variant/30 hover:border-primary hover:bg-surface-container-low transition-all group" href="#">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary-fixed text-primary flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+</div>
+<div class="flex flex-col text-left">
+<span class="font-label-lg text-label-lg font-bold text-on-surface group-hover:text-primary transition-colors">+ Tambah Terapis Baru</span>
+<span class="font-caption text-caption text-on-surface-variant">Registrasi STR, SIP &amp; spesialisasi</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary group-hover:translate-x-1 transition-all">chevron_right</span>
+</a>
+<!-- Action 2: Tulis Artikel Baru -->
+<a class="flex items-center justify-between p-3.5 rounded-xl border border-outline-variant/30 hover:border-primary hover:bg-surface-container-low transition-all group" href="#">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">edit_document</span>
+</div>
+<div class="flex flex-col text-left">
+<span class="font-label-lg text-label-lg font-bold text-on-surface group-hover:text-primary transition-colors">+ Tulis Artikel Baru</span>
+<span class="font-caption text-caption text-on-surface-variant">Publikasi edukasi &amp; tips parenting</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary group-hover:translate-x-1 transition-all">chevron_right</span>
+</a>
+<!-- Action 3: Kelola Profil Klinik -->
+<a class="flex items-center justify-between p-3.5 rounded-xl border border-outline-variant/30 hover:border-primary hover:bg-surface-container-low transition-all group" href="#">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-surface-container text-primary flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">domain</span>
+</div>
+<div class="flex flex-col text-left">
+<span class="font-label-lg text-label-lg font-bold text-on-surface group-hover:text-primary transition-colors">Kelola Profil Klinik</span>
+<span class="font-caption text-caption text-on-surface-variant">Fasilitas, lokasi &amp; kontak Jagakarsa</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary group-hover:translate-x-1 transition-all">chevron_right</span>
+</a>
+<!-- Action 4: Unduh Laporan Bulanan -->
+<a class="flex items-center justify-between p-3.5 rounded-xl border border-outline-variant/30 hover:border-primary hover:bg-surface-container-low transition-all group" href="#">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</div>
+<div class="flex flex-col text-left">
+<span class="font-label-lg text-label-lg font-bold text-on-surface group-hover:text-primary transition-colors">Unduh Laporan Bulanan</span>
+<span class="font-caption text-caption text-on-surface-variant">Rekap aktivitas &amp; evaluasi sesi PDF</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary group-hover:translate-x-1 transition-all">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Status Operasional Klinik Jagakarsa -->
+<div class="bg-surface-container-lowest rounded-DEFAULT border border-outline-variant/30 p-6 shadow-sm flex flex-col gap-5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">local_hospital</span>
+</div>
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Status Operasional Jagakarsa</h3>
+</div>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed/50 text-secondary font-semibold font-caption text-caption">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                Buka Hari Ini
+              </span>
+</div>
+<!-- Jam Operasional -->
+<div class="p-3.5 rounded-xl bg-surface-container-low/70 border border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">schedule</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Senin – Sabtu</span>
+<span class="font-caption text-caption text-on-surface-variant">08:00 – 17:00 WIB</span>
+</div>
+</div>
+<span class="font-caption text-caption text-outline">Minggu Libur</span>
+</div>
+<!-- Kapasitas Ruang Terapi Hari Ini -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Kapasitas Ruang Terapi Hari Ini</span>
+<span class="font-bold text-primary">85% Terisi</span>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2.5 overflow-hidden">
+<div class="bg-primary-container h-2.5 rounded-full" style="width: 85%;"></div>
+</div>
+<span class="font-caption text-caption text-on-surface-variant">17 dari 20 slot sesi terapi individu terisi penuh hari ini.</span>
+</div>
+<!-- Kontak Darurat & IT Support Klinik -->
+<div class="pt-4 border-t border-outline-variant/20 flex flex-col gap-3">
+<span class="font-label-md text-label-md text-on-surface font-bold">Kontak Internal &amp; IT Support</span>
+<div class="grid grid-cols-2 gap-3">
+<div class="p-2.5 rounded-lg bg-surface-container-low text-xs flex flex-col gap-1">
+<span class="text-outline font-medium">Koordinator Klinik</span>
+<span class="font-bold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary">call</span>
+                    0812-8877-6655
+                  </span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low text-xs flex flex-col gap-1">
+<span class="text-outline font-medium">Helpdesk Sistem / IT</span>
+<span class="font-bold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary">support_agent</span>
+                    Ext. 104 (Siaga)
+                  </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Admin Simple Footer -->
+<footer class="mt-auto px-8 py-4 border-t border-outline-variant/20 bg-surface-container-lowest flex flex-col sm:flex-row items-center justify-between text-on-surface-variant font-caption text-caption gap-2">
+<div>
+        © 2025 Amanah Tin's Center Jagakarsa. Seluruh hak cipta dilindungi undang-undang.
+      </div>
+<div class="flex items-center gap-4">
+<a class="hover:text-primary transition-colors" href="#">Panduan Administrator</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Kebijakan Privasi Rekam Medis</a>
+<span>•</span>
+<span class="text-secondary font-semibold">Server Jagakarsa Online (Ping 12ms)</span>
+</div>
+</footer>
+</div>
+</body></html>
