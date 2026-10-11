@@ -19,7 +19,16 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://amanahtinscenter.test', 'https://amanahtinscenter.test', 'http://localhost:5173', 'http://localhost:3000'],
+    'allowed_origins' => [
+        'http://amanahtinscenter.test',
+        'https://amanahtinscenter.test',
+        'http://AmanahTinsCenter.dev',
+        'https://AmanahTinsCenter.dev',
+        'http://localhost:5173',
+        'http://localhost:8000',
+        'http://localhost',
+        'http://127.0.0.1:5173',
+    ],
 
     'allowed_origins_patterns' => [],
 

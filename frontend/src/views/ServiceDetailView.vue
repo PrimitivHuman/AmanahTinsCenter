@@ -116,7 +116,7 @@
         </div>
       </section>
 
-      <!-- ==================== SECTION 2: INDIKASI & TANDA ==================== -->
+      <!-- ==================== SECTION 2: INDIKASI & DETEKSI GEJALA (INTERAKTIF) ==================== -->
       <section class="section-indications">
         <div class="container">
           <div class="section-header center">
@@ -127,16 +127,37 @@
             </p>
           </div>
 
-          <!-- Bento Grid: 6 Indicators -->
+          <!-- Interactive Checklist Toolbar -->
+          <div class="symptom-check-toolbar">
+            <div class="toolbar-info">
+              <span class="material-symbols-outlined toolbar-icon">checklist_rtl</span>
+              <span><strong>Panduan Ayah &amp; Bunda:</strong> Klik/tandai keluhan yang saat ini sering diamati pada si Kecil di rumah:</span>
+            </div>
+            <div class="toolbar-counter" :class="{ 'has-checked': checkedSymptoms.length > 0 }">
+              <span class="counter-num">{{ checkedSymptoms.length }}</span>
+              <span>Gejala Ditandai</span>
+            </div>
+          </div>
+
+          <!-- Interactive Indications Checklist Grid -->
           <div class="indications-grid">
             <div
               v-for="item in service.indications"
               :key="item.title"
               class="indication-card"
+              :class="{ 'is-checked': isSymptomChecked(item.title) }"
+              @click="toggleSymptom(item.title)"
             >
               <div>
-                <div class="ind-icon-wrap" :class="item.iconBg">
-                  <span class="material-symbols-outlined">{{ item.icon }}</span>
+                <div class="ind-card-top">
+                  <div class="ind-icon-wrap" :class="item.iconBg">
+                    <span class="material-symbols-outlined">{{ item.icon }}</span>
+                  </div>
+                  <div class="ind-checkbox" :class="{ 'checked': isSymptomChecked(item.title) }">
+                    <span class="material-symbols-outlined check-icon-ui">
+                      {{ isSymptomChecked(item.title) ? 'check_box' : 'check_box_outline_blank' }}
+                    </span>
+                  </div>
                 </div>
                 <h3 class="ind-title">{{ item.title }}</h3>
                 <p class="ind-desc">{{ item.desc }}</p>
@@ -148,8 +169,23 @@
             </div>
           </div>
 
+          <!-- Alert Banner when >= 1 symptom checked -->
+          <div v-if="checkedSymptoms.length > 0" class="symptom-checked-alert">
+            <div class="checked-alert-left">
+              <span class="material-symbols-outlined star-icon">verified</span>
+              <div>
+                <h4 class="alert-title">{{ checkedSymptoms.length }} Indikasi Ditandai untuk {{ service.shortName }}</h4>
+                <p class="alert-sub">Intervensi sedini mungkin pada masa emas anak memberikan hasil paling optimal sebelum hambatan menetap.</p>
+              </div>
+            </div>
+            <a :href="getCheckedSymptomsWaUrl" target="_blank" rel="noopener noreferrer" class="btn-alert-wa">
+              <span class="material-symbols-outlined fill">chat</span>
+              <span>Konsultasikan {{ checkedSymptoms.length }} Gejala via WA</span>
+            </a>
+          </div>
+
           <!-- Quick Guidance Callout -->
-          <div class="guidance-callout">
+          <div v-else class="guidance-callout">
             <div class="guidance-left">
               <div class="guidance-icon-circle">
                 <span class="material-symbols-outlined">lightbulb</span>
@@ -165,7 +201,7 @@
         </div>
       </section>
 
-      <!-- ==================== SECTION 3: AREA FOKUS & METODE ==================== -->
+      <!-- ==================== SECTION 3: AREA FOKUS (INTERACTIVE TABBED SWITCHER) ==================== -->
       <section class="section-focus-methods">
         <div class="container">
           <div class="focus-header">
@@ -174,29 +210,65 @@
               <h2 class="section-title">Area Fokus &amp; Metode Intervensi {{ service.code }}</h2>
             </div>
             <p class="focus-header-desc">
-              Pendekatan multidimensi yang dirancang secara saintifik agar anak menyerap keterampilan dengan gembira dan percaya diri.
+              Pilih pilar intervensi di bawah ini untuk melihat sasaran stimulasi dan target capaian nyata bagi si Kecil:
             </p>
           </div>
 
-          <!-- 4 Pillars Grid -->
-          <div class="pillars-grid">
-            <div
-              v-for="pillar in service.pillars"
+          <!-- Tab Bar Selector -->
+          <div class="pillar-tabs-nav">
+            <button
+              v-for="(pillar, pIdx) in service.pillars"
               :key="pillar.title"
-              class="pillar-card"
+              @click="activePillarIndex = pIdx"
+              class="pillar-tab-btn"
+              :class="{ 'is-active': activePillarIndex === pIdx }"
             >
-              <div class="pillar-icon-wrap" :class="pillar.bgClass">
+              <div class="tab-icon-wrap" :class="pillar.bgClass">
                 <span class="material-symbols-outlined">{{ pillar.icon }}</span>
               </div>
-              <div class="pillar-content">
-                <h3 class="pillar-title">{{ pillar.title }}</h3>
-                <p class="pillar-desc">{{ pillar.desc }}</p>
-                <ul class="pillar-bullets">
-                  <li v-for="bullet in pillar.bullets" :key="bullet">
-                    <span class="material-symbols-outlined check-bullet">check</span>
-                    <span>{{ bullet }}</span>
-                  </li>
-                </ul>
+              <div class="tab-text-wrap">
+                <span class="tab-num">Pilar 0{{ pIdx + 1 }}</span>
+                <span class="tab-title">{{ pillar.title }}</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Active Pillar Visual Showcase Card -->
+          <div v-if="currentPillar" class="pillar-showcase-card">
+            <div class="pillar-showcase-header">
+              <div class="showcase-header-left">
+                <div class="pillar-icon-wrap-lg" :class="currentPillar.bgClass">
+                  <span class="material-symbols-outlined">{{ currentPillar.icon }}</span>
+                </div>
+                <div>
+                  <span class="pillar-stage-pill">Kurikulum Klinis • Pilar 0{{ activePillarIndex + 1 }} dari {{ service.pillars.length }}</span>
+                  <h3 class="pillar-showcase-title">{{ currentPillar.title }}</h3>
+                </div>
+              </div>
+              <div class="pillar-nav-arrows">
+                <button
+                  @click="activePillarIndex = (activePillarIndex - 1 + service.pillars.length) % service.pillars.length"
+                  class="btn-pillar-nav"
+                  title="Pilar Sebelumnya"
+                >
+                  <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <button
+                  @click="activePillarIndex = (activePillarIndex + 1) % service.pillars.length"
+                  class="btn-pillar-nav"
+                  title="Pilar Selanjutnya"
+                >
+                  <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+              </div>
+            </div>
+
+            <p class="pillar-showcase-desc">{{ currentPillar.desc }}</p>
+
+            <div class="pillar-competencies-grid">
+              <div v-for="bullet in currentPillar.bullets" :key="bullet" class="competency-card">
+                <span class="material-symbols-outlined comp-check">check_circle</span>
+                <span class="comp-text">{{ bullet }}</span>
               </div>
             </div>
           </div>
@@ -339,43 +411,59 @@
               </div>
 
               <div class="pkg-btn-wrap">
-                <router-link
-                  to="/jadwal-pendaftaran"
+                <button
+                  type="button"
+                  @click="selectPackage(pkg.title)"
                   class="btn-pkg"
                   :class="pkg.isPopular ? 'btn-pkg--primary' : 'btn-pkg--outline'"
                 >
-                  {{ pkg.buttonText }}
-                </router-link>
+                  {{ pkg.buttonText }} (Pilih Paket)
+                </button>
+                <a
+                  :href="getPackageWaUrl(pkg)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-pkg-wa-link"
+                >
+                  <span class="material-symbols-outlined fill wa-btn-icon">chat</span>
+                  <span>Tanya via WhatsApp</span>
+                </a>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ==================== SECTION 7: FAQ ==================== -->
+      <!-- ==================== SECTION 7: FAQ (INTERACTIVE ACCORDION) ==================== -->
       <section class="section-faq">
         <div class="container max-w-faq">
           <div class="section-header center">
             <span class="section-eyebrow eyebrow-primary">Tanya Jawab Orang Tua</span>
             <h2 class="section-title">FAQ Seputar {{ service.name }}</h2>
             <p class="section-desc">
-              Pertanyaan paling sering ditanyakan oleh orang tua sebelum memulai sesi pertama.
+              Pertanyaan yang paling sering dikonsultasikan orang tua sebelum memulai sesi perdana.
             </p>
           </div>
 
-          <div class="faq-list">
+          <div class="faq-accordion-list">
             <div
               v-for="(faq, index) in service.faqs"
               :key="index"
-              class="faq-card"
+              class="faq-accordion-item"
+              :class="{ 'is-open': activeFaqIndex === index }"
             >
-              <h3 class="faq-question">
-                <span class="material-symbols-outlined faq-icon">help</span>
-                <span>{{ faq.q }}</span>
-              </h3>
-              <p class="faq-answer">
-                {{ faq.a }}
-              </p>
+              <button @click="toggleFaq(index)" class="faq-accordion-btn" type="button">
+                <div class="faq-btn-left">
+                  <span class="material-symbols-outlined faq-q-icon">help</span>
+                  <span class="faq-q-text">{{ faq.q }}</span>
+                </div>
+                <span class="material-symbols-outlined faq-toggle-icon">
+                  {{ activeFaqIndex === index ? 'remove_circle' : 'add_circle' }}
+                </span>
+              </button>
+              <div v-show="activeFaqIndex === index" class="faq-accordion-content">
+                <p class="faq-answer-paragraph">{{ faq.a }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -465,6 +553,16 @@
                   </div>
 
                   <div class="form-group">
+                    <label class="form-label">Pilihan Paket Terapi</label>
+                    <select v-model="bookingForm.selectedPackage" class="form-input">
+                      <option value="">-- Pilih Paket Terapi (Opsional) --</option>
+                      <option v-for="pkg in service.packages" :key="pkg.title" :value="pkg.title">
+                        {{ pkg.title }} ({{ pkg.price }})
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
                     <label class="form-label">Keluhan / Catatan Tambahan</label>
                     <textarea
                       v-model="bookingForm.notes"
@@ -508,11 +606,55 @@ import PublicLayout from '../layouts/PublicLayout.vue'
 const route = useRoute()
 const loading = ref(false)
 
+const checkedSymptoms = ref([])
+const activePillarIndex = ref(0)
+const activeFaqIndex = ref(0)
+
+const isSymptomChecked = (title) => checkedSymptoms.value.includes(title)
+
+const toggleSymptom = (title) => {
+  const idx = checkedSymptoms.value.indexOf(title)
+  if (idx > -1) {
+    checkedSymptoms.value.splice(idx, 1)
+  } else {
+    checkedSymptoms.value.push(title)
+  }
+}
+
+const toggleFaq = (index) => {
+  activeFaqIndex.value = activeFaqIndex.value === index ? -1 : index
+}
+
+const currentPillar = computed(() => {
+  if (!service.value || !service.value.pillars) return null
+  return service.value.pillars[activePillarIndex.value] || service.value.pillars[0]
+})
+
+const getCheckedSymptomsWaUrl = computed(() => {
+  const currentSvc = service.value ? service.value.name : 'Layanan'
+  const list = checkedSymptoms.value.map((s, i) => `${i + 1}. ${s}`).join('%0A')
+  const text = `Halo Admin Amanah Tin's Center, saya ingin konsultasi mengenai ${currentSvc}. Dari deteksi mandiri di website, anak saya mengalami gejala berikut:%0A${list}%0AMohon info jadwal asesmen awal dan saran langkahnya.`
+  return `https://wa.me/6281234567890?text=${text}`
+})
+
+const selectPackage = (pkgTitle) => {
+  bookingForm.value.selectedPackage = pkgTitle
+  const el = document.getElementById('daftar-sekarang')
+  if (el) el.scrollIntoView({ behavior: 'smooth' })
+}
+
+const getPackageWaUrl = (pkg) => {
+  const currentSvc = service.value ? service.value.name : 'Layanan'
+  const text = `Halo Admin Amanah Tin's Center, saya tertarik mendaftar "${pkg.title}" untuk ${currentSvc}. Apakah jadwal terapis masih tersedia?`
+  return `https://wa.me/6281234567890?text=${encodeURIComponent(text)}`
+}
+
 const bookingForm = ref({
   parentName: '',
   whatsapp: '',
   childName: '',
   childAge: '',
+  selectedPackage: '',
   notes: ''
 })
 
@@ -527,6 +669,7 @@ const submitBooking = () => {
     `- No. WhatsApp: ${bookingForm.value.whatsapp}%0A` +
     `- Nama Anak: ${bookingForm.value.childName}%0A` +
     `- Usia Anak: ${bookingForm.value.childAge}%0A` +
+    `- Paket Pilihan: ${bookingForm.value.selectedPackage || '-'}` +
     `- Catatan/Keluhan: ${bookingForm.value.notes || '-'}`
   
   window.open(`https://wa.me/6281234567890?text=${text}`, '_blank')
@@ -1985,12 +2128,61 @@ const service = computed(() => {
   white-space: nowrap;
 }
 
-/* ==================== SECTION 2: INDIKASI ==================== */
+/* ==================== SECTION 2: INDIKASI (INTERACTIVE CHECKLIST) ==================== */
 .section-indications {
   padding: 4rem 0;
   background: var(--surface-container-lowest);
   border-top: 1px solid rgba(191, 200, 206, 0.3);
   border-bottom: 1px solid rgba(191, 200, 206, 0.3);
+}
+
+.symptom-check-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.toolbar-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 13.5px;
+  color: #334155;
+}
+
+.toolbar-icon {
+  font-size: 20px;
+  color: #006384;
+}
+
+.toolbar-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #e2e8f0;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  transition: all 0.25s ease;
+}
+
+.toolbar-counter.has-checked {
+  background: #006384;
+  color: #ffffff;
+}
+
+.counter-num {
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .indications-grid {
@@ -2000,91 +2192,187 @@ const service = computed(() => {
 }
 
 .indication-card {
-  background: rgba(237, 244, 255, 0.6);
-  border: 1px solid rgba(191, 200, 206, 0.35);
+  background: #ffffff;
+  border: 1.5px solid rgba(191, 200, 206, 0.4);
   border-radius: 1.25rem;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  cursor: pointer;
   transition: all 0.25s ease;
+  user-select: none;
 }
 
 .indication-card:hover {
-  background: var(--surface-container-low);
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(43, 61, 79, 0.08);
+  border-color: #006384;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 99, 132, 0.1);
 }
 
-.ind-icon-wrap {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+.indication-card.is-checked {
+  border-color: #006384;
+  background: #f0f9ff;
+  box-shadow: 0 8px 24px rgba(0, 99, 132, 0.14);
+}
+
+.ind-card-top {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
 }
 
+.ind-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .ind-icon-wrap .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.ind-checkbox {
+  color: #94a3b8;
+  transition: color 0.2s;
+}
+
+.ind-checkbox.checked {
+  color: #006384;
+}
+
+.check-icon-ui {
   font-size: 24px;
 }
 
 .ind-icon-blue {
-  background: var(--primary-fixed);
-  color: var(--primary);
+  background: #e0f2fe;
+  color: #006384;
 }
 
 .ind-icon-green {
-  background: var(--secondary-fixed);
-  color: var(--on-secondary-fixed);
+  background: #dcfce7;
+  color: #16a34a;
 }
 
 .ind-icon-orange {
-  background: var(--tertiary-fixed);
-  color: var(--on-tertiary-fixed);
+  background: #fef3c7;
+  color: #d97706;
 }
 
 .ind-icon-teal {
-  background: var(--surface-container-highest);
-  color: var(--primary);
+  background: #ccfbf1;
+  color: #0d9488;
 }
 
 .ind-title {
   font-family: var(--font-headline);
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--on-surface);
-  margin-bottom: 0.5rem;
+  font-size: 16.5px;
+  font-weight: 800;
+  color: #091d2e;
+  margin-bottom: 0.45rem;
   line-height: 1.3;
 }
 
 .ind-desc {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--on-surface-variant);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #556066;
 }
 
 .ind-footer {
   margin-top: 1.25rem;
-  padding-top: 0.875rem;
-  border-top: 1px solid rgba(191, 200, 206, 0.3);
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(191, 200, 206, 0.25);
   display: flex;
   align-items: center;
   gap: 0.375rem;
   font-size: 12px;
   font-weight: 700;
-  color: var(--primary);
+  color: #006384;
 }
 
 .ind-info-icon {
   font-size: 16px;
 }
 
+/* Symptom Checked Alert Banner */
+.symptom-checked-alert {
+  margin-top: 2rem;
+  background: linear-gradient(135deg, #006384 0%, #00839e 100%);
+  color: #ffffff;
+  border-radius: 1.25rem;
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  box-shadow: 0 12px 30px rgba(0, 99, 132, 0.25);
+  animation: slideInUp 0.3s ease;
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.checked-alert-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.star-icon {
+  font-size: 32px;
+  color: #ffd166;
+  flex-shrink: 0;
+}
+
+.alert-title {
+  font-family: var(--font-headline);
+  font-size: 17px;
+  font-weight: 800;
+  margin: 0 0 0.25rem;
+}
+
+.alert-sub {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.btn-alert-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #25d366;
+  color: #ffffff;
+  font-family: var(--font-headline);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 0.8rem 1.5rem;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-alert-wa:hover {
+  background: #1ebc59;
+  transform: translateY(-2px);
+}
+
 /* Guidance Callout */
 .guidance-callout {
   margin-top: 2rem;
-  background: var(--surface-container);
+  background: #f8fafc;
   border: 1px solid rgba(191, 200, 206, 0.4);
   padding: 1.25rem 1.5rem;
   border-radius: 1rem;
@@ -2104,8 +2392,8 @@ const service = computed(() => {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--primary);
-  color: var(--on-primary);
+  background: #006384;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2117,15 +2405,16 @@ const service = computed(() => {
 }
 
 .guidance-text {
-  font-size: 14px;
-  color: var(--on-surface);
+  font-size: 13.5px;
+  color: #334155;
   line-height: 1.5;
+  margin: 0;
 }
 
 .guidance-link {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
-  color: var(--primary);
+  color: #006384;
   text-decoration: none;
   white-space: nowrap;
   flex-shrink: 0;
@@ -2136,10 +2425,10 @@ const service = computed(() => {
   text-decoration: underline;
 }
 
-/* ==================== SECTION 3: AREA FOKUS ==================== */
+/* ==================== SECTION 3: AREA FOKUS (TABBED SWITCHER) ==================== */
 .section-focus-methods {
   padding: 4.5rem 0;
-  background: var(--background);
+  background: #f8fafc;
 }
 
 .focus-header {
@@ -2154,108 +2443,198 @@ const service = computed(() => {
 .focus-header-desc {
   font-size: 15px;
   line-height: 1.6;
-  color: var(--on-surface-variant);
+  color: #556066;
   max-width: 440px;
+  margin: 0;
 }
 
-.pillars-grid {
+/* Pillar Tabs Nav */
+.pillar-tabs-nav {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
 }
 
-.pillar-card {
-  background: var(--surface-container-lowest);
-  border: 1px solid rgba(191, 200, 206, 0.35);
-  border-radius: 1.25rem;
-  padding: 2rem;
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-  box-shadow: 0 8px 24px -4px rgba(58, 134, 168, 0.06);
-  transition: transform 0.25s, box-shadow 0.25s;
-}
-
-.pillar-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px -4px rgba(58, 134, 168, 0.12);
-}
-
-.pillar-icon-wrap {
-  width: 56px;
-  height: 56px;
+.pillar-tab-btn {
+  background: #ffffff;
+  border: 1.5px solid rgba(191, 200, 206, 0.4);
   border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s ease;
+}
+
+.pillar-tab-btn:hover {
+  border-color: #006384;
+  transform: translateY(-2px);
+}
+
+.pillar-tab-btn.is-active {
+  border-color: #006384;
+  background: #f0f9ff;
+  border-width: 2px;
+  box-shadow: 0 6px 18px rgba(0, 99, 132, 0.12);
+}
+
+.tab-icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.pillar-icon-wrap .material-symbols-outlined {
+.tab-icon-wrap .material-symbols-outlined {
+  font-size: 22px;
+}
+
+.tab-text-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-num {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.tab-title {
+  font-family: var(--font-headline);
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #091d2e;
+  line-height: 1.25;
+}
+
+/* Pillar Showcase Card */
+.pillar-showcase-card {
+  background: #ffffff;
+  border: 2px solid #006384;
+  border-radius: 1.5rem;
+  padding: 2.25rem;
+  box-shadow: 0 12px 32px -4px rgba(0, 99, 132, 0.12);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pillar-showcase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.showcase-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pillar-icon-wrap-lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pillar-icon-wrap-lg .material-symbols-outlined {
   font-size: 30px;
 }
 
-.pillar-bg-blue {
-  background: rgba(193, 232, 255, 0.7);
-  color: var(--primary);
+.pillar-stage-pill {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #006384;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
 }
 
-.pillar-bg-green {
-  background: rgba(204, 239, 142, 0.7);
-  color: var(--secondary);
+.pillar-showcase-title {
+  font-family: var(--font-headline);
+  font-size: 22px;
+  font-weight: 800;
+  color: #091d2e;
+  margin: 0;
 }
 
-.pillar-bg-orange {
-  background: rgba(255, 220, 191, 0.7);
-  color: var(--tertiary);
-}
-
-.pillar-bg-teal {
-  background: var(--surface-container-highest);
-  color: var(--primary);
-}
-
-.pillar-content {
+.pillar-nav-arrows {
   display: flex;
-  flex-direction: column;
   gap: 0.5rem;
 }
 
-.pillar-title {
-  font-family: var(--font-headline);
-  font-size: 19px;
-  font-weight: 700;
-  color: var(--on-surface);
-  line-height: 1.3;
-}
-
-.pillar-desc {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--on-surface-variant);
-}
-
-.pillar-bullets {
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.pillar-bullets li {
+.btn-pillar-nav {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  color: #091d2e;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 13px;
-  color: var(--on-surface-variant);
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.check-bullet {
-  font-size: 16px;
-  color: var(--secondary);
-  font-weight: 700;
+.btn-pillar-nav:hover {
+  background: #006384;
+  color: #ffffff;
+  border-color: #006384;
+}
+
+.pillar-showcase-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #334155;
+  margin: 0 0 1.5rem;
+}
+
+.pillar-competencies-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+.competency-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+}
+
+.comp-check {
+  font-size: 20px;
+  color: #16a34a;
+  flex-shrink: 0;
+}
+
+.comp-text {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1e293b;
 }
 
 /* ==================== SECTION 4: ALUR PROSES ==================== */
@@ -2703,11 +3082,13 @@ const service = computed(() => {
   font-weight: 700;
   text-decoration: none;
   transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
 }
 
 .btn-pkg--primary {
   background: var(--primary);
-  color: var(--on-primary);
+  color: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 99, 132, 0.2);
 }
 
@@ -2726,54 +3107,114 @@ const service = computed(() => {
   background: rgba(193, 232, 255, 0.4);
 }
 
-/* ==================== SECTION 7: FAQ ==================== */
+.btn-pkg-wa-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+  font-size: 13px;
+  font-weight: 700;
+  color: #128c7e;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.btn-pkg-wa-link:hover {
+  color: #075e54;
+  text-decoration: underline;
+}
+
+.wa-btn-icon {
+  font-size: 18px;
+  color: #25d366;
+}
+
+/* ==================== SECTION 7: FAQ (ACCORDION) ==================== */
 .section-faq {
   padding: 4.5rem 0;
-  background: var(--background);
+  background: #f8fafc;
 }
 
 .max-w-faq {
-  max-width: 900px;
+  max-width: 860px;
 }
 
-.faq-list {
+.faq-accordion-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
-.faq-card {
-  background: var(--surface-container-lowest);
-  border: 1px solid rgba(191, 200, 206, 0.35);
+.faq-accordion-item {
+  background: #ffffff;
+  border: 1.5px solid rgba(191, 200, 206, 0.35);
   border-radius: 1.25rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s ease;
 }
 
-.faq-question {
-  font-family: var(--font-headline);
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--on-surface);
+.faq-accordion-item.is-open {
+  border-color: #006384;
+  box-shadow: 0 8px 20px rgba(0, 99, 132, 0.08);
+}
+
+.faq-accordion-btn {
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: left;
+}
+
+.faq-btn-left {
+  display: flex;
+  align-items: center;
   gap: 0.75rem;
-  margin-bottom: 0.625rem;
+}
+
+.faq-q-icon {
+  color: #006384;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.faq-q-text {
+  font-family: var(--font-headline);
+  font-size: 16px;
+  font-weight: 800;
+  color: #091d2e;
   line-height: 1.35;
 }
 
-.faq-icon {
-  color: var(--primary);
-  font-size: 22px;
+.faq-toggle-icon {
+  color: #006384;
+  font-size: 24px;
   flex-shrink: 0;
-  margin-top: 1px;
+  transition: transform 0.2s;
 }
 
-.faq-answer {
+.faq-accordion-content {
+  padding: 0 1.5rem 1.35rem 3.5rem;
+  animation: fadeInFaq 0.25s ease;
+}
+
+@keyframes fadeInFaq {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.faq-answer-paragraph {
   font-size: 14px;
   line-height: 1.65;
-  color: var(--on-surface-variant);
-  padding-left: 2.125rem;
+  color: #475569;
+  margin: 0;
 }
 
 /* ==================== SECTION 8: BANNER CTA & FORM ==================== */
@@ -2985,6 +3426,9 @@ const service = computed(() => {
   .indications-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .pillar-tabs-nav {
+    grid-template-columns: repeat(2, 1fr);
+  }
   .process-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -3004,8 +3448,22 @@ const service = computed(() => {
     align-items: flex-start;
     gap: 0.75rem;
   }
-  .pillars-grid {
+  .pillar-tabs-nav {
     grid-template-columns: 1fr;
+  }
+  .pillar-competencies-grid {
+    grid-template-columns: 1fr;
+  }
+  .pillar-showcase-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .symptom-checked-alert {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .faq-accordion-content {
+    padding-left: 1.5rem;
   }
   .therapists-grid {
     grid-template-columns: 1fr;

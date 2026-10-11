@@ -51,6 +51,7 @@
           >
             <span class="material-symbols-outlined" style="font-size:16px" :class="cat.iconColor">{{ cat.icon }}</span>
             <span>{{ cat.label }}</span>
+            <span v-if="cat.badge !== undefined" class="pill-badge">{{ cat.badge }}</span>
           </button>
         </div>
       </div>
@@ -72,11 +73,11 @@
           </div>
         </div>
 
-        <!-- Articles from API -->
+        <!-- Articles from API or Default -->
         <div class="articles-grid" v-else-if="filteredArticles.length">
           <article
             v-for="article in filteredArticles"
-            :key="article.id"
+            :key="article.id || article.slug"
             class="article-card"
           >
             <!-- Thumbnail -->
@@ -91,9 +92,19 @@
                 <span class="material-symbols-outlined" style="font-size:12px">{{ getCatIcon(article.category) }}</span>
                 <span>{{ article.category }}</span>
               </div>
-              <!-- Bookmark button -->
-              <button class="thumb-bookmark" aria-label="Simpan Artikel">
-                <span class="material-symbols-outlined" style="font-size:18px">bookmark</span>
+              <!-- Interactive Persistent Bookmark button -->
+              <button
+                @click.stop.prevent="handleCardBookmark(article)"
+                class="thumb-bookmark"
+                :class="{ 'is-bookmarked': isBookmarked(article.slug) }"
+                :aria-label="isBookmarked(article.slug) ? 'Hapus bookmark artikel' : 'Simpan Artikel'"
+                :title="isBookmarked(article.slug) ? 'Tersimpan di daftar bacaan' : 'Simpan ke daftar bacaan'"
+              >
+                <span
+                  class="material-symbols-outlined"
+                  :class="{ 'fill': isBookmarked(article.slug) }"
+                  style="font-size:18px"
+                >bookmark</span>
               </button>
             </div>
 
@@ -124,7 +135,19 @@
           </article>
         </div>
 
-        <!-- Empty state -->
+        <!-- Empty state when Bookmarks tab is active but empty -->
+        <div v-else-if="activeCategory === 'Tersimpan'" class="empty-state">
+          <span class="material-symbols-outlined" style="font-size:64px; color: #b45309">bookmark_border</span>
+          <h3 style="font-family: var(--font-headline); font-size: 20px; font-weight: 700; color: #091d2e; margin: 0.5rem 0 0.25rem;">Belum Ada Artikel Tersimpan</h3>
+          <p style="color: #64748b; font-size: 14.5px; max-width: 440px; margin: 0 auto 1.25rem;">
+            Tekan ikon bookmark pada sudut kartu artikel mana pun untuk menyimpannya ke daftar bacaan pribadi Anda.
+          </p>
+          <button @click="activeCategory = 'Semua Topik'" class="btn-reset-saved" type="button">
+            <span>Jelajahi Semua Artikel</span>
+          </button>
+        </div>
+
+        <!-- Empty state for regular categories -->
         <div v-else class="empty-state">
           <span class="material-symbols-outlined" style="font-size:64px; color: var(--outline)">article</span>
           <p>Belum ada artikel dalam kategori ini.</p>
@@ -132,6 +155,22 @@
 
       </div>
     </section>
+
+    <!-- ===== TOAST NOTIFICATION ===== -->
+    <Teleport to="body">
+      <Transition name="toast-fade">
+        <div v-if="toast.visible" class="article-toast" :class="`toast-${toast.type}`" role="status" aria-live="polite">
+          <span class="material-symbols-outlined toast-icon">{{ toast.icon }}</span>
+          <div class="toast-body">
+            <h5 class="toast-title">{{ toast.title }}</h5>
+            <p class="toast-desc">{{ toast.message }}</p>
+          </div>
+          <button @click="toast.visible = false" class="toast-close" aria-label="Tutup notifikasi">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+      </Transition>
+    </Teleport>
 
     <!-- ===== CONSULTATION CTA ===== -->
     <section class="cta-section">
@@ -167,19 +206,66 @@
 import { ref, computed, onMounted } from 'vue'
 import PublicLayout from '../layouts/PublicLayout.vue'
 import api from '../services/api'
+import { useBookmarks } from '../composables/useBookmarks'
 
 const articles = ref([])
 const loading = ref(true)
 const activeCategory = ref('Semua Topik')
 const searchQuery = ref('')
 
-const categoryTabs = [
+// Persistent Bookmark Composable
+const { bookmarkedArticles, isBookmarked, toggleBookmark } = useBookmarks()
+
+// Toast state & handler
+const toast = ref({
+  visible: false,
+  title: '',
+  message: '',
+  icon: 'check_circle',
+  type: 'success'
+})
+let toastTimer = null
+
+function showToast({ title, message, icon = 'check_circle', type = 'success' }) {
+  if (toastTimer) clearTimeout(toastTimer)
+  toast.value = { visible: true, title, message, icon, type }
+  toastTimer = setTimeout(() => {
+    toast.value.visible = false
+  }, 3200)
+}
+
+function handleCardBookmark(article) {
+  const added = toggleBookmark(article)
+  if (added) {
+    showToast({
+      title: 'Artikel Disimpan!',
+      message: 'Artikel ditambahkan ke daftar bacaan Anda.',
+      icon: 'bookmark_added',
+      type: 'success'
+    })
+  } else {
+    showToast({
+      title: 'Bookmark Dihapus',
+      message: 'Artikel dihapus dari daftar bacaan Anda.',
+      icon: 'bookmark_remove',
+      type: 'info'
+    })
+  }
+}
+
+const categoryTabs = computed(() => [
   { label: 'Semua Topik',     icon: 'apps',               iconColor: '' },
   { label: 'Terapi Wicara',   icon: 'record_voice_over',  iconColor: 'icon-blue' },
   { label: 'Sensori & Motorik', icon: 'front_hand',       iconColor: 'icon-green' },
   { label: 'Parenting Positif', icon: 'favorite',         iconColor: 'icon-amber' },
   { label: 'Psikologi Anak',  icon: 'psychology',         iconColor: 'icon-blue' },
-]
+  {
+    label: 'Tersimpan',
+    icon: 'bookmark',
+    iconColor: 'icon-amber',
+    badge: bookmarkedArticles.value.length
+  },
+])
 
 const catIconMap = {
   'Terapi Wicara':    'record_voice_over',
@@ -208,7 +294,16 @@ function getDefaultThumb(cat) {
 
 const filteredArticles = computed(() => {
   let list = articles.value
-  if (activeCategory.value !== 'Semua Topik') {
+
+  if (activeCategory.value === 'Tersimpan') {
+    const savedSlugs = bookmarkedArticles.value.map(b => b.slug)
+    const map = new Map()
+    articles.value.forEach(a => map.set(a.slug, a))
+    bookmarkedArticles.value.forEach(b => {
+      if (!map.has(b.slug)) map.set(b.slug, b)
+    })
+    list = Array.from(map.values()).filter(a => savedSlugs.includes(a.slug))
+  } else if (activeCategory.value !== 'Semua Topik') {
     // Map tab labels to possible category values
     const labelMap = {
       'Terapi Wicara':    ['Terapi Wicara'],
@@ -219,6 +314,7 @@ const filteredArticles = computed(() => {
     const allowed = labelMap[activeCategory.value] || [activeCategory.value]
     list = list.filter(a => allowed.includes(a.category))
   }
+
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.toLowerCase()
     list = list.filter(a =>
@@ -591,5 +687,166 @@ onMounted(async () => {
   .cta-card { flex-direction: column; padding: 2rem 1.5rem; }
   .cta-actions { flex-direction: column; width: 100%; }
   .btn-wa, .btn-schedule { width: 100%; }
+}
+
+/* ============================================================
+   INTERACTIVE BOOKMARKS & PILL BADGES
+   ============================================================ */
+.pill-badge {
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.08);
+  color: inherit;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  margin-left: 0.25rem;
+}
+
+.filter-pill--active .pill-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.thumb-bookmark {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(191, 200, 206, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-surface-variant);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.thumb-bookmark:hover {
+  background: #ffffff;
+  color: #b45309;
+  transform: scale(1.1);
+}
+
+.thumb-bookmark.is-bookmarked {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: rgba(180, 83, 9, 0.3);
+}
+
+.thumb-bookmark.is-bookmarked .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1;
+}
+
+.btn-reset-saved {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #006384;
+  color: #ffffff;
+  border: none;
+  padding: 0.65rem 1.35rem;
+  border-radius: 999px;
+  font-family: var(--font-headline);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 99, 132, 0.2);
+}
+
+.btn-reset-saved:hover {
+  background: #007d9b;
+  transform: translateY(-2px);
+}
+
+/* ==================== TOAST NOTIFICATION ==================== */
+.article-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(9, 29, 46, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  padding: 0.85rem 1.35rem;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  z-index: 99999;
+  font-family: var(--font-headline);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  max-width: 90vw;
+}
+
+.toast-icon {
+  font-size: 22px;
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+.toast-success .toast-icon {
+  color: #4ade80;
+}
+
+.toast-info .toast-icon {
+  color: #facc15;
+}
+
+.toast-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.toast-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.25;
+  color: #ffffff;
+}
+
+.toast-desc {
+  font-size: 12px;
+  margin: 0;
+  color: #cbd5e1;
+  font-family: var(--font-body);
+  line-height: 1.35;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  border-radius: 50%;
+  padding: 0.2rem;
+}
+
+.toast-close:hover {
+  color: #ffffff;
+}
+
+.toast-fade-enter-active,
+.toast-fade-leave-active {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast-fade-enter-from,
+.toast-fade-leave-to {
+  opacity: 0;
+  transform: translate(-50%, 20px);
 }
 </style>

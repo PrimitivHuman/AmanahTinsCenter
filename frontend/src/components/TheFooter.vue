@@ -85,10 +85,6 @@
         <p class="footer-copy">
           © {{ new Date().getFullYear() }} Amanah Tin's Center. Seluruh hak cipta dilindungi.
         </p>
-        <router-link to="/admin/login" class="footer-admin-link">
-          <span class="material-symbols-outlined" style="font-size:14px">admin_panel_settings</span>
-          Portal Admin
-        </router-link>
       </div>
     </div>
   </footer>
@@ -240,27 +236,14 @@
 .footer-bottom {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
   padding-top: var(--space-md);
 }
 
 .footer-copy {
   font-size: 12px;
   color: rgba(232, 242, 255, 0.5);
-}
-
-.footer-admin-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  font-size: 12px;
-  color: rgba(232, 242, 255, 0.4);
-  text-decoration: none;
-  transition: color 0.15s;
-}
-
-.footer-admin-link:hover {
-  color: rgba(232, 242, 255, 0.8);
 }
 
 @media (max-width: 900px) {

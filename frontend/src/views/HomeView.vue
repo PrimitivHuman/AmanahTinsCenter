@@ -31,16 +31,33 @@
               </router-link>
             </div>
             
-            <!-- Trust Badges & Clinical Endorsement -->
+            <!-- Trust Badges & Clinical Endorsement (Foto Asli Avatar Bukti Sosial) -->
             <div class="hero-trust">
               <div class="trust-avatars">
-                <div class="trust-avatar avatar-tw">TW</div>
-                <div class="trust-avatar avatar-ot">OT</div>
-                <div class="trust-avatar avatar-si">SI</div>
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDndS1MEqhUoM1jUcloTszQuiVyvZQQTdkWTSuBfJTiomzP1PM9XqIRCM9jqFGt1cW7d3Leb19e2RyIVFI-ZAZVTtp0cqgL1J5nVzOeM9xb3jMOsV1syIVqmGBEzTpxgNh7DR4Bmof0JjfqdICLKa4vueP7V49v6bJx6jBVOILCbqk-mUAQWiGEt6MTKP0dWcxjtDpTGkGPMvUKtluVegL-I7DXLjkf67qRXyeHcC4"
+                  alt="Orang Tua ATC"
+                  class="trust-avatar-img"
+                  title="Bunda Sarah & Ananda Kenzo"
+                />
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVAjj2_99GAssxWy4C6hTn27yt7kYZe2i0qsUsgpGRLAq1dsRAzKGQN9PngQD-eLgAv_j19Tc3Y1D2ZOwLi17idZKvk6tEW5EYD5j4V8Oe2WTWmHgj3NaktVCavHdsCMDaZc0kG5owNajF4MGnh7xHWInfth-r3HLBjrJLLF9X1s1PkwXpVZ-HNaJ4IhQ-ZtKXIBikWwNr1SHDHiavrHJb5bQYR-fQgncvJVq9oPU"
+                  alt="Anak Ceria ATC"
+                  class="trust-avatar-img"
+                  title="Ananda Aisyah"
+                />
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEqiyk6121gv8ChNiZuew6FvZqYM6PDAblTcYiCp2zrKejXMcq6F6UwgjGu7Iaa3e4rXhIrp_ywvJu9Kz9EhZiKd2459Um-Gc6zqJkmD5lhWLepwgqsb7evjTW02DHYySTvbEICSv5mKabSc6kIEwah6t2brhAK9Ha_QJuZU78_R80wE4TxyfldjEjEqtUW1cwa3Hj7QA3-OuMXKmQRyIu4-9fb9bGbMCfwDx090c"
+                  alt="Terapis ATC"
+                  class="trust-avatar-img"
+                  title="Terapis Annisa bersama Ananda"
+                />
+                <div class="trust-avatar-badge" title="Lebih dari 400 keluarga terlayani">+400</div>
               </div>
               <div class="trust-content">
                 <div class="stars">
                   <span v-for="i in 5" :key="i" class="material-symbols-outlined star icon-fill">star</span>
+                  <span class="star-rating-val">4.9/5.0</span>
                 </div>
                 <span class="trust-desc">Dipercaya 400+ orang tua di Jagakarsa & sekitarnya</span>
               </div>
@@ -130,10 +147,16 @@
             <div class="about-media-col">
               <div class="about-img-frame">
                 <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7KRNifS1-zPhLJA_LVUizozlej0k7mqPdRFi4j3F1BCntUefBunKjAsGZog6F6mfgJuECODOHnid6MkmGXoXJCql6to7vtq385Drpi8oke37YwjJYv7nkwqfrK8x--c7sgKYK50XqKZ5mPlHuMdlerlPQWtw3UKjt9t0j42HG6lvNY7M_VOshTzxXk74Ph4LULLnZU1Vz2Tq0vEuglhU7U6E7gRsP7Rh9wYyWwjA"
-                  alt="Ruang terapi Amanah Tin's Center"
+                  src="/ruang-terapi-atc.jpg"
+                  alt="Fasilitas Ruang Terapi Ramah Anak Amanah Tin's Center"
                   class="about-img"
+                  loading="lazy"
                 />
+                <!-- Floating Facility Badge Overlay -->
+                <div class="about-facility-badge">
+                  <span class="facility-dot"></span>
+                  <span>Fasilitas Terakreditasi &amp; Higienis</span>
+                </div>
               </div>
               <div class="about-founders-capsule">
                 <div class="founders-icon-wrap">
@@ -207,7 +230,7 @@
         <div class="section-header-row">
           <div>
             <span class="section-badge-label">TIM KAMI</span>
-            <h2 class="section-heading">Didampingi Terapis Ahli & Berdedikasi</h2>
+            <h2 class="section-heading">Didampingi Terapis Ahli &amp; Berdedikasi</h2>
             <p class="section-subheading">Praktisi profesional berlisensi dan berpengalaman di bidang tumbuh kembang anak dengan pendekatan penuh kasih.</p>
           </div>
           <router-link to="/tim-kami" class="header-more-link">
@@ -218,12 +241,171 @@
 
         <div class="team-grid">
           <div v-for="member in team" :key="member.name" class="team-card">
-            <div class="team-icon-circle" :class="member.bg">
-              <span class="material-symbols-outlined">{{ member.icon }}</span>
+            <!-- Photo Frame with Specialty & STR Badges -->
+            <div class="team-photo-wrap">
+              <img :src="member.photo" :alt="member.name" class="team-real-img" loading="lazy" />
+              <span class="team-photo-badge">{{ member.specialtyBadge }}</span>
+              <span class="team-str-badge">
+                <span class="material-symbols-outlined str-icon">verified</span>
+                {{ member.str }}
+              </span>
             </div>
-            <h3 class="team-name">{{ member.name }}</h3>
-            <span class="team-role" :class="member.roleColor">{{ member.role }}</span>
-            <p class="team-bio">{{ member.bio }}</p>
+
+            <!-- Card Info -->
+            <div class="team-card-content">
+              <h3 class="team-name">{{ member.name }}</h3>
+              <span class="team-role" :class="member.roleColor">{{ member.role }}</span>
+              <p class="team-bio">{{ member.bio }}</p>
+
+              <!-- Tags -->
+              <div class="team-tags">
+                <span v-for="tag in member.tags" :key="tag" class="team-tag">{{ tag }}</span>
+              </div>
+
+              <!-- Consult Link -->
+              <div class="team-card-action">
+                <router-link to="/jadwal-pendaftaran" class="team-consult-link">
+                  <span>Jadwalkan Konsultasi</span>
+                  <span class="material-symbols-outlined">arrow_forward</span>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 7. CERITA AYAH & BUNDA (TESTIMONI & KISAH NYATA) ==================== -->
+    <section class="testimonials-section" id="testimoni">
+      <div class="container">
+        <!-- Section Header -->
+        <div class="testimonials-header">
+          <div class="section-badge-label">
+            <span class="material-symbols-outlined badge-icon">favorite</span>
+            <span>CERITA AYAH &amp; BUNDA</span>
+          </div>
+          <h2 class="section-heading">Kisah Nyata &amp; Kemajuan Buah Hati Kami</h2>
+          <p class="section-subheading">
+            Setiap anak memiliki keunikan dan ritme bertumbuh masing-masing. Simak bagaimana pendekatan empatik berbasis bukti di Amanah Tin's Center membantu ratusan keluarga menemukan kembali senyuman dan kemandirian ananda.
+          </p>
+        </div>
+
+        <!-- Social Proof Stats Banner -->
+        <div class="testimonials-stats-bar">
+          <div class="stat-pill">
+            <div class="stat-pill-stars">
+              <span v-for="i in 5" :key="i" class="material-symbols-outlined icon-fill">star</span>
+            </div>
+            <div>
+              <span class="stat-pill-val">4.9 / 5.0</span>
+              <span class="stat-pill-lbl">Rating Kepuasan Orang Tua</span>
+            </div>
+          </div>
+          <div class="stat-pill">
+            <span class="material-symbols-outlined stat-pill-icon">diversity_1</span>
+            <div>
+              <span class="stat-pill-val">400+ Keluarga</span>
+              <span class="stat-pill-lbl">Terdampingi di Jagakarsa</span>
+            </div>
+          </div>
+          <div class="stat-pill">
+            <span class="material-symbols-outlined stat-pill-icon">trending_up</span>
+            <div>
+              <span class="stat-pill-val">98.4% Kemajuan</span>
+              <span class="stat-pill-lbl">Evaluasi Berkala Terukur</span>
+            </div>
+          </div>
+          <div class="stat-pill">
+            <span class="material-symbols-outlined stat-pill-icon">verified_user</span>
+            <div>
+              <span class="stat-pill-val">100% STR Resmi</span>
+              <span class="stat-pill-lbl">Terapis Standar Kemenkes RI</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- In-Depth Testimonial Cards Grid -->
+        <div class="testimonials-grid">
+          <div
+            v-for="story in stories"
+            :key="story.childName"
+            class="story-card"
+          >
+            <!-- Card Header: Profile & Service Tag -->
+            <div class="story-card-header">
+              <div class="story-profile">
+                <img :src="story.parentPhoto" :alt="story.parentName" class="story-avatar" loading="lazy" />
+                <div>
+                  <h4 class="story-parent-name">{{ story.parentName }}</h4>
+                  <div class="story-verified-badge">
+                    <span class="material-symbols-outlined">verified</span>
+                    <span>Orang Tua Terverifikasi</span>
+                  </div>
+                  <span class="story-parent-loc">{{ story.parentLocation }}</span>
+                </div>
+              </div>
+              <span class="story-service-tag" :class="story.serviceTagColor">{{ story.service }}</span>
+            </div>
+
+            <!-- Child Case & Milestone Focus -->
+            <div class="story-case-box">
+              <div class="story-child-row">
+                <span class="material-symbols-outlined text-primary">child_care</span>
+                <span class="story-child-title"><strong>{{ story.childName }}</strong> ({{ story.childAge }})</span>
+              </div>
+              <div class="story-condition">
+                <span class="case-label">Kondisi Awal:</span>
+                <span class="case-text">{{ story.initialCondition }}</span>
+              </div>
+            </div>
+
+            <!-- Quote Text -->
+            <div class="story-quote-body">
+              <span class="material-symbols-outlined story-quote-mark">format_quote</span>
+              <p class="story-quote-text">"{{ story.quote }}"</p>
+            </div>
+
+            <!-- Before-After Progress Highlights -->
+            <div class="story-progress-box">
+              <span class="progress-box-title">Kemajuan Nyata Teramati:</span>
+              <ul class="progress-list">
+                <li v-for="prog in story.progressPoints" :key="prog">
+                  <span class="material-symbols-outlined check-icon">check_circle</span>
+                  <span>{{ prog }}</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Card Footer -->
+            <div class="story-card-footer">
+              <div class="story-stars">
+                <span v-for="i in 5" :key="i" class="material-symbols-outlined icon-fill">star</span>
+              </div>
+              <span class="story-duration">{{ story.duration }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Encouraging CTA Strip -->
+        <div class="testimonials-cta-strip">
+          <div class="cta-strip-content">
+            <h3 class="cta-strip-title">Ingin Buah Hati Mengalami Kemajuan Bermakna yang Sama?</h3>
+            <p class="cta-strip-desc">Jangan tunda masa keemasan (*golden age*) si kecil. Tim terapis profesional kami siap menyambut Ayah dan Bunda dengan asesmen awal yang ramah dan komprehensif.</p>
+          </div>
+          <div class="cta-strip-buttons">
+            <router-link to="/jadwal-pendaftaran" class="btn-strip-primary">
+              <span class="material-symbols-outlined">event_available</span>
+              <span>Jadwalkan Asesmen Awal</span>
+            </router-link>
+            <a
+              :href="`https://wa.me/${sanitizedClinicWa}?text=${encodeURIComponent('Halo Admin Amanah Tin\'s Center, saya membaca Cerita Ayah & Bunda dan ingin konsultasi jadwal asesmen awal ananda.')}`"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-strip-wa"
+            >
+              <span class="material-symbols-outlined">chat</span>
+              <span>Tanya via WhatsApp</span>
+            </a>
           </div>
         </div>
       </div>
@@ -357,28 +539,40 @@
                 <div class="contact-item-info">
                   <h4 class="contact-item-label">WhatsApp Resmi</h4>
                   <p class="contact-item-val">0812 3456 7890 (Respon cepat selama jam layanan)</p>
+                  <a :href="`https://wa.me/${sanitizedClinicWa}?text=Halo%20Admin%20Amanah%20Tin's%20Center,%20saya%20ingin%20berkonsultasi%20seputar%20tumbuh%20kembang%20anak`" target="_blank" rel="noopener noreferrer" class="contact-item-link contact-link-wa">
+                    <span class="material-symbols-outlined">chat</span>
+                    <span>Chat WhatsApp Sekarang</span>
+                  </a>
                 </div>
               </div>
 
               <!-- Telepon -->
-              <div class="contact-item contact-item-compact">
-                <div class="contact-icon-circle-sm bg-primary-soft">
+              <div class="contact-item">
+                <div class="contact-icon-circle bg-primary-soft">
                   <span class="material-symbols-outlined">call</span>
                 </div>
-                <div>
-                  <span class="contact-compact-label">Telepon Klinik</span>
-                  <span class="contact-compact-val">(021) 1234 5678</span>
+                <div class="contact-item-info">
+                  <h4 class="contact-item-label">Telepon Klinik</h4>
+                  <p class="contact-item-val">(021) 1234 5678</p>
+                  <a href="tel:02112345678" class="contact-item-link">
+                    <span class="material-symbols-outlined">phone_forwarded</span>
+                    <span>Panggil Telepon Sekarang</span>
+                  </a>
                 </div>
               </div>
 
               <!-- Email -->
-              <div class="contact-item contact-item-compact">
-                <div class="contact-icon-circle-sm bg-tertiary-soft">
+              <div class="contact-item">
+                <div class="contact-icon-circle bg-tertiary-soft">
                   <span class="material-symbols-outlined">mail</span>
                 </div>
-                <div>
-                  <span class="contact-compact-label">Email Resmi</span>
-                  <span class="contact-compact-val">info@amanah-tinscenter.id</span>
+                <div class="contact-item-info">
+                  <h4 class="contact-item-label">Email Resmi</h4>
+                  <p class="contact-item-val">info@amanah-tinscenter.id</p>
+                  <a href="mailto:info@amanah-tinscenter.id?subject=Konsultasi%20Tumbuh%20Kembang%20Anak" class="contact-item-link">
+                    <span class="material-symbols-outlined">outgoing_mail</span>
+                    <span>Kirim Surel Sekarang</span>
+                  </a>
                 </div>
               </div>
 
@@ -399,7 +593,7 @@
                       <span class="hours-bold">08.00 – 15.00 WIB</span>
                     </li>
                     <li class="hours-row hours-closed">
-                      <span>Minggu & Libur Nasional:</span>
+                      <span>Minggu &amp; Libur Nasional:</span>
                       <span>Tutup (Reservasi Online Buka)</span>
                     </li>
                   </ul>
@@ -410,14 +604,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ==================== 10. FLOATING WHATSAPP BUTTON ==================== -->
-    <aside class="floating-wa-container" aria-label="Kontak Cepat WhatsApp">
-      <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" class="btn-floating-wa">
-        <span class="material-symbols-outlined">chat</span>
-        <span>Konsultasi WhatsApp</span>
-      </a>
-    </aside>
   </PublicLayout>
 </template>
 
@@ -495,35 +681,108 @@ const services = [
   }
 ]
 
-// 3. Team
+// 3. Team (Dengan Foto Asli & Kredensial Medis Resmi)
 const team = [
   {
-    icon: 'medical_services',
-    bg: 'team-bg-primary',
+    photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuARq7DzRwA-rJhJLIXBolnUBS70HG4EgQhQ6siQc5wOCBPmojR_dvk2D22zt1H83m9tdj8kembmDE-mZ3sWEljXK44nSgZaTnrAqm7C4QW5u4NZcr6AQoBKHsRfV9MuqhXxEuwQjpA75jDPOvR_R4jriqhbU3OZDs7qd2wemWAz8AYy-UczwQfqO5mn9qT_vBHKBRZDijRsi9u7y982VOU1jEuHl9v60nnn8nTiPH8',
+    specialtyBadge: 'Dokter Spesialis Anak',
+    str: 'SIP Aktif • 10 Th Pengalaman',
     name: 'dr. Raden Sarah Amalia, Sp.A',
-    role: 'Dokter Spesialis Anak & Tumbuh Kembang',
+    role: 'Dokter Spesialis Anak Konsultan',
     roleColor: 'role-primary',
-    bio: 'Fokus asesmen klinis, evaluasi milestone fisik & kognitif anak secara komprehensif.'
+    bio: 'Menangani asesmen klinis milestone fisik, saraf, kognitif anak, serta evaluasi diagnosis komprehensif.',
+    tags: ['Asesmen Klinis', 'Milestone Anak', 'Konsultasi Medis']
   },
   {
-    icon: 'record_voice_over',
-    bg: 'team-bg-secondary',
+    photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDEqiyk6121gv8ChNiZuew6FvZqYM6PDAblTcYiCp2zrKejXMcq6F6UwgjGu7Iaa3e4rXhIrp_ywvJu9Kz9EhZiKd2459Um-Gc6zqJkmD5lhWLepwgqsb7evjTW02DHYySTvbEICSv5mKabSc6kIEwah6t2brhAK9Ha_QJuZU78_R80wE4TxyfldjEjEqtUW1cwa3Hj7QA3-OuMXKmQRyIu4-9fb9bGbMCfwDx090c',
+    specialtyBadge: 'Kepala Terapis Wicara',
+    str: 'STR Kemenkes Aktif • 6 Th Pengalaman',
     name: 'Annisa Larasati, A.Md.TW',
     role: 'Terapis Wicara (Speech Pathologist)',
     roleColor: 'role-secondary',
-    bio: 'Spesialisasi artikulasi, stimulasi speech delay, serta kelancaran komunikasi dua arah.'
+    bio: 'Spesialisasi penanganan keterlambatan bicara (speech delay), artikulasi pengucapan, dan kelancaran bahasa.',
+    tags: ['Speech Delay', 'Artikulasi Fonem', 'Oral Motorik']
   },
   {
-    icon: 'accessibility_new',
-    bg: 'team-bg-tertiary',
-    name: 'Dimas Bagaswara, S.Tr.Kes',
-    role: 'Terapis Okupasi & Sensori Integrasi',
+    photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCqzaTQVtPUaU-jjH7JUkPgscxWU1F6ORXYUDhxi6OwEhZoL2SBGnzy7hEbs44MRtKcZBbwsTnFzF2l3eMKjbUQa0Z9W4BlJC8f0wAWn_6L8BvLrPsxdq6emLK0b9Q6JavjVgzOahGIeLB17EaAciv7FNpjFAQaTcfJj3_WWeQNp1weADSSiald3o28J8AEyY4nyowmBtpig9BqakgYufsRxF22-KKVgSr1dkshnOA',
+    specialtyBadge: 'Terapis Okupasi Senior',
+    str: 'STR Kemenkes Aktif • 5 Th Pengalaman',
+    name: 'Dimas Bagaswara, S.Tr.Kes (OT)',
+    role: 'Terapis Okupasi & Kemandirian Anak',
     roleColor: 'role-tertiary',
-    bio: 'Fokus regulasi sensori, kemandirian motorik, dan pelatihan integrasi sensori adaptif.'
+    bio: 'Fokus melatih koordinasi motorik halus (memegang sendok/pensil), kemandirian diri (ADL), dan postur tubuh.',
+    tags: ['Motorik Halus', 'Kemandirian Diri', 'Kekuatan Genggaman']
+  },
+  {
+    photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBBtaiTyNRvVyTC0twGu_A_OOgQaPPquYuuzHBM9n1Ox2rtWbSz7r0KQFKvbiPmm2hWx1hQE7R-oFMCgBlZjscdh2-McSZ83oQESA-0NjvPh0UX2UWifpBhfmLjk_H-ZojRnCI7RX-XGhyP2tyTKJDyud5c34H2kj50-7UjoFyauJh1a_2swq37hsQVrcU3gDK0P-5t1Fdc1oqXQ_7tUKjQ0Gz6zW5PT2-nHWAR6JI',
+    specialtyBadge: 'Praktisi C.SI Bersertifikat',
+    str: 'STR Kemenkes & Sertifikasi C.SI',
+    name: 'Nurul Fauziah, A.Md.OT, C.SI',
+    role: 'Praktisi Sensori Integrasi Pediatrik',
+    roleColor: 'role-secondary',
+    bio: 'Menangani modulasi sensori anak hiperaktif, hipersensitif tekstur & suara, serta keseimbangan vestibular tubuh.',
+    tags: ['Regulasi Sensori', 'Vestibular & Taktil', 'Keseimbangan']
   }
 ]
 
-// 4. Default Curated Blueprint Articles
+// 4. Cerita Ayah & Bunda (Testimoni & Kisah Nyata Perjalanan Terapi)
+const stories = [
+  {
+    parentName: 'Bunda Fitriani & Ayah Raditya',
+    parentLocation: 'Jagakarsa, Jakarta Selatan',
+    parentPhoto: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDndS1MEqhUoM1jUcloTszQuiVyvZQQTdkWTSuBfJTiomzP1PM9XqIRCM9jqFGt1cW7d3Leb19e2RyIVFI-ZAZVTtp0cqgL1J5nVzOeM9xb3jMOsV1syIVqmGBEzTpxgNh7DR4Bmof0JjfqdICLKa4vueP7V49v6bJx6jBVOILCbqk-mUAQWiGEt6MTKP0dWcxjtDpTGkGPMvUKtluVegL-I7DXLjkf67qRXyeHcC4',
+    service: 'Terapi Wicara (TW)',
+    serviceTagColor: 'tag-primary',
+    childName: 'Ananda Kenzo',
+    childAge: '3 Tahun 2 Bulan',
+    initialCondition: 'Speech delay berat, hanya bisa mengucap "mama" & "papa", sering tantrum hebat karena keinginannya tidak dipahami.',
+    quote: 'Awalnya saya cemas sekali membandingkan Kenzo dengan teman sebayanya. Di ATC, terapis Mbak Annisa sangat telaten dengan metode bermain tanpa paksaan. Setiap sesi selesai kami selalu diberi lembar evaluasi dan PR stimulasi di rumah. Sekarang Kenzo cerewet dan ceria bercerita!',
+    progressPoints: [
+      'Kosakata aktif melonjak 100+ kata baru',
+      'Mampu merangkai 3-4 kata ("Bunda mau susu di meja")',
+      'Tantrum berkurang drastis karena komunikasi lancar'
+    ],
+    duration: '16 Sesi (4 Bulan Terapi)'
+  },
+  {
+    parentName: 'Bunda Nadhira',
+    parentLocation: 'Pasar Minggu, Jakarta Selatan',
+    parentPhoto: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDA6AxaP_1sTKsevX0SNiWyRLSqBTmdOpthTzKUtdw2629F_zlaMj9qXVWQgswk5vS1vNJB6lex_af6gpEcXS26Q6i1UNwwm-hOYueJc0NUuz0KofHGQ4UIEKYpCwrZ0cN_dRkzJP0Xb_XZ19fdPzVRbHxXP_JNQQCjs57FaWxRIxDKyIzA8Itfn7C3kP0upzOwvfBovYcWgXxj-wyKin6fV78ESnwPCkweevSPvAM',
+    service: 'Sensori Integrasi (SI) & Okupasi',
+    serviceTagColor: 'tag-secondary',
+    childName: 'Ananda Aisyah',
+    childAge: '4 Tahun',
+    initialCondition: 'Hipersensitif sentuhan (takut rumput & pasir), histeris mendengar suara blender/pengering rambut, dan tidak bisa duduk tenang.',
+    quote: 'Ruang sensori integrasi di ATC sangat luas, bersih, dan peralatannya lengkap berstandar medis. Terapis menjelaskan akar masalah sensori Aisyah dengan sangat ilmiah namun mudah dipahami orang tua awam. Aisyah yang tadinya takut kotor kini senang sekali bermain di taman.',
+    progressPoints: [
+      'Berani menginjak rumput dan bermain sensory bin',
+      'Tenang saat terpapar suara bising di keramaian',
+      'Atensi dan fokus meningkat hingga 20 menit'
+    ],
+    duration: '20 Sesi (5 Bulan Terapi)'
+  },
+  {
+    parentName: 'Ayah Hendra & Bunda Maria',
+    parentLocation: 'Ciganjur, Jakarta Selatan',
+    parentPhoto: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCFnIGzFbZWa4l3SIk50aPn96KY27lU07tg9J5Jx2GS_IK0XvHXN-2DDskmjdAgWOWRof4YXiVpYcRdhAdGrHhLFY3kJeCrzAorWZhl9avFTC8Hz5N_hpNtpCjKHHW91WlUmRhbZG_Aa3ixQ3e6CjcMYtNQySfL50xEvTnG-4h6gNvGwU-HS77DVP5oW_jepXXh6PH-6aB_jyVORKqhzbEEd6cUG95ve4rUHJm8_Dg',
+    service: 'Terapi Okupasi (OT)',
+    serviceTagColor: 'tag-tertiary',
+    childName: 'Ananda Arkan',
+    childAge: '5 Tahun',
+    initialCondition: 'Kekuatan genggaman jari sangat lemah, belum bisa mengancing baju atau memegang sendok dengan benar, cepat lelah saat menulis.',
+    quote: 'Menjelang masuk TK B kami sangat khawatir Arkan tertinggal kemandiriannya. Mas Dimas di ATC melatih kekuatan motorik halus Arkan dengan pendekatan yang menyenangkan. Yang paling kami kagumi adalah pendekatan holistik ATC yang melibatkan kami sebagai partner terapi di rumah.',
+    progressPoints: [
+      'Bisa menulis namanya sendiri dengan genggaman mantap',
+      'Mandiri memakai dan melepas sepatu serta baju berkancing',
+      'Koordinasi dua tangan (bilateral) jauh lebih sinkron'
+    ],
+    duration: '12 Sesi (3 Bulan Terapi)'
+  }
+]
+
+const clinicWa = ref('6282188899900')
+
+// 5. Default Curated Blueprint Articles
 const blueprintArticles = [
   {
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD0Xzl7sWBmkpbXiFs2SnTon1VvVP6GRnXTOh5w9jaj3l9tj7v9CGSUffsN9KJOZouUuWL_xkSvYKDfVakN3dcTJon7v6pr5Hu4UI6jodCDXvrnbhInk2DrYm6p8PNCF_LI5J_jZ18kskooRZ7-x0nuhzb_Ez5BGvMd7NpmX2vwpkCIFUtc_INNaJbbGLiGSdivEEVZ8VIxfkc5EGTkqqUgQGRhMPQcpy5lqafqQgc',
@@ -567,10 +826,19 @@ const sectionIds = [
   'tentang-kami',
   'layanan',
   'tim-kami',
+  'testimoni',
   'artikel',
   'jadwal',
   'kontak'
 ]
+
+const sanitizedClinicWa = computed(() => {
+  let cleaned = String(clinicWa.value || '6282188899900').replace(/[^0-9]/g, '')
+  if (cleaned.startsWith('0')) {
+    cleaned = '62' + cleaned.slice(1)
+  }
+  return cleaned
+})
 
 function handleScroll() {
   const scrollPosition = window.scrollY + 130 // Navbar height offset + trigger buffer
@@ -612,9 +880,17 @@ onMounted(async () => {
   }
 
   try {
-    const res = await api.get('/articles?per_page=4')
-    if (res.data?.data && res.data.data.length >= 4) {
-      apiArticles.value = res.data.data
+    const [articlesRes, settingsRes] = await Promise.allSettled([
+      api.get('/articles?per_page=4'),
+      api.get('/settings')
+    ])
+
+    if (articlesRes.status === 'fulfilled' && articlesRes.value.data?.data && articlesRes.value.data.data.length >= 4) {
+      apiArticles.value = articlesRes.value.data.data
+    }
+
+    if (settingsRes.status === 'fulfilled' && settingsRes.value.data?.whatsapp) {
+      clinicWa.value = settingsRes.value.data.whatsapp
     }
   } catch {
     // Graceful fallback to blueprint articles
@@ -848,38 +1124,50 @@ section[id] {
 
 .trust-avatars {
   display: flex;
-}
-
-.trust-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 2px solid var(--surface-container-lowest);
-  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  margin-left: -10px;
 }
 
-.trust-avatar:first-child {
+.trust-avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2.5px solid #ffffff;
+  object-fit: cover;
+  margin-left: -10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease, z-index 0.2s ease;
+}
+
+.trust-avatar-img:first-child {
   margin-left: 0;
 }
 
-.avatar-tw {
-  background-color: var(--surface-container);
-  color: var(--primary);
+.trust-avatar-img:hover {
+  transform: translateY(-2px) scale(1.1);
+  z-index: 10;
 }
 
-.avatar-ot {
-  background-color: var(--secondary-fixed);
-  color: var(--secondary);
+.trust-avatar-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2.5px solid #ffffff;
+  background: linear-gradient(135deg, #006384 0%, #00839e 100%);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -10px;
+  box-shadow: 0 2px 8px rgba(0, 99, 132, 0.25);
 }
 
-.avatar-si {
-  background-color: var(--tertiary-fixed);
-  color: var(--tertiary);
+.star-rating-val {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #091d2e;
+  margin-left: 4px;
 }
 
 .trust-content {
@@ -1216,18 +1504,51 @@ section[id] {
 }
 
 .about-img-frame {
+  position: relative;
   border-radius: 1.25rem;
   overflow: hidden;
-  border: 1px solid rgba(191, 200, 206, 0.25);
-  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(191, 200, 206, 0.35);
+  box-shadow: 0 8px 24px -4px rgba(9, 29, 46, 0.08);
   background-color: var(--surface-container-lowest);
 }
 
 .about-img {
   width: 100%;
-  height: 300px;
+  height: 310px;
   object-fit: cover;
   display: block;
+  transition: transform 0.4s ease;
+}
+
+.about-img-frame:hover .about-img {
+  transform: scale(1.03);
+}
+
+.about-facility-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.94);
+  color: #006384;
+  font-family: var(--font-headline);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 4px 12px rgba(9, 29, 46, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.facility-dot {
+  width: 7px;
+  height: 7px;
+  background: #25d366;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.3);
 }
 
 .about-founders-capsule {
@@ -1461,101 +1782,585 @@ section[id] {
   max-width: 580px;
 }
 
-/* ==================== 6. TEAM SECTION ==================== */
+/* ==================== 6. TEAM SECTION (DENGAN FOTO ASLI & KREDENSIAL) ==================== */
 .team-section {
-  padding: 2.5rem 0 3.5rem;
+  padding: 3rem 0 4rem;
 }
 
 .team-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 1.75rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .team-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .team-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 .team-card {
   background-color: var(--surface-container-lowest);
   border-radius: 1.25rem;
-  padding: 2rem 1.5rem;
-  border: 1px solid rgba(191, 200, 206, 0.25);
-  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(191, 200, 206, 0.3);
+  box-shadow: 0 4px 20px -2px rgba(9, 29, 46, 0.06);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
 }
 
 .team-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lift);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px -6px rgba(9, 29, 46, 0.14);
 }
 
-.team-icon-circle {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
+.team-photo-wrap {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  background: #edf4fa;
+}
+
+.team-real-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.4s ease;
+}
+
+.team-card:hover .team-real-img {
+  transform: scale(1.05);
+}
+
+.team-photo-badge {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  background: rgba(0, 99, 132, 0.9);
+  color: #ffffff;
+  font-family: var(--font-headline);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  letter-spacing: 0.2px;
+}
+
+.team-str-badge {
+  position: absolute;
+  bottom: 0.85rem;
+  left: 0.85rem;
+  right: 0.85rem;
+  background: rgba(255, 255, 255, 0.92);
+  color: #203243;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 1.25rem;
+  gap: 0.35rem;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.team-icon-circle .material-symbols-outlined {
-  font-size: 34px;
+.team-str-badge .str-icon {
+  font-size: 15px;
+  color: #006384;
 }
 
-.team-bg-primary {
-  background-color: rgba(193, 232, 255, 0.6);
-  color: var(--primary);
-}
-
-.team-bg-secondary {
-  background-color: rgba(204, 239, 142, 0.6);
-  color: var(--secondary);
-}
-
-.team-bg-tertiary {
-  background-color: rgba(255, 220, 191, 0.6);
-  color: var(--tertiary);
+.team-card-content {
+  padding: 1.25rem 1.15rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .team-name {
   font-family: var(--font-headline);
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   color: var(--on-surface);
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
 }
 
 .team-role {
   display: inline-block;
   font-size: 12px;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-}
-
-.role-primary {
-  color: var(--primary);
-}
-
-.role-secondary {
-  color: var(--secondary);
-}
-
-.role-tertiary {
-  color: var(--tertiary);
+  font-weight: 700;
+  margin-bottom: 0.65rem;
+  line-height: 1.3;
 }
 
 .team-bio {
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--on-surface-variant);
   line-height: 1.5;
+  margin-bottom: 0.85rem;
+  flex: 1;
+}
+
+.team-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.team-tag {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #006384;
+  background: #edf6ff;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid rgba(193, 232, 255, 0.7);
+}
+
+.team-card-action {
+  border-top: 1px solid rgba(191, 200, 206, 0.3);
+  padding-top: 0.85rem;
+}
+
+.team-consult-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--font-headline);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.team-consult-link:hover {
+  color: #00839e;
+  transform: translateX(3px);
+}
+
+.team-consult-link .material-symbols-outlined {
+  font-size: 16px;
+}
+
+/* ==================== 7. CERITA AYAH & BUNDA (TESTIMONIALS SECTION) ==================== */
+.testimonials-section {
+  padding: 4rem 0 4.5rem;
+  background: linear-gradient(180deg, #f7faff 0%, #edf4fc 100%);
+  border-top: 1px solid rgba(191, 200, 206, 0.35);
+  border-bottom: 1px solid rgba(191, 200, 206, 0.35);
+}
+
+.testimonials-header {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.testimonials-header .badge-icon {
+  font-size: 15px;
+  color: #e11d48;
+}
+
+/* Social Proof Stats Bar */
+.testimonials-stats-bar {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  background: #ffffff;
+  padding: 1.25rem 1.5rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 20px -2px rgba(9, 29, 46, 0.06);
+  border: 1px solid rgba(191, 200, 206, 0.3);
+}
+
+@media (min-width: 640px) {
+  .testimonials-stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .testimonials-stats-bar {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+}
+
+.stat-pill-stars {
+  display: flex;
+  color: #f59e0b;
+  gap: 1px;
+}
+
+.stat-pill-stars .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.stat-pill-icon {
+  font-size: 28px;
+  color: #006384;
+}
+
+.stat-pill-val {
+  display: block;
+  font-family: var(--font-headline);
+  font-size: 16px;
+  font-weight: 800;
+  color: #091d2e;
+  line-height: 1.2;
+}
+
+.stat-pill-lbl {
+  display: block;
+  font-size: 11.5px;
+  color: #556066;
+  font-weight: 600;
+}
+
+/* In-Depth Story Cards Grid */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.story-card {
+  background: #ffffff;
+  border-radius: 1.5rem;
+  padding: 1.75rem 1.6rem;
+  border: 1px solid rgba(191, 200, 206, 0.4);
+  box-shadow: 0 6px 24px -4px rgba(9, 29, 46, 0.07);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.story-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px -6px rgba(9, 29, 46, 0.13);
+}
+
+.story-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.story-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.story-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #006384;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.story-parent-name {
+  font-family: var(--font-headline);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #091d2e;
+  line-height: 1.2;
+}
+
+.story-verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #0d7066;
+  margin-top: 2px;
+}
+
+.story-verified-badge .material-symbols-outlined {
+  font-size: 13px;
+  color: #0d7066;
+}
+
+.story-parent-loc {
+  display: block;
+  font-size: 10.5px;
+  color: #70787e;
+}
+
+.story-service-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* Child case box */
+.story-case-box {
+  background: #f8fafc;
+  border-left: 3.5px solid #006384;
+  padding: 0.75rem 0.85rem;
+  border-radius: 0 10px 10px 0;
+  margin-bottom: 1.15rem;
+}
+
+.story-child-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 13px;
+  margin-bottom: 0.35rem;
+}
+
+.story-child-row .text-primary {
+  font-size: 18px;
+  color: #006384;
+}
+
+.story-child-title {
+  font-size: 13px;
+  color: #091d2e;
+}
+
+.story-condition {
+  font-size: 12px;
+  color: #556066;
+  line-height: 1.45;
+}
+
+.case-label {
+  font-weight: 700;
+  color: #334155;
+  margin-right: 0.3rem;
+}
+
+/* Quote text */
+.story-quote-body {
+  position: relative;
+  margin-bottom: 1.25rem;
+  flex: 1;
+}
+
+.story-quote-mark {
+  font-size: 24px;
+  color: #cbd5e1;
+  position: absolute;
+  top: -6px;
+  left: -2px;
+  opacity: 0.7;
+}
+
+.story-quote-text {
+  font-size: 13.5px;
+  color: #334155;
+  line-height: 1.6;
+  font-style: italic;
+  padding-left: 1.5rem;
+  margin: 0;
+}
+
+/* Before After highlights */
+.story-progress-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.progress-box-title {
+  display: block;
+  font-family: var(--font-headline);
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #166534;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.45rem;
+}
+
+.progress-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.progress-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 12.5px;
+  color: #1e293b;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.progress-list .check-icon {
+  font-size: 16px;
+  color: #16a34a;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+/* Card footer */
+.story-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.85rem;
+  border-top: 1px solid #edf2f7;
+}
+
+.story-stars {
+  display: flex;
+  color: #f59e0b;
+  gap: 1px;
+}
+
+.story-stars .material-symbols-outlined {
+  font-size: 16px;
+}
+
+.story-duration {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+}
+
+/* Testimonials CTA Strip */
+.testimonials-cta-strip {
+  background: linear-gradient(135deg, #006384 0%, #00839e 100%);
+  color: #ffffff;
+  border-radius: 1.5rem;
+  padding: 2.25rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  box-shadow: 0 16px 36px -4px rgba(0, 99, 132, 0.25);
+}
+
+@media (min-width: 1024px) {
+  .testimonials-cta-strip {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.cta-strip-content {
+  max-width: 650px;
+}
+
+.cta-strip-title {
+  font-family: var(--font-headline);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+
+.cta-strip-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.cta-strip-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+}
+
+.btn-strip-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.6rem;
+  background: #ffffff;
+  color: #006384;
+  border-radius: var(--radius-full);
+  font-family: var(--font-headline);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.btn-strip-primary:hover {
+  transform: translateY(-2px);
+  background: #f0f7ff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.btn-strip-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background: #25d366;
+  color: #ffffff;
+  border-radius: var(--radius-full);
+  font-family: var(--font-headline);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-strip-wa:hover {
+  transform: translateY(-2px);
+  background: #1ebc59;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4);
 }
 
 /* ==================== 7. ARTICLES SECTION ==================== */
@@ -2048,16 +2853,36 @@ section[id] {
 .contact-item-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 13px;
+  gap: 0.4rem;
+  font-size: 12.5px;
   font-weight: 700;
   color: var(--primary);
   text-decoration: none;
-  margin-top: 0.5rem;
+  margin-top: 0.65rem;
+  padding: 0.35rem 0.85rem;
+  background-color: rgba(0, 99, 132, 0.08);
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+  width: fit-content;
 }
 
 .contact-item-link:hover {
-  text-decoration: underline;
+  background-color: var(--primary);
+  color: #ffffff;
+  transform: translateX(3px);
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 99, 132, 0.2);
+}
+
+.contact-item-link.contact-link-wa {
+  color: #1b873f;
+  background-color: rgba(37, 211, 102, 0.12);
+}
+
+.contact-item-link.contact-link-wa:hover {
+  background-color: #25D366;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
 }
 
 .contact-item-link .material-symbols-outlined {
@@ -2104,42 +2929,5 @@ section[id] {
   color: var(--tertiary);
   font-weight: 500;
   padding-top: 0.2rem;
-}
-
-/* ==================== 10. FLOATING WHATSAPP PILL ==================== */
-.floating-wa-container {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  z-index: 50;
-  display: none;
-}
-
-@media (min-width: 640px) {
-  .floating-wa-container {
-    display: block;
-  }
-}
-
-.btn-floating-wa {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.35rem;
-  background-color: var(--secondary);
-  color: var(--on-secondary);
-  border-radius: var(--radius-full);
-  font-family: var(--font-headline);
-  font-size: 14.5px;
-  font-weight: 600;
-  text-decoration: none;
-  box-shadow: 0 6px 20px rgba(75, 103, 22, 0.35);
-  border: 1px solid rgba(204, 239, 142, 0.5);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.btn-floating-wa:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 24px rgba(75, 103, 22, 0.45);
 }
 </style>

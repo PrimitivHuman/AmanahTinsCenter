@@ -55,9 +55,10 @@
               <!-- Large Main Clinic Environment Image (Left) -->
               <div class="showcase-main-item">
                 <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGHaeXj5FSPH8qWwJyC4ep546jMQik-lsrp_2N6PyTb95luOGo-Kxs5Ip0f3MmD7YaB17RrEZEKEAc3ICbleGScW_2FewRBXRKieHDQ1XdO_ifE3ngnOjgaRH1N5-VRR8y073_4EvbLgVpMhmWDYRa1v-veSsXcoJWtA8FmudxOlq4e54X2jKh9S0le8jGb3oBD8crTdwOHa204yrgguOc-xgoRjbq3a_Am-dT3Ig"
+                  src="/ruang-terapi-atc.jpg"
                   alt="Fasilitas Ruang Terapi Ramah Anak Amanah Tin's Center"
                   class="showcase-main-img"
+                  loading="lazy"
                 />
                 <div class="showcase-overlay-gradient"></div>
 

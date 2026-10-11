@@ -1,5 +1,16 @@
 <template>
   <PublicLayout>
+    <!-- ==================== STICKY READING PROGRESS BAR ==================== -->
+    <div
+      class="reading-progress-track"
+      role="progressbar"
+      :aria-valuenow="Math.round(readingProgress)"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
+      <div class="reading-progress-fill" :style="{ width: readingProgress + '%' }"></div>
+    </div>
+
     <div class="article-detail-page">
       <!-- ==================== BREADCRUMBS & TOP NAV-BACK STRIP ==================== -->
       <div class="breadcrumb-strip">
@@ -78,17 +89,25 @@
               </div>
             </div>
 
-            <!-- Social Share Strip -->
+            <!-- Social Share & Bookmark Strip -->
             <div class="meta-bar-right">
               <span class="share-label">Bagikan:</span>
               <button @click="shareWhatsApp" class="share-btn share-btn-wa" title="Bagikan ke WhatsApp">
                 <span class="material-symbols-outlined">chat</span>
               </button>
-              <button @click="shareGeneral" class="share-btn share-btn-social" title="Bagikan ke Media Sosial">
+              <button @click="shareGeneral" class="share-btn share-btn-social" title="Bagikan ke Media Sosial / Perangkat">
                 <span class="material-symbols-outlined">share</span>
               </button>
               <button @click="copyLink" class="share-btn share-btn-link" title="Salin Tautan Artikel">
                 <span class="material-symbols-outlined">link</span>
+              </button>
+              <button
+                @click="handleToggleSave"
+                class="share-btn share-btn-bookmark"
+                :class="{ 'is-active': isCurrentSaved }"
+                :title="isCurrentSaved ? 'Hapus dari daftar bacaan' : 'Simpan Artikel'"
+              >
+                <span class="material-symbols-outlined" :class="{ 'fill': isCurrentSaved }">bookmark</span>
               </button>
             </div>
           </div>
@@ -124,8 +143,37 @@
                 </p>
               </div>
 
+              <!-- Mobile Quick Table of Contents Dropdown (Mobile & Tablet) -->
+              <div class="mobile-toc-accordion">
+                <button
+                  @click="isMobileTocOpen = !isMobileTocOpen"
+                  class="btn-mobile-toc"
+                  type="button"
+                  aria-label="Buka Daftar Isi Cepat"
+                >
+                  <div class="mobile-toc-label">
+                    <span class="material-symbols-outlined mobile-toc-icon">format_list_bulleted</span>
+                    <span>Daftar Isi Cepat ({{ tableOfContents.length }} Bagian)</span>
+                  </div>
+                  <span class="material-symbols-outlined mobile-toc-chevron" :class="{ 'is-rotated': isMobileTocOpen }">expand_more</span>
+                </button>
+                <div v-show="isMobileTocOpen" class="mobile-toc-dropdown">
+                  <a
+                    v-for="item in tableOfContents"
+                    :key="item.id"
+                    :href="'#' + item.id"
+                    @click.prevent="scrollToSection(item.id); isMobileTocOpen = false"
+                    class="mobile-toc-link"
+                    :class="{ 'is-active': activeTocId === item.id }"
+                  >
+                    <span class="toc-bullet">{{ item.num }}</span>
+                    <span class="toc-link-text">{{ item.title }}</span>
+                  </a>
+                </div>
+              </div>
+
               <!-- Section 1: Milestone Usia -->
-              <section class="editorial-card section-milestone">
+              <section id="sec-milestone" class="editorial-card section-milestone">
                 <div class="section-title-row">
                   <div class="step-num-circle circle-blue">1</div>
                   <h2 class="editorial-h2">Milestone Perkembangan Bicara Sesuai Rentang Usia</h2>
@@ -174,7 +222,7 @@
               </section>
 
               <!-- Section 2: Red Flags -->
-              <section class="editorial-card section-redflags">
+              <section id="sec-redflags" class="editorial-card section-redflags">
                 <div class="section-title-row">
                   <div class="step-num-circle circle-red">2</div>
                   <h2 class="editorial-h2">Gejala Red Flags yang Perlu Diwaspadai Segera</h2>
@@ -223,7 +271,7 @@
               </section>
 
               <!-- Section 3: Mitos vs Fakta -->
-              <section class="editorial-card section-myths">
+              <section id="sec-myths" class="editorial-card section-myths">
                 <div class="section-title-row">
                   <div class="step-num-circle circle-green">3</div>
                   <h2 class="editorial-h2">Mitos vs Fakta Seputar Keterlambatan Bicara</h2>
@@ -267,7 +315,7 @@
               </div>
 
               <!-- Section 4: Proses Asesmen -->
-              <section class="editorial-card section-process">
+              <section id="sec-process" class="editorial-card section-process">
                 <div class="section-title-row">
                   <div class="step-num-circle circle-blue">4</div>
                   <h2 class="editorial-h2">Bagaimana Proses Asesmen di Amanah Tin's Center?</h2>
@@ -301,7 +349,7 @@
               </section>
 
               <!-- Section 5: Tips Stimulasi Sederhana di Rumah -->
-              <section class="editorial-card section-tips">
+              <section id="sec-tips" class="editorial-card section-tips">
                 <div class="section-title-row">
                   <div class="step-num-circle circle-green">5</div>
                   <h2 class="editorial-h2">Tips Stimulasi Sederhana di Rumah untuk Ayah &amp; Bunda</h2>
@@ -348,16 +396,59 @@
                   <span class="tag-pill">#ParentingAnak</span>
                   <span class="tag-pill">#TumbuhKembang</span>
                 </div>
-                <button @click="saveArticle" class="btn-save-article">
-                  <span class="material-symbols-outlined">bookmark</span>
-                  <span>{{ isSaved ? 'Tersimpan' : 'Simpan Artikel' }}</span>
-                </button>
+                <div class="bottom-action-buttons">
+                  <button @click="shareWhatsApp" class="btn-bottom-share" title="Bagikan ke WhatsApp">
+                    <span class="material-symbols-outlined">chat</span>
+                    <span>Bagikan WA</span>
+                  </button>
+                  <button @click="copyLink" class="btn-bottom-share" title="Salin Tautan">
+                    <span class="material-symbols-outlined">link</span>
+                    <span>Salin Link</span>
+                  </button>
+                  <button
+                    @click="handleToggleSave"
+                    class="btn-save-article"
+                    :class="{ 'is-saved': isCurrentSaved }"
+                    :title="isCurrentSaved ? 'Hapus dari daftar bacaan' : 'Simpan ke daftar bacaan'"
+                  >
+                    <span class="material-symbols-outlined" :class="{ 'fill': isCurrentSaved }">bookmark</span>
+                    <span>{{ isCurrentSaved ? 'Tersimpan di Bookmark' : 'Simpan Artikel' }}</span>
+                  </button>
+                </div>
               </div>
             </article>
 
             <!-- Right: Sticky Sidebar (4 Cols) -->
             <aside class="article-sidebar-col">
               <div class="sidebar-sticky-wrap">
+                <!-- Widget: Sticky Table of Contents (Daftar Isi Cepat) -->
+                <nav class="sidebar-widget widget-toc" aria-label="Daftar Isi Artikel">
+                  <div class="toc-header">
+                    <div class="toc-header-left">
+                      <span class="material-symbols-outlined toc-head-icon">format_list_bulleted</span>
+                      <h3 class="toc-title">Daftar Isi Cepat</h3>
+                    </div>
+                    <span class="toc-badge-count">{{ tableOfContents.length }} Bagian</span>
+                  </div>
+                  <ul class="toc-list">
+                    <li
+                      v-for="item in tableOfContents"
+                      :key="item.id"
+                      class="toc-item"
+                    >
+                      <a
+                        :href="'#' + item.id"
+                        @click.prevent="scrollToSection(item.id)"
+                        class="toc-link"
+                        :class="{ 'is-active': activeTocId === item.id }"
+                      >
+                        <span class="toc-bullet">{{ item.num }}</span>
+                        <span class="toc-text">{{ item.title }}</span>
+                        <span v-if="activeTocId === item.id" class="material-symbols-outlined toc-arrow">chevron_right</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
                 <!-- Widget 1: CTA Asesmen Jagakarsa -->
                 <div class="sidebar-widget widget-cta">
                   <div class="widget-icon-box">
@@ -383,25 +474,6 @@
                   </div>
                 </div>
 
-                <!-- Widget 2: Download PDF Checklist -->
-                <div class="sidebar-widget widget-download">
-                  <div class="download-head">
-                    <div class="download-icon-circle">
-                      <span class="material-symbols-outlined">download</span>
-                    </div>
-                    <div>
-                      <h4 class="download-title">Panduan Gratis untuk Orang Tua</h4>
-                      <span class="download-type">E-Booklet PDF (A4)</span>
-                    </div>
-                  </div>
-                  <p class="download-desc">
-                    Unduh Lembar Pantau Mandiri: <em>"Checklist Tumbuh Kembang &amp; Milestone Bicara 0–5 Tahun"</em> untuk diprint di rumah.
-                  </p>
-                  <button @click="downloadChecklist" class="btn-download-pdf">
-                    <span class="material-symbols-outlined">picture_as_pdf</span>
-                    <span>Unduh Gratis (PDF)</span>
-                  </button>
-                </div>
 
                 <!-- Widget 3: Artikel Terkait Lainnya -->
                 <div class="sidebar-widget widget-related">
@@ -516,15 +588,186 @@
           </div>
         </div>
       </section>
+      <!-- ==================== TOAST NOTIFICATION ==================== -->
+      <Teleport to="body">
+        <Transition name="toast-fade">
+          <div v-if="toast.visible" class="article-toast" :class="`toast-${toast.type}`" role="status" aria-live="polite">
+            <span class="material-symbols-outlined toast-icon">{{ toast.icon }}</span>
+            <div class="toast-body">
+              <h5 class="toast-title">{{ toast.title }}</h5>
+              <p class="toast-desc">{{ toast.message }}</p>
+            </div>
+            <button @click="toast.visible = false" class="toast-close" aria-label="Tutup notifikasi">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+        </Transition>
+      </Teleport>
     </div>
   </PublicLayout>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import PublicLayout from '../layouts/PublicLayout.vue'
+import { useBookmarks } from '../composables/useBookmarks'
 
-const isSaved = ref(false)
+// Article identity for persistent bookmarking
+const currentArticle = {
+  id: 1,
+  slug: 'tanda-anak-butuh-terapi-wicara',
+  title: 'Tanda-Tanda Anak Membutuhkan Terapi Wicara & Kapan Waktu yang Tepat untuk Asesmen',
+  category: 'Terapi Wicara',
+  excerpt: 'Kenali red flags keterlambatan bicara sejak dini, mulai dari minimnya babbling hingga kesulitan mengekspresikan kosakata sehari-hari.',
+  published_at: '2025-05-12',
+  read_time: '5 Menit Baca',
+  thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBO1kXEDRGcl9uLHHIxuzrHbMEVCebsxbPxzaaTqtVCXQy9bUlwDcZPdhw47bJrhz8Prdhk2l-txkJMZ2rADTKo_hiQVaX4kw2nXAwrXXkg3VzxJEdiO7eI13V6VMGi1Zx0esHjvzza0Q32HUg_wXx738DcL-nG5zugVbs0eXq3YI3SHIInta1wpVtve2zwmSJG4NXSNusz1yJutx9OLw8Me1odCBesAAbJrPCynY8'
+}
+
+// Persistent Bookmark Composable
+const { isBookmarked, toggleBookmark } = useBookmarks()
+const isCurrentSaved = computed(() => isBookmarked(currentArticle.slug))
+
+// Toast state & handler
+const toast = ref({
+  visible: false,
+  title: '',
+  message: '',
+  icon: 'check_circle',
+  type: 'success'
+})
+let toastTimer = null
+
+function showToast({ title, message, icon = 'check_circle', type = 'success' }) {
+  if (toastTimer) clearTimeout(toastTimer)
+  toast.value = { visible: true, title, message, icon, type }
+  toastTimer = setTimeout(() => {
+    toast.value.visible = false
+  }, 3400)
+}
+
+function handleToggleSave() {
+  const added = toggleBookmark(currentArticle)
+  if (added) {
+    showToast({
+      title: 'Artikel Disimpan!',
+      message: 'Artikel berhasil disimpan ke daftar bacaan Anda.',
+      icon: 'bookmark_added',
+      type: 'success'
+    })
+  } else {
+    showToast({
+      title: 'Bookmark Dihapus',
+      message: 'Artikel telah dihapus dari daftar bacaan Anda.',
+      icon: 'bookmark_remove',
+      type: 'info'
+    })
+  }
+}
+
+// Table of Contents (Daftar Isi Cepat)
+const tableOfContents = [
+  { id: 'sec-milestone', num: '01', title: 'Milestone Bicara Sesuai Usia' },
+  { id: 'sec-redflags',  num: '02', title: 'Gejala Red Flags Diwaspadai' },
+  { id: 'sec-myths',     num: '03', title: 'Mitos vs Fakta Speech Delay' },
+  { id: 'sec-process',   num: '04', title: 'Proses Asesmen di Klinik ATC' },
+  { id: 'sec-tips',      num: '05', title: 'Tips Stimulasi Sederhana di Rumah' },
+]
+const activeTocId = ref('sec-milestone')
+const isMobileTocOpen = ref(false)
+
+function scrollToSection(id) {
+  const el = document.getElementById(id)
+  if (!el) return
+  const yOffset = -95
+  const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset
+  window.scrollTo({ top: y, behavior: 'smooth' })
+  activeTocId.value = id
+}
+
+// Sticky Reading Progress Bar (Calculated smoothly from editorial container)
+const readingProgress = ref(0)
+
+function handleScroll() {
+  const articleEl = document.querySelector('.article-content-col')
+  if (!articleEl) return
+
+  const rect = articleEl.getBoundingClientRect()
+  const articleTop = rect.top + window.scrollY
+  const articleHeight = rect.height
+  const windowHeight = window.innerHeight
+  const scrollY = window.scrollY
+
+  const totalScrollable = articleHeight - windowHeight + 150
+  if (totalScrollable <= 0) {
+    readingProgress.value = 100
+  } else {
+    const currentScrolled = scrollY - (articleTop - 100)
+    const progress = Math.min(100, Math.max(0, (currentScrolled / totalScrollable) * 100))
+    readingProgress.value = progress
+  }
+
+  // Scroll spy for Table of Contents
+  const scrollPosition = scrollY + 140
+  for (let i = tableOfContents.length - 1; i >= 0; i--) {
+    const section = document.getElementById(tableOfContents[i].id)
+    if (section && section.offsetTop <= scrollPosition) {
+      activeTocId.value = tableOfContents[i].id
+      break
+    }
+  }
+}
+
+// Social Share & Web Share API
+function shareWhatsApp() {
+  const url = window.location.href
+  const text = encodeURIComponent(`Rekomendasi bacaan penting untuk Ayah & Bunda dari Klinik Amanah Tin's Center:\n\n"Tanda-Tanda Anak Membutuhkan Terapi Wicara & Kapan Waktu yang Tepat untuk Asesmen"\n\nBaca artikel selengkapnya di: ${url}`)
+  window.open(`https://wa.me/?text=${text}`, '_blank')
+}
+
+async function shareGeneral() {
+  const url = window.location.href
+  const title = 'Tanda-Tanda Anak Membutuhkan Terapi Wicara - Amanah Tin\'s Center'
+  const text = 'Panduan mengenali tanda keterlambatan bicara anak dan waktu yang tepat untuk asesmen tumbuh kembang di Jagakarsa.'
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title, text, url })
+      showToast({
+        title: 'Berhasil Dibagikan',
+        message: 'Terima kasih telah membagikan informasi edukatif ini.',
+        icon: 'share',
+        type: 'success'
+      })
+      return
+    } catch (err) {
+      if (err.name === 'AbortError') return
+    }
+  }
+
+  // Fallback if Web Share is unavailable
+  copyLink()
+}
+
+async function copyLink() {
+  try {
+    await navigator.clipboard.writeText(window.location.href)
+    showToast({
+      title: 'Tautan Berhasil Disalin!',
+      message: 'Tautan artikel telah disalin ke papan klip. Siap dibagikan ke WhatsApp / media sosial.',
+      icon: 'link',
+      type: 'success'
+    })
+  } catch (e) {
+    showToast({
+      title: 'Gagal Menyalin Otomatis',
+      message: 'Silakan salin URL dari bilah alamat browser Anda.',
+      icon: 'error',
+      type: 'info'
+    })
+  }
+}
+
 
 // Sidebar related articles
 const displayRelated = [
@@ -579,36 +822,15 @@ const bottomArticles = [
   }
 ]
 
-function shareWhatsApp() {
-  const url = window.location.href
-  const text = encodeURIComponent(`Baca artikel menarik: "Tanda-Tanda Anak Membutuhkan Terapi Wicara & Kapan Waktu yang Tepat untuk Asesmen" di Amanah Tin's Center: ${url}`)
-  window.open(`https://wa.me/?text=${text}`, '_blank')
-}
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  handleScroll()
+})
 
-function shareGeneral() {
-  if (navigator.share) {
-    navigator.share({
-      title: 'Tanda-Tanda Anak Membutuhkan Terapi Wicara & Kapan Waktu yang Tepat untuk Asesmen',
-      url: window.location.href
-    }).catch(() => {})
-  } else {
-    copyLink()
-  }
-}
-
-function copyLink() {
-  navigator.clipboard.writeText(window.location.href)
-  alert('Tautan artikel berhasil disalin ke clipboard!')
-}
-
-function saveArticle() {
-  isSaved.value = !isSaved.value
-  alert(isSaved.value ? 'Artikel berhasil disimpan ke daftar bacaan Anda!' : 'Artikel dihapus dari daftar simpan.')
-}
-
-function downloadChecklist() {
-  alert('Mengunduh "Checklist Tumbuh Kembang & Milestone Bicara 0–5 Tahun" (PDF)...')
-}
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+  if (toastTimer) clearTimeout(toastTimer)
+})
 </script>
 
 <style scoped>
@@ -1527,76 +1749,6 @@ function downloadChecklist() {
   color: var(--secondary);
 }
 
-/* Widget 2: Download PDF */
-.widget-download {
-  background: var(--surface-container-lowest);
-  border: 1px solid rgba(191, 200, 206, 0.35);
-}
-
-.download-head {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-
-.download-icon-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--secondary-fixed);
-  color: var(--secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.download-icon-circle .material-symbols-outlined {
-  font-size: 20px;
-}
-
-.download-title {
-  font-family: var(--font-headline);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--on-surface);
-  line-height: 1.2;
-}
-
-.download-type {
-  font-size: 11.5px;
-  color: var(--on-surface-variant);
-}
-
-.download-desc {
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--on-surface-variant);
-  margin-bottom: 1rem;
-}
-
-.btn-download-pdf {
-  width: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border: 2px solid var(--primary);
-  background: transparent;
-  color: var(--primary);
-  padding: 0.65rem 1rem;
-  border-radius: 9999px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-download-pdf:hover {
-  background: var(--primary);
-  color: var(--on-primary);
-}
 
 /* Widget 3: Related Articles */
 .widget-related {
@@ -2031,5 +2183,380 @@ function downloadChecklist() {
   .featured-img {
     height: 300px;
   }
+}
+
+/* ==================== STICKY READING PROGRESS BAR ==================== */
+.reading-progress-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 99, 132, 0.08);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.reading-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #006384 0%, #00a2c7 60%, #16a34a 100%);
+  transition: width 0.08s linear;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 10px rgba(0, 162, 199, 0.7);
+}
+
+/* Share & Bookmark Buttons in Meta Bar */
+.share-btn-bookmark {
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+}
+
+.share-btn-bookmark:hover {
+  background: #fef3c7;
+  color: #b45309;
+  transform: translateY(-2px);
+}
+
+.share-btn-bookmark.is-active {
+  background: #fef3c7;
+  color: #b45309;
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.2);
+}
+
+.share-btn-bookmark.is-active .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1;
+}
+
+/* ==================== MOBILE TOC ACCORDION ==================== */
+.mobile-toc-accordion {
+  display: none;
+  background: #ffffff;
+  border: 1.5px solid rgba(0, 99, 132, 0.18);
+  border-radius: 1rem;
+  padding: 0.65rem 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 14px rgba(9, 29, 46, 0.04);
+}
+
+@media (max-width: 1024px) {
+  .mobile-toc-accordion {
+    display: block;
+  }
+}
+
+.btn-mobile-toc {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  padding: 0.25rem 0;
+  cursor: pointer;
+  font-family: var(--font-headline);
+  font-size: 14px;
+  font-weight: 700;
+  color: #091d2e;
+}
+
+.mobile-toc-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobile-toc-chevron {
+  font-size: 22px;
+  color: #006384;
+  transition: transform 0.25s ease;
+}
+
+.mobile-toc-chevron.is-rotated {
+  transform: rotate(180deg);
+}
+
+.mobile-toc-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(191, 200, 206, 0.3);
+}
+
+.mobile-toc-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.mobile-toc-link.is-active {
+  background: #e0f2fe;
+  color: #006384;
+  font-weight: 700;
+}
+
+/* ==================== STICKY TABLE OF CONTENTS (SIDEBAR) ==================== */
+.widget-toc {
+  background: #ffffff;
+  border: 1.5px solid rgba(0, 99, 132, 0.15);
+  box-shadow: 0 6px 20px -2px rgba(9, 29, 46, 0.05);
+  transition: border-color 0.2s;
+}
+
+.widget-toc:hover {
+  border-color: rgba(0, 99, 132, 0.3);
+}
+
+.toc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(191, 200, 206, 0.35);
+}
+
+.toc-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.toc-head-icon {
+  font-size: 20px;
+  color: #006384;
+}
+
+.toc-title {
+  font-family: var(--font-headline);
+  font-size: 15px;
+  font-weight: 800;
+  color: #091d2e;
+  margin: 0;
+}
+
+.toc-badge-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: #006384;
+  background: #e0f2fe;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.toc-link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.toc-bullet {
+  font-size: 11px;
+  font-weight: 800;
+  color: #64748b;
+  background: #f1f5f9;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.toc-text {
+  flex: 1;
+}
+
+.toc-arrow {
+  font-size: 18px;
+  color: #006384;
+  margin-left: auto;
+}
+
+.toc-link:hover {
+  background: #f0f7fb;
+  color: #006384;
+}
+
+.toc-link:hover .toc-bullet {
+  background: #e0f2fe;
+  color: #006384;
+}
+
+.toc-link.is-active {
+  background: #e0f2fe;
+  color: #006384;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0, 99, 132, 0.08);
+}
+
+.toc-link.is-active .toc-bullet {
+  background: #006384;
+  color: #ffffff;
+}
+
+/* ==================== BOTTOM ACTION BUTTONS ==================== */
+.bottom-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.btn-bottom-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #f8fafc;
+  color: #006384;
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  font-family: var(--font-headline);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-bottom-share:hover {
+  background: #e0f2fe;
+  border-color: #006384;
+  color: #006384;
+  transform: translateY(-2px);
+}
+
+.btn-bottom-share .material-symbols-outlined {
+  font-size: 16px;
+}
+
+.btn-save-article.is-saved {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid rgba(180, 83, 9, 0.25);
+  box-shadow: 0 2px 8px rgba(180, 83, 9, 0.15);
+}
+
+.btn-save-article.is-saved:hover {
+  background: #fde68a;
+  color: #92400e;
+}
+
+.btn-save-article.is-saved .material-symbols-outlined {
+  color: #b45309;
+  font-variation-settings: 'FILL' 1;
+}
+
+/* ==================== TOAST NOTIFICATION ==================== */
+.article-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(9, 29, 46, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #ffffff;
+  padding: 0.85rem 1.35rem;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  z-index: 99999;
+  font-family: var(--font-headline);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  max-width: 90vw;
+}
+
+.toast-icon {
+  font-size: 22px;
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+.toast-success .toast-icon {
+  color: #4ade80;
+}
+
+.toast-info .toast-icon {
+  color: #facc15;
+}
+
+.toast-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.toast-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.25;
+  color: #ffffff;
+}
+
+.toast-desc {
+  font-size: 12px;
+  margin: 0;
+  color: #cbd5e1;
+  font-family: var(--font-body);
+  line-height: 1.35;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+  border-radius: 50%;
+  padding: 0.2rem;
+}
+
+.toast-close:hover {
+  color: #ffffff;
+}
+
+.toast-fade-enter-active,
+.toast-fade-leave-active {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast-fade-enter-from,
+.toast-fade-leave-to {
+  opacity: 0;
+  transform: translate(-50%, 20px);
 }
 </style>
