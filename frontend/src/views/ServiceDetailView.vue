@@ -600,6 +600,9 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useClinicSettings } from '../composables/useClinicSettings'
+
+const { waLink, waLinkEncoded } = useClinicSettings()
 import { useRoute } from 'vue-router'
 import PublicLayout from '../layouts/PublicLayout.vue'
 
@@ -634,7 +637,7 @@ const getCheckedSymptomsWaUrl = computed(() => {
   const currentSvc = service.value ? service.value.name : 'Layanan'
   const list = checkedSymptoms.value.map((s, i) => `${i + 1}. ${s}`).join('%0A')
   const text = `Halo Admin Amanah Tin's Center, saya ingin konsultasi mengenai ${currentSvc}. Dari deteksi mandiri di website, anak saya mengalami gejala berikut:%0A${list}%0AMohon info jadwal asesmen awal dan saran langkahnya.`
-  return `https://wa.me/6281234567890?text=${text}`
+  return waLinkEncoded(text)
 })
 
 const selectPackage = (pkgTitle) => {
@@ -646,7 +649,7 @@ const selectPackage = (pkgTitle) => {
 const getPackageWaUrl = (pkg) => {
   const currentSvc = service.value ? service.value.name : 'Layanan'
   const text = `Halo Admin Amanah Tin's Center, saya tertarik mendaftar "${pkg.title}" untuk ${currentSvc}. Apakah jadwal terapis masih tersedia?`
-  return `https://wa.me/6281234567890?text=${encodeURIComponent(text)}`
+  return waLink(text)
 }
 
 const bookingForm = ref({
@@ -659,7 +662,7 @@ const bookingForm = ref({
 })
 
 const waUrl = computed(() => {
-  return 'https://wa.me/6281234567890'
+  return waLink()
 })
 
 const submitBooking = () => {
@@ -672,7 +675,7 @@ const submitBooking = () => {
     `- Paket Pilihan: ${bookingForm.value.selectedPackage || '-'}` +
     `- Catatan/Keluhan: ${bookingForm.value.notes || '-'}`
   
-  window.open(`https://wa.me/6281234567890?text=${text}`, '_blank')
+  window.open(waLinkEncoded(text), '_blank')
 }
 
 const allServicesData = {

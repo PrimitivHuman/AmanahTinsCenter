@@ -4,37 +4,82 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\ClinicSetting;
 use App\Models\TeamMember;
-use App\Models\Appointment;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
+    /**
+     * Ringkasan dashboard admin.
+     * Catatan: pendaftaran/konsultasi kini diarahkan ke WhatsApp, sehingga
+     * statistik appointment tidak lagi disertakan.
+     */
     public function stats()
     {
-        $totalArticles = Article::count();
-        $totalTeam = TeamMember::where('is_active', true)->count();
-        $totalAppointments = Appointment::count();
-        $pendingAppointments = Appointment::where('status', 'pending')->count();
-        $confirmedAppointments = Appointment::where('status', 'confirmed')->count();
-        $completedAppointments = Appointment::where('status', 'completed')->count();
-        $totalViews = Article::sum('views_count');
+        $stats = Cache::remember('admin_dashboard_stats', 60, function () {
+            return [
+                'published_articles' => Article::where('is_published', true)->count(),
+                'draft_articles' => Article::where('is_published', false)->count(),
+                'total_team' => TeamMember::where('is_active', true)->count(),
+                'total_views' => (int) Article::sum('views_count'),
+            ];
+        });
 
-        $recentAppointments = Appointment::latest()->limit(5)->get();
-        $recentArticles = Article::latest()->limit(5)->get();
+        $articleFields = ['id', 'title', 'category', 'author', 'image', 'views_count', 'is_published', 'created_at'];
+
+        $popularArticles = Article::where('is_published', true)
+            ->orderByDesc('views_count')
+            ->limit(5)
+            ->get($articleFields);
+
+        $recentArticles = Article::latest()->limit(5)->get($articleFields);
+
+        $setting = ClinicSetting::first();
+
+        // Kesehatan konten
+        $health = [
+            'articles_without_image' => Article::whereNull('image')->orWhere('image', '')->count(),
+            'team_without_photo' => $this->teamWithoutPhoto(),
+        ];
+
+        // Kelengkapan pengaturan klinik
+        $requiredSettings = [
+            'whatsapp' => 'Nomor WhatsApp',
+            'address' => 'Alamat klinik',
+            'weekday_hours' => 'Jam operasional (hari kerja)',
+            'email' => 'Email klinik',
+        ];
+        $missingSettings = [];
+        foreach ($requiredSettings as $field => $label) {
+            if (!$setting || empty($setting->{$field})) {
+                $missingSettings[] = $label;
+            }
+        }
 
         return response()->json([
-            'stats' => [
-                'total_articles' => $totalArticles,
-                'total_team' => $totalTeam,
-                'total_appointments' => $totalAppointments,
-                'pending_appointments' => $pendingAppointments,
-                'confirmed_appointments' => $confirmedAppointments,
-                'completed_appointments' => $completedAppointments,
-                'total_views' => $totalViews,
-            ],
-            'recent_appointments' => $recentAppointments,
+            'stats' => $stats,
+            'popular_articles' => $popularArticles,
             'recent_articles' => $recentArticles,
+            'health' => $health,
+            'missing_settings' => $missingSettings,
+            'whatsapp' => $setting?->whatsapp,
         ]);
+    }
+
+    private function teamWithoutPhoto(): int
+    {
+        $table = (new TeamMember())->getTable();
+        $column = collect(['image', 'photo'])->first(
+            fn ($c) => \Illuminate\Support\Facades\Schema::hasColumn($table, $c)
+        );
+
+        if (!$column) {
+            return 0;
+        }
+
+        return TeamMember::where('is_active', true)
+            ->where(fn ($q) => $q->whereNull($column)->orWhere($column, ''))
+            ->count();
     }
 }

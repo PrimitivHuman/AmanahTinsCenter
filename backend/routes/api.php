@@ -23,9 +23,10 @@ Route::get('/articles/{slug}', [ArticleController::class, 'show']);
 // Team (Public)
 Route::get('/team', [TeamController::class, 'index']);
 
-// Appointments / Schedule (Public submission)
-Route::post('/appointments', [AppointmentController::class, 'store']);
-Route::post('/registrations', [AppointmentController::class, 'store']);
+// Appointments / Schedule (Public submission) - DINONAKTIFKAN:
+// pendaftaran & konsultasi kini diarahkan langsung ke WhatsApp.
+// Route::post('/appointments', [AppointmentController::class, 'store']);
+// Route::post('/registrations', [AppointmentController::class, 'store']);
 
 // Clinic Settings (Public)
 Route::get('/settings', [SettingController::class, 'show']);
@@ -56,10 +57,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/admin/team/{id}', [TeamController::class, 'update']);
     Route::delete('/admin/team/{id}', [TeamController::class, 'destroy']);
 
-    // Admin Appointments / Schedules
-    Route::get('/admin/appointments', [AppointmentController::class, 'index']);
-    Route::put('/admin/appointments/{id}', [AppointmentController::class, 'update']);
-    Route::delete('/admin/appointments/{id}', [AppointmentController::class, 'destroy']);
+    // Admin Appointments / Schedules - DINONAKTIFKAN (data lama tetap aman di tabel `appointments`)
+    // Route::get('/admin/appointments', [AppointmentController::class, 'index']);
+    // Route::put('/admin/appointments/{id}', [AppointmentController::class, 'update']);
+    // Route::delete('/admin/appointments/{id}', [AppointmentController::class, 'destroy']);
 
     // Admin Clinic Settings
     Route::put('/admin/settings', [SettingController::class, 'update']);

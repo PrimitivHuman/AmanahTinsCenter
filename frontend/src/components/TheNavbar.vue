@@ -132,7 +132,7 @@
               <span>Jadwalkan Konsultasi</span>
             </router-link>
             <a
-              href="https://wa.me/6282188899900?text=Halo%20Amanah%20Tin's%20Center,%20saya%20ingin%20konsultasi%20tumbuh%20kembang%20anak"
+              :href="waLink('Halo Amanah Tin\'s Center, saya ingin konsultasi tumbuh kembang anak')"
               target="_blank"
               rel="noopener noreferrer"
               class="btn-drawer-wa"
@@ -170,6 +170,9 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { activeSection } from '../composables/useActiveSection'
+import { useClinicSettings } from '../composables/useClinicSettings'
+
+const { waLink } = useClinicSettings()
 
 const route = useRoute()
 const router = useRouter()

@@ -62,19 +62,19 @@
           <ul class="footer-contact">
             <li>
               <span class="material-symbols-outlined text-sm">location_on</span>
-              <span>Jl. Raya Jagakarsa, Jakarta Selatan</span>
+              <span>{{ settings?.address || 'Jl. Raya Jagakarsa, Jakarta Selatan' }}</span>
             </li>
             <li>
-              <span class="material-symbols-outlined text-sm">phone</span>
-              <a href="tel:+6281234567890">+62 812-3456-7890</a>
+              <span class="material-symbols-outlined text-sm">chat</span>
+              <a :href="waLink()" target="_blank" rel="noopener noreferrer">{{ settings?.whatsapp ? '+' + whatsappNumber : 'WhatsApp Klinik' }}</a>
             </li>
             <li>
               <span class="material-symbols-outlined text-sm">mail</span>
-              <a href="mailto:info@amanahtinscenter.com">info@amanahtinscenter.com</a>
+              <a :href="`mailto:${settings?.email || 'info@amanahtinscenter.com'}`">{{ settings?.email || 'info@amanahtinscenter.com' }}</a>
             </li>
             <li>
               <span class="material-symbols-outlined text-sm">schedule</span>
-              <span>Senin–Sabtu: 08.00 – 17.00 WIB</span>
+              <span>{{ settings?.weekday_hours || 'Senin–Sabtu: 08.00 – 17.00 WIB' }}</span>
             </li>
           </ul>
         </div>
@@ -91,6 +91,9 @@
 </template>
 
 <script setup>
+import { useClinicSettings } from '../composables/useClinicSettings'
+
+const { settings, whatsappNumber, waLink } = useClinicSettings()
 </script>
 
 <style scoped>

@@ -33,7 +33,7 @@
                 <span>Panduan Memilih Terapi</span>
                 <span class="material-symbols-outlined" style="font-size:18px">psychology_alt</span>
               </a>
-              <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Amanah%20Tin's%20Center,%20saya%20ingin%20konsultasi%20mengenai%20layanan%20terapi%20untuk%20anak%20saya" target="_blank" rel="noopener noreferrer" class="btn-outline-secondary hero-btn-wa">
+              <a :href="waLink('Halo Admin Amanah Tin\'s Center, saya ingin konsultasi mengenai layanan terapi untuk anak saya')" target="_blank" rel="noopener noreferrer" class="btn-outline-secondary hero-btn-wa">
                 <span class="material-symbols-outlined fill" style="font-size:20px; color: #25d366">chat</span>
                 <span>Konsultasi Awal WhatsApp</span>
               </a>
@@ -462,7 +462,7 @@
             </p>
           </div>
           <div class="cta-actions">
-            <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Amanah%20Tin's%20Center,%20saya%20ingin%20jadwalkan%20asesmen%20untuk%20anak%20saya" target="_blank" rel="noopener noreferrer" class="btn-wa">
+            <a :href="waLink('Halo Admin Amanah Tin\'s Center, saya ingin jadwalkan asesmen untuk anak saya')" target="_blank" rel="noopener noreferrer" class="btn-wa">
               <span class="material-symbols-outlined fill" style="font-size:22px">chat</span>
               <span>Chat WhatsApp Admin</span>
             </a>
@@ -480,6 +480,9 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useClinicSettings } from '../composables/useClinicSettings'
+
+const { waLink } = useClinicSettings()
 import PublicLayout from '../layouts/PublicLayout.vue'
 
 const activeSymptomIndex = ref(0)
@@ -565,7 +568,7 @@ const currentSymptom = computed(() => {
 
 const getWhatsAppMatcherUrl = (sym) => {
   const text = `Halo Admin Amanah Tin's Center, saya telah membaca panduan di website. Anak saya mengalami tanda pada bidang ${sym.title}: "${sym.parentWorry}". Saya ingin konsultasi awal mengenai program ${sym.matchedTherapy}.`
-  return `https://wa.me/6281234567890?text=${encodeURIComponent(text)}`
+  return waLink(text)
 }
 
 const trustItems = [

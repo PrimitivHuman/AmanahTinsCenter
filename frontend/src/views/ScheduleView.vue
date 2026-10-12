@@ -154,7 +154,7 @@
 
               <!-- Channel Matrix -->
               <div class="channels">
-                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="channel-item">
+                <a :href="waLink()" target="_blank" rel="noopener" class="channel-item">
                   <div class="channel-icon channel-icon--green">
                     <span class="material-symbols-outlined" style="font-size:20px">phone_iphone</span>
                   </div>
@@ -217,7 +217,7 @@
               <!-- CTA -->
               <div class="contact-cta">
                 <a
-                  href="https://wa.me/6281234567890?text=Halo%20Amanah%20Tin's%20Center,%20saya%20ingin%20mendaftarkan%20anak%20saya%20untuk%20jadwal%20terapi"
+                  :href="waLink('Halo Amanah Tin\'s Center, saya ingin mendaftarkan anak saya untuk jadwal terapi')"
                   target="_blank"
                   rel="noopener"
                   class="btn-daftar"
@@ -253,7 +253,7 @@
                 Setiap anak berhak mendapatkan stimulasi dan dukungan terbaik di usia emasnya. Bersama tim terapis wicara, okupasi, dan sensori integrasi Amanah Tin's Center, mari ciptakan masa depan yang mandiri dan bahagia.
               </p>
               <div class="motivational-actions">
-                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="btn-wa-secondary">
+                <a :href="waLink()" target="_blank" rel="noopener" class="btn-wa-secondary">
                   <span class="material-symbols-outlined" style="font-size:20px">chat_bubble</span>
                   <span>Hubungi Tim Terapis via WhatsApp</span>
                 </a>
@@ -293,6 +293,9 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useClinicSettings } from '../composables/useClinicSettings'
+
+const { waLink } = useClinicSettings()
 import PublicLayout from '../layouts/PublicLayout.vue'
 </script>
 

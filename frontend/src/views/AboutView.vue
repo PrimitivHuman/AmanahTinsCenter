@@ -338,7 +338,7 @@
             </div>
 
             <div class="cta-actions-wrap">
-              <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" class="btn-wa-sage">
+              <a :href="waLink()" target="_blank" rel="noopener noreferrer" class="btn-wa-sage">
                 <span class="material-symbols-outlined">chat_bubble</span>
                 <span>Hubungi WhatsApp Kami</span>
               </a>
@@ -356,6 +356,9 @@
 
 <script setup>
 import PublicLayout from '../layouts/PublicLayout.vue'
+import { useClinicSettings } from '../composables/useClinicSettings'
+
+const { waLink } = useClinicSettings()
 </script>
 
 <style scoped>

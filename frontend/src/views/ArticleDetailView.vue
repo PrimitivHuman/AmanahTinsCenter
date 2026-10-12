@@ -463,7 +463,7 @@
                       <span>Daftar Asesmen Awal</span>
                       <span class="material-symbols-outlined">arrow_forward</span>
                     </router-link>
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" class="btn-widget-secondary">
+                    <a :href="waLink()" target="_blank" rel="noopener noreferrer" class="btn-widget-secondary">
                       <span class="material-symbols-outlined">chat</span>
                       <span>Tanya Terlebih Dahulu via WA</span>
                     </a>
@@ -576,7 +576,7 @@
             </div>
 
             <div class="reg-right">
-              <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" class="btn-banner-wa">
+              <a :href="waLink()" target="_blank" rel="noopener noreferrer" class="btn-banner-wa">
                 <span class="material-symbols-outlined">chat</span>
                 <span>Hubungi WhatsApp Klinik</span>
               </a>
@@ -611,6 +611,9 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import PublicLayout from '../layouts/PublicLayout.vue'
 import { useBookmarks } from '../composables/useBookmarks'
+import { useClinicSettings } from '../composables/useClinicSettings'
+
+const { waLink } = useClinicSettings()
 
 // Article identity for persistent bookmarking
 const currentArticle = {

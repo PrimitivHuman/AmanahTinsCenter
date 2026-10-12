@@ -18,7 +18,7 @@ import AdminArticlesView from '../views/admin/ArticlesView.vue'
 import AdminArticleFormView from '../views/admin/ArticleFormView.vue'
 import AdminTeamView from '../views/admin/TeamView.vue'
 import AdminSettingsView from '../views/admin/SettingsView.vue'
-import AdminScheduleView from '../views/admin/ScheduleView.vue'
+// import AdminScheduleView from '../views/admin/ScheduleView.vue' // dinonaktifkan: pendaftaran via WhatsApp
 
 const routes = [
   // Public routes
@@ -43,7 +43,8 @@ const routes = [
       { path: 'artikel/baru', name: 'admin-article-create', component: AdminArticleFormView },
       { path: 'artikel/:id/edit', name: 'admin-article-edit', component: AdminArticleFormView },
       { path: 'tim-kami', name: 'admin-team', component: AdminTeamView },
-      { path: 'jadwal', name: 'admin-schedule', component: AdminScheduleView },
+      // Fitur Janji & Pendaftaran dinonaktifkan (alur pendaftaran diarahkan ke WhatsApp)
+      { path: 'jadwal', redirect: '/admin/dashboard' },
       { path: 'pengaturan', name: 'admin-settings', component: AdminSettingsView },
     ]
   },

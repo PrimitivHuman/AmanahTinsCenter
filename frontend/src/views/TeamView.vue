@@ -185,7 +185,7 @@
             <p>Membutuhkan jadwal terapis spesifik atau ingin menyesuaikan hari terapi setelah jam sekolah? Tim administrasi klinik siap membantu mencocokkan jadwal terapis yang paling nyaman untuk si Kecil.</p>
           </div>
           <a
-            href="https://wa.me/6281234567890?text=Halo%20Admin%20Amanah%20Tin's%20Center,%20saya%20ingin%20konsultasi%20mengenai%20jadwal%20dan%20pilihan%20terapis%20untuk%20anak%20saya"
+            :href="waLink('Halo Admin Amanah Tin\'s Center, saya ingin konsultasi mengenai jadwal dan pilihan terapis untuk anak saya')"
             target="_blank"
             rel="noopener noreferrer"
             class="footnote-link"
@@ -353,7 +353,7 @@
               </p>
             </div>
             <div class="cta-actions">
-              <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Amanah%20Tin's%20Center,%20saya%20ingin%20konsultasi%20jadwal%20dengan%20tim%20terapis" target="_blank" rel="noopener noreferrer" class="btn-wa">
+              <a :href="waLink('Halo Admin Amanah Tin\'s Center, saya ingin konsultasi jadwal dengan tim terapis')" target="_blank" rel="noopener noreferrer" class="btn-wa">
                 <span class="material-symbols-outlined" style="font-size:20px">chat</span>
                 <span>Konsultasi via WhatsApp</span>
               </a>
@@ -383,6 +383,9 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useClinicSettings } from '../composables/useClinicSettings'
+
+const { waLink } = useClinicSettings()
 import PublicLayout from '../layouts/PublicLayout.vue'
 
 // Photos from blueprint (google AI-generated images)
@@ -761,7 +764,7 @@ onUnmounted(() => {
 
 const getTherapistWaUrl = (member) => {
   const text = `Halo Admin Amanah Tin's Center, saya ingin reservasi jadwal asesmen/terapi bersama ${member.name} (${member.specialty}). Jadwal praktik: ${member.schedule}. Mohon info ketersediaan slotnya.`
-  return `https://wa.me/6281234567890?text=${encodeURIComponent(text)}`
+  return waLink(text)
 }
 </script>
 

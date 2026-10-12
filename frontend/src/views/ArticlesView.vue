@@ -187,7 +187,7 @@
             </p>
           </div>
           <div class="cta-actions">
-            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="btn-wa">
+            <a :href="waLink()" target="_blank" rel="noopener" class="btn-wa">
               <span class="material-symbols-outlined" style="font-size:20px">chat</span>
               <span>Konsultasi via WhatsApp</span>
             </a>
@@ -206,6 +206,9 @@
 import { ref, computed, onMounted } from 'vue'
 import PublicLayout from '../layouts/PublicLayout.vue'
 import api from '../services/api'
+import { useClinicSettings } from '../composables/useClinicSettings'
+
+const { waLink } = useClinicSettings()
 import { useBookmarks } from '../composables/useBookmarks'
 
 const articles = ref([])

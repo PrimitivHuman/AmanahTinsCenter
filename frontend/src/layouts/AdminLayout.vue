@@ -14,11 +14,6 @@
           </div>
         </div>
 
-        <div class="status-pill" v-if="!isCollapsed">
-          <span class="pulse-dot"></span>
-          <span>Sistem Terhubung</span>
-        </div>
-
         <!-- Navigation Menu -->
         <nav class="sidebar-nav">
           <router-link to="/admin/dashboard" class="nav-item" active-class="nav-item-active">
@@ -26,10 +21,7 @@
             <span class="nav-label" v-if="!isCollapsed">Dashboard Ringkasan</span>
           </router-link>
 
-          <router-link to="/admin/jadwal" class="nav-item" active-class="nav-item-active">
-            <span class="material-symbols-outlined">calendar_month</span>
-            <span class="nav-label" v-if="!isCollapsed">Janji & Pendaftaran</span>
-          </router-link>
+          <!-- Menu "Janji & Pendaftaran" dinonaktifkan: pendaftaran kini langsung via WhatsApp -->
 
           <router-link to="/admin/artikel" class="nav-item" active-class="nav-item-active">
             <span class="material-symbols-outlined">menu_book</span>
@@ -87,14 +79,9 @@
         </div>
 
         <div class="topbar-right">
-          <div class="sync-badge">
-            <span class="material-symbols-outlined">cloud_done</span>
-            <span>MySQL Terhubung</span>
-          </div>
-
-          <a href="/jadwal-pendaftaran" target="_blank" class="quick-btn">
-            <span class="material-symbols-outlined">add</span>
-            <span>Form Pasien Baru</span>
+          <a :href="waLink('Halo Admin Amanah Tin\'s Center, ini pesan uji dari portal admin.')" target="_blank" rel="noopener noreferrer" class="quick-btn" title="Buka chat WhatsApp klinik">
+            <span class="material-symbols-outlined">chat</span>
+            <span>WhatsApp Klinik</span>
           </a>
         </div>
       </header>
@@ -111,6 +98,9 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { useClinicSettings } from '../composables/useClinicSettings'
+
+const { waLink } = useClinicSettings()
 
 defineProps({
   title: {
@@ -174,7 +164,7 @@ async function handleLogout() {
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .brand-avatar {
@@ -200,35 +190,6 @@ async function handleLogout() {
 .brand-sub {
   font-size: 0.75rem;
   color: var(--on-surface-variant, #40484d);
-}
-
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(204, 239, 142, 0.45);
-  border: 1px solid rgba(75, 103, 22, 0.25);
-  color: #354e00;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  width: fit-content;
-}
-
-.pulse-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #4b6716;
-  animation: pulse 1.8s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(0.9); opacity: 0.7; }
-  50% { transform: scale(1.3); opacity: 1; }
-  100% { transform: scale(0.9); opacity: 0.7; }
 }
 
 .sidebar-nav {
@@ -413,19 +374,6 @@ async function handleLogout() {
   display: flex;
   align-items: center;
   gap: 1rem;
-}
-
-.sync-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.375rem 0.875rem;
-  border-radius: 9999px;
-  background: var(--surface-container-low, #edf4ff);
-  border: 1px solid rgba(191, 200, 206, 0.4);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--secondary, #4b6716);
 }
 
 .quick-btn {
