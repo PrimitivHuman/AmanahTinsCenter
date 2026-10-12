@@ -2,291 +2,437 @@
   <AdminLayout title="Dashboard Ringkasan">
     <!-- Welcome Banner -->
     <div class="dash-welcome-card">
+      <div class="welcome-decor-circle circle-1" aria-hidden="true"></div>
+      <div class="welcome-decor-circle circle-2" aria-hidden="true"></div>
+
       <div class="dash-welcome-content">
-        <span class="welcome-chip">Pusat Kendali Administrasi</span>
+        <div class="welcome-chip">
+          <span class="material-symbols-outlined chip-icon">verified_user</span>
+          <span>Pusat Kendali Administrasi</span>
+        </div>
         <h1 class="welcome-title">Selamat Datang, {{ auth.user?.name || 'Administrator' }} 👋</h1>
         <p class="welcome-desc">
-          Kelola artikel edukasi, profil tim terapis, serta kontak WhatsApp klinik Amanah Tin's Center.
-          Pendaftaran dan konsultasi orang tua kini langsung masuk melalui WhatsApp.
+          Pantau perkembangan konten edukasi, artikel populer, profil tim terapis spesialis, serta kontak WhatsApp klinik Amanah Tin's Center secara terpadu.
         </p>
+
+        <!-- Quick metadata tags on mobile & desktop -->
+        <div class="welcome-meta-row">
+          <span class="meta-tag">
+            <span class="material-symbols-outlined">schedule</span>
+            <span>{{ todayFormatted }}</span>
+          </span>
+          <span class="meta-tag">
+            <span class="material-symbols-outlined">chat</span>
+            <span>WhatsApp Reservasi Aktif</span>
+          </span>
+        </div>
       </div>
-      <div class="dash-welcome-action">
-        <router-link to="/admin/artikel/baru" class="btn-primary-pill">
+
+      <div class="dash-welcome-actions">
+        <router-link to="/admin/artikel/baru" class="btn-banner-primary">
           <span class="material-symbols-outlined">edit_note</span>
           <span>Tulis Artikel Baru</span>
+        </router-link>
+        <router-link to="/admin/tim-kami" class="btn-banner-secondary">
+          <span class="material-symbols-outlined">person_add</span>
+          <span>Kelola Tim Terapis</span>
         </router-link>
       </div>
     </div>
 
-    <!-- Error state -->
-    <div v-if="error" class="error-banner" role="alert">
-      <span class="material-symbols-outlined">error</span>
-      <span>{{ error }}</span>
-      <button class="btn-retry" @click="fetchDashboardData">Coba Lagi</button>
-    </div>
-
-    <!-- Settings completeness warning -->
-    <div v-if="!loading && missingSettings.length" class="warn-banner" role="status">
-      <span class="material-symbols-outlined">warning</span>
-      <div class="warn-text">
-        <strong>Pengaturan klinik belum lengkap:</strong>
-        {{ missingSettings.join(', ') }}.
+    <!-- Error State Alert -->
+    <div v-if="error" class="alert-banner error-banner" role="alert">
+      <div class="alert-icon-wrap">
+        <span class="material-symbols-outlined">error</span>
       </div>
-      <router-link to="/admin/pengaturan" class="link-more">Lengkapi</router-link>
+      <div class="alert-content">
+        <strong class="alert-title">Gagal Memuat Data</strong>
+        <p class="alert-desc">{{ error }}</p>
+      </div>
+      <button class="btn-alert-action" @click="fetchDashboardData">
+        <span class="material-symbols-outlined">refresh</span>
+        <span>Coba Lagi</span>
+      </button>
     </div>
 
-    <!-- Stat Cards Grid -->
+    <!-- Missing Settings Alert -->
+    <div v-if="!loading && missingSettings.length" class="alert-banner warn-banner" role="status">
+      <div class="alert-icon-wrap">
+        <span class="material-symbols-outlined">warning</span>
+      </div>
+      <div class="alert-content">
+        <strong class="alert-title">Lengkapi Konfigurasi Klinik</strong>
+        <p class="alert-desc">
+          Data berikut belum diisi: <strong>{{ missingSettings.join(', ') }}</strong>.
+          Lengkapi agar informasi di website publik dan kontak WhatsApp tampil optimal.
+        </p>
+      </div>
+      <router-link to="/admin/pengaturan" class="btn-alert-action warn-action">
+        <span>Lengkapi</span>
+        <span class="material-symbols-outlined">arrow_forward</span>
+      </router-link>
+    </div>
+
+    <!-- 4 Stat Cards Grid -->
     <div class="stats-grid">
+      <!-- Skeleton Loading State -->
       <template v-if="loading">
-        <div v-for="n in 4" :key="n" class="stat-card">
-          <div class="skeleton sk-icon"></div>
-          <div class="skeleton sk-value"></div>
-          <div class="skeleton sk-label"></div>
+        <div v-for="n in 4" :key="n" class="stat-card skeleton-stat-card">
+          <div class="stat-top">
+            <div class="skeleton-shimmer sk-icon"></div>
+            <div class="skeleton-shimmer sk-badge"></div>
+          </div>
+          <div class="skeleton-shimmer sk-value"></div>
+          <div class="skeleton-shimmer sk-label"></div>
+          <div class="skeleton-shimmer sk-footer"></div>
         </div>
       </template>
 
+      <!-- Loaded Stats -->
       <template v-else>
         <!-- Stat 1: Published Articles -->
-        <div class="stat-card">
+        <div class="stat-card stat-card-hover">
           <div class="stat-top">
             <div class="stat-icon-wrap teal-bg">
               <span class="material-symbols-outlined">menu_book</span>
             </div>
             <span class="stat-badge orange-badge" v-if="stats.draft_articles > 0">
-              {{ stats.draft_articles }} Draft
+              {{ stats.draft_articles }} Draft Tersimpan
+            </span>
+            <span class="stat-badge green-badge" v-else>
+              Semua Terbit
             </span>
           </div>
           <div class="stat-value">{{ stats.published_articles ?? 0 }}</div>
-          <div class="stat-label">Artikel Terbit</div>
+          <div class="stat-label">Artikel Edukasi Terbit</div>
+          <div class="stat-footer">
+            <router-link to="/admin/artikel" class="stat-footer-link">
+              <span>Kelola semua artikel</span>
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </router-link>
+          </div>
         </div>
 
         <!-- Stat 2: Active Therapists -->
-        <div class="stat-card">
+        <div class="stat-card stat-card-hover">
           <div class="stat-top">
             <div class="stat-icon-wrap green-bg">
               <span class="material-symbols-outlined">clinical_notes</span>
             </div>
-            <span class="stat-badge orange-badge" v-if="health.team_without_photo > 0">
-              {{ health.team_without_photo }} tanpa foto
-            </span>
+            <span class="stat-badge green-badge">Tenaga Ahli Medis</span>
           </div>
           <div class="stat-value">{{ stats.total_team ?? 0 }}</div>
-          <div class="stat-label">Terapis Aktif</div>
+          <div class="stat-label">Terapis Aktif Terdaftar</div>
+          <div class="stat-footer">
+            <router-link to="/admin/tim-kami" class="stat-footer-link">
+              <span>Kelola data tim terapis</span>
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </router-link>
+          </div>
         </div>
 
-        <!-- Stat 3: Total views -->
-        <div class="stat-card">
+        <!-- Stat 3: Total Views -->
+        <div class="stat-card stat-card-hover">
           <div class="stat-top">
             <div class="stat-icon-wrap amber-bg">
               <span class="material-symbols-outlined">visibility</span>
             </div>
+            <span class="stat-badge amber-badge">Akumulasi Interaksi</span>
           </div>
           <div class="stat-value">{{ formatNumber(stats.total_views) }}</div>
           <div class="stat-label">Total Pembaca Artikel</div>
+          <div class="stat-footer">
+            <span class="stat-footer-text">
+              <span class="material-symbols-outlined">trending_up</span>
+              <span>Minat edukasi orang tua</span>
+            </span>
+          </div>
         </div>
 
-        <!-- Stat 4: WhatsApp -->
-        <div class="stat-card">
+        <!-- Stat 4: WhatsApp Pendaftaran -->
+        <div class="stat-card stat-card-hover stat-card-wa">
           <div class="stat-top">
-            <div class="stat-icon-wrap blue-bg">
+            <div class="stat-icon-wrap wa-bg">
               <span class="material-symbols-outlined">chat</span>
             </div>
             <span :class="['stat-badge', whatsapp ? 'green-badge' : 'orange-badge']">
-              {{ whatsapp ? 'Aktif' : 'Belum diatur' }}
+              {{ whatsapp ? 'Jalur Aktif' : 'Belum Diatur' }}
             </span>
           </div>
-          <div class="stat-value stat-value-sm">{{ displayWhatsapp }}</div>
-          <div class="stat-label">WhatsApp Pendaftaran</div>
-          <div class="wa-actions">
-            <a :href="waLink('Halo Admin Amanah Tin\'s Center, ini pesan uji dari portal admin.')"
-               target="_blank" rel="noopener noreferrer" class="wa-test">
-              <span class="material-symbols-outlined">send</span> Uji Chat
+          <div class="stat-value stat-value-wa">{{ displayWhatsapp }}</div>
+          <div class="stat-label">WhatsApp Pendaftaran &amp; Konsultasi</div>
+          <div class="stat-footer wa-footer-actions">
+            <a
+              :href="waLink('Halo Admin Amanah Tin\'s Center, ini pesan uji dari portal admin.')"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-wa-test"
+              title="Kirim pesan uji coba ke WhatsApp klinik"
+            >
+              <span class="material-symbols-outlined">send</span>
+              <span>Uji Chat</span>
             </a>
-            <router-link to="/admin/pengaturan" class="wa-edit">Ubah</router-link>
+            <router-link to="/admin/pengaturan" class="btn-wa-edit">
+              <span class="material-symbols-outlined">edit</span>
+              <span>Ubah Nomor</span>
+            </router-link>
           </div>
         </div>
       </template>
     </div>
 
-    <!-- Main Content Split -->
-    <div class="dash-split-grid">
-      <!-- Left: Popular & content health -->
-      <div class="dash-main-col">
-        <div class="dash-box">
-          <div class="box-header">
-            <div>
-              <h2 class="box-title">Artikel Terpopuler</h2>
-              <p class="box-sub">5 artikel terbit dengan pembaca terbanyak</p>
+    <!-- Main Content: Atas (Artikel Terpopuler) & Bawah (Sekilas Tim Terapis) -->
+    <div class="dash-main-grid">
+      <!-- Section Atas: Artikel Terpopuler -->
+      <section class="dash-card popular-section">
+        <div class="card-header">
+          <div class="header-titles">
+            <div class="header-icon-badge">
+              <span class="material-symbols-outlined">hotel_class</span>
             </div>
-            <router-link to="/admin/artikel" class="link-more">
-              <span>Kelola Artikel</span>
-              <span class="material-symbols-outlined">chevron_right</span>
-            </router-link>
+            <div>
+              <h2 class="card-title">Artikel Terpopuler</h2>
+              <p class="card-subtitle">5 materi edukasi yang paling sering dibaca oleh orang tua</p>
+            </div>
           </div>
-
-          <div v-if="loading" class="loading-wrap">
-            <div class="spinner-small"></div>
-            <span>Memuat data...</span>
-          </div>
-
-          <div v-else-if="popularArticles.length === 0" class="empty-state">
-            <span class="material-symbols-outlined empty-icon">article</span>
-            <p>Belum ada artikel terbit.</p>
-          </div>
-
-          <div v-else class="table-responsive">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Judul</th>
-                  <th>Kategori</th>
-                  <th>Pembaca</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(art, i) in popularArticles" :key="art.id">
-                  <td class="rank-cell">{{ i + 1 }}</td>
-                  <td>
-                    <div class="patient-name">{{ art.title }}</div>
-                    <div class="parent-meta">{{ art.author }}</div>
-                  </td>
-                  <td><span class="service-pill">{{ art.category }}</span></td>
-                  <td><strong>{{ formatNumber(art.views_count) }}</strong></td>
-                  <td>
-                    <router-link :to="`/admin/artikel/${art.id}/edit`" class="btn-icon-check" title="Edit artikel" aria-label="Edit artikel">
-                      <span class="material-symbols-outlined">edit</span>
-                    </router-link>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <router-link to="/admin/artikel" class="header-action-link">
+            <span>Kelola Artikel</span>
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </router-link>
         </div>
 
-        <!-- Content health -->
-        <div class="dash-box">
-          <h2 class="box-title mb-3">Kesehatan Konten</h2>
-          <ul class="health-list">
-            <li :class="['health-item', stats.draft_articles > 0 ? 'is-warn' : 'is-ok']">
-              <span class="material-symbols-outlined">{{ stats.draft_articles > 0 ? 'edit_document' : 'check_circle' }}</span>
-              <span v-if="stats.draft_articles > 0">{{ stats.draft_articles }} artikel masih draft dan belum terbit</span>
-              <span v-else>Semua artikel sudah terbit</span>
-            </li>
-            <li :class="['health-item', health.articles_without_image > 0 ? 'is-warn' : 'is-ok']">
-              <span class="material-symbols-outlined">{{ health.articles_without_image > 0 ? 'image_not_supported' : 'check_circle' }}</span>
-              <span v-if="health.articles_without_image > 0">{{ health.articles_without_image }} artikel belum memiliki gambar</span>
-              <span v-else>Semua artikel memiliki gambar</span>
-            </li>
-            <li :class="['health-item', health.team_without_photo > 0 ? 'is-warn' : 'is-ok']">
-              <span class="material-symbols-outlined">{{ health.team_without_photo > 0 ? 'person_alert' : 'check_circle' }}</span>
-              <span v-if="health.team_without_photo > 0">{{ health.team_without_photo }} terapis aktif belum memiliki foto</span>
-              <span v-else>Semua terapis aktif memiliki foto</span>
-            </li>
-            <li :class="['health-item', missingSettings.length ? 'is-warn' : 'is-ok']">
-              <span class="material-symbols-outlined">{{ missingSettings.length ? 'settings_alert' : 'check_circle' }}</span>
-              <span v-if="missingSettings.length">Pengaturan belum lengkap: {{ missingSettings.join(', ') }}</span>
-              <span v-else>Pengaturan klinik sudah lengkap</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Right: Quick Actions & Recent Articles -->
-      <div class="dash-side-col">
-        <div class="dash-box">
-          <h2 class="box-title mb-3">Aksi Cepat</h2>
-          <div class="quick-links-list">
-            <router-link to="/admin/artikel/baru" class="quick-action-item">
-              <div class="action-icon teal-bg">
-                <span class="material-symbols-outlined">edit_note</span>
-              </div>
-              <div class="action-text">
-                <div class="action-title">Tulis Artikel Baru</div>
-                <div class="action-sub">Publikasikan materi edukasi</div>
-              </div>
-              <span class="material-symbols-outlined arrow">chevron_right</span>
-            </router-link>
-
-            <router-link to="/admin/tim-kami" class="quick-action-item">
-              <div class="action-icon green-bg">
-                <span class="material-symbols-outlined">person_add</span>
-              </div>
-              <div class="action-text">
-                <div class="action-title">Tambah Terapis</div>
-                <div class="action-sub">Update profil tenaga ahli</div>
-              </div>
-              <span class="material-symbols-outlined arrow">chevron_right</span>
-            </router-link>
-
-            <router-link to="/admin/pengaturan" class="quick-action-item">
-              <div class="action-icon amber-bg">
-                <span class="material-symbols-outlined">tune</span>
-              </div>
-              <div class="action-text">
-                <div class="action-title">WhatsApp &amp; Jam Operasional</div>
-                <div class="action-sub">Kontak, jam kerja, sosmed</div>
-              </div>
-              <span class="material-symbols-outlined arrow">chevron_right</span>
-            </router-link>
-
-            <a href="/" target="_blank" rel="noopener noreferrer" class="quick-action-item">
-              <div class="action-icon blue-bg">
-                <span class="material-symbols-outlined">open_in_new</span>
-              </div>
-              <div class="action-text">
-                <div class="action-title">Tinjau Website</div>
-                <div class="action-sub">Lihat tampilan publik</div>
-              </div>
-              <span class="material-symbols-outlined arrow">chevron_right</span>
-            </a>
-          </div>
+        <!-- Loading state -->
+        <div v-if="loading" class="state-container">
+          <div class="spinner-small"></div>
+          <span>Memuat artikel terpopuler...</span>
         </div>
 
-        <!-- Recent Articles Mini List -->
-        <div class="dash-box">
-          <div class="box-header">
-            <h2 class="box-title">Artikel Terbaru</h2>
-            <router-link to="/admin/artikel" class="link-more">
-              <span>Semua</span>
-            </router-link>
+        <!-- Empty state -->
+        <div v-else-if="popularArticles.length === 0" class="empty-state">
+          <div class="empty-icon-wrap">
+            <span class="material-symbols-outlined">article</span>
           </div>
+          <h3 class="empty-title">Belum Ada Artikel Terbit</h3>
+          <p class="empty-desc">
+            Publikasikan artikel tips tumbuh kembang anak untuk memberikan edukasi kepada orang tua.
+          </p>
+          <router-link to="/admin/artikel/baru" class="btn-empty-action">
+            <span class="material-symbols-outlined">add</span>
+            <span>Tulis Artikel Pertama</span>
+          </router-link>
+        </div>
 
-          <div v-if="!loading && recentArticles.length === 0" class="empty-state">
-            <p>Belum ada artikel.</p>
-          </div>
+        <!-- Desktop Table View (>= 768px) -->
+        <div v-else class="table-desktop-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="th-rank">Peringkat</th>
+                <th>Judul Artikel</th>
+                <th>Kategori</th>
+                <th class="th-views">Pembaca</th>
+                <th class="th-action">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(art, index) in popularArticles" :key="art.id">
+                <td class="td-rank">
+                  <span :class="['rank-badge', getRankClass(index)]">
+                    #{{ index + 1 }}
+                  </span>
+                </td>
+                <td class="td-main">
+                  <div class="art-cell">
+                    <div class="art-thumb-mini">
+                      <img v-if="art.image" :src="art.image" :alt="art.title" loading="lazy" />
+                      <div v-else class="art-thumb-fallback">
+                        <span class="material-symbols-outlined">auto_stories</span>
+                      </div>
+                    </div>
+                    <div class="art-meta-text">
+                      <router-link :to="`/admin/artikel/${art.id}/edit`" class="art-title-link">
+                        {{ art.title }}
+                      </router-link>
+                      <div class="art-author-line">
+                        <span class="material-symbols-outlined">person</span>
+                        <span>{{ art.author || 'Tim Ahli ATC' }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="category-pill">{{ art.category || 'Umum' }}</span>
+                </td>
+                <td class="td-views">
+                  <div class="views-display">
+                    <span class="material-symbols-outlined views-icon">visibility</span>
+                    <strong class="views-count">{{ formatNumber(art.views_count) }}</strong>
+                  </div>
+                </td>
+                <td class="td-action">
+                  <router-link
+                    :to="`/admin/artikel/${art.id}/edit`"
+                    class="btn-row-action"
+                    title="Edit Artikel"
+                    aria-label="Edit Artikel"
+                  >
+                    <span class="material-symbols-outlined">edit</span>
+                    <span>Edit</span>
+                  </router-link>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-          <div class="recent-articles-list">
-            <div
-              v-for="art in recentArticles"
-              :key="art.id"
-              class="recent-art-item"
-            >
-              <div class="art-thumb-wrap">
-                <img v-if="art.image" :src="art.image" :alt="art.title" class="art-thumb" loading="lazy" />
-                <div v-else class="art-thumb art-thumb-empty" aria-hidden="true">
-                  <span class="material-symbols-outlined">image</span>
+        <!-- Mobile Card List View (< 768px) -->
+        <div v-if="popularArticles.length > 0" class="mobile-card-list">
+          <div
+            v-for="(art, index) in popularArticles"
+            :key="art.id"
+            class="mobile-art-item"
+          >
+            <div class="mobile-item-top">
+              <span :class="['rank-badge', getRankClass(index)]">
+                #{{ index + 1 }} Terpopuler
+              </span>
+              <span class="category-pill">{{ art.category || 'Umum' }}</span>
+            </div>
+
+            <div class="mobile-item-body">
+              <div class="art-thumb-mini">
+                <img v-if="art.image" :src="art.image" :alt="art.title" loading="lazy" />
+                <div v-else class="art-thumb-fallback">
+                  <span class="material-symbols-outlined">auto_stories</span>
                 </div>
               </div>
-              <div class="art-details">
-                <span class="art-cat-label">
-                  {{ art.category }}
-                  <span v-if="!art.is_published" class="draft-tag">Draft</span>
-                </span>
-                <router-link :to="`/admin/artikel/${art.id}/edit`" class="art-link-title">
+              <div class="mobile-item-info">
+                <router-link :to="`/admin/artikel/${art.id}/edit`" class="art-title-link">
                   {{ art.title }}
                 </router-link>
-                <div class="art-meta-row">
-                  <span>{{ art.views_count }} dilihat</span>
-                  <span>•</span>
-                  <span>{{ art.author }}</span>
+                <div class="mobile-author-row">
+                  <span class="material-symbols-outlined">person</span>
+                  <span>{{ art.author || 'Tim Ahli ATC' }}</span>
                 </div>
               </div>
             </div>
+
+            <div class="mobile-item-footer">
+              <div class="views-display">
+                <span class="material-symbols-outlined views-icon">visibility</span>
+                <strong class="views-count">{{ formatNumber(art.views_count) }} kali dibaca</strong>
+              </div>
+              <router-link
+                :to="`/admin/artikel/${art.id}/edit`"
+                class="btn-row-action btn-row-action-mobile"
+              >
+                <span class="material-symbols-outlined">edit</span>
+                <span>Edit</span>
+              </router-link>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <!-- Section Bawah: Sekilas Tim Terapis -->
+      <section class="dash-card team-preview-section">
+        <div class="card-header border-bottom">
+          <div class="header-titles">
+            <div class="header-icon-badge green-badge-icon">
+              <span class="material-symbols-outlined">clinical_notes</span>
+            </div>
+            <div>
+              <h2 class="card-title">Sekilas Tim Terapis</h2>
+              <p class="card-subtitle">Tenaga ahli &amp; terapis spesialis aktif di klinik</p>
+            </div>
+          </div>
+          <router-link to="/admin/tim-kami" class="header-action-link">
+            <span>Kelola Tim</span>
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </router-link>
+        </div>
+
+        <!-- Loading State -->
+        <div v-if="loading" class="state-container">
+          <div class="spinner-small"></div>
+          <span>Memuat data tim terapis...</span>
+        </div>
+
+        <!-- Empty State -->
+        <div v-else-if="teamMembers.length === 0" class="empty-state team-empty-state">
+          <div class="empty-icon-wrap team-empty-icon">
+            <span class="material-symbols-outlined">group</span>
+          </div>
+          <h3 class="empty-title">Belum Ada Terapis Terdaftar</h3>
+          <p class="empty-desc">
+            Daftarkan profil terapis wicara, okupasi, atau sensori integrasi untuk ditampilkan di website.
+          </p>
+          <router-link to="/admin/tim-kami" class="btn-empty-action">
+            <span class="material-symbols-outlined">person_add</span>
+            <span>+ Tambah Anggota Tim</span>
+          </router-link>
+        </div>
+
+        <!-- Team Members List -->
+        <div v-else class="team-preview-list">
+          <div
+            v-for="member in teamMembers"
+            :key="member.id"
+            class="team-member-item"
+          >
+            <div class="member-avatar-wrap">
+              <img
+                v-if="member.image"
+                :src="member.image"
+                :alt="member.name"
+                class="member-avatar-img"
+                loading="lazy"
+              />
+              <div v-else class="member-avatar-fallback">
+                <span class="material-symbols-outlined">person</span>
+              </div>
+              <span class="status-indicator-dot" :title="member.is_active ? 'Praktik Aktif' : 'Non-Aktif'"></span>
+            </div>
+
+            <div class="member-info-col">
+              <div class="member-name-row">
+                <strong class="member-name-text">{{ member.name }}</strong>
+                <span class="member-exp-badge" v-if="member.experience_years">
+                  {{ member.experience_years }}
+                </span>
+              </div>
+              <div class="member-role-text">{{ member.role }}</div>
+              <div class="member-spec-row">
+                <span class="material-symbols-outlined">verified</span>
+                <span>{{ member.specialization }}</span>
+              </div>
+            </div>
+
+            <div class="member-action-col">
+              <router-link
+                to="/admin/tim-kami"
+                class="btn-member-detail"
+                title="Kelola Profil Terapis"
+                aria-label="Kelola Profil Terapis"
+              >
+                <span class="material-symbols-outlined">chevron_right</span>
+              </router-link>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Footer -->
+        <div class="team-preview-footer" v-if="teamMembers.length > 0">
+          <div class="footer-team-summary">
+            <span class="material-symbols-outlined">groups</span>
+            <span><strong>{{ stats.total_team || teamMembers.length }}</strong> Terapis Medis Terdaftar</span>
+          </div>
+          <router-link to="/admin/tim-kami" class="btn-add-therapist-quick">
+            <span class="material-symbols-outlined">person_add</span>
+            <span>Kelola Tim</span>
+          </router-link>
+        </div>
+      </section>
     </div>
   </AdminLayout>
 </template>
@@ -303,19 +449,41 @@ const { waLink } = useClinicSettings()
 
 const stats = ref({})
 const popularArticles = ref([])
-const recentArticles = ref([])
-const health = ref({ articles_without_image: 0, team_without_photo: 0 })
+const teamMembers = ref([])
 const missingSettings = ref([])
 const whatsapp = ref('')
 const loading = ref(true)
 const error = ref('')
 
+const todayFormatted = computed(() => {
+  const now = new Date()
+  return now.toLocaleDateString('id-ID', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  })
+})
+
 const displayWhatsapp = computed(() => {
-  if (!whatsapp.value) return '-'
+  if (!whatsapp.value) return 'Belum Diatur'
   const d = String(whatsapp.value).replace(/[^0-9]/g, '')
-  if (d.startsWith('62')) return '+62 ' + d.slice(2).replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3')
+  if (d.startsWith('62')) {
+    return '+62 ' + d.slice(2).replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3')
+  }
   return whatsapp.value
 })
+
+function getRankClass(index) {
+  if (index === 0) return 'rank-first'
+  if (index === 1) return 'rank-second'
+  if (index === 2) return 'rank-third'
+  return 'rank-other'
+}
+
+function formatNumber(n) {
+  return new Intl.NumberFormat('id-ID').format(n || 0)
+}
 
 async function fetchDashboardData() {
   loading.value = true
@@ -324,20 +492,25 @@ async function fetchDashboardData() {
     const res = await api.get('/admin/stats')
     stats.value = res.data.stats || {}
     popularArticles.value = res.data.popular_articles || []
-    recentArticles.value = res.data.recent_articles || []
-    health.value = res.data.health || health.value
+    teamMembers.value = res.data.team_members || []
     missingSettings.value = res.data.missing_settings || []
     whatsapp.value = res.data.whatsapp || ''
+
+    // Fallback jika team_members belum ada di stats cache
+    if (teamMembers.value.length === 0 && (stats.value.total_team > 0 || !stats.value.total_team)) {
+      try {
+        const teamRes = await api.get('/team')
+        teamMembers.value = (teamRes.data || []).slice(0, 5)
+      } catch (e) {
+        // Fallback aman
+      }
+    }
   } catch (err) {
     console.error('Failed to load dashboard stats', err)
-    error.value = 'Gagal memuat data dashboard. Periksa koneksi atau server, lalu coba lagi.'
+    error.value = 'Gagal terhubung ke server. Periksa jaringan Anda lalu coba lagi.'
   } finally {
     loading.value = false
   }
-}
-
-function formatNumber(n) {
-  return new Intl.NumberFormat('id-ID').format(n || 0)
 }
 
 onMounted(() => {
@@ -346,8 +519,14 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* =============================================
+   DASHBOARD RINGKASAN - STYLES & RESPONSIVE UI
+   ============================================= */
+
+/* Welcome Banner */
 .dash-welcome-card {
-  background: linear-gradient(135deg, #006384 0%, #2e7c9e 100%);
+  position: relative;
+  background: linear-gradient(135deg, #005a78 0%, #00769a 50%, #1789ab 100%);
   color: #ffffff;
   padding: 2.25rem;
   border-radius: 24px;
@@ -356,95 +535,237 @@ onMounted(() => {
   justify-content: space-between;
   gap: 2rem;
   margin-bottom: 2rem;
-  box-shadow: 0 10px 24px rgba(0, 99, 132, 0.18);
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 90, 120, 0.2);
+}
+
+.welcome-decor-circle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.circle-1 {
+  width: 260px;
+  height: 260px;
+  top: -80px;
+  right: -50px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.circle-2 {
+  width: 180px;
+  height: 180px;
+  bottom: -60px;
+  left: 30%;
+  background: radial-gradient(circle, rgba(204, 239, 142, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+.dash-welcome-content {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
 }
 
 .welcome-chip {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.25rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  padding: 0.3rem 0.85rem;
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 700;
-  margin-bottom: 0.75rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.chip-icon {
+  font-size: 1rem;
 }
 
 .welcome-title {
   font-family: var(--font-headline, 'Outfit', sans-serif);
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 0.65rem;
 }
 
 .welcome-desc {
   font-size: 0.9375rem;
-  opacity: 0.9;
-  max-width: 650px;
   line-height: 1.6;
+  opacity: 0.92;
+  margin-bottom: 1.15rem;
 }
 
-.btn-primary-pill {
+.welcome-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.meta-tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background: #ffffff;
-  color: var(--primary, #006384);
-  padding: 0.75rem 1.5rem;
-  border-radius: 9999px;
-  font-weight: 700;
-  font-size: 0.9375rem;
-  text-decoration: none;
-  white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  gap: 0.35rem;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 0.25rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
-.btn-primary-pill:hover {
+.meta-tag .material-symbols-outlined {
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.dash-welcome-actions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.btn-banner-primary,
+.btn-banner-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btn-banner-primary {
+  background: #ffffff;
+  color: var(--primary, #006384);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.btn-banner-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+}
+
+.btn-banner-secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.btn-banner-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
   transform: translateY(-2px);
 }
 
-/* Banners */
-.error-banner,
-.warn-banner {
+/* Alert Banners */
+.alert-banner {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1.25rem;
-  border-radius: 14px;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
   margin-bottom: 1.5rem;
   font-size: 0.875rem;
+}
+
+.alert-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.alert-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-title {
+  display: block;
+  font-size: 0.9375rem;
+  margin-bottom: 0.15rem;
+}
+
+.alert-desc {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  opacity: 0.95;
 }
 
 .error-banner {
   background: #ffdad6;
   color: #93000a;
+  border: 1px solid rgba(186, 26, 26, 0.2);
+}
+
+.error-banner .alert-icon-wrap {
+  background: #ba1a1a;
+  color: #ffffff;
 }
 
 .warn-banner {
-  background: #ffdcbf;
-  color: #6b3b00;
+  background: #fff3e0;
+  color: #7a3e00;
+  border: 1px solid rgba(230, 119, 0, 0.25);
 }
 
-.warn-text {
-  flex: 1;
+.warn-banner .alert-icon-wrap {
+  background: #ff9800;
+  color: #ffffff;
 }
 
-.btn-retry {
-  margin-left: auto;
-  border: none;
-  background: #ba1a1a;
-  color: #fff;
-  padding: 0.4rem 1rem;
+.btn-alert-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
   border-radius: 9999px;
+  font-size: 0.8125rem;
   font-weight: 700;
+  border: none;
   cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: all 0.2s;
 }
 
-/* Stats */
+.error-banner .btn-alert-action {
+  background: #ba1a1a;
+  color: #ffffff;
+}
+
+.warn-banner .btn-alert-action {
+  background: #7a3e00;
+  color: #ffffff;
+}
+
+.btn-alert-action:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/* Stat Cards Grid */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
   margin-bottom: 2rem;
 }
 
@@ -453,13 +774,28 @@ onMounted(() => {
   padding: 1.5rem;
   border-radius: 20px;
   border: 1px solid rgba(191, 200, 206, 0.4);
-  box-shadow: 0 4px 12px rgba(43, 61, 79, 0.04);
+  box-shadow: 0 4px 14px rgba(9, 29, 46, 0.03);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.stat-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(9, 29, 46, 0.07);
+  border-color: rgba(0, 99, 132, 0.3);
+}
+
+.stat-card-wa {
+  border-color: rgba(37, 211, 102, 0.35);
+  background: linear-gradient(180deg, #ffffff 0%, #f4fbf6 100%);
 }
 
 .stat-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
   margin-bottom: 1rem;
 }
 
@@ -470,147 +806,333 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .teal-bg { background: #c1e8ff; color: #006384; }
-.green-bg { background: #ccef8e; color: #4b6716; }
-.blue-bg { background: #d9eaff; color: #004d67; }
-.amber-bg { background: #ffdcbf; color: #884e03; }
+.green-bg { background: #d7f5a8; color: #354e00; }
+.amber-bg { background: #ffe2c7; color: #884e03; }
+.wa-bg { background: #d2f8d8; color: #0e7039; }
 
 .stat-badge {
-  padding: 0.2rem 0.6rem;
+  padding: 0.25rem 0.65rem;
   border-radius: 9999px;
   font-size: 0.6875rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 
-.orange-badge { background: #ffdcbf; color: #6b3b00; }
-.green-badge { background: #ccef8e; color: #354e00; }
+.orange-badge { background: #ffdcbf; color: #7a3e00; }
+.green-badge { background: #d7f5a8; color: #2e4400; }
+.amber-badge { background: #ffe8d1; color: #7a3e00; }
 
 .stat-value {
   font-family: var(--font-headline, 'Outfit', sans-serif);
-  font-size: 2rem;
+  font-size: 2.15rem;
   font-weight: 800;
   color: var(--on-surface, #091d2e);
   line-height: 1.1;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.02em;
 }
 
-.stat-value-sm {
+.stat-value-wa {
   font-size: 1.35rem;
-  padding: 0.35rem 0;
+  color: #0b6b38;
+  letter-spacing: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .stat-label {
   font-size: 0.8125rem;
   color: var(--on-surface-variant, #40484d);
   font-weight: 600;
+  margin-bottom: 1rem;
 }
 
-.wa-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
+.stat-footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(191, 200, 206, 0.25);
+  font-size: 0.75rem;
 }
 
-.wa-test {
+.stat-footer-link {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #0b6b5c;
-  text-decoration: none;
-}
-
-.wa-test .material-symbols-outlined {
-  font-size: 1rem;
-}
-
-.wa-edit {
-  font-size: 0.75rem;
-  font-weight: 700;
   color: var(--primary, #006384);
+  font-weight: 700;
   text-decoration: none;
+  transition: gap 0.15s ease;
 }
 
-/* Skeleton */
-.skeleton {
-  background: linear-gradient(90deg, #eaf1fa 25%, #f6f9fd 50%, #eaf1fa 75%);
+.stat-footer-link:hover {
+  gap: 0.5rem;
+  text-decoration: underline;
+}
+
+.stat-footer-link .material-symbols-outlined {
+  font-size: 0.95rem;
+}
+
+.stat-footer-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--outline, #70787e);
+  font-weight: 600;
+}
+
+.stat-footer-text .material-symbols-outlined {
+  font-size: 1rem;
+  color: var(--secondary, #4b6716);
+}
+
+.wa-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.btn-wa-test {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #0e7039;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(37, 211, 102, 0.12);
+  transition: all 0.15s;
+}
+
+.btn-wa-test:hover {
+  background: rgba(37, 211, 102, 0.25);
+}
+
+.btn-wa-test .material-symbols-outlined {
+  font-size: 0.95rem;
+}
+
+.btn-wa-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--primary, #006384);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.75rem;
+}
+
+.btn-wa-edit:hover {
+  text-decoration: underline;
+}
+
+.btn-wa-edit .material-symbols-outlined {
+  font-size: 0.9rem;
+}
+
+/* Skeleton Loading Shimmer */
+.skeleton-stat-card {
+  pointer-events: none;
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #edf3fa 25%, #f6faff 50%, #edf3fa 75%);
   background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
+  animation: shimmer 1.5s infinite;
   border-radius: 8px;
 }
 
-.sk-icon { width: 44px; height: 44px; border-radius: 12px; margin-bottom: 1rem; }
-.sk-value { width: 55%; height: 32px; margin-bottom: 0.5rem; }
-.sk-label { width: 80%; height: 14px; }
+.sk-icon { width: 44px; height: 44px; border-radius: 12px; }
+.sk-badge { width: 70px; height: 20px; border-radius: 9999px; }
+.sk-value { width: 60%; height: 36px; margin-bottom: 0.5rem; }
+.sk-label { width: 85%; height: 16px; margin-bottom: 1.25rem; }
+.sk-footer { width: 50%; height: 14px; margin-top: auto; }
 
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 
-/* Split grid */
-.dash-split-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 1.75rem;
-}
-
-.dash-main-col {
+/* Main Content Layout (Vertical Stack: Atas: Artikel Terpopuler, Bawah: Sekilas Tim Terapis) */
+.dash-main-grid {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
-  min-width: 0;
+  gap: 2rem;
 }
 
-.dash-box {
+.dash-card {
   background: #ffffff;
   padding: 1.75rem;
   border-radius: 20px;
   border: 1px solid rgba(191, 200, 206, 0.4);
-  box-shadow: 0 4px 12px rgba(43, 61, 79, 0.04);
+  box-shadow: 0 4px 14px rgba(9, 29, 46, 0.03);
 }
 
-.box-header {
+.popular-section,
+.team-preview-section {
+  min-width: 0;
+}
+
+.card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.25rem;
+  gap: 1rem;
+  margin-bottom: 1.35rem;
 }
 
-.box-title {
+.card-header.border-bottom {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(191, 200, 206, 0.3);
+  margin-bottom: 1.15rem;
+}
+
+.header-titles {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-width: 0;
+}
+
+.header-icon-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #ffe8d1;
+  color: #7a3e00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.green-badge-icon {
+  background: #d7f5a8;
+  color: #354e00;
+}
+
+.card-title {
   font-family: var(--font-headline, 'Outfit', sans-serif);
-  font-size: 1.125rem;
-  font-weight: 700;
+  font-size: 1.15rem;
+  font-weight: 800;
   color: var(--on-surface, #091d2e);
+  line-height: 1.25;
 }
 
-.box-sub {
+.card-subtitle {
   font-size: 0.8125rem;
   color: var(--on-surface-variant, #40484d);
   margin-top: 0.15rem;
 }
 
-.link-more {
+.header-action-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.3rem;
   color: var(--primary, #006384);
   font-size: 0.8125rem;
   font-weight: 700;
   text-decoration: none;
+  white-space: nowrap;
+  transition: gap 0.15s;
 }
 
-.link-more:hover {
+.header-action-link:hover {
+  gap: 0.5rem;
   text-decoration: underline;
 }
 
-/* Table */
-.table-responsive {
+.header-action-link .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+/* State & Empty */
+.state-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem 1rem;
+  color: var(--on-surface-variant, #40484d);
+  font-size: 0.875rem;
+}
+
+.spinner-small {
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid rgba(0, 99, 132, 0.2);
+  border-top-color: var(--primary, #006384);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.empty-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--surface-container-low, #edf4ff);
+  color: var(--primary, #006384);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.empty-icon-wrap .material-symbols-outlined {
+  font-size: 2rem;
+}
+
+.empty-title {
+  font-family: var(--font-headline, 'Outfit', sans-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--on-surface, #091d2e);
+  margin-bottom: 0.35rem;
+}
+
+.empty-desc {
+  font-size: 0.875rem;
+  color: var(--on-surface-variant, #40484d);
+  max-width: 420px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.5;
+}
+
+.btn-empty-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 9999px;
+  background: var(--primary, #006384);
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 99, 132, 0.2);
+}
+
+/* Desktop Data Table */
+.table-desktop-wrap {
   overflow-x: auto;
+  border-radius: 12px;
 }
 
 .data-table {
@@ -630,227 +1152,577 @@ onMounted(() => {
   border-bottom: 1px solid rgba(191, 200, 206, 0.4);
 }
 
+.th-rank { width: 85px; }
+.th-views { width: 120px; }
+.th-action { width: 90px; text-align: center; }
+
 .data-table td {
-  padding: 1rem;
+  padding: 0.95rem 1rem;
   border-bottom: 1px solid rgba(191, 200, 206, 0.25);
   font-size: 0.875rem;
+  vertical-align: middle;
 }
 
-.rank-cell {
+.data-table tr:hover td {
+  background: #fbfdff;
+}
+
+.td-rank {
   font-weight: 800;
-  color: var(--primary, #006384);
-  width: 40px;
 }
 
-.patient-name {
-  font-weight: 700;
-  color: var(--on-surface, #091d2e);
-}
-
-.parent-meta {
-  font-size: 0.75rem;
-  color: var(--on-surface-variant, #40484d);
-  margin-top: 0.15rem;
-}
-
-.service-pill {
+.rank-badge {
   display: inline-block;
-  padding: 0.2rem 0.6rem;
+  padding: 0.2rem 0.55rem;
   border-radius: 6px;
-  background: var(--surface-container, #e3efff);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.rank-first {
+  background: #ffe3a3;
+  color: #6d4700;
+  box-shadow: 0 2px 6px rgba(109, 71, 0, 0.12);
+}
+
+.rank-second {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.rank-third {
+  background: #fed7aa;
+  color: #7c2d12;
+}
+
+.rank-other {
+  background: #edf4ff;
   color: var(--primary, #006384);
-  font-size: 0.75rem;
-  font-weight: 600;
 }
 
-.btn-icon-check {
-  background: none;
-  border: none;
-  color: var(--secondary, #4b6716);
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 6px;
-  display: inline-flex;
-  text-decoration: none;
-}
-
-/* Content health */
-.health-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-}
-
-.health-item {
+.art-cell {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  border-radius: 12px;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-.health-item.is-ok { background: #eef7dc; color: #354e00; }
-.health-item.is-warn { background: #fff1e0; color: #6b3b00; }
-
-/* Quick links */
-.dash-side-col {
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
-  min-width: 0;
-}
-
-.quick-links-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.quick-action-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.875rem 1rem;
-  border-radius: 14px;
-  background: var(--surface-bright, #f7f9ff);
-  border: 1px solid rgba(191, 200, 206, 0.4);
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.2s;
-}
-
-.quick-action-item:hover {
-  background: var(--surface-container-low, #edf4ff);
-  transform: translateX(3px);
-}
-
-.action-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.action-title {
-  font-weight: 700;
-  font-size: 0.875rem;
-  color: var(--on-surface, #091d2e);
-}
-
-.action-sub {
-  font-size: 0.75rem;
-  color: var(--on-surface-variant, #40484d);
-}
-
-.arrow {
-  margin-left: auto;
-  color: var(--outline, #70787e);
-}
-
-/* Recent articles list */
-.recent-articles-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.recent-art-item {
-  display: flex;
   gap: 0.875rem;
-  align-items: center;
+  min-width: 200px;
 }
 
-.art-thumb-wrap {
-  width: 60px;
-  height: 60px;
+.art-thumb-mini {
+  width: 48px;
+  height: 48px;
   border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
+  background: var(--surface-container, #e3efff);
 }
 
-.art-thumb {
+.art-thumb-mini img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.art-thumb-empty {
+.art-thumb-fallback {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--surface-container, #e3efff);
-  color: var(--outline, #70787e);
-}
-
-.art-cat-label {
-  font-size: 0.6875rem;
-  font-weight: 700;
   color: var(--primary, #006384);
-  text-transform: uppercase;
 }
 
-.draft-tag {
-  margin-left: 0.4rem;
-  padding: 0.05rem 0.4rem;
-  border-radius: 9999px;
-  background: #ffdcbf;
-  color: #6b3b00;
-  font-size: 0.625rem;
+.art-thumb-fallback .material-symbols-outlined {
+  font-size: 1.35rem;
 }
 
-.art-link-title {
+.art-meta-text {
+  min-width: 0;
+}
+
+.art-title-link {
   display: block;
-  font-size: 0.8125rem;
   font-weight: 700;
   color: var(--on-surface, #091d2e);
   text-decoration: none;
-  line-height: 1.3;
-  margin: 0.15rem 0;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  margin-bottom: 0.2rem;
+  transition: color 0.15s;
 }
 
-.art-link-title:hover {
+.art-title-link:hover {
   color: var(--primary, #006384);
 }
 
-.art-meta-row {
-  font-size: 0.6875rem;
-  color: var(--outline, #70787e);
+.art-author-line {
   display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--on-surface-variant, #40484d);
+}
+
+.art-author-line .material-symbols-outlined {
+  font-size: 0.875rem;
+  color: var(--outline, #70787e);
+}
+
+.category-pill {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  background: var(--surface-container, #e3efff);
+  color: var(--primary, #006384);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.views-display {
+  display: inline-flex;
+  align-items: center;
   gap: 0.35rem;
 }
 
-.empty-state {
-  text-align: center;
-  padding: 2.5rem 1rem;
+.views-icon {
+  font-size: 1.05rem;
+  color: #b45309;
+}
+
+.views-count {
+  font-size: 0.9375rem;
+  color: var(--on-surface, #091d2e);
+  font-weight: 800;
+}
+
+.btn-row-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  background: var(--surface-container-low, #edf4ff);
+  color: var(--primary, #006384);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.btn-row-action:hover {
+  background: var(--primary, #006384);
+  color: #ffffff;
+}
+
+.btn-row-action .material-symbols-outlined {
+  font-size: 0.95rem;
+}
+
+/* Mobile Card List (< 768px) */
+.mobile-card-list {
+  display: none;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.mobile-art-item {
+  background: var(--surface-bright, #fbfdff);
+  border: 1px solid rgba(191, 200, 206, 0.45);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.mobile-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.mobile-item-body {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 0.85rem;
+}
+
+.mobile-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.mobile-author-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
   color: var(--on-surface-variant, #40484d);
+  margin-top: 0.25rem;
 }
 
-.empty-icon {
-  font-size: 2.5rem;
-  color: var(--outline, #70787e);
-  margin-bottom: 0.5rem;
+.mobile-author-row .material-symbols-outlined {
+  font-size: 0.85rem;
 }
 
-.loading-wrap {
+.mobile-item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(191, 200, 206, 0.3);
+}
+
+.btn-row-action-mobile {
+  padding: 0.45rem 1rem;
+  font-size: 0.8125rem;
+}
+
+/* =============================================
+   SEKILAS TIM TERAPIS SECTION STYLES
+   ============================================= */
+.team-preview-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.team-preview-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.team-member-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.95rem 1.15rem;
+  border-radius: 14px;
+  background: var(--surface-bright, #f8faff);
+  border: 1px solid rgba(191, 200, 206, 0.35);
+  transition: all 0.2s ease;
+}
+
+.team-member-item:hover {
+  background: var(--surface-container-low, #edf4ff);
+  border-color: rgba(0, 99, 132, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(9, 29, 46, 0.06);
+}
+
+.member-avatar-wrap {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+.member-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #eaf1f8;
+}
+
+.member-avatar-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: #d7f5a8;
+  color: #354e00;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.member-avatar-fallback .material-symbols-outlined {
+  font-size: 1.5rem;
+}
+
+.status-indicator-dot {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 2px solid #ffffff;
+}
+
+.member-info-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.member-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.15rem;
+}
+
+.member-name-text {
+  font-size: 0.875rem;
+  color: var(--on-surface, #091d2e);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.member-exp-badge {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #354e00;
+  background: #e5f8c6;
+  padding: 0.1rem 0.45rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+.member-role-text {
+  font-size: 0.75rem;
+  color: var(--primary, #006384);
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.member-spec-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--on-surface-variant, #40484d);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.member-spec-row .material-symbols-outlined {
+  font-size: 0.85rem;
+  color: #4b6716;
+}
+
+.member-action-col {
+  flex-shrink: 0;
+}
+
+.btn-member-detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: var(--outline, #70787e);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.team-member-item:hover .btn-member-detail {
+  color: var(--primary, #006384);
+  background: rgba(0, 99, 132, 0.08);
+}
+
+.team-preview-footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(191, 200, 206, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 0.75rem;
-  padding: 2.5rem;
+}
+
+.footer-team-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
   color: var(--on-surface-variant, #40484d);
 }
 
+.footer-team-summary .material-symbols-outlined {
+  font-size: 1.05rem;
+  color: var(--secondary, #4b6716);
+}
+
+.btn-add-therapist-quick {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  background: var(--surface-container-low, #edf4ff);
+  color: var(--primary, #006384);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-add-therapist-quick:hover {
+  background: var(--primary, #006384);
+  color: #ffffff;
+}
+
+.btn-add-therapist-quick .material-symbols-outlined {
+  font-size: 0.95rem;
+}
+
+/* =============================================
+   RESPONSIVE BREAKPOINTS (DESKTOP, TABLET, MOBILE)
+   ============================================= */
+
+/* Large Tablets & Medium Desktops (1024px - 1200px) */
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dash-main-grid {
+    gap: 1.75rem;
+  }
+}
+
+/* Tablet (768px - 1024px) */
 @media (max-width: 1024px) {
-  .dash-split-grid {
+  .dash-main-grid {
+    gap: 1.5rem;
+  }
+  .dash-welcome-card {
+    padding: 2rem;
+  }
+  .welcome-title {
+    font-size: 1.65rem;
+  }
+}
+
+/* Mobile & Small Tablet (< 768px) */
+@media (max-width: 768px) {
+  .dash-welcome-card {
+    padding: 1.5rem 1.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+
+  .welcome-title {
+    font-size: 1.4rem;
+  }
+
+  .welcome-desc {
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .dash-welcome-actions {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .btn-banner-primary,
+  .btn-banner-secondary {
+    flex: 1;
+    min-width: 140px;
+    padding: 0.7rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .stats-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-card {
+    padding: 1.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.85rem;
+  }
+
+  .alert-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .btn-alert-action {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dash-card {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  /* Switch table to mobile card list */
+  .table-desktop-wrap {
+    display: none;
+  }
+
+  .mobile-card-list {
+    display: flex;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .header-action-link {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .team-preview-list {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .team-preview-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .btn-add-therapist-quick {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Small mobile (< 480px) */
+@media (max-width: 480px) {
+  .dash-welcome-actions {
+    flex-direction: column;
+  }
+
+  .btn-banner-primary,
+  .btn-banner-secondary {
+    width: 100%;
+  }
+
+  .member-name-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
   }
 }
 </style>

@@ -1,143 +1,99 @@
 # Dokumentasi Halaman Dashboard Admin
-**Amanah Tin's Center** — revisi (alur "Janji & Pendaftaran" dinonaktifkan, pendaftaran via WhatsApp)
+**Amanah Tin's Center** — Versi Mutakhir (Fokus Konten & Sekilas Tim Terapis)
 
 | Item | Detail |
 |---|---|
-| Rute | `/admin/dashboard` (menu sidebar: "Dashboard Ringkasan") |
-| Frontend | `frontend/src/views/admin/DashboardView.vue` (Vue 3, `<script setup>`) |
-| Layout | `frontend/src/layouts/AdminLayout.vue` (sidebar + topbar + slot konten) |
-| Backend | `backend/app/Http/Controllers/Api/DashboardController.php` → `stats()` |
-| Endpoint | `GET /api/admin/stats` (Laravel Sanctum) |
-| Akses | Admin yang sudah login |
+| Rute Halaman | `/admin/dashboard` (menu sidebar: "Dashboard Ringkasan") |
+| Frontend View | `frontend/src/views/admin/DashboardView.vue` (Vue 3 `<script setup>`) |
+| Layout Shell | `frontend/src/layouts/AdminLayout.vue` (Sidebar responsif + Topbar bersih + Slot) |
+| Backend Controller | `backend/app/Http/Controllers/Api/DashboardController.php` → method `stats()` |
+| Endpoint API | `GET /api/admin/stats` (terproteksi Laravel Sanctum) |
+| Sentralisasi WA | `frontend/src/composables/useClinicSettings.js` (`useClinicSettings()`) |
+| Hak Akses | Khusus Administrator terautentikasi |
 
 ---
 
-## 1. Konteks Perubahan Alur
-Di **halaman publik**, konsultasi dan pendaftaran terapi tidak lagi memakai formulir yang tersimpan ke database. Semua tombol (Beranda, Layanan, Detail Layanan, Tim, Artikel, Jadwal & Pendaftaran) mengarah langsung ke **WhatsApp klinik** (`wa.me/...`). Bahkan form singkat di `ServiceDetailView` hanya menyusun teks lalu membuka `wa.me`, tanpa memanggil API.
+## 1. Ringkasan & Konsep Utama
 
-**Akibatnya**, fitur berbasis tabel `appointments` di admin (menu "Janji & Pendaftaran", `/admin/jadwal`) tidak lagi mendapat data baru dan sebaiknya dinonaktifkan. Dashboard saat ini masih sangat bergantung pada fitur itu, sehingga **sebagian besar kontennya perlu disesuaikan** (lihat bagian 4).
+Halaman **Dashboard Ringkasan Admin** dirancang dengan tata letak dua pilar utama yang seimbang, modern, dan fokus pada operasional inti:
+1. **Pusat Pengawasan Konten Edukasi**: Memantau artikel terbit, draft tersimpan, dan peringkat artikel yang paling banyak dibaca oleh orang tua (**Artikel Terpopuler**).
+2. **Sekilas Tim Terapis**: Memantau profil terapis medis dan tenaga spesialis aktif yang melayani pasien di klinik (wicara, okupasi, sensori integrasi, fisioterapi).
+3. **Kendali WhatsApp Pendaftaran**: Memantau nomor resmi klinik yang aktif terhubung dengan formulir dan tombol reservasi publik.
 
-## 2. Tujuan Halaman (setelah penyesuaian)
-Ringkasan konten klinik yang dikelola admin: artikel/edukasi, tim terapis, dan pengaturan klinik (termasuk nomor WhatsApp pendaftaran), plus pintasan ke tugas yang sering dilakukan.
+*Pembaruan Terkini:*
+- Tombol *WhatsApp Klinik* pada Navbar/Topbar telah dihapus agar topbar lebih bersih dan rapi.
+- Section *Aksi Cepat* dan *Pendaftaran via WhatsApp* telah dihapus.
+- Ditambahkan section **Sekilas Tim Terapis** di kolom kanan yang menampilkan ringkasan anggota terapis aktif, foto, spesialisasi, dan pintasan pengelolaan tim.
 
-## 3. Struktur Halaman Saat Ini (kondisi kode sekarang)
+---
 
-### 3.1 Kerangka (AdminLayout)
-- **Sidebar**: brand "Portal Admin & Terapis", status "Sistem Terhubung" (statis), menu: Dashboard Ringkasan, **Janji & Pendaftaran**, Kelola Artikel & Tips, Kelola Tim Terapis, Pengaturan Klinik, tautan "Tinjau Website Utama", profil pengguna + tombol keluar. Sidebar dapat dilipat.
-- **Topbar**: breadcrumb "Admin Portal > Dashboard Ringkasan", badge "MySQL Terhubung" (statis), tombol **"Form Pasien Baru"** yang membuka `/jadwal-pendaftaran` (halaman publik, bukan form; sekarang hanya halaman info + WhatsApp).
+## 2. Struktur Tampilan & Komponen
 
-### 3.2 Banner Selamat Datang
-- Sapaan `Selamat Datang, {auth.user.name}` (fallback "Administrator"), chip "Pusat Kendali Administrasi".
-- Teks mengatakan memantau "pendaftaran janji terapi ... real-time".
-- Tombol **Lihat Semua Janji** → `/admin/jadwal`.
+### 2.1 Banner Selamat Datang (Welcome Card)
+- **Desain**: Gradien biru teal modern (`#005a78` → `#00769a` → `#1789ab`) dengan elemen pencahayaan aura melingkar.
+- **Elemen Teks**:
+  - Badge chip: `✨ Pusat Kendali Administrasi`
+  - Sapaan dinamis: `Selamat Datang, {Nama Admin} 👋`
+  - Deskripsi ringkas peranan sistem.
+  - Metadata aktif: Tanggal hari ini format bahasa Indonesia (contoh: *Selasa, 13 Oktober 2026*) serta status *WhatsApp Reservasi Aktif*.
+- **Tombol Aksi**:
+  - `Tulis Artikel Baru` (Primary White Pill)
+  - `Kelola Tim Terapis` (Ghost Pill)
 
-### 3.3 Empat Kartu Statistik
-| Kartu | Sumber | Status setelah perubahan alur |
+### 2.2 Notifikasi & Peringatan Dinamis
+- **Error State Alert**: Tampil otomatis jika koneksi internet atau server terganggu, lengkap dengan tombol `Coba Lagi`.
+- **Warning Kelengkapan Pengaturan**: Memeriksa apakah nomor WhatsApp, alamat, jam kerja, atau email klinik belum diisi, dan menyediakan tautan langsung untuk melengkapinya.
+
+### 2.3 Grid Kartu Statistik (4 Kartu Utama)
+Dirancang dengan efek hover lembut (*lift on hover*), ikon modern berlatar warna pastel, dan indikator status:
+| Kartu | Indikator Utama | Sub-Badge / Keterangan | Tombol Pintas |
+|---|---|---|---|
+| **Artikel Edukasi Terbit** | Jumlah artikel dengan `is_published = true` | Badge status draft jika ada (contoh: *2 Draft Tersimpan*) | `Kelola semua artikel →` |
+| **Terapis Aktif Terdaftar** | Jumlah tim terapis dengan `is_active = true` | `Tenaga Ahli Medis` | `Kelola data tim terapis →` |
+| **Total Pembaca Artikel** | Akumulasi `views_count` berformat ribuan (contoh: *14.850*) | `Akumulasi Interaksi` | Indikator tren minat edukasi |
+| **WhatsApp Pendaftaran** | Nomor WhatsApp terformat rapi (`+62 821-8889-9900`) | Badge `Jalur Aktif` hijau | **Uji Chat** & **Ubah Nomor** |
+
+---
+
+## 3. Area Konten Utama (Tata Letak Vertikal: Atas & Bawah)
+
+### 3.1 Section Atas — Artikel Terpopuler (Lebar Penuh)
+- Menampilkan 5 materi edukasi yang paling banyak dibaca oleh orang tua pengunjung website dalam area lebar penuh (*full-width*).
+- **Keunggulan Tata Letak Penuh**: Judul artikel panjang dapat terbaca leluasa tanpa terpotong, badge peringkat terlihat jelas, dan kolom data (kategori, pembaca, tombol edit) memiliki ruang bernapas yang proporsional.
+- **Tampilan Desktop (≥ 768px)**: Tabel interaktif dengan badge peringkat (#1 Emas, #2 Perak, #3 Perunggu), thumbnail cover artikel, judul artikel dengan link edit, nama penulis, pill kategori, jumlah pembaca (dengan ikon mata), dan tombol aksi edit.
+- **Tampilan Mobile (< 768px)**: Berubah menjadi daftar kartu (*Card List*) vertikal yang ramah layar sentuh tanpa perlu geser horizontal.
+
+### 3.2 Section Bawah — Sekilas Tim Terapis (Grid Kartu Responsif)
+- Ditempatkan tepat di bawah section artikel terpopuler, menyajikan profil tenaga spesialis aktif dalam format **grid multi-kolom responsif** (`auto-fill minmax 280px`):
+  - **Foto / Avatar**: Foto asli terapis berlisensi (atau avatar fallback dengan inisial) disertai indikator status aktif berwarna hijau.
+  - **Informasi Terapis**: Nama lengkap tenaga medis, pengalaman (badge tahun pengalaman), profesi utama, dan spesialisasi terapi (contoh: *Terapi Wicara & Gangguan Menelan*).
+  - **Hover Interaktif**: Efek elevasi kartu ke atas (*lift up -2px*) dengan bayangan lembut saat kursor melayang.
+  - **Tombol Pintas Aksi**: Tautan langsung ke halaman detail/edit terapis di `/admin/tim-kami`.
+  - **Footer Ringkasan**: Membentang rapi dengan informasi total terapis aktif di sisi kiri dan tombol cepat `+ Tambah Anggota Tim` di sisi kanan.
+
+---
+
+## 4. Adaptasi Responsif (Desktop, Tablet, Mobile)
+
+| Ukuran Layar | Breakpoint | Penyesuaian Tampilan |
 |---|---|---|
-| Total Pendaftaran Terapi (+ badge "N Menunggu") | `total_appointments`, `pending_appointments` | **Tidak relevan**: akan stagnan di angka lama/0 |
-| Terapis Medis Terdaftar (badge "4 Layanan Utama" statis) | `TeamMember` aktif | Relevan |
-| Artikel & Tips Diterbitkan (badge statis) | `Article::count()` | Relevan (perlu hitung hanya published) |
-| Total Pembaca Artikel (badge statis) | `Article::sum(views_count)` | Relevan |
+| **Desktop Lebar** | > 1200px | Grid statistik 4 kolom sejajar.<br>Konten utama tersusun vertikal: Artikel Terpopuler di atas (tabel penuh), Sekilas Tim Terapis di bawah (grid 3–4 kolom kartu terapis). |
+| **Tablet Lanskap / Laptop Kecil** | 1024px – 1200px | Grid statistik 2x2 kolom.<br>Konten utama vertikal: Artikel Terpopuler (tabel leluasa) di atas, Sekilas Tim Terapis (grid 2–3 kolom kartu) di bawah. |
+| **Tablet Portrait** | 768px – 1024px | Grid statistik 2x2 kolom.<br>Artikel terpopuler (tabel responsif) di atas, Sekilas Tim Terapis (grid 2 kolom kartu) di bawah. |
+| **Ponsel / Layar Sentuh** | < 768px | - Sidebar berubah menjadi **Off-canvas Drawer** dengan animasi geser halus dan backdrop gelap.<br>- Topbar navbar tampil bersih (tanpa tombol yang memadati layar kecil).<br>- Banner selamat datang menyesuaikan ukuran teks dan tombol aksi ditumpuk rapi.<br>- Statistik menjadi 1 kolom dengan tombol aksi sentuh yang nyaman.<br>- Tabel artikel terpopuler berganti menjadi **daftar kartu artikel** bebas geser horizontal.<br>- Sekilas tim terapis menjadi 1 kolom kartu vertikal yang ramah jempol. |
 
-### 3.4 Tabel "Pendaftaran Janji Temu Terbaru"
-- 5 janji terakhir; kolom pasien/orang tua, layanan, jadwal, status, aksi.
-- Aksi: konfirmasi cepat (`PUT /admin/appointments/{id}`) dan tombol WhatsApp ke orang tua.
-- **Tidak relevan lagi**: tabel akan kosong ("Belum ada janji temu...") atau berisi data lama saja.
+---
 
-### 3.5 Panel Kanan
-- **Aksi Cepat**: Tulis Artikel Baru, Tambah Terapis, Konfigurasi Klinik. (Relevan)
-- **Artikel Terbaru**: 5 artikel terakhir, thumbnail, kategori, judul (link edit), jumlah dilihat, penulis. (Relevan)
+## 5. Ringkasan Perubahan Teknis
 
-### 3.6 Alur Data
-```mermaid
-sequenceDiagram
-    participant A as Admin
-    participant V as DashboardView.vue
-    participant API as GET /admin/stats
-    participant DB as Database
-    A->>V: Buka /admin/dashboard
-    V->>API: Request (Bearer token Sanctum)
-    API->>DB: count Article, TeamMember aktif, Appointment (6 query), sum views
-    API->>DB: 5 appointment + 5 artikel terbaru
-    API-->>V: { stats, recent_appointments, recent_articles }
-    V-->>A: Render kartu, tabel, daftar artikel
-```
-
-## 4. Dampak Penonaktifan "Janji & Pendaftaran" pada Dashboard
-
-| Bagian | Masalah | Rekomendasi |
-|---|---|---|
-| Menu sidebar "Janji & Pendaftaran" | Mengarah ke fitur tak terpakai | Sembunyikan/hapus (komentar `router-link`) atau beri label "Arsip" |
-| Tombol "Lihat Semua Janji" di banner | Mengarah ke halaman nonaktif | Ganti ke "Tulis Artikel Baru" atau "Pengaturan WhatsApp" |
-| Teks banner ("pendaftaran janji terapi") | Menyesatkan | Ubah: "Kelola artikel edukasi, tim terapis, dan kontak klinik" |
-| Kartu "Total Pendaftaran Terapi" | Angka usang | Hapus; ganti kartu lain (lihat saran) |
-| Tabel janji temu terbaru | Kosong/usang | Hapus; ganti widget baru |
-| Fungsi `quickUpdateStatus`, `cleanPhone`, `getStatusClass/Label`, `formatDate` | Kode mati | Hapus setelah tabel dihapus |
-| Topbar "Form Pasien Baru" | Nama menjebak; tidak ada form | Ubah jadi "Buka WhatsApp Klinik" atau "Lihat Halaman Pendaftaran" |
-| API `/admin/stats` (6 query appointment) | Query tak perlu | Hapus field appointment dari `DashboardController` |
-| Route `/admin/appointments*` & `AppointmentController` | Masih aktif tanpa dipakai | Nonaktifkan atau pertahankan hanya baca (arsip) |
-| Badge "Sistem Terhubung" & "MySQL Terhubung" | Statis, bukan status nyata | Hubungkan ke health-check atau hapus |
-
-> [!NOTE]
-> Disarankan **menonaktifkan, bukan menghapus tabel** `appointments`, agar data historis tetap aman dan fitur bisa diaktifkan lagi.
-
-## 5. Rancangan Dashboard yang Disarankan
-
-**Kartu statistik baru (4):**
-1. Artikel Terbit (dan jumlah draft sebagai sub-teks).
-2. Terapis Aktif.
-3. Total Pembaca Artikel (+ tren 7 hari bila ada pencatatan).
-4. **Kontak WhatsApp Klinik** (nomor aktif dari Pengaturan, tombol "Ubah") — karena WhatsApp sekarang jadi jalur utama pendaftaran.
-
-**Widget konten:**
-- **Artikel Terpopuler** (urut `views_count`) di samping "Artikel Terbaru".
-- **Kesehatan Konten**: artikel draft belum terbit, artikel tanpa gambar, terapis tanpa foto/bio.
-- **Aksi Cepat**: Tulis Artikel, Tambah Terapis, Ubah Nomor WhatsApp & Jam Operasional, Tinjau Website.
-- **Tes tautan WhatsApp**: tombol "Uji Chat" yang membuka `wa.me/{nomor}` dengan pesan contoh.
-- **Pengingat kelengkapan pengaturan**: peringatan jika nomor WA, alamat, atau jam operasional kosong.
-
-## 6. Kekurangan (diperbarui)
-
-| # | Kekurangan | Prioritas |
-|---|---|---|
-| 1 | Banyak elemen merujuk fitur nonaktif (menu, banner, kartu, tabel, tombol topbar) | Tinggi |
-| 2 | Nomor WhatsApp **hardcoded** `6281234567890` di banyak halaman publik, sementara `HomeView` memakai nilai dari Pengaturan → admin mengubah nomor di Pengaturan tetapi sebagian halaman tidak ikut berubah | **Tinggi** |
-| 3 | Error loading hanya `console.error`; kartu menampilkan 0 | Tinggi |
-| 4 | Badge statis ("4 Layanan Utama", "Edukasi Ortu", "Interaksi") | Tinggi |
-| 5 | "Artikel Diterbitkan" menghitung draft juga | Tinggi |
-| 6 | Klaim "real-time" tidak benar (sekali muat) | Sedang |
-| 7 | Tidak ada skeleton loading untuk kartu & artikel | Sedang |
-| 8 | Query statistik tak efisien, tanpa cache | Sedang |
-| 9 | Tidak ada grafik (mis. pembaca artikel per hari) | Sedang |
-| 10 | Gambar fallback Unsplash eksternal, `alt` kosong | Rendah |
-| 11 | Tombol ikon tanpa `aria-label` | Rendah |
-| 12 | Badge status sistem di layout statis | Rendah |
-
-## 7. Saran Perbaikan (urutan pengerjaan)
-1. **Rapikan dashboard**: hapus kartu/tabel appointment, ubah teks banner dan tombol, nonaktifkan menu "Janji & Pendaftaran" dan tombol topbar "Form Pasien Baru".
-2. **Sentralisasi nomor WhatsApp**: buat store/composable (mis. `useClinicSettings`) yang mengambil `whatsapp` dari `/settings` sekali, dipakai semua halaman publik; hapus semua `6281234567890` hardcoded. Ini menjadikan menu Pengaturan benar-benar berfungsi.
-3. **Perbarui `DashboardController`**: hapus query appointment; tambahkan `published_articles`, `draft_articles`, `popular_articles`; gunakan `Cache::remember`.
-4. Tambahkan **error state + toast** dan skeleton loader.
-5. Tambahkan widget **Kesehatan Konten** dan peringatan kelengkapan Pengaturan.
-6. (Opsional) Grafik tren pembaca, dan pencatatan klik tombol WhatsApp (mis. event sederhana ke backend) agar admin tahu minat per layanan karena pendaftaran tidak lagi tercatat di sistem.
-
-Contoh `DashboardController` setelah penyesuaian:
-```php
-public function stats()
-{
-    return response()->json([
-        'stats' => [
-            'published_articles' => Article::where('status', 'published')->count(),
-            'draft_articles'     => Article::where('status', 'draft')->count(),
-            'total_team'         => TeamMember::where('is_active', true)->count(),
-            'total_views'        => Article::sum('views_count'),
-        ],
-        'popular_articles' => Article::orderByDesc('views_count')->limit(5)->get(),
-        'recent_articles'  => Article::latest()->limit(5)->get(),
-    ]);
-}
-```
-*(Sesuaikan nama kolom `status` dengan skema tabel `articles` yang sebenarnya.)*
-
-## 8. Kesimpulan
-Setelah pendaftaran dialihkan penuh ke WhatsApp, dashboard admin sebaiknya berubah dari "pusat pemantauan janji temu" menjadi "pusat pengelolaan konten dan kontak klinik". Hal terpenting: bersihkan elemen appointment dan pastikan **satu sumber nomor WhatsApp** dari Pengaturan dipakai di seluruh situs.
+1. **`AdminLayout.vue`**:
+   - Menghapus tombol *WhatsApp Klinik* dari `.topbar-right`.
+   - Menghapus import `useClinicSettings` dan CSS `.quick-btn` yang sudah tidak digunakan.
+2. **`DashboardController.php`**:
+   - Menambahkan query `team_members` yang mengambil data anggota terapis aktif (`name`, `role`, `specialization`, `image`, `experience_years`, `is_active`) untuk disajikan langsung di response API `GET /api/admin/stats`.
+3. **`DashboardView.vue`**:
+   - Menghapus section *Aksi Cepat*.
+   - Menghapus section *Pendaftaran via WhatsApp*.
+   - Menambahkan section baru **Sekilas Tim Terapis**.
+   - Menyusun section **Artikel Terpopuler (atas)** dan **Sekilas Tim Terapis (bawah)** secara vertikal (`flex-direction: column; gap: 2rem;`).
+   - Menerapkan layout kartu grid multi-kolom responsif (`grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));`) pada daftar terapis agar memenuhi area bawah secara simetris dan elegan.

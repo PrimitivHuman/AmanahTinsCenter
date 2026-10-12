@@ -33,6 +33,11 @@ class DashboardController extends Controller
             ->limit(5)
             ->get($articleFields);
 
+        $teamMembers = TeamMember::where('is_active', true)
+            ->orderBy('order')
+            ->limit(5)
+            ->get(['id', 'name', 'role', 'specialization', 'image', 'experience_years', 'is_active']);
+
         $recentArticles = Article::latest()->limit(5)->get($articleFields);
 
         $setting = ClinicSetting::first();
@@ -60,6 +65,7 @@ class DashboardController extends Controller
         return response()->json([
             'stats' => $stats,
             'popular_articles' => $popularArticles,
+            'team_members' => $teamMembers,
             'recent_articles' => $recentArticles,
             'health' => $health,
             'missing_settings' => $missingSettings,

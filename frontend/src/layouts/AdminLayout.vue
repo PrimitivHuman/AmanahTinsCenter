@@ -1,7 +1,10 @@
 <template>
   <div class="admin-shell">
+    <!-- Mobile Backdrop -->
+    <div v-if="isMobileOpen" class="sidebar-backdrop" @click="isMobileOpen = false"></div>
+
     <!-- Sidebar -->
-    <aside class="admin-sidebar" :class="{ 'sidebar-collapsed': isCollapsed }">
+    <aside class="admin-sidebar" :class="{ 'sidebar-collapsed': isCollapsed, 'mobile-open': isMobileOpen }">
       <div class="sidebar-top">
         <!-- Clinic Brand Header -->
         <div class="brand-box">
@@ -16,24 +19,24 @@
 
         <!-- Navigation Menu -->
         <nav class="sidebar-nav">
-          <router-link to="/admin/dashboard" class="nav-item" active-class="nav-item-active">
+          <router-link to="/admin/dashboard" class="nav-item" active-class="nav-item-active" @click="closeMobile">
             <span class="material-symbols-outlined">dashboard</span>
             <span class="nav-label" v-if="!isCollapsed">Dashboard Ringkasan</span>
           </router-link>
 
           <!-- Menu "Janji & Pendaftaran" dinonaktifkan: pendaftaran kini langsung via WhatsApp -->
 
-          <router-link to="/admin/artikel" class="nav-item" active-class="nav-item-active">
+          <router-link to="/admin/artikel" class="nav-item" active-class="nav-item-active" @click="closeMobile">
             <span class="material-symbols-outlined">menu_book</span>
             <span class="nav-label" v-if="!isCollapsed">Kelola Artikel & Tips</span>
           </router-link>
 
-          <router-link to="/admin/tim-kami" class="nav-item" active-class="nav-item-active">
+          <router-link to="/admin/tim-kami" class="nav-item" active-class="nav-item-active" @click="closeMobile">
             <span class="material-symbols-outlined">group</span>
             <span class="nav-label" v-if="!isCollapsed">Kelola Tim Terapis</span>
           </router-link>
 
-          <router-link to="/admin/pengaturan" class="nav-item" active-class="nav-item-active">
+          <router-link to="/admin/pengaturan" class="nav-item" active-class="nav-item-active" @click="closeMobile">
             <span class="material-symbols-outlined">settings</span>
             <span class="nav-label" v-if="!isCollapsed">Pengaturan Klinik</span>
           </router-link>
@@ -68,7 +71,7 @@
       <!-- Topbar Header -->
       <header class="admin-topbar">
         <div class="topbar-left">
-          <button class="toggle-sidebar-btn" @click="isCollapsed = !isCollapsed" title="Toggle Sidebar">
+          <button class="toggle-sidebar-btn" @click="toggleSidebar" title="Menu Navigasi" aria-label="Toggle Navigation">
             <span class="material-symbols-outlined">menu</span>
           </button>
           <div class="breadcrumb-trail">
@@ -78,12 +81,8 @@
           </div>
         </div>
 
-        <div class="topbar-right">
-          <a :href="waLink('Halo Admin Amanah Tin\'s Center, ini pesan uji dari portal admin.')" target="_blank" rel="noopener noreferrer" class="quick-btn" title="Buka chat WhatsApp klinik">
-            <span class="material-symbols-outlined">chat</span>
-            <span>WhatsApp Klinik</span>
-          </a>
-        </div>
+        <!-- Topbar Right (kosong atau profil/aksi lain) -->
+        <div class="topbar-right"></div>
       </header>
 
       <!-- Page Body -->
@@ -98,9 +97,6 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import { useClinicSettings } from '../composables/useClinicSettings'
-
-const { waLink } = useClinicSettings()
 
 defineProps({
   title: {
@@ -112,6 +108,19 @@ defineProps({
 const router = useRouter()
 const auth = useAuthStore()
 const isCollapsed = ref(false)
+const isMobileOpen = ref(false)
+
+function toggleSidebar() {
+  if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+    isMobileOpen.value = !isMobileOpen.value
+  } else {
+    isCollapsed.value = !isCollapsed.value
+  }
+}
+
+function closeMobile() {
+  isMobileOpen.value = false
+}
 
 const userInitials = computed(() => {
   const name = auth.user?.name || 'Admin'
@@ -370,31 +379,6 @@ async function handleLogout() {
   font-weight: 700;
 }
 
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.quick-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  background: var(--primary, #006384);
-  color: #ffffff;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  text-decoration: none;
-  box-shadow: 0 2px 8px rgba(0, 99, 132, 0.2);
-  transition: background 0.2s;
-}
-
-.quick-btn:hover {
-  background: var(--primary-container, #2e7c9e);
-}
-
 .admin-content {
   padding: 2rem;
   max-width: 1380px;
@@ -402,13 +386,53 @@ async function handleLogout() {
   margin: 0 auto;
 }
 
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 29, 46, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 45;
+  animation: fadeInBackdrop 0.2s ease;
+}
+
+@keyframes fadeInBackdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 1024px) {
+  .admin-content {
+    padding: 1.5rem 1.25rem;
+  }
+  .admin-topbar {
+    padding: 0.75rem 1.25rem;
+  }
+}
+
 @media (max-width: 768px) {
   .admin-sidebar {
     position: fixed;
-    left: -280px;
-  }
-  .admin-sidebar.sidebar-collapsed {
+    top: 0;
+    bottom: 0;
     left: 0;
+    width: 280px !important;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 50;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+  .admin-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  .admin-topbar {
+    padding: 0.75rem 1rem;
+  }
+  .crumb-root,
+  .crumb-sep {
+    display: none;
+  }
+  .admin-content {
+    padding: 1rem;
   }
 }
 </style>
