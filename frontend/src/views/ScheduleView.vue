@@ -661,6 +661,12 @@ a.channel-item:hover .channel-arrow { color: var(--primary); }
   .motivational-title { font-size: 24px; }
   .motivational-card, .steps-card, .contact-card { padding: 1.25rem; }
   .steps-card-header { flex-direction: column; align-items: flex-start; }
-  .motivational-actions { flex-direction: column; align-items: flex-start; }
+  .motivational-actions { flex-direction: column; align-items: stretch; width: 100%; }
+  .btn-wa-secondary { width: 100%; justify-content: center; }
+  .timeline::before { left: 16px; }
+  .timeline-number { width: 34px; height: 34px; font-size: 15px; }
+  .timeline-content { padding: 1rem; }
+  .timeline-item { gap: 0.75rem; }
+  .contact-cta { margin-bottom: 1.5rem; }
 }
 </style>

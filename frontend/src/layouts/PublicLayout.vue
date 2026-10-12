@@ -22,4 +22,10 @@ import TheFooter from '../components/TheFooter.vue'
 .main-content {
   flex: 1;
 }
+
+@media (max-width: 640px) {
+  .main-content {
+    padding-bottom: 2.5rem;
+  }
+}
 </style>

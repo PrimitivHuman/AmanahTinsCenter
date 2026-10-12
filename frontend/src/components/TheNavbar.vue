@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar-wrapper" :class="{ 'scrolled': isScrolled }">
+  <header class="navbar-wrapper" :class="{ 'scrolled': isScrolled, 'menu-open': mobileOpen }">
     <nav class="main-navbar" aria-label="Navigasi Utama">
       <div class="container navbar-inner">
         <!-- Brand Logo -->
@@ -55,7 +55,7 @@
           </ul>
         </div>
 
-        <!-- Mobile Hamburger Toggle (Tombol Tanya WA dan Jadwalkan Konsultasi dihapus) -->
+        <!-- Mobile Hamburger Toggle -->
         <div class="navbar-actions">
           <button
             class="mobile-toggle"
@@ -121,6 +121,28 @@
             </ul>
           </nav>
 
+          <!-- Drawer Quick CTAs (High Conversion for Mobile Parents) -->
+          <div class="drawer-ctas">
+            <router-link
+              to="/jadwal-pendaftaran"
+              class="btn-drawer-primary"
+              @click="closeMobileMenu"
+            >
+              <span class="material-symbols-outlined">calendar_month</span>
+              <span>Jadwalkan Konsultasi</span>
+            </router-link>
+            <a
+              href="https://wa.me/6282188899900?text=Halo%20Amanah%20Tin's%20Center,%20saya%20ingin%20konsultasi%20tumbuh%20kembang%20anak"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-drawer-wa"
+              @click="closeMobileMenu"
+            >
+              <span class="material-symbols-outlined">chat</span>
+              <span>Tanya via WhatsApp</span>
+            </a>
+          </div>
+
           <!-- Drawer Contact Info Strip -->
           <div class="drawer-contact-card">
             <div class="drawer-info-row">
@@ -134,7 +156,7 @@
               <span class="material-symbols-outlined text-teal">call</span>
               <div>
                 <span class="info-label">Telepon Klinik</span>
-                <span class="info-val">(021) 1234 5678</span>
+                <a href="tel:02112345678" class="info-val info-link">(021) 1234 5678</a>
               </div>
             </div>
           </div>
@@ -238,6 +260,10 @@ onUnmounted(() => {
   z-index: 1000;
   width: 100%;
   transition: all 0.25s ease;
+}
+
+.navbar-wrapper.menu-open {
+  z-index: 2100;
 }
 
 .main-navbar {
@@ -578,6 +604,66 @@ onUnmounted(() => {
   font-size: 12.5px;
   color: #091d2e;
   font-weight: 700;
+}
+
+.info-link {
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.info-link:hover {
+  color: #006384;
+  text-decoration: underline;
+}
+
+.drawer-ctas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.25rem 1rem 0.5rem;
+}
+
+.btn-drawer-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #006384;
+  color: #ffffff;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-family: var(--font-headline, 'Outfit', sans-serif);
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 99, 132, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-drawer-primary:hover {
+  background: #004d67;
+}
+
+.btn-drawer-wa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(37, 211, 102, 0.12);
+  color: #15803d;
+  border: 1.5px solid rgba(37, 211, 102, 0.4);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-family: var(--font-headline, 'Outfit', sans-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.btn-drawer-wa:hover {
+  background: #25d366;
+  color: #ffffff;
 }
 
 /* Drawer transitions */

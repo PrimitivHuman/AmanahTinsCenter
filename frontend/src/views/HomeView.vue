@@ -1283,6 +1283,50 @@ section[id] {
   color: var(--primary);
 }
 
+@media (max-width: 640px) {
+  .hero-section {
+    padding: 1.5rem 0 2rem;
+  }
+  .hero-headline {
+    gap: 0.15rem;
+  }
+  .headline-main {
+    font-size: 1.95rem;
+  }
+  .headline-sub {
+    font-size: 1.35rem;
+  }
+  .hero-desc {
+    font-size: 0.95rem;
+  }
+  .hero-ctas {
+    width: 100%;
+  }
+  .btn-primary-hero {
+    width: 100%;
+    justify-content: center;
+    padding: 0.9rem 1.5rem;
+    font-size: 15.5px;
+  }
+  .hero-trust {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+  .hero-img {
+    height: 300px;
+  }
+  .hero-float-badge {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.65rem 0.85rem;
+  }
+  .float-badge-pct {
+    display: none;
+  }
+}
+
 /* ==================== 2. FOUR PILLARS ==================== */
 .pillars-section {
   padding: 1.5rem 0 3rem;

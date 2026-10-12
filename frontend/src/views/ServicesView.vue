@@ -1565,17 +1565,22 @@ const steps = [
   .cta-actions { flex-direction: row; flex-wrap: wrap; justify-content: center; min-width: unset; width: 100%; }
 }
 @media (max-width: 768px) {
-  .hero-grid { grid-template-columns: 1fr; }
-  .hero-image-col { display: none; }
-  .hero-title { font-size: 28px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 1.75rem; }
+  .hero-image-col { display: block; }
+  .hero-image-frame { padding: 0.5rem; }
+  .hero-img { height: 210px; width: 100%; object-fit: cover; border-radius: 1rem; }
+  .hero-badge-float { bottom: 0.75rem; left: 0.75rem; right: 0.75rem; padding: 0.65rem 0.85rem; }
+  .hero-actions { flex-direction: column; width: 100%; gap: 0.75rem; }
+  .hero-btn-primary, .hero-btn-wa { width: 100%; justify-content: center; text-align: center; }
+  .hero-title { font-size: 26px; }
   .hero-desc { font-size: 15px; }
   .symptom-cards-grid { grid-template-columns: 1fr; }
   .matcher-result-card { padding: 1.5rem; }
   .programs-grid { gap: 1.25rem; }
   .steps-grid { grid-template-columns: 1fr; }
   .trust-grid { grid-template-columns: 1fr; }
-  .quote-card { padding: 2.5rem 1.5rem; }
-  .quote-text { font-size: 18px; }
+  .quote-card { padding: 2rem 1.25rem; }
+  .quote-text { font-size: 17px; }
   .cta-title { font-size: 24px; }
 }
 </style>

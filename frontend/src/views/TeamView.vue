@@ -1365,7 +1365,7 @@ const getTherapistWaUrl = (member) => {
   background: rgba(9, 29, 46, 0.65);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  z-index: 1000;
+  z-index: 2200;
   display: flex;
   align-items: center;
   justify-content: center;
