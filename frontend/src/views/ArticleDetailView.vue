@@ -23,7 +23,7 @@
             <span class="bc-sep">/</span>
             <router-link to="/artikel" class="bc-link">Artikel &amp; Tips</router-link>
             <span class="bc-sep">/</span>
-            <span class="bc-active">Tanda-Tanda Anak Membutuhkan Terapi Wicara</span>
+            <span class="bc-active">{{ activeArticle.title }}</span>
           </nav>
           <router-link to="/artikel" class="back-link">
             <span class="material-symbols-outlined back-icon">arrow_back</span>
@@ -39,7 +39,7 @@
           <div class="hero-badges">
             <span class="badge-pill badge-primary">
               <span class="material-symbols-outlined badge-icon">record_voice_over</span>
-              <span>Terapi Wicara (TW)</span>
+              <span>{{ activeArticle.category || 'Terapi Wicara' }}</span>
             </span>
             <span class="badge-pill badge-secondary">
               <span class="material-symbols-outlined badge-icon">escalator_warning</span>
@@ -47,13 +47,13 @@
             </span>
             <span class="badge-pill badge-neutral">
               <span class="material-symbols-outlined badge-icon">schedule</span>
-              <span>5 Menit Baca</span>
+              <span>{{ activeArticle.read_time || '5 Menit Baca' }}</span>
             </span>
           </div>
 
           <!-- Main Headline -->
           <h1 class="article-main-title">
-            Tanda-Tanda Anak Membutuhkan Terapi Wicara &amp; Kapan Waktu yang Tepat untuk Asesmen
+            {{ activeArticle.title }}
           </h1>
 
           <!-- Author and Medical Review Metadata Bar -->
@@ -61,14 +61,12 @@
             <div class="meta-bar-left">
               <!-- Author Info -->
               <div class="author-block">
-                <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDU3-885dqF_tiS4mE8mmL9b176cS2g-gjkrzg2t5i7RMtdaPZrO6ejLFQ9SYezy1MLaj9_opLwt_YNSWijncIScNgmKBa1qsqe-nqS_BGlw4N-v8X2jWRtMAAn8OIcjLCRPepUf6LHgnCZY65JIA50w-ejuy4P_MkwhYG8mCwJGHdLqaEKWVFob1con6xdH_Z31Iq7p87V8diQrVL0Am-Vu2rEkPLyzZ9kl3R_tRQ"
-                  alt="Nabila Maharani"
-                  class="author-avatar-img"
-                />
+                <div class="author-avatar-badge">
+                  <span class="material-symbols-outlined">person</span>
+                </div>
                 <div>
-                  <h4 class="author-title-name">Nabila Maharani, S.Tr.Kes</h4>
-                  <p class="author-title-role">Terapis Wicara Senior Amanah Tin's Center</p>
+                  <h4 class="author-title-name">{{ activeArticle.author || "Tim Ahli Amanah Tin's Center" }}</h4>
+                  <p class="author-title-role">{{ activeArticle.category }} • Tenaga Medis ATC</p>
                 </div>
               </div>
 
@@ -85,7 +83,7 @@
               <!-- Date -->
               <div class="date-block">
                 <span class="material-symbols-outlined date-icon">calendar_today</span>
-                <span>12 Mei 2025</span>
+                <span>{{ formatDate(activeArticle.created_at || activeArticle.published_at) }}</span>
               </div>
             </div>
 
@@ -115,13 +113,13 @@
           <!-- Featured Image Card -->
           <div class="featured-image-frame">
             <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO1kXEDRGcl9uLHHIxuzrHbMEVCebsxbPxzaaTqtVCXQy9bUlwDcZPdhw47bJrhz8Prdhk2l-txkJMZ2rADTKo_hiQVaX4kw2nXAwrXXkg3VzxJEdiO7eI13V6VMGi1Zx0esHjvzza0Q32HUg_wXx738DcL-nG5zugVbs0eXq3YI3SHIInta1wpVtve2zwmSJG4NXSNusz1yJutx9OLw8Me1odCBesAAbJrPCynY8"
-              alt="Tanda-Tanda Anak Membutuhkan Terapi Wicara"
+              :src="activeArticle.image || activeArticle.thumbnail || 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=1200'"
+              :alt="activeArticle.title"
               class="featured-img"
             />
             <div class="image-caption-pill">
               <span class="material-symbols-outlined caption-cam-icon">photo_camera</span>
-              <span>Sesi stimulasi interaktif di Ruang Terapi Wicara Jagakarsa</span>
+              <span>Sesi stimulasi &amp; konsultasi di Klinik Amanah Tin's Center</span>
             </div>
           </div>
         </div>
@@ -134,14 +132,17 @@
             <!-- Left: Main Article Content (8 Cols) -->
             <article class="article-content-col">
               <!-- Lead Paragraph Box -->
-              <div class="editorial-card lead-card">
+              <div class="editorial-card lead-card" v-if="activeArticle.excerpt">
                 <p class="lead-text">
-                  Mendengar kata pertama dari buah hati adalah salah satu momen yang paling dinantikan oleh setiap Ayah dan Bunda. Namun, tidak sedikit orang tua yang mulai merasa cemas ketika Si Kecil tampak belum berbicara sebanyak teman sebayanya. Apakah ini keterlambatan bicara biasa, atau tanda bahwa ananda memerlukan pendampingan dari <router-link to="/layanan/terapi-wicara" class="text-link">Terapis Wicara profesional</router-link>?
-                </p>
-                <p class="lead-sub">
-                  Memahami tonggak capaian (milestone) komunikasi dan tanda bahaya (red flags) secara obyektif adalah langkah awal paling bijak untuk memberikan intervensi tepat pada masa emas perkembangan otak anak.
+                  {{ activeArticle.excerpt }}
                 </p>
               </div>
+
+              <!-- Dynamic Body Content from Database -->
+              <div v-if="activeArticle.content" class="editorial-card article-dynamic-body" v-html="activeArticle.content"></div>
+
+              <!-- Static 5 Sections Fallback if dummy article -->
+              <template v-else>
 
               <!-- Mobile Quick Table of Contents Dropdown (Mobile & Tablet) -->
               <div class="mobile-toc-accordion">
@@ -369,20 +370,19 @@
                   </li>
                 </ul>
               </section>
+              </template>
 
               <!-- Author Bio Card -->
               <div class="author-bio-card">
-                <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO_eXTf-6df-kEJpSjWGcZCvK_q33Tqw4KzllImsUqCr1Jqr-5VjGlfhnPtQ5tJ0bQro9IQXTDIun33l4HwnEb085m_5xLSiSnQVXgQhro0Ei_wFw7Lzgc_ghgdZPFBxD0UBl7vLC2E3Zfk9cunUc26vVwqoB3JfA8p76U_aE_O7lfcBnqk3dG-ogB05LBn95ByMEAZwcofdopY3GptRfale9r8SO8lJJuPrQGONs"
-                  alt="Nabila Maharani"
-                  class="bio-avatar-img"
-                />
+                <div class="bio-avatar-fallback">
+                  <span class="material-symbols-outlined">person</span>
+                </div>
                 <div class="bio-content">
                   <span class="bio-role-badge">Penulis Artikel</span>
-                  <h3 class="bio-name">Nabila Maharani, S.Tr.Kes</h3>
-                  <p class="bio-specialty">Terapis Wicara &amp; Gangguan Komunikasi Pediatrik</p>
+                  <h3 class="bio-name">{{ activeArticle.author || "Tim Ahli Amanah Tin's Center" }}</h3>
+                  <p class="bio-specialty">{{ activeArticle.category || 'Tumbuh Kembang' }} • Tim Ahli ATC</p>
                   <p class="bio-text">
-                    Nabila telah berpengalaman lebih dari 6 tahun mendampingi ratusan anak dengan speech delay, autisme, down syndrome, dan gangguan artikulasi di wilayah Jakarta Selatan. Percaya bahwa setiap anak memiliki cara unik untuk terhubung dengan dunia.
+                    Materi edukasi klinis yang disusun berdasarkan panduan stimulasi tumbuh kembang anak terpercaya dari Amanah Tin's Center Jagakarsa.
                   </p>
                 </div>
               </div>
@@ -390,11 +390,10 @@
               <!-- Tags & Save Strip -->
               <div class="tags-action-bar">
                 <div class="tags-wrap">
-                  <span class="tags-label">Topik:</span>
-                  <span class="tag-pill">#TerapiWicara</span>
-                  <span class="tag-pill">#SpeechDelay</span>
-                  <span class="tag-pill">#ParentingAnak</span>
-                  <span class="tag-pill">#TumbuhKembang</span>
+                  <span class="tags-label">Kategori:</span>
+                  <span class="tag-pill">#{{ activeArticle.category || 'TumbuhKembang' }}</span>
+                  <span class="tag-pill">#EdukasiAnak</span>
+                  <span class="tag-pill">#AmanahTinsCenter</span>
                 </div>
                 <div class="bottom-action-buttons">
                   <button @click="shareWhatsApp" class="btn-bottom-share" title="Bagikan ke WhatsApp">
@@ -422,7 +421,7 @@
             <aside class="article-sidebar-col">
               <div class="sidebar-sticky-wrap">
                 <!-- Widget: Sticky Table of Contents (Daftar Isi Cepat) -->
-                <nav class="sidebar-widget widget-toc" aria-label="Daftar Isi Artikel">
+                <nav v-if="!activeArticle?.content" class="sidebar-widget widget-toc" aria-label="Daftar Isi Artikel">
                   <div class="toc-header">
                     <div class="toc-header-left">
                       <span class="material-symbols-outlined toc-head-icon">format_list_bulleted</span>
@@ -608,14 +607,17 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import PublicLayout from '../layouts/PublicLayout.vue'
 import { useBookmarks } from '../composables/useBookmarks'
 import { useClinicSettings } from '../composables/useClinicSettings'
+import api from '../services/api'
 
+const route = useRoute()
 const { waLink } = useClinicSettings()
 
-// Article identity for persistent bookmarking
+// Fallback demo article if database doesn't have article
 const currentArticle = {
   id: 1,
   slug: 'tanda-anak-butuh-terapi-wicara',
@@ -624,12 +626,51 @@ const currentArticle = {
   excerpt: 'Kenali red flags keterlambatan bicara sejak dini, mulai dari minimnya babbling hingga kesulitan mengekspresikan kosakata sehari-hari.',
   published_at: '2025-05-12',
   read_time: '5 Menit Baca',
-  thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBO1kXEDRGcl9uLHHIxuzrHbMEVCebsxbPxzaaTqtVCXQy9bUlwDcZPdhw47bJrhz8Prdhk2l-txkJMZ2rADTKo_hiQVaX4kw2nXAwrXXkg3VzxJEdiO7eI13V6VMGi1Zx0esHjvzza0Q32HUg_wXx738DcL-nG5zugVbs0eXq3YI3SHIInta1wpVtve2zwmSJG4NXSNusz1yJutx9OLw8Me1odCBesAAbJrPCynY8'
+  thumbnail: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=1200'
+}
+
+const apiArticle = ref(null)
+const apiRelated = ref([])
+const isLoading = ref(true)
+
+const activeArticle = computed(() => apiArticle.value || currentArticle)
+
+function formatDate(dateStr) {
+  if (!dateStr) return 'Terbaru'
+  try {
+    const d = new Date(dateStr)
+    if (isNaN(d.getTime())) return dateStr
+    return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+  } catch {
+    return dateStr
+  }
+}
+
+async function fetchArticleData() {
+  const slug = route.params.slug
+  if (!slug) return
+  isLoading.value = true
+  try {
+    const res = await api.get(`/articles/${slug}`)
+    if (res.data && res.data.article) {
+      apiArticle.value = res.data.article
+      if (res.data.related && res.data.related.length > 0) {
+        apiRelated.value = res.data.related
+      }
+    } else {
+      apiArticle.value = null
+    }
+  } catch (err) {
+    console.warn('Gagal memuat artikel dari backend, menggunakan konten fallback:', err)
+    apiArticle.value = null
+  } finally {
+    isLoading.value = false
+  }
 }
 
 // Persistent Bookmark Composable
 const { isBookmarked, toggleBookmark } = useBookmarks()
-const isCurrentSaved = computed(() => isBookmarked(currentArticle.slug))
+const isCurrentSaved = computed(() => isBookmarked(activeArticle.value.slug))
 
 // Toast state & handler
 const toast = ref({
@@ -650,7 +691,7 @@ function showToast({ title, message, icon = 'check_circle', type = 'success' }) 
 }
 
 function handleToggleSave() {
-  const added = toggleBookmark(currentArticle)
+  const added = toggleBookmark(activeArticle.value)
   if (added) {
     showToast({
       title: 'Artikel Disimpan!',
@@ -711,12 +752,14 @@ function handleScroll() {
   }
 
   // Scroll spy for Table of Contents
-  const scrollPosition = scrollY + 140
-  for (let i = tableOfContents.length - 1; i >= 0; i--) {
-    const section = document.getElementById(tableOfContents[i].id)
-    if (section && section.offsetTop <= scrollPosition) {
-      activeTocId.value = tableOfContents[i].id
-      break
+  if (!activeArticle.value?.content) {
+    const scrollPosition = scrollY + 140
+    for (let i = tableOfContents.length - 1; i >= 0; i--) {
+      const section = document.getElementById(tableOfContents[i].id)
+      if (section && section.offsetTop <= scrollPosition) {
+        activeTocId.value = tableOfContents[i].id
+        break
+      }
     }
   }
 }
@@ -724,14 +767,14 @@ function handleScroll() {
 // Social Share & Web Share API
 function shareWhatsApp() {
   const url = window.location.href
-  const text = encodeURIComponent(`Rekomendasi bacaan penting untuk Ayah & Bunda dari Klinik Amanah Tin's Center:\n\n"Tanda-Tanda Anak Membutuhkan Terapi Wicara & Kapan Waktu yang Tepat untuk Asesmen"\n\nBaca artikel selengkapnya di: ${url}`)
+  const text = encodeURIComponent(`Rekomendasi bacaan penting untuk Ayah & Bunda dari Klinik Amanah Tin's Center:\n\n"${activeArticle.value.title}"\n\nBaca artikel selengkapnya di: ${url}`)
   window.open(`https://wa.me/?text=${text}`, '_blank')
 }
 
 async function shareGeneral() {
   const url = window.location.href
-  const title = 'Tanda-Tanda Anak Membutuhkan Terapi Wicara - Amanah Tin\'s Center'
-  const text = 'Panduan mengenali tanda keterlambatan bicara anak dan waktu yang tepat untuk asesmen tumbuh kembang di Jagakarsa.'
+  const title = `${activeArticle.value.title} - Amanah Tin's Center`
+  const text = activeArticle.value.excerpt || 'Panduan tumbuh kembang dan terapi anak terpercaya di Jagakarsa.'
 
   if (navigator.share) {
     try {
@@ -771,28 +814,39 @@ async function copyLink() {
   }
 }
 
-
-// Sidebar related articles
-const displayRelated = [
+// Fallback sidebar related articles
+const defaultRelated = [
   {
     slug: 'tips-stimulasi-motorik-halus',
     title: 'Tips Stimulasi Motorik Halus Anak di Rumah dengan Alat Sederhana',
     date: '5 Mei 2025',
-    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAFT9R7iYuudAAi6vLqKZxYm6UU_OYOezKXCHBKszlL2fHh65wkfTvCdIYGWoAJmSQPAwAGBC4zm1VGM3F-ceyb4emvi5v6Gcx7JVuntEZa9nCn9SsTQeaxF2TzI9PEBdrHt5MVcNCBQ2Wp8R42EB3LpRSPJ_NRl5Lv3uy3QUz9wT0qepTxMaD4YgxekiWT-VDsKfLtj1gmfO_GXy6gj-0a8mMgq64bgxOPaGSo1go'
+    thumbnail: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=800'
   },
   {
     slug: 'pentingnya-konsistensi-terapi',
     title: 'Pentingnya Konsistensi dalam Terapi Tumbuh Kembang Anak',
     date: '28 April 2025',
-    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDo1OGbId-kJf3iMYUvbKUva385-cgCtEd2sji0ewcnnI9nbRqLpYP4sxlyLPe6li_n1sNmTsPeLOfBw8T3NGUkjWKVipxZf8f9aSvk3ZoHnoc9CmVqabLk81hlj4_W45Tu8ac8Bl4PL7uVae3VIjypQQqasfM_bDXzixoQjrflfi8Ke0huIUDlcqnJaKWIpgAi-pTBD5EPEBgjFr6oKSdYopp8CbatIyLfLaVMOX4'
+    thumbnail: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=800'
   },
   {
     slug: 'komunikasi-positif-bebas-tantrum',
     title: 'Cara Membangun Komunikasi Positif Bebas Tantrum dengan Balita',
     date: '20 April 2025',
-    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB8F5sUYUnLQvI1Zg5TI3tj3_lLUyMOAEhvTZB0g49gpbdvC3rJX2KRagYnse5wmtQ31qEVq-Eh6eQWrPwZK0e-ihstytpVFz6e429d_cD2VubXz2ZH0yfpv340lPgXM5CMT2fnHDBVjr1xGmtxH7QDd8L5-psCDU4L862qeTYfE9IKrubL_uzgYn5BUwTMMvzGg294KN0b9ABLCSWlKzeiXnLdPn8mqbyzsfBiORs'
+    thumbnail: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=800'
   }
 ]
+
+const displayRelated = computed(() => {
+  if (apiRelated.value && apiRelated.value.length > 0) {
+    return apiRelated.value.map(item => ({
+      slug: item.slug,
+      title: item.title,
+      date: formatDate(item.published_at || item.created_at),
+      thumbnail: item.image || item.thumbnail || 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=800'
+    }))
+  }
+  return defaultRelated
+})
 
 // Bottom 3 recommended articles
 const bottomArticles = [
@@ -803,7 +857,7 @@ const bottomArticles = [
     date: '5 Mei 2025',
     title: 'Tips Stimulasi Motorik Halus & Sensori di Rumah',
     desc: 'Panduan praktis melatih koordinasi jemari dan fokus anak prasekolah dengan material aman yang ada di dapur.',
-    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBMyv4x_t3aLNzqHqBfyLTLVFLQMaeBY6kq887jZg-xpAnmZFREQ2hY5Cl_D4LhKI_wA_Gh1Lo0HsPeHsmgSzVJL9_F682ElXn8pVDudZ-LR5DggTPPPx5GsIcMa_0o8c33Zsoa5oQrvOgbDaldaFUy44BeoZa5MPnVDwEH9o25WVmKqOc6BFy4WY_bcOwUP3gK8J23fe43IjNxM29LPpSlCuwmKUSAb-RWPrSY5Gk'
+    thumbnail: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=800'
   },
   {
     slug: 'pentingnya-konsistensi-terapi',
@@ -812,7 +866,7 @@ const bottomArticles = [
     date: '28 April 2025',
     title: 'Pentingnya Konsistensi dalam Terapi Tumbuh Kembang',
     desc: 'Mengapa jadwal sesi rutin dan peran aktif orang tua di rumah menjadi kunci keberhasilan terapi anak.',
-    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD959aa55wDamdcp01tUsdk4bJj2k1GJD512TROT6fvLdA6VZqBasnJ1RFS8DyVO6fMJ_KRKiCunvUHF6RAAJVPNvv0xSOwCFtZUn5n8Mvzx4Hqw-GjzT6qbDxVbwDRVDO965NzXOeveMvIr6IGpZLVQYgwdHFPMkJpKAcf9V-zA4yC_oDBSk3qAEQ7MpL2SXjzlQjajMLJJs97Ves3uoUWFpReHgXwfT5qEby33es'
+    thumbnail: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=800'
   },
   {
     slug: 'komunikasi-positif-bebas-tantrum',
@@ -821,13 +875,19 @@ const bottomArticles = [
     date: '20 April 2025',
     title: 'Cara Membangun Komunikasi Positif dengan Balita',
     desc: 'Strategi meredakan frustrasi anak saat sulit mengekspresikan keinginannya dan menumbuhkan rasa percaya diri.',
-    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAmnkUU35JUkcj0Hw0LGOkTad_P7xJ2R750DBHkBNoZFEtiaajhNPCJIdeLFmKQ_swOC7Tjp2l-jw2mxM13XnUvUbU68VyGvw_iTVexA634DwffQt8cYhEh3fLNlevp7_E1VFKWRXd3iNpZ_gqvcnZzOFYmVYjWXkf7OrkcVDujrJuAJvkvKHTowqWBFnuOUzur_YV--NGQvQBsTh5jb7vcJ955qkFrqEQ3g9EVGnA'
+    thumbnail: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=800'
   }
 ]
 
 onMounted(() => {
+  fetchArticleData()
   window.addEventListener('scroll', handleScroll, { passive: true })
   handleScroll()
+})
+
+watch(() => route.params.slug, () => {
+  fetchArticleData()
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 })
 
 onUnmounted(() => {
@@ -1219,6 +1279,126 @@ onUnmounted(() => {
   line-height: 1.65;
   color: var(--on-surface-variant);
   margin-top: 1rem;
+}
+
+/* ==================== DYNAMIC BODY CONTENT TYPOGRAPHY ==================== */
+.article-dynamic-body {
+  font-family: var(--font-body);
+  font-size: 16.5px;
+  line-height: 1.85;
+  color: var(--on-surface);
+}
+
+.article-dynamic-body :deep(h2),
+.article-dynamic-body h2 {
+  font-family: var(--font-headline);
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--on-surface);
+  margin-top: 2rem;
+  margin-bottom: 0.85rem;
+  line-height: 1.35;
+  border-left: 4px solid var(--primary);
+  padding-left: 0.85rem;
+}
+
+.article-dynamic-body :deep(h3),
+.article-dynamic-body h3 {
+  font-family: var(--font-headline);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: 1.5rem;
+  margin-bottom: 0.65rem;
+  line-height: 1.4;
+}
+
+.article-dynamic-body :deep(p),
+.article-dynamic-body p {
+  margin-bottom: 1.25rem;
+  color: #334155;
+  font-size: 16.5px;
+  line-height: 1.85;
+}
+
+.article-dynamic-body :deep(ul),
+.article-dynamic-body ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #334155;
+}
+
+.article-dynamic-body :deep(ol),
+.article-dynamic-body ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #334155;
+}
+
+.article-dynamic-body :deep(li),
+.article-dynamic-body li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+}
+
+.article-dynamic-body :deep(strong),
+.article-dynamic-body strong {
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.article-dynamic-body :deep(a),
+.article-dynamic-body a {
+  color: var(--primary);
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+
+.article-dynamic-body :deep(a:hover),
+.article-dynamic-body a:hover {
+  color: var(--primary-container);
+}
+
+.article-dynamic-body :deep(blockquote),
+.article-dynamic-body blockquote {
+  margin: 1.75rem 0;
+  padding: 1.25rem 1.5rem;
+  background: rgba(0, 99, 132, 0.04);
+  border-left: 4px solid var(--primary);
+  border-radius: 0 1rem 1rem 0;
+  font-style: italic;
+  color: #1e293b;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.article-dynamic-body :deep(.callout-card),
+.article-dynamic-body .callout-card {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(0, 99, 132, 0.06) 0%, rgba(75, 103, 22, 0.06) 100%);
+  border-left: 4px solid var(--secondary);
+  border-radius: 1rem;
+}
+
+.article-dynamic-body :deep(img),
+.article-dynamic-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.article-dynamic-body :deep(hr),
+.article-dynamic-body hr {
+  border: 0;
+  height: 1px;
+  background: rgba(191, 200, 206, 0.5);
+  margin: 2rem 0;
 }
 
 /* Headings inside content */

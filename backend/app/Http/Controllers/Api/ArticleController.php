@@ -69,17 +69,41 @@ class ArticleController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('category', 'like', "%{$search}%");
+                  ->orWhere('category', 'like', "%{$search}%")
+                  ->orWhere('author', 'like', "%{$search}%")
+                  ->orWhere('excerpt', 'like', "%{$search}%");
             });
         }
 
         if ($request->has('category') && $request->category !== 'Semua') {
-            $query->where('category', $request->category);
+            $cat = $request->category;
+            if ($cat === 'Parenting') {
+                $query->where(function ($q) {
+                    $q->where('category', 'Parenting')
+                      ->orWhere('category', 'like', 'Parenting%');
+                });
+            } else {
+                $query->where('category', $cat);
+            }
+        }
+
+        if ($request->has('status') && in_array($request->status, ['published', 'draft'])) {
+            $query->where('is_published', $request->status === 'published');
         }
 
         $articles = $query->latest()->paginate($request->get('per_page', 10));
 
-        return response()->json($articles);
+        $stats = [
+            'total' => Article::count(),
+            'published' => Article::where('is_published', true)->count(),
+            'draft' => Article::where('is_published', false)->count(),
+            'total_views' => (int) Article::sum('views_count'),
+        ];
+
+        $response = $articles->toArray();
+        $response['stats'] = $stats;
+
+        return response()->json($response);
     }
 
     // Admin: Show for editing
@@ -87,6 +111,33 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
         return response()->json($article);
+    }
+
+    /**
+     * Admin: Upload article cover image
+     */
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
+        ], [
+            'image.required' => 'Silakan pilih berkas gambar yang akan diunggah.',
+            'image.image' => 'Berkas harus berupa gambar valid.',
+            'image.mimes' => 'Format gambar yang didukung adalah JPEG, PNG, JPG, WEBP, atau GIF.',
+            'image.max' => 'Ukuran gambar maksimal adalah 5MB.',
+        ]);
+
+        $file = $request->file('image');
+        $filename = time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+        $path = $file->storeAs('articles', $filename, 'public');
+        $url = '/storage/' . $path;
+
+        return response()->json([
+            'message' => 'Gambar sampul berhasil diunggah',
+            'url' => $url,
+            'filename' => $filename,
+            'size' => $file->getSize(),
+        ]);
     }
 
     // Admin: Create article
@@ -122,10 +173,10 @@ class ArticleController extends Controller
         $article = Article::findOrFail($id);
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'category' => 'required|string|max:100',
+            'title' => 'sometimes|required|string|max:255',
+            'category' => 'sometimes|required|string|max:100',
             'excerpt' => 'nullable|string',
-            'content' => 'required|string',
+            'content' => 'sometimes|required|string',
             'author' => 'nullable|string|max:150',
             'image' => 'nullable|string',
             'read_time' => 'nullable|string',

@@ -83,7 +83,7 @@
             <!-- Thumbnail -->
             <div class="card-thumb-wrap">
               <img
-                :src="article.thumbnail || getDefaultThumb(article.category)"
+                :src="article.image || article.thumbnail || getDefaultThumb(article.category)"
                 :alt="article.title"
                 class="card-thumb"
               />

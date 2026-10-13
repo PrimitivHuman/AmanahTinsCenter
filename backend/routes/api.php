@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admin Articles CRUD
     Route::get('/admin/articles', [ArticleController::class, 'adminIndex']);
     Route::get('/admin/articles/{id}', [ArticleController::class, 'adminShow']);
+    Route::post('/admin/articles/upload-image', [ArticleController::class, 'uploadImage']);
     Route::post('/admin/articles', [ArticleController::class, 'store']);
     Route::put('/admin/articles/{id}', [ArticleController::class, 'update']);
     Route::delete('/admin/articles/{id}', [ArticleController::class, 'destroy']);
