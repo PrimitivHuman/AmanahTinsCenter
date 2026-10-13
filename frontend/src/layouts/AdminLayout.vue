@@ -1,10 +1,7 @@
 <template>
   <div class="admin-shell">
-    <!-- Mobile Backdrop -->
-    <div v-if="isMobileOpen" class="sidebar-backdrop" @click="isMobileOpen = false"></div>
-
     <!-- Sidebar -->
-    <aside class="admin-sidebar" :class="{ 'sidebar-collapsed': isCollapsed, 'mobile-open': isMobileOpen }">
+    <aside class="admin-sidebar" :class="{ 'sidebar-collapsed': isCollapsed }">
       <div class="sidebar-top">
         <!-- Clinic Brand Header -->
         <div class="brand-box">
@@ -19,24 +16,24 @@
 
         <!-- Navigation Menu -->
         <nav class="sidebar-nav">
-          <router-link to="/admin/dashboard" class="nav-item" active-class="nav-item-active" @click="closeMobile">
+          <router-link to="/admin/dashboard" class="nav-item" active-class="nav-item-active">
             <span class="material-symbols-outlined">dashboard</span>
             <span class="nav-label" v-if="!isCollapsed">Dashboard Ringkasan</span>
           </router-link>
 
           <!-- Menu "Janji & Pendaftaran" dinonaktifkan: pendaftaran kini langsung via WhatsApp -->
 
-          <router-link to="/admin/artikel" class="nav-item" active-class="nav-item-active" @click="closeMobile">
+          <router-link to="/admin/artikel" class="nav-item" active-class="nav-item-active">
             <span class="material-symbols-outlined">menu_book</span>
             <span class="nav-label" v-if="!isCollapsed">Kelola Artikel & Tips</span>
           </router-link>
 
-          <router-link to="/admin/tim-kami" class="nav-item" active-class="nav-item-active" @click="closeMobile">
+          <router-link to="/admin/tim-kami" class="nav-item" active-class="nav-item-active">
             <span class="material-symbols-outlined">group</span>
             <span class="nav-label" v-if="!isCollapsed">Kelola Tim Terapis</span>
           </router-link>
 
-          <router-link to="/admin/pengaturan" class="nav-item" active-class="nav-item-active" @click="closeMobile">
+          <router-link to="/admin/pengaturan" class="nav-item" active-class="nav-item-active">
             <span class="material-symbols-outlined">settings</span>
             <span class="nav-label" v-if="!isCollapsed">Pengaturan Klinik</span>
           </router-link>
@@ -71,7 +68,7 @@
       <!-- Topbar Header -->
       <header class="admin-topbar">
         <div class="topbar-left">
-          <button class="toggle-sidebar-btn" @click="toggleSidebar" title="Menu Navigasi" aria-label="Toggle Navigation">
+          <button class="toggle-sidebar-btn" @click="isCollapsed = !isCollapsed" title="Toggle Sidebar">
             <span class="material-symbols-outlined">menu</span>
           </button>
           <div class="breadcrumb-trail">
@@ -81,7 +78,7 @@
           </div>
         </div>
 
-        <!-- Topbar Right (kosong atau profil/aksi lain) -->
+        <!-- Topbar Right (bersih, tanpa WhatsApp Klinik) -->
         <div class="topbar-right"></div>
       </header>
 
@@ -108,19 +105,6 @@ defineProps({
 const router = useRouter()
 const auth = useAuthStore()
 const isCollapsed = ref(false)
-const isMobileOpen = ref(false)
-
-function toggleSidebar() {
-  if (typeof window !== 'undefined' && window.innerWidth <= 768) {
-    isMobileOpen.value = !isMobileOpen.value
-  } else {
-    isCollapsed.value = !isCollapsed.value
-  }
-}
-
-function closeMobile() {
-  isMobileOpen.value = false
-}
 
 const userInitials = computed(() => {
   const name = auth.user?.name || 'Admin'
@@ -142,8 +126,6 @@ async function handleLogout() {
   background-color: var(--background, #f7f9ff);
   color: var(--on-surface, #091d2e);
   font-family: var(--font-body, 'Nunito Sans', sans-serif);
-  overflow-x: hidden;
-  max-width: 100vw;
 }
 
 .admin-sidebar {
@@ -329,8 +311,6 @@ async function handleLogout() {
   flex-direction: column;
   min-width: 0;
   overflow-y: auto;
-  overflow-x: hidden;
-  max-width: 100vw;
 }
 
 .admin-topbar {
@@ -383,64 +363,26 @@ async function handleLogout() {
   font-weight: 700;
 }
 
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .admin-content {
   padding: 2rem;
   max-width: 1380px;
   width: 100%;
   margin: 0 auto;
-  box-sizing: border-box;
-}
-
-.sidebar-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(9, 29, 46, 0.45);
-  backdrop-filter: blur(4px);
-  z-index: 45;
-  animation: fadeInBackdrop 0.2s ease;
-}
-
-@keyframes fadeInBackdrop {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@media (max-width: 1024px) {
-  .admin-content {
-    padding: 1.5rem 1.25rem;
-  }
-  .admin-topbar {
-    padding: 0.75rem 1.25rem;
-  }
 }
 
 @media (max-width: 768px) {
   .admin-sidebar {
     position: fixed;
-    top: 0;
-    bottom: 0;
+    left: -280px;
+  }
+  .admin-sidebar.sidebar-collapsed {
     left: 0;
-    width: 280px !important;
-    transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 50;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  }
-  .admin-sidebar.mobile-open {
-    transform: translateX(0);
-  }
-  .admin-topbar {
-    padding: 0.75rem 1rem;
-  }
-  .crumb-root,
-  .crumb-sep {
-    display: none;
-  }
-  .admin-content {
-    padding: 0.85rem 0.65rem;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100vw;
   }
 }
 </style>
