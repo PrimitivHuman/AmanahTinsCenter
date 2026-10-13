@@ -23,8 +23,8 @@
             </svg>
           </div>
           <div class="brand-text">
-            <span class="brand-name">Amanah Tin's Center</span>
-            <span class="brand-tagline">Pusat Terapi &amp; Tumbuh Kembang Anak</span>
+            <span class="brand-name">{{ settings?.clinic_name || "Amanah Tin's Center" }}</span>
+            <span class="brand-tagline">{{ settings?.tagline || "Pusat Terapi & Tumbuh Kembang Anak" }}</span>
           </div>
         </router-link>
 
@@ -78,8 +78,8 @@
           <!-- Drawer Header -->
           <div class="drawer-header">
             <div class="drawer-brand">
-              <span class="drawer-brand-name">Amanah Tin's Center</span>
-              <span class="drawer-brand-sub">Jagakarsa, Jakarta Selatan</span>
+              <span class="drawer-brand-name">{{ settings?.clinic_name || "Amanah Tin's Center" }}</span>
+              <span class="drawer-brand-sub">{{ settings?.tagline || "Pusat Terapi & Tumbuh Kembang" }}</span>
             </div>
             <button class="drawer-close-btn" @click="closeMobileMenu" aria-label="Tutup menu">
               <span class="material-symbols-outlined">close</span>
@@ -149,14 +149,14 @@
               <span class="material-symbols-outlined text-teal">schedule</span>
               <div>
                 <span class="info-label">Jam Operasional</span>
-                <span class="info-val">Senin – Sabtu: 08.00 – 17.00 WIB</span>
+                <span class="info-val">{{ settings?.weekday_hours || 'Senin – Sabtu: 08.00 – 17.00 WIB' }}</span>
               </div>
             </div>
-            <div class="drawer-info-row">
+            <div class="drawer-info-row" v-if="settings?.phone">
               <span class="material-symbols-outlined text-teal">call</span>
               <div>
                 <span class="info-label">Telepon Klinik</span>
-                <a href="tel:02112345678" class="info-val info-link">(021) 1234 5678</a>
+                <a :href="`tel:${settings.phone.replace(/[^0-9+]/g, '')}`" class="info-val info-link">{{ settings.phone }}</a>
               </div>
             </div>
           </div>
@@ -172,7 +172,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { activeSection } from '../composables/useActiveSection'
 import { useClinicSettings } from '../composables/useClinicSettings'
 
-const { waLink } = useClinicSettings()
+const { settings, waLink } = useClinicSettings()
 
 const route = useRoute()
 const router = useRouter()

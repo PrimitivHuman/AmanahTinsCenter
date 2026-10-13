@@ -353,7 +353,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, onUnmounted } from 'vue'
 import AdminLayout from '../../layouts/AdminLayout.vue'
 import api from '../../services/api'
 
@@ -503,6 +503,7 @@ function openCreateModal() {
   certInput.value = ''
   tagsInput.value = ''
   showModal.value = true
+  document.body.style.overflow = 'hidden'
 }
 
 function openEditModal(member) {
@@ -523,10 +524,12 @@ function openEditModal(member) {
   certInput.value = Array.isArray(member.certifications) ? member.certifications.join(', ') : ''
   tagsInput.value = Array.isArray(member.tags) ? member.tags.join(', ') : (typeof member.tags === 'string' ? member.tags : '')
   showModal.value = true
+  document.body.style.overflow = 'hidden'
 }
 
 function closeModal() {
   showModal.value = false
+  document.body.style.overflow = ''
 }
 
 async function saveMember() {
@@ -576,6 +579,10 @@ async function deleteMember(member) {
 
 onMounted(() => {
   fetchTeam()
+})
+
+onUnmounted(() => {
+  document.body.style.overflow = ''
 })
 </script>
 
@@ -1226,7 +1233,13 @@ onMounted(() => {
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE & Edge */
   box-shadow: 0 20px 48px rgba(9, 29, 46, 0.25);
+}
+
+.modal-card::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .modal-header {

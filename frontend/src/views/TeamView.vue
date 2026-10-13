@@ -367,11 +367,11 @@
           <div class="cta-footer-info">
             <div class="cta-info-item">
               <span class="material-symbols-outlined" style="font-size:16px">place</span>
-              <span>Jl. Raya Jagakarsa No. 12, Jagakarsa, Jakarta Selatan</span>
+              <span>{{ settings?.address || 'Jl. Raya Jagakarsa No. 12, Jagakarsa, Jakarta Selatan' }}</span>
             </div>
             <div class="cta-info-item">
               <span class="material-symbols-outlined" style="font-size:16px">schedule</span>
-              <span>Senin - Sabtu: 08.00 - 17.00 WIB</span>
+              <span>{{ settings?.weekday_hours || 'Senin - Sabtu: 08.00 - 17.00 WIB' }}</span>
             </div>
           </div>
         </div>
@@ -386,7 +386,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useClinicSettings } from '../composables/useClinicSettings'
 import api from '../services/api'
 
-const { waLink } = useClinicSettings()
+const { settings, waLink } = useClinicSettings()
 import PublicLayout from '../layouts/PublicLayout.vue'
 
 // Photos from blueprint (google AI-generated images)
@@ -1465,9 +1465,15 @@ const getTherapistWaUrl = (member) => {
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE & Edge */
   box-shadow: 0 24px 60px -12px rgba(9, 29, 46, 0.35);
   position: relative;
   animation: scaleUpModal 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-card::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 @keyframes scaleUpModal {

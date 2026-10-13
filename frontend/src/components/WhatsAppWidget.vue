@@ -35,7 +35,7 @@
             </div>
             <div class="wa-profile-info">
               <h3 id="wa-card-title" class="wa-profile-name">
-                Tanya Amanah Tin's Center
+                Tanya {{ settings?.clinic_name || "Amanah Tin's Center" }}
               </h3>
               <div class="wa-profile-status">
                 <span class="status-indicator"></span>
@@ -56,7 +56,7 @@
         <!-- Card Body / Chat Area -->
         <div class="wa-card-body">
           <div class="wa-chat-timestamp">
-            <span>Hari ini • Jam Layanan 08.00 – 17.00 WIB</span>
+            <span>Hari ini • {{ settings?.weekday_hours || 'Jam Layanan 08.00 – 17.00 WIB' }}</span>
           </div>
 
           <!-- Incoming Message Bubble -->
@@ -65,7 +65,7 @@
             <p class="wa-bubble-text">
               Halo Ayah &amp; Bunda! 👋
               <br />
-              Selamat datang di <strong>Amanah Tin's Center</strong>. Ada yang bisa kami bantu seputar konsultasi tumbuh kembang atau jadwal terapi ananda?
+              Selamat datang di <strong>{{ settings?.clinic_name || "Amanah Tin's Center" }}</strong>. Ada yang bisa kami bantu seputar konsultasi tumbuh kembang atau jadwal terapi ananda?
             </p>
             <span class="wa-bubble-time">{{ currentTimeStr }}</span>
           </div>
@@ -148,11 +148,11 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import api from '../services/api'
+import { useClinicSettings } from '../composables/useClinicSettings'
 
 const route = useRoute()
+const { settings, whatsappNumber, waLink } = useClinicSettings()
 const isOpen = ref(false)
-const rawWhatsapp = ref('6282188899900')
 const customMessage = ref('')
 
 const isAdminRoute = computed(() => route.path.startsWith('/admin'))
@@ -192,22 +192,13 @@ const currentTimeStr = computed(() => {
   return now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
 })
 
-// Cleaned phone number for wa.me URL
-const sanitizedPhone = computed(() => {
-  let cleaned = String(rawWhatsapp.value || '6282188899900').replace(/[^0-9]/g, '')
-  if (cleaned.startsWith('0')) {
-    cleaned = '62' + cleaned.slice(1)
-  }
-  return cleaned
-})
-
 // Formatted display phone number for UI
 const displayPhoneNumber = computed(() => {
-  const p = sanitizedPhone.value
-  if (p.startsWith('62') && p.length >= 11) {
+  const p = whatsappNumber.value
+  if (p && p.startsWith('62') && p.length >= 11) {
     return `+62 ${p.slice(2, 5)}-${p.slice(5, 9)}-${p.slice(9)}`
   }
-  return p
+  return p ? `+${p}` : '+62 821-8889-9900'
 })
 
 function toggleWidget() {
@@ -219,10 +210,8 @@ function closeWidget() {
 }
 
 function openWhatsAppUrl(messageText) {
-  const phone = sanitizedPhone.value
-  const encodedText = encodeURIComponent(messageText)
-  const waUrl = `https://wa.me/${phone}?text=${encodedText}`
-  window.open(waUrl, '_blank', 'noopener,noreferrer')
+  const url = waLink(messageText)
+  window.open(url, '_blank', 'noopener,noreferrer')
   isOpen.value = false
 }
 
@@ -244,16 +233,8 @@ function handleKeyDown(e) {
   }
 }
 
-onMounted(async () => {
+onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
-  try {
-    const res = await api.get('/settings')
-    if (res.data?.whatsapp) {
-      rawWhatsapp.value = res.data.whatsapp
-    }
-  } catch {
-    // Keep default fallback
-  }
 })
 
 onUnmounted(() => {

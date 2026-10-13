@@ -202,6 +202,9 @@
 import { ref, reactive, onMounted } from 'vue'
 import AdminLayout from '../../layouts/AdminLayout.vue'
 import api from '../../services/api'
+import { useClinicSettings } from '../../composables/useClinicSettings'
+
+const { reloadSettings } = useClinicSettings()
 
 const loading = ref(true)
 const isSaving = ref(false)
@@ -240,6 +243,7 @@ async function saveSettings() {
   isSaving.value = true
   try {
     await api.put('/admin/settings', form)
+    await reloadSettings()
     alert('Pengaturan klinik berhasil diperbarui!')
   } catch (err) {
     alert('Gagal menyimpan pengaturan.')

@@ -398,7 +398,7 @@
               <span>Jadwalkan Asesmen Awal</span>
             </router-link>
             <a
-              :href="`https://wa.me/${sanitizedClinicWa}?text=${encodeURIComponent('Halo Admin Amanah Tin\'s Center, saya membaca Cerita Ayah & Bunda dan ingin konsultasi jadwal asesmen awal ananda.')}`"
+              :href="waLink('Halo Admin Amanah Tin\'s Center, saya membaca Cerita Ayah & Bunda dan ingin konsultasi jadwal asesmen awal ananda.')"
               target="_blank"
               rel="noopener noreferrer"
               class="btn-strip-wa"
@@ -481,7 +481,7 @@
             <div class="schedule-action-info">
               <div class="location-pill">
                 <span class="material-symbols-outlined">location_on</span>
-                <span>Pusat Layanan: Jl. Raya Jagakarsa No. 12, Jakarta Selatan</span>
+                <span>Pusat Layanan: {{ settings?.address || 'Jl. Raya Jagakarsa No. 12, Jakarta Selatan' }}</span>
               </div>
               <p class="location-sub">Layanan pendaftaran dibuka setiap hari kerja. Konsultasi langsung dapat dijadwalkan dengan praktisi.</p>
             </div>
@@ -523,8 +523,8 @@
                 </div>
                 <div class="contact-item-info">
                   <h4 class="contact-item-label">Alamat Klinik</h4>
-                  <p class="contact-item-val">Jl. Raya Jagakarsa No. 12, Jagakarsa, Jakarta Selatan 12620</p>
-                  <a href="https://maps.google.com/?q=Jl.+Raya+Jagakarsa+No.+12+Jakarta+Selatan" target="_blank" rel="noopener noreferrer" class="contact-item-link">
+                  <p class="contact-item-val">{{ settings?.address || 'Jl. Raya Jagakarsa No. 12, Jagakarsa, Jakarta Selatan 12620' }}</p>
+                  <a :href="settings?.maps_url || 'https://maps.google.com/?q=Amanah+Tins+Center'" target="_blank" rel="noopener noreferrer" class="contact-item-link">
                     <span class="material-symbols-outlined">map</span>
                     <span>Buka di Google Maps</span>
                   </a>
@@ -538,8 +538,8 @@
                 </div>
                 <div class="contact-item-info">
                   <h4 class="contact-item-label">WhatsApp Resmi</h4>
-                  <p class="contact-item-val">0812 3456 7890 (Respon cepat selama jam layanan)</p>
-                  <a :href="`https://wa.me/${sanitizedClinicWa}?text=Halo%20Admin%20Amanah%20Tin's%20Center,%20saya%20ingin%20berkonsultasi%20seputar%20tumbuh%20kembang%20anak`" target="_blank" rel="noopener noreferrer" class="contact-item-link contact-link-wa">
+                  <p class="contact-item-val">{{ formattedContactWa }} (Respon cepat selama jam layanan)</p>
+                  <a :href="waLink('Halo Admin Amanah Tin\'s Center, saya ingin berkonsultasi seputar tumbuh kembang anak')" target="_blank" rel="noopener noreferrer" class="contact-item-link contact-link-wa">
                     <span class="material-symbols-outlined">chat</span>
                     <span>Chat WhatsApp Sekarang</span>
                   </a>
@@ -553,8 +553,8 @@
                 </div>
                 <div class="contact-item-info">
                   <h4 class="contact-item-label">Telepon Klinik</h4>
-                  <p class="contact-item-val">(021) 1234 5678</p>
-                  <a href="tel:02112345678" class="contact-item-link">
+                  <p class="contact-item-val">{{ settings?.phone || '(021) 1234 5678' }}</p>
+                  <a :href="`tel:${(settings?.phone || '02112345678').replace(/[^0-9+]/g, '')}`" class="contact-item-link">
                     <span class="material-symbols-outlined">phone_forwarded</span>
                     <span>Panggil Telepon Sekarang</span>
                   </a>
@@ -568,8 +568,8 @@
                 </div>
                 <div class="contact-item-info">
                   <h4 class="contact-item-label">Email Resmi</h4>
-                  <p class="contact-item-val">info@amanah-tinscenter.id</p>
-                  <a href="mailto:info@amanah-tinscenter.id?subject=Konsultasi%20Tumbuh%20Kembang%20Anak" class="contact-item-link">
+                  <p class="contact-item-val">{{ settings?.email || 'info@amanahtinscenter.com' }}</p>
+                  <a :href="`mailto:${settings?.email || 'info@amanahtinscenter.com'}?subject=Konsultasi%20Tumbuh%20Kembang%20Anak`" class="contact-item-link">
                     <span class="material-symbols-outlined">outgoing_mail</span>
                     <span>Kirim Surel Sekarang</span>
                   </a>
@@ -585,16 +585,16 @@
                   <h4 class="contact-item-label">Jam Operasional</h4>
                   <ul class="operating-hours-list">
                     <li class="hours-row">
-                      <span>Senin – Jumat:</span>
-                      <span class="hours-bold">08.00 – 17.00 WIB</span>
+                      <span>Hari Kerja:</span>
+                      <span class="hours-bold">{{ settings?.weekday_hours || 'Senin – Jumat: 08.00 – 17.00 WIB' }}</span>
                     </li>
-                    <li class="hours-row">
-                      <span>Sabtu:</span>
-                      <span class="hours-bold">08.00 – 15.00 WIB</span>
+                    <li class="hours-row" v-if="settings?.weekend_hours">
+                      <span>Akhir Pekan:</span>
+                      <span class="hours-bold">{{ settings.weekend_hours }}</span>
                     </li>
                     <li class="hours-row hours-closed">
-                      <span>Minggu &amp; Libur Nasional:</span>
-                      <span>Tutup (Reservasi Online Buka)</span>
+                      <span>Reservasi Online:</span>
+                      <span>Buka 24 Jam via Website &amp; WhatsApp</span>
                     </li>
                   </ul>
                 </div>
@@ -612,6 +612,17 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import PublicLayout from '../layouts/PublicLayout.vue'
 import api from '../services/api'
 import { activeSection } from '../composables/useActiveSection'
+import { useClinicSettings } from '../composables/useClinicSettings'
+
+const { settings, whatsappNumber, waLink } = useClinicSettings()
+
+const formattedContactWa = computed(() => {
+  const p = whatsappNumber.value
+  if (p && p.startsWith('62') && p.length >= 11) {
+    return `+62 ${p.slice(2, 5)}-${p.slice(5, 9)}-${p.slice(9)}`
+  }
+  return p ? `+${p}` : '0821 8889 9900'
+})
 
 // 1. Four Pillars
 const pillars = [
@@ -880,17 +891,9 @@ onMounted(async () => {
   }
 
   try {
-    const [articlesRes, settingsRes] = await Promise.allSettled([
-      api.get('/articles?per_page=4'),
-      api.get('/settings')
-    ])
-
-    if (articlesRes.status === 'fulfilled' && articlesRes.value.data?.data && articlesRes.value.data.data.length >= 4) {
-      apiArticles.value = articlesRes.value.data.data
-    }
-
-    if (settingsRes.status === 'fulfilled' && settingsRes.value.data?.whatsapp) {
-      clinicWa.value = settingsRes.value.data.whatsapp
+    const articlesRes = await api.get('/articles?per_page=4')
+    if (articlesRes.data?.data && articlesRes.data.data.length >= 4) {
+      apiArticles.value = articlesRes.data.data
     }
   } catch {
     // Graceful fallback to blueprint articles
