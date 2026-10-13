@@ -244,7 +244,13 @@
                 <td class="td-main">
                   <div class="art-cell">
                     <div class="art-thumb-mini">
-                      <img v-if="art.image" :src="art.image" :alt="art.title" loading="lazy" />
+                      <img
+                        v-if="art.image && !art.imgError"
+                        :src="art.image"
+                        :alt="art.title"
+                        loading="lazy"
+                        @error="art.imgError = true"
+                      />
                       <div v-else class="art-thumb-fallback">
                         <span class="material-symbols-outlined">auto_stories</span>
                       </div>
@@ -301,7 +307,13 @@
 
             <div class="mobile-item-body">
               <div class="art-thumb-mini">
-                <img v-if="art.image" :src="art.image" :alt="art.title" loading="lazy" />
+                <img
+                  v-if="art.image && !art.imgError"
+                  :src="art.image"
+                  :alt="art.title"
+                  loading="lazy"
+                  @error="art.imgError = true"
+                />
                 <div v-else class="art-thumb-fallback">
                   <span class="material-symbols-outlined">auto_stories</span>
                 </div>
@@ -375,50 +387,48 @@
 
         <!-- Team Members List -->
         <div v-else class="team-preview-list">
-          <div
+          <router-link
             v-for="member in teamMembers"
             :key="member.id"
+            to="/admin/tim-kami"
             class="team-member-item"
+            :title="`Kelola profil ${member.name}`"
           >
             <div class="member-avatar-wrap">
-              <img
-                v-if="member.image"
-                :src="member.image"
-                :alt="member.name"
-                class="member-avatar-img"
-                loading="lazy"
-              />
-              <div v-else class="member-avatar-fallback">
-                <span class="material-symbols-outlined">person</span>
+              <div class="avatar-frame">
+                <img
+                  v-if="member.image && !member.imgError"
+                  :src="member.image"
+                  :alt="member.name"
+                  class="member-avatar-img"
+                  loading="lazy"
+                  @error="member.imgError = true"
+                />
+                <div v-else class="member-avatar-fallback">
+                  <span class="material-symbols-outlined">person</span>
+                </div>
               </div>
               <span class="status-indicator-dot" :title="member.is_active ? 'Praktik Aktif' : 'Non-Aktif'"></span>
             </div>
 
             <div class="member-info-col">
               <div class="member-name-row">
-                <strong class="member-name-text">{{ member.name }}</strong>
+                <strong class="member-name-text" :title="member.name">{{ member.name }}</strong>
                 <span class="member-exp-badge" v-if="member.experience_years">
                   {{ member.experience_years }}
                 </span>
               </div>
-              <div class="member-role-text">{{ member.role }}</div>
-              <div class="member-spec-row">
+              <div class="member-role-text" :title="member.role">{{ member.role }}</div>
+              <div class="member-spec-row" v-if="member.specialization" :title="member.specialization">
                 <span class="material-symbols-outlined">verified</span>
-                <span>{{ member.specialization }}</span>
+                <span class="member-spec-text">{{ member.specialization }}</span>
               </div>
             </div>
 
-            <div class="member-action-col">
-              <router-link
-                to="/admin/tim-kami"
-                class="btn-member-detail"
-                title="Kelola Profil Terapis"
-                aria-label="Kelola Profil Terapis"
-              >
-                <span class="material-symbols-outlined">chevron_right</span>
-              </router-link>
+            <div class="member-action-col" aria-hidden="true">
+              <span class="material-symbols-outlined action-arrow">chevron_right</span>
             </div>
-          </div>
+          </router-link>
         </div>
 
         <!-- Card Footer -->
@@ -427,10 +437,6 @@
             <span class="material-symbols-outlined">groups</span>
             <span><strong>{{ stats.total_team || teamMembers.length }}</strong> Terapis Medis Terdaftar</span>
           </div>
-          <router-link to="/admin/tim-kami" class="btn-add-therapist-quick">
-            <span class="material-symbols-outlined">person_add</span>
-            <span>Kelola Tim</span>
-          </router-link>
         </div>
       </section>
     </div>
@@ -1392,6 +1398,8 @@ onMounted(() => {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
   margin-bottom: 1.25rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .team-member-item {
@@ -1402,37 +1410,54 @@ onMounted(() => {
   border-radius: 14px;
   background: var(--surface-bright, #f8faff);
   border: 1px solid rgba(191, 200, 206, 0.35);
-  transition: all 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .team-member-item:hover {
   background: var(--surface-container-low, #edf4ff);
-  border-color: rgba(0, 99, 132, 0.3);
+  border-color: rgba(0, 99, 132, 0.35);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(9, 29, 46, 0.06);
+  box-shadow: 0 6px 18px rgba(9, 29, 46, 0.06);
+}
+
+.team-member-item:hover .action-arrow {
+  transform: translateX(3px);
+  color: var(--primary, #006384);
 }
 
 .member-avatar-wrap {
   position: relative;
   width: 48px;
   height: 48px;
-  border-radius: 12px;
-  overflow: visible;
   flex-shrink: 0;
+}
+
+.avatar-frame {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #eaf1f8;
 }
 
 .member-avatar-img {
   width: 100%;
   height: 100%;
-  border-radius: 12px;
   object-fit: cover;
-  background: #eaf1f8;
+  display: block;
 }
 
 .member-avatar-fallback {
   width: 100%;
   height: 100%;
-  border-radius: 12px;
   background: #d7f5a8;
   color: #354e00;
   display: flex;
@@ -1458,14 +1483,17 @@ onMounted(() => {
 .member-info-col {
   flex: 1;
   min-width: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
 .member-name-row {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.15rem;
+  min-width: 0;
+  width: 100%;
+  margin-bottom: 0.2rem;
 }
 
 .member-name-text {
@@ -1474,6 +1502,9 @@ onMounted(() => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: 700;
+  min-width: 0;
+  flex: 1;
 }
 
 .member-exp-badge {
@@ -1481,19 +1512,22 @@ onMounted(() => {
   font-weight: 700;
   color: #354e00;
   background: #e5f8c6;
-  padding: 0.1rem 0.45rem;
+  padding: 0.12rem 0.5rem;
   border-radius: 9999px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .member-role-text {
   font-size: 0.75rem;
   color: var(--primary, #006384);
   font-weight: 700;
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.2rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
+  width: 100%;
 }
 
 .member-spec-row {
@@ -1502,81 +1536,60 @@ onMounted(() => {
   gap: 0.25rem;
   font-size: 0.75rem;
   color: var(--on-surface-variant, #40484d);
-  white-space: nowrap;
+  min-width: 0;
+  width: 100%;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .member-spec-row .material-symbols-outlined {
   font-size: 0.85rem;
   color: #4b6716;
+  flex-shrink: 0;
+}
+
+.member-spec-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
 }
 
 .member-action-col {
   flex-shrink: 0;
-}
-
-.btn-member-detail {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  color: var(--outline, #70787e);
-  text-decoration: none;
-  transition: all 0.2s;
 }
 
-.team-member-item:hover .btn-member-detail {
-  color: var(--primary, #006384);
-  background: rgba(0, 99, 132, 0.08);
+.action-arrow {
+  font-size: 1.25rem;
+  color: var(--outline, #70787e);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .team-preview-footer {
-  margin-top: auto;
-  padding-top: 1rem;
+  margin-top: 0.25rem;
+  padding-top: 0.85rem;
   border-top: 1px solid rgba(191, 200, 206, 0.3);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
+  justify-content: flex-start;
+  gap: 0.5rem;
 }
 
 .footer-team-summary {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.75rem;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
   color: var(--on-surface-variant, #40484d);
 }
 
 .footer-team-summary .material-symbols-outlined {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   color: var(--secondary, #4b6716);
-}
-
-.btn-add-therapist-quick {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.4rem 0.85rem;
-  border-radius: 9999px;
-  background: var(--surface-container-low, #edf4ff);
-  color: var(--primary, #006384);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.btn-add-therapist-quick:hover {
-  background: var(--primary, #006384);
-  color: #ffffff;
-}
-
-.btn-add-therapist-quick .material-symbols-outlined {
-  font-size: 0.95rem;
 }
 
 /* =============================================
@@ -1587,6 +1600,9 @@ onMounted(() => {
 @media (max-width: 1200px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .team-preview-list {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   }
   .dash-main-grid {
     gap: 1.75rem;
@@ -1603,6 +1619,10 @@ onMounted(() => {
   }
   .welcome-title {
     font-size: 1.65rem;
+  }
+  .team-preview-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 }
 
@@ -1681,35 +1701,73 @@ onMounted(() => {
   }
 
   .card-header {
-    flex-direction: column;
-    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     gap: 0.75rem;
+    flex-wrap: wrap;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .header-titles {
+    flex: 1;
+    min-width: 0;
   }
 
   .header-action-link {
-    width: 100%;
-    justify-content: flex-end;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    background: var(--surface-container-low, #edf4ff);
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .team-preview-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.75rem;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .team-member-item {
+    padding: 0.85rem 0.95rem;
+    border-radius: 12px;
+    gap: 0.75rem;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .member-avatar-wrap {
+    width: 44px;
+    height: 44px;
+  }
+
+  .member-name-text {
+    font-size: 0.8125rem;
+  }
+
+  .member-role-text,
+  .member-spec-row {
+    font-size: 0.7188rem;
   }
 
   .team-preview-footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-
-  .btn-add-therapist-quick {
-    width: 100%;
-    justify-content: center;
+    padding-top: 0.75rem;
   }
 }
 
-/* Small mobile (< 480px) */
+/* Small mobile (< 480px, e.g. iPhone SE 375px) */
 @media (max-width: 480px) {
+  .dash-card {
+    padding: 1rem 0.85rem;
+  }
+
   .dash-welcome-actions {
     flex-direction: column;
   }
@@ -1719,10 +1777,50 @@ onMounted(() => {
     width: 100%;
   }
 
-  .member-name-row {
-    flex-direction: column;
+  .card-header {
+    gap: 0.5rem;
     align-items: flex-start;
-    gap: 0.15rem;
+  }
+
+  .header-titles {
+    gap: 0.5rem;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .header-icon-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+
+  .card-subtitle {
+    font-size: 0.7188rem;
+    line-height: 1.35;
+  }
+
+  .header-action-link {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.6875rem;
+  }
+
+  .team-member-item {
+    padding: 0.75rem 0.75rem;
+    gap: 0.65rem;
+  }
+
+  .member-avatar-wrap {
+    width: 40px;
+    height: 40px;
+  }
+
+  .action-arrow {
+    font-size: 1.1rem;
   }
 }
 </style>

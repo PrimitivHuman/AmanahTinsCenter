@@ -142,6 +142,8 @@ async function handleLogout() {
   background-color: var(--background, #f7f9ff);
   color: var(--on-surface, #091d2e);
   font-family: var(--font-body, 'Nunito Sans', sans-serif);
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 .admin-sidebar {
@@ -327,6 +329,8 @@ async function handleLogout() {
   flex-direction: column;
   min-width: 0;
   overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 .admin-topbar {
@@ -384,6 +388,7 @@ async function handleLogout() {
   max-width: 1380px;
   width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .sidebar-backdrop {
@@ -432,7 +437,10 @@ async function handleLogout() {
     display: none;
   }
   .admin-content {
-    padding: 1rem;
+    padding: 0.85rem 0.65rem;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100vw;
   }
 }
 </style>

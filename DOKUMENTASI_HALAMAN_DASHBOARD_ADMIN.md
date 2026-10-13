@@ -64,12 +64,12 @@ Dirancang dengan efek hover lembut (*lift on hover*), ikon modern berlatar warna
 - **Tampilan Mobile (< 768px)**: Berubah menjadi daftar kartu (*Card List*) vertikal yang ramah layar sentuh tanpa perlu geser horizontal.
 
 ### 3.2 Section Bawah — Sekilas Tim Terapis (Grid Kartu Responsif)
-- Ditempatkan tepat di bawah section artikel terpopuler, menyajikan profil tenaga spesialis aktif dalam format **grid multi-kolom responsif** (`auto-fill minmax 280px`):
-  - **Foto / Avatar**: Foto asli terapis berlisensi (atau avatar fallback dengan inisial) disertai indikator status aktif berwarna hijau.
-  - **Informasi Terapis**: Nama lengkap tenaga medis, pengalaman (badge tahun pengalaman), profesi utama, dan spesialisasi terapi (contoh: *Terapi Wicara & Gangguan Menelan*).
-  - **Hover Interaktif**: Efek elevasi kartu ke atas (*lift up -2px*) dengan bayangan lembut saat kursor melayang.
-  - **Tombol Pintas Aksi**: Tautan langsung ke halaman detail/edit terapis di `/admin/tim-kami`.
-  - **Footer Ringkasan**: Membentang rapi dengan informasi total terapis aktif di sisi kiri dan tombol cepat `+ Tambah Anggota Tim` di sisi kanan.
+- Ditempatkan tepat di bawah section artikel terpopuler, menyajikan profil tenaga spesialis aktif dalam format **grid multi-kolom responsif** (`auto-fill minmax 280px` di desktop, 2 kolom rapi di tablet, dan 1 kolom di ponsel):
+  - **Header Section**: Dilengkapi judul, subjudul, dan tombol navigasi tunggal `Kelola Tim →` di sudut kanan atas.
+  - **Foto / Avatar Anti-Spill**: Foto asli terapis berlisensi dibungkus dalam `.avatar-frame` berproteksi `overflow: hidden;` serta fallback otomatis `@error` ke icon avatar. Hal ini mencegah teks *alt image* bocor keluar kartu jika URL foto terganggu.
+  - **Informasi Terapis**: Nama lengkap tenaga medis, pengalaman (badge tahun pengalaman), profesi utama, dan spesialisasi terapi dengan tooltip `:title`.
+  - **Sentuhan Interaktif (Seluruh Kartu Tautan)**: Seluruh bidang kartu bertindak sebagai link navigasi ke `/admin/tim-kami` sehingga sangat nyaman diklik di desktop maupun ditap menggunakan jempol di ponsel/tablet.
+  - **Footer Bersih & Ringkas**: Hanya menampilkan status akumulasi terapis aktif (contoh: *4 Terapis Medis Terdaftar*) tanpa tombol ganda/redundan.
 
 ---
 
@@ -78,9 +78,9 @@ Dirancang dengan efek hover lembut (*lift on hover*), ikon modern berlatar warna
 | Ukuran Layar | Breakpoint | Penyesuaian Tampilan |
 |---|---|---|
 | **Desktop Lebar** | > 1200px | Grid statistik 4 kolom sejajar.<br>Konten utama tersusun vertikal: Artikel Terpopuler di atas (tabel penuh), Sekilas Tim Terapis di bawah (grid 3–4 kolom kartu terapis). |
-| **Tablet Lanskap / Laptop Kecil** | 1024px – 1200px | Grid statistik 2x2 kolom.<br>Konten utama vertikal: Artikel Terpopuler (tabel leluasa) di atas, Sekilas Tim Terapis (grid 2–3 kolom kartu) di bawah. |
-| **Tablet Portrait** | 768px – 1024px | Grid statistik 2x2 kolom.<br>Artikel terpopuler (tabel responsif) di atas, Sekilas Tim Terapis (grid 2 kolom kartu) di bawah. |
-| **Ponsel / Layar Sentuh** | < 768px | - Sidebar berubah menjadi **Off-canvas Drawer** dengan animasi geser halus dan backdrop gelap.<br>- Topbar navbar tampil bersih (tanpa tombol yang memadati layar kecil).<br>- Banner selamat datang menyesuaikan ukuran teks dan tombol aksi ditumpuk rapi.<br>- Statistik menjadi 1 kolom dengan tombol aksi sentuh yang nyaman.<br>- Tabel artikel terpopuler berganti menjadi **daftar kartu artikel** bebas geser horizontal.<br>- Sekilas tim terapis menjadi 1 kolom kartu vertikal yang ramah jempol. |
+| **Tablet Lanskap / Laptop Kecil** | 1024px – 1200px | Grid statistik 2x2 kolom.<br>Konten utama vertikal: Artikel Terpopuler di atas, Sekilas Tim Terapis di bawah (grid proporsional minmax 260px). |
+| **Tablet Portrait** | 768px – 1024px | Grid statistik 2x2 kolom.<br>Artikel terpopuler di atas, Sekilas Tim Terapis di bawah tertata tepat **2 kolom seimbang** (`grid-template-columns: repeat(2, 1fr)`). |
+| **Ponsel / Layar Sentuh** | < 768px | - Sidebar berubah menjadi **Off-canvas Drawer** dengan animasi geser halus dan backdrop gelap.<br>- Topbar navbar tampil bersih.<br>- Banner selamat datang menyesuaikan ukuran teks dan tombol aksi ditumpuk rapi.<br>- Statistik menjadi 1 kolom dengan tombol aksi sentuh yang nyaman.<br>- Tabel artikel terpopuler berganti menjadi **daftar kartu artikel** bebas geser horizontal.<br>- Header kartu menampilkan pill `Kelola Tim` yang pas di layar kecil.<br>- Sekilas tim terapis menjadi 1 kolom kartu vertikal dengan target sentuh penuh dan avatar 44px yang proporsional.<br>- Footer section terapis hanya menampilkan jumlah ringkasan terapis tanpa tombol ganda yang memadati layar. |
 
 ---
 
@@ -95,5 +95,7 @@ Dirancang dengan efek hover lembut (*lift on hover*), ikon modern berlatar warna
    - Menghapus section *Aksi Cepat*.
    - Menghapus section *Pendaftaran via WhatsApp*.
    - Menambahkan section baru **Sekilas Tim Terapis**.
-   - Menyusun section **Artikel Terpopuler (atas)** dan **Sekilas Tim Terapis (bawah)** secara vertikal (`flex-direction: column; gap: 2rem;`).
-   - Menerapkan layout kartu grid multi-kolom responsif (`grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));`) pada daftar terapis agar memenuhi area bawah secara simetris dan elegan.
+   - Menyusun section **Artikel Terpopuler (atas)** dan **Sekilas Tim Terapis (bawah)** secara vertikal.
+   - Menghapus tombol redundan *Kelola Tim* di footer bawah section terapis, menyisakan indikator ringkasan jumlah terapis.
+   - Mengubah elemen kartu terapis menjadi touch target penuh (`<router-link to="/admin/tim-kami">`), dilengkapi frame avatar anti-overflow dan event `@error` fallback.
+   - Mengoptimalkan responsivitas tablet (2 kolom kartu teratur) dan ponsel (1 kolom kartu kompak dengan header ringkas).
