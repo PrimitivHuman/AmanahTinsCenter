@@ -12,9 +12,14 @@ class TeamMember extends Model
     protected $fillable = [
         'name',
         'role',
+        'edu',
         'specialization',
+        'tags',
         'bio',
+        'philosophy',
         'experience_years',
+        'schedule',
+        'str_number',
         'certifications',
         'image',
         'order',
@@ -23,6 +28,7 @@ class TeamMember extends Model
 
     protected $casts = [
         'certifications' => 'array',
+        'tags' => 'array',
         'is_active' => 'boolean',
         'order' => 'integer',
     ];

@@ -384,6 +384,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useClinicSettings } from '../composables/useClinicSettings'
+import api from '../services/api'
 
 const { waLink } = useClinicSettings()
 import PublicLayout from '../layouts/PublicLayout.vue'
@@ -411,7 +412,7 @@ const categories = [
   { id: 'psi', label: 'Psikolog Anak', icon: 'psychology' },
 ]
 
-const teamMembers = [
+const defaultTeamMembers = [
   {
     id: 'tw-annisa',
     category: 'tw',
@@ -705,9 +706,77 @@ const standards = [
   },
 ]
 
+// Reactive team members list with local fallback
+const teamMembers = ref(defaultTeamMembers)
+
+const formatMemberFromApi = (m) => {
+  let category = 'tw'
+  let icon = 'record_voice_over'
+  let color = 'blue'
+  const text = ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase()
+  if (text.includes('wicara') || text.includes('tw') || text.includes('speech')) {
+    category = 'tw'
+    icon = 'record_voice_over'
+    color = 'blue'
+  } else if (text.includes('okupasi') || text.includes('ot')) {
+    category = 'ot'
+    icon = 'back_hand'
+    color = 'amber'
+  } else if (text.includes('sensori') || text.includes('si')) {
+    category = 'si'
+    icon = 'spa'
+    color = 'teal'
+  } else if (text.includes('psikolog') || text.includes('psi')) {
+    category = 'psi'
+    icon = 'psychology'
+    color = 'purple'
+  } else if (text.includes('fisio')) {
+    category = 'psi'
+    icon = 'accessibility_new'
+    color = 'amber'
+  }
+
+  // Parse tags
+  let tags = []
+  if (Array.isArray(m.tags)) {
+    tags = m.tags
+  } else if (typeof m.tags === 'string' && m.tags.trim()) {
+    try { tags = JSON.parse(m.tags) } catch { tags = m.tags.split(',').map(s => s.trim()) }
+  } else if (m.specialization) {
+    tags = m.specialization.split(',').map(s => s.trim())
+  }
+
+  // Parse certifications
+  let certifications = []
+  if (Array.isArray(m.certifications)) {
+    certifications = m.certifications
+  } else if (typeof m.certifications === 'string' && m.certifications.trim()) {
+    try { certifications = JSON.parse(m.certifications) } catch { certifications = m.certifications.split(',').map(s => s.trim()) }
+  }
+
+  return {
+    id: m.id,
+    category,
+    name: m.name,
+    edu: m.edu || m.specialization || 'Praktisi Terapi Anak ATC',
+    specialty: m.role || 'Terapis Anak',
+    icon,
+    color,
+    str: m.str_number ? 'STR Aktif Kemenkes' : 'Praktisi Terverifikasi',
+    strNumber: m.str_number || 'STR. Terdaftar Kemenkes RI',
+    experience: m.experience_years ? (m.experience_years.includes('Pengalaman') ? m.experience_years : `${m.experience_years} Pengalaman Klinis`) : 'Berpengalaman Klinis',
+    schedule: m.schedule || 'Senin - Sabtu (Sesuai Reservasi)',
+    tags: tags.length ? tags : ['Tumbuh Kembang', 'Pediatrik'],
+    bio: m.bio || 'Praktisi terapis anak di Amanah Tin\'s Center yang berdedikasi mendampingi potensi optimal anak melalui stimulasi terarah dan terpadu.',
+    philosophy: m.philosophy || '"Mendampingi setiap langkah buah hati untuk berkembang dengan penuh percaya diri."',
+    certifications: certifications.length ? certifications : ['Sertifikasi Kompetensi Klinis'],
+    photo: m.image || photos[category + '1'] || photos.tw1,
+  }
+}
+
 // Computed: Filtered team members based on selectedCategory and searchQuery
 const filteredTeamMembers = computed(() => {
-  return teamMembers.filter((m) => {
+  return teamMembers.value.filter((m) => {
     // 1. Category filter
     const matchCat = selectedCategory.value === 'all' || m.category === selectedCategory.value
 
@@ -715,19 +784,19 @@ const filteredTeamMembers = computed(() => {
     const q = searchQuery.value.trim().toLowerCase()
     if (!q) return matchCat
 
-    const matchName = m.name.toLowerCase().includes(q)
-    const matchSpecialty = m.specialty.toLowerCase().includes(q)
-    const matchEdu = m.edu.toLowerCase().includes(q)
-    const matchTags = m.tags.some((t) => t.toLowerCase().includes(q))
-    const matchBio = m.bio.toLowerCase().includes(q)
+    const matchName = (m.name || '').toLowerCase().includes(q)
+    const matchSpecialty = (m.specialty || '').toLowerCase().includes(q)
+    const matchEdu = (m.edu || '').toLowerCase().includes(q)
+    const matchTags = Array.isArray(m.tags) && m.tags.some((t) => t.toLowerCase().includes(q))
+    const matchBio = (m.bio || '').toLowerCase().includes(q)
 
     return matchCat && (matchName || matchSpecialty || matchEdu || matchTags || matchBio)
   })
 })
 
 const getCategoryCount = (catId) => {
-  if (catId === 'all') return teamMembers.length
-  return teamMembers.filter((m) => m.category === catId).length
+  if (catId === 'all') return teamMembers.value.length
+  return teamMembers.value.filter((m) => m.category === catId).length
 }
 
 const resetFilters = () => {
@@ -753,8 +822,16 @@ const handleKeyDown = (e) => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('keydown', handleKeyDown)
+  try {
+    const res = await api.get('/team')
+    if (res.data && Array.isArray(res.data) && res.data.length > 0) {
+      teamMembers.value = res.data.map(formatMemberFromApi)
+    }
+  } catch (err) {
+    console.warn('Gagal memuat data tim dari API, menggunakan fallback lokal:', err)
+  }
 })
 
 onUnmounted(() => {

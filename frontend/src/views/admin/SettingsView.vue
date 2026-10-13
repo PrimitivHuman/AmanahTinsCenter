@@ -446,9 +446,173 @@ onMounted(() => {
   color: var(--on-surface-variant, #40484d);
 }
 
+/* ============================================================
+   BOX-SIZING FIX — Ensure inputs don't overflow cards
+   ============================================================ */
+.form-input, .form-textarea {
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   RESPONSIVE: TABLET  (≤ 900px)
+   ============================================================ */
 @media (max-width: 900px) {
   .settings-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Sidebar summary card: stop sticking, reorder to bottom */
+  .sidebar-column {
+    order: 2;
+  }
+
+  .sticky-card {
+    position: static;
+  }
+
+  .page-heading {
+    font-size: 1.5rem;
+  }
+
+  .page-subheading {
+    font-size: 0.875rem;
+  }
+
+  .card-box {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE: MOBILE  (≤ 600px)
+   ============================================================ */
+@media (max-width: 600px) {
+  /* Header bar: stack vertically */
+  .page-top-bar {
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .top-actions {
+    width: 100%;
+  }
+
+  .btn-primary {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .flex-btn {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .page-heading {
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  .page-subheading {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .meta-tag {
+    font-size: 0.6875rem;
+    padding: 0.15rem 0.5rem;
+  }
+
+  /* Form rows: stack on mobile */
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-row .flex-1 {
+    flex: unset;
+    width: 100%;
+  }
+
+  /* Card boxes: tighter on mobile */
+  .card-box {
+    padding: 1rem;
+    border-radius: 14px;
+    margin-bottom: 1rem;
+  }
+
+  .card-header {
+    gap: 0.75rem;
+    padding-bottom: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .header-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+
+  .header-icon .material-symbols-outlined {
+    font-size: 20px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-sub {
+    font-size: 0.75rem;
+  }
+
+  /* Form spacing */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-size: 0.75rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .form-input, .form-textarea {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8125rem;
+    border-radius: 8px;
+  }
+
+  /* Settings grid gap */
+  .settings-grid {
+    gap: 0;
+  }
+
+  /* WhatsApp preview button */
+  .btn-wa-preview {
+    padding: 0.6rem 0.875rem;
+    font-size: 0.75rem;
+  }
+
+  /* Preview items */
+  .preview-item {
+    margin-bottom: 0.6rem;
+  }
+
+  .p-label {
+    font-size: 0.6875rem;
+  }
+
+  .p-value {
+    font-size: 0.8125rem;
+    word-break: break-all;
+  }
+
+  /* Loading state */
+  .loading-state {
+    padding: 2.5rem 1rem;
   }
 }
 </style>
