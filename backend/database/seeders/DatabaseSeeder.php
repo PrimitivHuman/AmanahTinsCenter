@@ -17,12 +17,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Admin User
+        // 1. Admin User (Password dapat di-override lewat environment ADMIN_DEFAULT_PASSWORD)
         User::updateOrCreate(
-            ['email' => 'admin@amanahtinscenter.com'],
+            ['email' => env('ADMIN_DEFAULT_EMAIL', 'admin@amanahtinscenter.com')],
             [
                 'name' => 'Administrator ATC',
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make(env('ADMIN_DEFAULT_PASSWORD', 'admin123')),
             ]
         );
 
@@ -46,12 +46,80 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 3. Team Members
-        // 3. Team Members (Synced with TeamView.vue)
+        // 3. Team Members (Synced with TeamView.vue and complete profiles)
         $team = [
+            [
+                'name' => 'dr. Nurul Aini, Sp.A',
+                'role' => 'Dokter Spesialis Anak & Konsultan Tumbuh Kembang',
+                'category' => 'psi',
+                'edu' => 'Spesialis Anak & Konsultan Tumbuh Kembang FK Universitas Indonesia',
+                'specialization' => 'Tumbuh Kembang Pediatrik & Skrining Neurologi',
+                'tags' => ['Tumbuh Kembang', 'Skrining Neurologi', 'Konsultasi Medis'],
+                'bio' => 'Berpengalaman lebih dari 12 tahun dalam menangani berbagai variasi perkembangan sensorik, motorik, dan komunikasi pada anak usia dini.',
+                'philosophy' => '"Mendeteksi lebih awal adalah langkah terbesar untuk menyelamatkan potensi masa depan anak."',
+                'experience_years' => '12+ Tahun',
+                'schedule' => 'Senin & Kamis (09.00 – 14.00 WIB)',
+                'str_number' => 'SIP.31.71.100.1.20-04812 (IDAI Aktif)',
+                'certifications' => ['STR Dokter Spesialis', 'Anggota IDAI', 'Sertifikasi Denver II'],
+                'image' => 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600',
+                'order' => 1,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Rahmat Hidayat, S.Tr.Kes (TW)',
+                'role' => 'Kepala Terapis Wicara',
+                'category' => 'tw',
+                'edu' => 'Sarjana Terapan Terapi Wicara Poltekkes Kemenkes Surakarta',
+                'specialization' => 'Speech Delay, Artikulasi & Gangguan Menelan (Disfagia)',
+                'tags' => ['Speech Delay', 'Artikulasi Fonem', 'Terapi Menelan'],
+                'bio' => 'Spesialis terapi wicara anak dengan fokus stimulasi bahasa ekspresif-reseptif serta penanganan keterlambatan bicara berbasis pendekatan keluarga.',
+                'philosophy' => '"Setiap anak memiliki hak untuk didengar dan menyampaikan isi hatinya kepada dunia."',
+                'experience_years' => '8+ Tahun',
+                'schedule' => 'Senin, Rabu, Jumat (08.30 – 16.00 WIB)',
+                'str_number' => 'STR.12.04.4.1.18-06721 (IKATWI Aktif)',
+                'certifications' => ['STR IKATWI', 'Certified PECS Level 1', 'Oral Placement Therapy'],
+                'image' => 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600',
+                'order' => 2,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Siti Maulida, S.St.OT',
+                'role' => 'Terapis Okupasi & Sensori Integrasi',
+                'category' => 'ot',
+                'edu' => 'Sarjana Sains Terapan Terapi Okupasi Universitas Indonesia',
+                'specialization' => 'Sensory Processing, Kemandirian & Motorik Halus',
+                'tags' => ['Sensory Processing', 'Kemandirian Diri', 'Motorik Halus'],
+                'bio' => 'Terapis okupasi berdedikasi tinggi dengan keahlian dalam perancangan sensory diet dan stimulasi kemandirian aktivitas harian anak.',
+                'philosophy' => '"Bermain adalah pekerjaan utama anak, dan melalui bermain anak belajar mandiri."',
+                'experience_years' => '7+ Tahun',
+                'schedule' => 'Selasa, Kamis, Sabtu (08.30 – 16.00 WIB)',
+                'str_number' => 'STR.14.07.4.2.19-08943 (IOTI Aktif)',
+                'certifications' => ['STR Ikatan Terapi Okupasi Indonesia', 'Sensory Integration Certified'],
+                'image' => 'https://images.unsplash.com/photo-1594824813639-5095d3a51f7b?auto=format&fit=crop&q=80&w=600',
+                'order' => 3,
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Bambang Prasetyo, S.Ft, Ftr',
+                'role' => 'Fisioterapis Pediatrik',
+                'category' => 'ot',
+                'edu' => "Profesi Fisioterapis Pediatrik Universitas 'Aisyiyah Yogyakarta",
+                'specialization' => 'Motorik Kasar, Postur, & Rehabilitasi Fisik Anak',
+                'tags' => ['Motorik Kasar', 'Postur Tubuh', 'Rehabilitasi Fisik'],
+                'bio' => 'Ahli fisioterapi anak dengan pengalaman rehabilitasi postur, koordinasi gerak, keseimbangan, serta stimulasi motorik kasar pasca fase bayi.',
+                'philosophy' => '"Kekuatan fisik dan keseimbangan gerak membangun rasa percaya diri anak melangkah."',
+                'experience_years' => '6+ Tahun',
+                'schedule' => 'Senin, Selasa, Jumat (09.00 – 16.30 WIB)',
+                'str_number' => 'STR.15.03.4.1.20-10455 (IFI Pediatri Aktif)',
+                'certifications' => ['STR IFI Pediatri', 'Bobath Pediatric Certified'],
+                'image' => 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=600',
+                'order' => 4,
+                'is_active' => true,
+            ],
             [
                 'name' => 'Annisa Larasati, A.Md.TW',
                 'role' => 'Terapi Wicara (TW)',
+                'category' => 'tw',
                 'edu' => 'Lulusan Akademi Terapi Wicara (ATW) Jakarta',
                 'specialization' => 'Speech Delay, Artikulasi & Gagap, Oral Motor',
                 'tags' => ['Speech Delay', 'Artikulasi & Gagap', 'Oral Motor'],
@@ -68,6 +136,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Dimas Bagaswara, S.Tr.Kes (OT)',
                 'role' => 'Terapi Okupasi (OT)',
+                'category' => 'ot',
                 'edu' => 'Sarjana Terapan Terapi Okupasi Poltekkes Surakarta',
                 'specialization' => 'Motorik Halus, Kemandirian Diri (ADL), Kekuatan Genggaman',
                 'tags' => ['Motorik Halus', 'Kemandirian Diri (ADL)', 'Kekuatan Genggaman'],
@@ -84,6 +153,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Nurul Fauziah, A.Md.OT, C.SI',
                 'role' => 'Sensori Integrasi (SI)',
+                'category' => 'si',
                 'edu' => 'Certified Sensory Integration Practitioner',
                 'specialization' => 'Sensori Vestibular, Regulasi Diri, Hipersensitif Taktil',
                 'tags' => ['Sensori Vestibular', 'Regulasi Diri', 'Hipersensitif Taktil'],
@@ -100,6 +170,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Clara Meisya, M.Psi., Psikolog',
                 'role' => 'Psikolog Anak',
+                'category' => 'psi',
                 'edu' => 'Magister Profesi Psikologi Klinis Anak UI',
                 'specialization' => 'Asesmen IQ & Bakat, Tantrum & Perilaku, Parenting Coaching',
                 'tags' => ['Asesmen IQ & Bakat', 'Tantrum & Perilaku', 'Parenting Coaching'],
@@ -116,6 +187,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Fajar Pratama, S.Tr.Kes (TW)',
                 'role' => 'Terapi Wicara (TW)',
+                'category' => 'tw',
                 'edu' => 'Sarjana Terapan Terapi Wicara Poltekkes Surakarta',
                 'specialization' => 'Komunikasi Pragmatik, Bahasa Reseptif, Terapi Menelan',
                 'tags' => ['Komunikasi Pragmatik', 'Bahasa Reseptif', 'Terapi Menelan'],
@@ -132,6 +204,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Rizka Tri Hapsari, A.Md.OT',
                 'role' => 'Terapi Okupasi (OT)',
+                'category' => 'ot',
                 'edu' => 'Spesialisasi Okupasi Pediatrik & Perilaku',
                 'specialization' => 'Konsentrasi Duduk, Koordinasi Visual, Motorik Kasar',
                 'tags' => ['Konsentrasi Duduk', 'Koordinasi Visual', 'Motorik Kasar'],
@@ -148,6 +221,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Bayu Kurniawan, S.Tr.Kes (SI)',
                 'role' => 'Sensori Integrasi (SI)',
+                'category' => 'si',
                 'edu' => 'Praktisi Sensori Integrasi & Motorik Anak',
                 'specialization' => 'Proprioseptif, Keseimbangan Tubuh, Praksis Gerak',
                 'tags' => ['Proprioseptif', 'Keseimbangan Tubuh', 'Praksis Gerak'],
@@ -164,6 +238,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Dewi Sartika, A.Md.TW',
                 'role' => 'Terapi Wicara (TW)',
+                'category' => 'tw',
                 'edu' => 'Spesialisasi Artikulasi & Fonologi Anak',
                 'specialization' => 'Kelancaran Wicara, Pengucapan Fonem, Bahasa Ekspresif',
                 'tags' => ['Kelancaran Wicara', 'Pengucapan Fonem', 'Bahasa Ekspresif'],
@@ -180,6 +255,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Danang Prasetyo, M.Psi., Psikolog',
                 'role' => 'Psikolog Anak',
+                'category' => 'psi',
                 'edu' => 'Psikolog Perkembangan & Kesiapan Sekolah',
                 'specialization' => 'Sosial Emosional, Kesiapan SD, Regulasi Emosi',
                 'tags' => ['Sosial Emosional', 'Kesiapan SD', 'Regulasi Emosi'],
@@ -196,6 +272,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Intan Permatasari, A.Md.OT',
                 'role' => 'Terapi Okupasi (OT)',
+                'category' => 'ot',
                 'edu' => 'Terapi Okupasi Sensori & Koordinasi',
                 'specialization' => 'Pramenulis & Menulis, Bilateral Integration, Motor Planning',
                 'tags' => ['Pramenulis & Menulis', 'Bilateral Integration', 'Motor Planning'],
@@ -212,6 +289,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Hendra Wijaya, S.Tr.Kes (TW)',
                 'role' => 'Terapi Wicara (TW)',
+                'category' => 'tw',
                 'edu' => 'Praktisi AAC & Komunikasi Autisme',
                 'specialization' => 'AAC & PECS, Interaksi Resiprokal, Autisme (ASD)',
                 'tags' => ['AAC & PECS', 'Interaksi Resiprokal', 'Autisme (ASD)'],
@@ -228,6 +306,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Ratih Kusuma, A.Md.OT, C.SI',
                 'role' => 'Sensori Integrasi (SI)',
+                'category' => 'si',
                 'edu' => 'Praktisi Modulasi & Regulasi Sensori',
                 'specialization' => 'Toleransi Sensorik, Atensi & Fokus, Adaptasi Sensori',
                 'tags' => ['Toleransi Sensorik', 'Atensi & Fokus', 'Adaptasi Sensori'],
@@ -289,16 +368,40 @@ class DatabaseSeeder extends Seeder
                 'views_count' => 215,
             ],
             [
-                'title' => 'Fisioterapi Pediatrik: Membantu Anak Mencapai Tonggak Motorik Kasar',
+                'title' => 'Fisioterapi Pediatrik & Motorik Kasar: Mendampingi Anak Merangkak dan Berjalan',
                 'slug' => 'fisioterapi-pediatrik-membantu-tonggak-motorik-kasar',
-                'category' => 'Fisioterapi Pediatrik',
-                'excerpt' => 'Pelajari bagaimana fisioterapi anak membantu si kecil yang terlambat tengkurap, merangkak, duduk, atau berjalan dengan latihan terukur.',
-                'content' => "<p>Motorik kasar melibatkan otot-otot besar tubuh yang bertanggung jawab untuk mobilitas dasar: berguling, duduk tegak tanpa sandaran, merangkak, hingga berjalan dan berlari seimbang.</p><p>Fisioterapi pediatrik di Amanah Tin's Center dirancang dengan pendekatan bermain (play therapy) sehingga si kecil tidak merasa sedang berobat atau dipaksa, melainkan menikmati setiap fase eksplorasi geraknya.</p>",
+                'category' => 'Terapi Okupasi',
+                'excerpt' => 'Pelajari bagaimana stimulasi motorik kasar membantu si kecil yang terlambat tengkurap, merangkak, duduk, atau berjalan dengan latihan terukur.',
+                'content' => "<p>Motorik kasar melibatkan otot-otot besar tubuh yang bertanggung jawab untuk mobilitas dasar: berguling, duduk tegak tanpa sandaran, merangkak, hingga berjalan dan berlari seimbang.</p><p>Stimulasi pediatrik di Amanah Tin's Center dirancang dengan pendekatan bermain (play therapy) sehingga si kecil tidak merasa sedang berobat atau dipaksa, melainkan menikmati setiap fase eksplorasi geraknya.</p>",
                 'author' => 'Bambang Prasetyo, S.Ft, Ftr',
                 'image' => 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=800',
                 'read_time' => '5 Menit Baca',
                 'is_published' => true,
                 'views_count' => 76,
+            ],
+            [
+                'title' => 'Mengenal Perilaku Tantrum pada Anak dan Kapan Perlu Konsultasi Psikolog',
+                'slug' => 'mengenal-perilaku-tantrum-pada-anak-dan-konsultasi-psikolog',
+                'category' => 'Psikologi Anak',
+                'excerpt' => 'Membedakan tantrum wajar tahap perkembangan dengan tantrum yang memerlukan evaluasi psikolog anak profesional.',
+                'content' => "<p>Tantrum adalah ledakan emosi yang umum terjadi pada balita karena kemampuan komunikasi verbal mereka belum mampu mengekspresikan rasa frustrasi atau kelelahan secara penuh.</p><h3>Kapan Orang Tua Memerlukan Bantuan Psikolog Anak?</h3><p>Bila tantrum berlangsung lebih dari 20-30 menit secara konsisten, disertai perilaku melukai diri sendiri atau orang lain, atau terjadi beberapa kali setiap hari pada usia di atas 4 tahun, asesmen psikologi anak sangat dianjurkan untuk mengevaluasi regulasi emosi dan sensori anak.</p>",
+                'author' => 'Clara Meisya, M.Psi., Psikolog',
+                'image' => 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=800',
+                'read_time' => '5 Menit Baca',
+                'is_published' => true,
+                'views_count' => 110,
+            ],
+            [
+                'title' => 'Pola Asuh Positif: Kunci Membangun Rasa Percaya Diri Anak di Rumah',
+                'slug' => 'pola-asuh-positif-kunci-membangun-percaya-diri-anak',
+                'category' => 'Parenting & Tumbuh Kembang',
+                'excerpt' => 'Pendekatan pengasuhan penuh empati tanpa kekerasan verbal untuk menumbuhkan kemandirian dan konsep diri positif anak.',
+                'content' => "<p>Fondasi utama rasa percaya diri anak berakar dari respons orang tua di rumah. Menghargai proses usaha anak daripada sekadar memuji hasil adalah langkah awal membentuk growth mindset.</p><ol><li><strong>Dengarkan dengan Kontak Mata Penuh:</strong> Berikan perhatian utuh saat anak bercerita.</li><li><strong>Validasi Emosi Anak:</strong> Akui perasaan kecewa atau marahnya sebelum memberi solusi.</li><li><strong>Beri Kesempatan Mandiri:</strong> Izinkan anak mencoba mengenakan sepatu atau merapikan mainannya sendiri.</li></ol>",
+                'author' => 'Danang Prasetyo, M.Psi., Psikolog',
+                'image' => 'https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80&w=800',
+                'read_time' => '4 Menit Baca',
+                'is_published' => true,
+                'views_count' => 85,
             ],
         ];
 

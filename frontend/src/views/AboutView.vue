@@ -59,6 +59,7 @@
                   alt="Fasilitas Ruang Terapi Ramah Anak Amanah Tin's Center"
                   class="showcase-main-img"
                   loading="lazy"
+                  decoding="async"
                 />
                 <div class="showcase-overlay-gradient"></div>
 
@@ -85,6 +86,8 @@
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxCcerp34ElrQCVyON58j1OscFg5MR9BsX7NdyFuGBoq6gB_FQOvA-lWaeVbV9BvTm2Qcsps-FJ-mncTnN1N9sM92Mv6vWdfqmtu8xL6IgBvEh0EXzr0H6q1rFlZ2O-ihMCyARgKGqHpAN7clyp9nJ1_2y3BJKkXyCLJn0gEnzqrmDFcKNnPQffyN7W6nwv4bm9bQppfRk6_SrOmP3AtjPzGcblTWq-o6urXk1s7I"
                     alt="Sesi Terapi Interaktif"
                     class="showcase-sub-img"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div class="sub-img-dim"></div>
                   <div class="sub-img-badge">
@@ -99,6 +102,8 @@
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4gtk40GZi1NAmfUL5OIVkQd4vSYwYZR3sEKjDIs0FfoMv4LcutzmKXlSUAM8egPp_D_GhLUxZ-yI7ruxNIQGT_QnLRU8ICZ5TLjm4DIcSdmHdD83O9mLuA840DclKm0nJbdAZ67PiNrlFrbFPPBe0DDLXyaQhZ8oeYHlqB0GNKxLB-tE5ECfXAJHUtVAlRzA7JtFX2VfylDYCo2gf56tMbCACftxjHWOkLoPnsZE"
                     alt="Ruang Observasi dan Diskusi Keluarga"
                     class="showcase-sub-img"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div class="sub-img-dim"></div>
                   <div class="sub-img-badge">
@@ -129,6 +134,8 @@
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG20WWfa82PFEV3OYgsQt0Bchnns6_zW43xro8OLR_9j2dBD71RQyHdwt77ZPA7Zn0W6wm_y-oTX9XOQ6FTjfdJoezkOT_JPS4GGAJLSlr0M4qfM7EtiyRbpoJv5mGVxbeqbToY0zclQRSBmIEsFRcZES7mvwJa78PdllsOgxQltUosqfgKS-RyOPhHEtqI0UA_9UyK1XcN3qZipayd9S9cKKojyPmG9orG5hrohE"
                       alt="Bapak Artin Ristriawan dan Ibu Hertin Nurfarida"
                       class="founders-img"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <!-- Founder Capsule Badge -->

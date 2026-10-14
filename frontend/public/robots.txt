@@ -1,0 +1,7 @@
+# Robots.txt for Klinik Tumbuh Kembang Amanah Tin's Center
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin/*
+
+Sitemap: https://klinikatc.id/sitemap.xml

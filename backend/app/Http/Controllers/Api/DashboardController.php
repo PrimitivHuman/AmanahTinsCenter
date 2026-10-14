@@ -35,7 +35,7 @@ class DashboardController extends Controller
 
         $teamMembers = TeamMember::where('is_active', true)
             ->orderBy('order')
-            ->limit(5)
+            ->limit(4)
             ->get(['id', 'name', 'role', 'specialization', 'image', 'experience_years', 'is_active']);
 
         $recentArticles = Article::latest()->limit(5)->get($articleFields);

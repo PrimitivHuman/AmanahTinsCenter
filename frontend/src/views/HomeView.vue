@@ -151,6 +151,7 @@
                   alt="Fasilitas Ruang Terapi Ramah Anak Amanah Tin's Center"
                   class="about-img"
                   loading="lazy"
+                  decoding="async"
                 />
                 <!-- Floating Facility Badge Overlay -->
                 <div class="about-facility-badge">
@@ -240,10 +241,10 @@
         </div>
 
         <div class="team-grid">
-          <div v-for="member in team" :key="member.name" class="team-card">
+          <div v-for="member in displayTeam" :key="member.name" class="team-card">
             <!-- Photo Frame with Specialty & STR Badges -->
             <div class="team-photo-wrap">
-              <img :src="member.photo" :alt="member.name" class="team-real-img" loading="lazy" />
+              <img :src="member.photo" :alt="member.name" class="team-real-img" loading="lazy" decoding="async" />
               <span class="team-photo-badge">{{ member.specialtyBadge }}</span>
               <span class="team-str-badge">
                 <span class="material-symbols-outlined str-icon">verified</span>
@@ -334,7 +335,7 @@
             <!-- Card Header: Profile & Service Tag -->
             <div class="story-card-header">
               <div class="story-profile">
-                <img :src="story.parentPhoto" :alt="story.parentName" class="story-avatar" loading="lazy" />
+                <img :src="story.parentPhoto" :alt="story.parentName" class="story-avatar" loading="lazy" decoding="async" />
                 <div>
                   <h4 class="story-parent-name">{{ story.parentName }}</h4>
                   <div class="story-verified-badge">
@@ -429,7 +430,7 @@
         <div class="articles-grid">
           <article v-for="art in displayArticles" :key="art.title" class="article-card">
             <div class="article-thumb-wrap">
-              <img :src="art.image" :alt="art.title" class="article-thumb" />
+              <img :src="art.image" :alt="art.title" class="article-thumb" loading="lazy" decoding="async" />
             </div>
             <div class="article-content">
               <div>
@@ -692,8 +693,8 @@ const services = [
   }
 ]
 
-// 3. Team (Dengan Foto Asli & Kredensial Medis Resmi)
-const team = [
+// 3. Default Curated Team
+const defaultTeam = [
   {
     photo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuARq7DzRwA-rJhJLIXBolnUBS70HG4EgQhQ6siQc5wOCBPmojR_dvk2D22zt1H83m9tdj8kembmDE-mZ3sWEljXK44nSgZaTnrAqm7C4QW5u4NZcr6AQoBKHsRfV9MuqhXxEuwQjpA75jDPOvR_R4jriqhbU3OZDs7qd2wemWAz8AYy-UczwQfqO5mn9qT_vBHKBRZDijRsi9u7y982VOU1jEuHl9v60nnn8nTiPH8',
     specialtyBadge: 'Dokter Spesialis Anak',
@@ -830,6 +831,7 @@ const blueprintArticles = [
 ]
 
 const apiArticles = ref([])
+const apiTeam = ref([])
 
 // Section tracking for active navbar state
 const sectionIds = [
@@ -892,11 +894,21 @@ onMounted(async () => {
 
   try {
     const articlesRes = await api.get('/articles?per_page=4')
-    if (articlesRes.data?.data && articlesRes.data.data.length >= 4) {
+    if (articlesRes.data?.data && articlesRes.data.data.length > 0) {
       apiArticles.value = articlesRes.data.data
     }
   } catch {
     // Graceful fallback to blueprint articles
+  }
+
+  try {
+    const teamRes = await api.get('/team')
+    const teamData = Array.isArray(teamRes.data) ? teamRes.data : (teamRes.data?.data || [])
+    if (teamData.length > 0) {
+      apiTeam.value = teamData
+    }
+  } catch {
+    // Graceful fallback to default team
   }
 })
 
@@ -905,11 +917,11 @@ onUnmounted(() => {
 })
 
 const displayArticles = computed(() => {
-  if (apiArticles.value.length >= 4) {
+  if (apiArticles.value.length > 0) {
     return apiArticles.value.map((art, idx) => ({
-      image: art.image || blueprintArticles[idx % 4].image,
+      image: art.image || blueprintArticles[idx % blueprintArticles.length]?.image,
       category: art.category,
-      date: new Date(art.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }),
+      date: new Date(art.published_at || art.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }),
       tagColor: idx % 3 === 0 ? 'tag-primary' : (idx % 3 === 1 ? 'tag-secondary' : 'tag-tertiary'),
       title: art.title,
       excerpt: art.excerpt,
@@ -917,6 +929,22 @@ const displayArticles = computed(() => {
     }))
   }
   return blueprintArticles
+})
+
+const displayTeam = computed(() => {
+  if (apiTeam.value.length > 0) {
+    return apiTeam.value.slice(0, 4).map((member, idx) => ({
+      photo: member.image || member.photo || defaultTeam[idx % defaultTeam.length]?.photo,
+      specialtyBadge: member.specialization || member.role,
+      str: member.str_number ? `STR: ${member.str_number}` : (member.experience_years ? `STR Aktif • ${member.experience_years}` : 'STR Kemenkes Aktif'),
+      name: member.name,
+      role: member.role,
+      roleColor: idx % 3 === 0 ? 'role-primary' : (idx % 3 === 1 ? 'role-secondary' : 'role-tertiary'),
+      bio: member.bio,
+      tags: Array.isArray(member.tags) ? member.tags : (typeof member.tags === 'string' ? JSON.parse(member.tags || '[]') : [])
+    }))
+  }
+  return defaultTeam
 })
 </script>
 
@@ -979,6 +1007,27 @@ section[id] {
   line-height: 1.5;
 }
 
+@media (max-width: 640px) {
+  .section-badge-label {
+    font-size: 12px;
+  }
+  .section-header-row {
+    margin-bottom: 1.25rem;
+    gap: 0.75rem;
+  }
+  .section-heading {
+    font-size: 1.55rem;
+    line-height: 1.25;
+  }
+  .section-subheading {
+    font-size: 0.925rem;
+    line-height: 1.5;
+  }
+  .header-more-link {
+    font-size: 0.9rem;
+  }
+}
+
 .header-more-link {
   display: inline-flex;
   align-items: center;
@@ -1013,6 +1062,14 @@ section[id] {
   grid-template-columns: 1fr;
   gap: 2.5rem;
   align-items: center;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 2rem;
+    align-items: center;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -1286,21 +1343,50 @@ section[id] {
   color: var(--primary);
 }
 
+@media (min-width: 768px) and (max-width: 1023px) {
+  .headline-main {
+    font-size: 2.35rem;
+  }
+  .headline-sub {
+    font-size: 1.65rem;
+  }
+  .hero-desc {
+    font-size: 1rem;
+  }
+  .hero-img {
+    height: 380px;
+  }
+  .hero-float-badge {
+    padding: 0.75rem 1rem;
+  }
+}
+
 @media (max-width: 640px) {
   .hero-section {
     padding: 1.5rem 0 2rem;
   }
-  .hero-headline {
-    gap: 0.15rem;
+  .hero-badge {
+    font-size: 11.5px;
+    padding: 0.3rem 0.8rem;
+    gap: 0.35rem;
   }
-  .headline-main {
-    font-size: 1.95rem;
+  .hero-badge .material-symbols-outlined {
+    font-size: 14px;
+  }
+  .hero-headline {
+    gap: 0.2rem;
   }
   .headline-sub {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
+  }
+  .headline-main {
+    font-size: 1.85rem;
+    line-height: 1.2;
+    word-break: break-word;
   }
   .hero-desc {
-    font-size: 0.95rem;
+    font-size: 0.925rem;
+    line-height: 1.55;
   }
   .hero-ctas {
     width: 100%;
@@ -1308,22 +1394,60 @@ section[id] {
   .btn-primary-hero {
     width: 100%;
     justify-content: center;
-    padding: 0.9rem 1.5rem;
-    font-size: 15.5px;
+    padding: 0.85rem 1.5rem;
+    font-size: 15px;
   }
   .hero-trust {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.65rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.85rem;
+    padding-top: 0.85rem;
+  }
+  .trust-avatar-img,
+  .trust-avatar-badge {
+    width: 36px;
+    height: 36px;
+    margin-left: -8px;
+  }
+  .trust-avatar-badge {
+    font-size: 10px;
+  }
+  .stars .star {
+    font-size: 15px;
+  }
+  .star-rating-val {
+    font-size: 12px;
+  }
+  .trust-desc {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  .hero-media-wrap {
+    margin-top: 0.25rem;
   }
   .hero-img {
-    height: 300px;
+    height: 280px;
   }
   .hero-float-badge {
-    left: 0.75rem;
-    right: 0.75rem;
-    bottom: 0.75rem;
-    padding: 0.65rem 0.85rem;
+    left: 0.65rem;
+    right: 0.65rem;
+    bottom: 0.65rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 1rem;
+  }
+  .float-badge-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .float-badge-icon .material-symbols-outlined {
+    font-size: 20px;
+  }
+  .float-badge-title {
+    font-size: 13.5px;
+  }
+  .float-badge-sub {
+    font-size: 11px;
+    line-height: 1.25;
   }
   .float-badge-pct {
     display: none;
@@ -1337,19 +1461,21 @@ section[id] {
 
 .pillars-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
 }
 
 @media (min-width: 640px) {
   .pillars-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
   }
 }
 
 @media (min-width: 1024px) {
   .pillars-grid {
     grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
   }
 }
 
@@ -1442,6 +1568,19 @@ section[id] {
   grid-template-columns: 1fr;
   gap: 2.5rem;
   align-items: center;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .about-container-box {
+    padding: 2.25rem 2rem;
+  }
+  .about-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 2rem;
+  }
+  .about-img {
+    height: 270px;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -2096,9 +2235,17 @@ section[id] {
   margin-bottom: 3rem;
 }
 
+@media (min-width: 640px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
 @media (min-width: 1024px) {
   .testimonials-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
   }
 }
 
@@ -2976,5 +3123,531 @@ section[id] {
   color: var(--tertiary);
   font-weight: 500;
   padding-top: 0.2rem;
+}
+
+/* ==================== COMPREHENSIVE RESPONSIVE STYLES (MOBILE & TABLET) ==================== */
+
+/* Tablet Optimization (640px - 1023px) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .services-section {
+    padding: 2.75rem 0;
+  }
+  .services-grid {
+    gap: 1.25rem;
+  }
+  .service-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .team-section {
+    padding: 2.75rem 0 3.5rem;
+  }
+  .team-grid {
+    gap: 1.25rem;
+  }
+  .team-photo-wrap {
+    height: 220px;
+  }
+
+  .testimonials-section {
+    padding: 3rem 0 3.5rem;
+  }
+  .testimonials-stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.15rem 1.25rem;
+    margin-bottom: 2.25rem;
+  }
+  .testimonials-cta-strip {
+    padding: 2rem;
+  }
+
+  .articles-section {
+    padding: 2.25rem 0 3rem;
+  }
+  .articles-grid {
+    gap: 1.25rem;
+  }
+  .article-thumb-wrap {
+    height: 170px;
+  }
+
+  .schedule-container-box {
+    padding: 2.25rem 2rem;
+  }
+  .step-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .contact-inner-card {
+    padding: 2rem;
+  }
+}
+
+/* Mobile Phone Optimization (< 640px) */
+@media (max-width: 640px) {
+  /* Pillars Section Mobile Polish */
+  .pillars-section {
+    padding: 1rem 0 2.25rem;
+  }
+  .pillar-card {
+    padding: 1.15rem 0.65rem;
+    border-radius: 1rem;
+  }
+  .pillar-icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0.65rem;
+  }
+  .pillar-icon .material-symbols-outlined {
+    font-size: 22px;
+  }
+  .pillar-title {
+    font-size: 14px;
+    margin-bottom: 0.25rem;
+  }
+  .pillar-desc {
+    font-size: 11.5px;
+    line-height: 1.35;
+  }
+
+  /* About Section Mobile Polish */
+  .about-section {
+    padding: 1.75rem 0;
+  }
+  .about-container-box {
+    padding: 1.35rem 1rem;
+    border-radius: 1.35rem;
+  }
+  .about-grid {
+    gap: 1.75rem;
+  }
+  .about-title {
+    font-size: 1.55rem;
+  }
+  .about-desc {
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .about-stats-row {
+    gap: 0.65rem;
+    margin: 0.25rem 0;
+  }
+  .about-stat-box {
+    padding: 0.75rem 0.85rem;
+    border-radius: 0.85rem;
+  }
+  .stat-num {
+    font-size: 1.45rem;
+  }
+  .stat-label {
+    font-size: 11.5px;
+  }
+  .about-cta-wrap {
+    width: 100%;
+  }
+  .btn-primary-about {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.25rem;
+    font-size: 13.5px;
+  }
+  .about-img {
+    height: 220px;
+  }
+  .about-facility-badge {
+    font-size: 10px;
+    padding: 0.3rem 0.55rem;
+    top: 0.65rem;
+    right: 0.65rem;
+  }
+  .about-founders-capsule {
+    padding: 0.75rem 0.85rem;
+    gap: 0.75rem;
+    border-radius: 0.85rem;
+  }
+  .founders-icon-wrap {
+    width: 38px;
+    height: 38px;
+  }
+  .founders-icon-wrap .material-symbols-outlined {
+    font-size: 20px;
+  }
+  .founders-label {
+    font-size: 13px;
+  }
+  .founders-names {
+    font-size: 12.5px;
+  }
+
+  /* Services Section Mobile Polish */
+  .services-section {
+    padding: 2.25rem 0;
+  }
+  .services-grid {
+    gap: 1rem;
+  }
+  .service-card {
+    padding: 1.25rem 1.15rem;
+    border-radius: 1rem;
+  }
+  .svc-icon-circle {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 0.85rem;
+  }
+  .svc-icon-circle .material-symbols-outlined {
+    font-size: 22px;
+  }
+  .svc-title {
+    font-size: 16px;
+  }
+  .svc-tag {
+    font-size: 11.5px;
+    margin-bottom: 0.5rem;
+  }
+  .svc-desc {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .svc-footer {
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+  }
+
+  /* Quote Section Mobile Polish */
+  .quote-section {
+    padding: 0.5rem 0 2rem;
+  }
+  .quote-card {
+    padding: 1.75rem 1.15rem;
+    border-radius: 1.25rem;
+    gap: 0.5rem;
+  }
+  .quote-icon {
+    font-size: 32px;
+  }
+  .quote-text {
+    font-size: 1.15rem;
+    line-height: 1.45;
+  }
+  .quote-sub {
+    font-size: 13px;
+  }
+
+  /* Team Section Mobile Polish */
+  .team-section {
+    padding: 2.25rem 0 3rem;
+  }
+  .team-grid {
+    gap: 1.25rem;
+  }
+  .team-card {
+    border-radius: 1rem;
+  }
+  .team-photo-wrap {
+    height: 210px;
+  }
+  .team-card-content {
+    padding: 1.15rem 1rem;
+    word-break: break-word;
+  }
+  .team-name {
+    font-size: 15.5px;
+  }
+  .team-role {
+    font-size: 11.5px;
+    margin-bottom: 0.5rem;
+  }
+  .team-bio {
+    font-size: 12.5px;
+    line-height: 1.45;
+    margin-bottom: 0.75rem;
+  }
+  .team-tags {
+    margin-bottom: 0.75rem;
+    gap: 0.3rem;
+  }
+  .team-tag {
+    font-size: 10px;
+    padding: 0.2rem 0.45rem;
+  }
+  .team-card-action {
+    padding-top: 0.75rem;
+  }
+  .team-consult-link {
+    font-size: 12.5px;
+  }
+
+  /* Testimonials Section Mobile Polish */
+  .testimonials-section {
+    padding: 2.25rem 0 2.75rem;
+  }
+  .testimonials-header {
+    margin-bottom: 1.5rem;
+  }
+  .testimonials-stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+    padding: 0.85rem 0.75rem;
+    border-radius: 1rem;
+    margin-bottom: 1.75rem;
+  }
+  .stat-pill {
+    padding: 0.4rem 0.5rem;
+    gap: 0.5rem;
+    border-radius: 8px;
+  }
+  .stat-pill-icon {
+    font-size: 22px;
+  }
+  .stat-pill-val {
+    font-size: 13.5px;
+  }
+  .stat-pill-lbl {
+    font-size: 10px;
+    line-height: 1.2;
+  }
+  .stat-pill-stars .material-symbols-outlined {
+    font-size: 14px;
+  }
+  .testimonials-grid {
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+  .story-card {
+    padding: 1.25rem 1rem;
+    border-radius: 1.15rem;
+  }
+  .story-card-header {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+  }
+  .story-avatar {
+    width: 42px;
+    height: 42px;
+  }
+  .story-parent-name {
+    font-size: 13.5px;
+  }
+  .story-service-tag {
+    font-size: 10px;
+    padding: 0.2rem 0.5rem;
+  }
+  .story-case-box {
+    padding: 0.65rem 0.75rem;
+    margin-bottom: 0.85rem;
+    border-radius: 0 8px 8px 0;
+  }
+  .story-quote-body {
+    margin-bottom: 1rem;
+  }
+  .story-quote-mark {
+    font-size: 18px;
+    top: -4px;
+    left: 0;
+  }
+  .story-quote-text {
+    font-size: 12.5px;
+    line-height: 1.5;
+    padding-left: 1.2rem;
+  }
+  .story-progress-box {
+    padding: 0.65rem 0.75rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+  }
+  .progress-box-title {
+    font-size: 10.5px;
+    margin-bottom: 0.35rem;
+  }
+  .progress-list li {
+    font-size: 11.5px;
+    gap: 0.35rem;
+  }
+  .progress-list .check-icon {
+    font-size: 14px;
+  }
+  .story-card-footer {
+    padding-top: 0.75rem;
+  }
+  .story-stars .material-symbols-outlined {
+    font-size: 14px;
+  }
+  .story-duration {
+    font-size: 10px;
+    padding: 0.15rem 0.45rem;
+  }
+  .testimonials-cta-strip {
+    padding: 1.5rem 1.15rem;
+    border-radius: 1.25rem;
+    text-align: center;
+    gap: 1.25rem;
+  }
+  .cta-strip-title {
+    font-size: 1.25rem;
+  }
+  .cta-strip-desc {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .cta-strip-buttons {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .btn-strip-primary,
+  .btn-strip-wa {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1.25rem;
+    font-size: 13.5px;
+  }
+
+  /* Articles Section Mobile Polish */
+  .articles-section {
+    padding: 1.75rem 0 2.5rem;
+  }
+  .articles-grid {
+    gap: 1.25rem;
+  }
+  .article-card {
+    border-radius: 1rem;
+  }
+  .article-thumb-wrap {
+    height: 160px;
+  }
+  .article-content {
+    padding: 1rem;
+  }
+  .article-date-tag {
+    font-size: 10.5px;
+  }
+  .article-title {
+    font-size: 15px;
+  }
+  .article-excerpt {
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+  .article-read-link {
+    font-size: 12.5px;
+    margin-top: 0.85rem;
+  }
+
+  /* Schedule Section Mobile Polish */
+  .schedule-section {
+    padding: 2rem 0 2.5rem;
+  }
+  .schedule-container-box {
+    padding: 1.35rem 1rem;
+    border-radius: 1.35rem;
+  }
+  .schedule-title {
+    font-size: 1.55rem;
+  }
+  .schedule-desc {
+    font-size: 13.5px;
+  }
+  .steps-grid {
+    gap: 1rem;
+    margin: 1.75rem 0;
+  }
+  .step-card {
+    padding: 1.35rem 1rem;
+    border-radius: 1rem;
+  }
+  .step-badge {
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+    margin-bottom: 0.75rem;
+  }
+  .step-title {
+    font-size: 15.5px;
+  }
+  .step-desc {
+    font-size: 12.5px;
+  }
+  .schedule-action-box {
+    padding: 1.25rem 1rem;
+    border-radius: 1rem;
+    gap: 1rem;
+  }
+  .location-pill {
+    font-size: 12.5px;
+    text-align: center;
+  }
+  .location-sub {
+    font-size: 12px;
+  }
+  .btn-primary-schedule {
+    width: 100%;
+    justify-content: center;
+    padding: 0.8rem 1.5rem;
+    font-size: 14px;
+  }
+
+  /* Contact Section Mobile Polish */
+  .contact-section {
+    padding: 2.25rem 0 3rem;
+  }
+  .contact-header {
+    margin-bottom: 1.75rem;
+  }
+  .contact-title {
+    font-size: 1.55rem;
+  }
+  .contact-sub {
+    font-size: 13.5px;
+  }
+  .contact-inner-card {
+    padding: 1.25rem 1rem;
+    border-radius: 1.25rem;
+    gap: 1.15rem;
+  }
+  .contact-inner-title {
+    font-size: 1.15rem;
+  }
+  .contact-inner-sub {
+    font-size: 12.5px;
+  }
+  .contact-items-grid {
+    gap: 0.85rem;
+  }
+  .contact-item {
+    padding: 0.95rem;
+    border-radius: 0.85rem;
+    gap: 0.75rem;
+    word-break: break-word;
+  }
+  .contact-icon-circle {
+    width: 38px;
+    height: 38px;
+  }
+  .contact-icon-circle .material-symbols-outlined {
+    font-size: 20px;
+  }
+  .contact-item-label {
+    font-size: 14px;
+  }
+  .contact-item-val {
+    font-size: 12.5px;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  .contact-item-link {
+    font-size: 12px;
+    width: 100%;
+    justify-content: center;
+    padding: 0.45rem 0.75rem;
+    margin-top: 0.5rem;
+  }
+  .operating-hours-list {
+    font-size: 12.5px;
+    gap: 0.3rem;
+    margin-top: 0.35rem;
+  }
 }
 </style>

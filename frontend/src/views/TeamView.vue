@@ -48,7 +48,8 @@
           <!-- Toolbar Row: Count Note on Left (above "Semua Praktisi"), Search on Right -->
           <div class="filter-toolbar-row">
             <div class="team-count-note">
-              Menampilkan <strong>{{ filteredTeamMembers.length }}</strong> dari {{ teamMembers.length }} Tenaga Ahli Bersertifikasi
+              <span v-if="isLoading">Menghubungkan direktori tenaga ahli...</span>
+              <span v-else>Menampilkan <strong>{{ filteredTeamMembers.length }}</strong> dari {{ teamMembers.length }} Tenaga Ahli Bersertifikasi</span>
             </div>
 
             <!-- Quick Search Bar -->
@@ -89,8 +90,31 @@
           </div>
         </div>
 
-        <!-- Cards Grid (12 members, 4 per row) -->
-        <div v-if="filteredTeamMembers.length > 0" class="team-grid">
+        <!-- Skeleton Loading Grid (Anti-Flicker) -->
+        <div v-if="isLoading" class="team-grid skeleton-team-grid" aria-label="Memuat daftar praktisi...">
+          <div v-for="n in 8" :key="n" class="skeleton-card">
+            <div class="skeleton-photo-wrap skeleton-shimmer"></div>
+            <div class="skeleton-info-body">
+              <div class="skeleton-line skeleton-title skeleton-shimmer"></div>
+              <div class="skeleton-line skeleton-edu skeleton-shimmer"></div>
+              <div class="skeleton-chip skeleton-shimmer"></div>
+              <div class="skeleton-focus">
+                <div class="skeleton-line skeleton-focus-label skeleton-shimmer"></div>
+                <div class="skeleton-tags-row">
+                  <div class="skeleton-tag skeleton-shimmer"></div>
+                  <div class="skeleton-tag skeleton-shimmer"></div>
+                </div>
+              </div>
+            </div>
+            <div class="skeleton-actions-row">
+              <div class="skeleton-btn skeleton-shimmer"></div>
+              <div class="skeleton-btn-wa skeleton-shimmer"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cards Grid (Aktual dari Database) -->
+        <div v-else-if="filteredTeamMembers.length > 0" class="team-grid">
           <div
             v-for="member in filteredTeamMembers"
             :key="member.id || member.name"
@@ -99,7 +123,7 @@
           >
             <!-- Photo with overlay badges -->
             <div class="member-photo-wrap">
-              <img :src="member.photo" :alt="member.name" class="member-photo" loading="lazy" />
+              <img :src="member.photo" :alt="member.name" class="member-photo" loading="lazy" decoding="async" />
               <div class="photo-overlay-gradient"></div>
               
               <span class="badge-specialty" :class="`badge-${member.color}`">
@@ -148,17 +172,6 @@
                 <span>Lihat Profil</span>
                 <span class="material-symbols-outlined action-icon">visibility</span>
               </button>
-
-              <a
-                :href="getTherapistWaUrl(member)"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn-card-wa"
-                title="Jadwalkan Sesi via WhatsApp"
-              >
-                <span class="material-symbols-outlined fill wa-icon">chat</span>
-                <span>Jadwalkan</span>
-              </a>
             </div>
           </div>
         </div>
@@ -208,7 +221,7 @@
           <!-- Modal Header -->
           <div class="modal-header">
             <div class="modal-avatar-frame">
-              <img :src="selectedTherapist.photo" :alt="selectedTherapist.name" class="modal-avatar-img" />
+              <img :src="selectedTherapist.photo" :alt="selectedTherapist.name" class="modal-avatar-img" decoding="async" />
               <div class="modal-avatar-badge" :class="`badge-${selectedTherapist.color}`">
                 <span class="material-symbols-outlined">{{ selectedTherapist.icon }}</span>
               </div>
@@ -293,21 +306,8 @@
               class="btn-modal-wa"
             >
               <span class="material-symbols-outlined fill">chat</span>
-              <span>Jadwalkan Bersama {{ selectedTherapist.name.split(',')[0] }} via WA</span>
+              <span>Jadwalkan</span>
             </a>
-
-            <router-link
-              :to="'/jadwal-pendaftaran?terapis=' + encodeURIComponent(selectedTherapist.name)"
-              @click="closeTherapistModal"
-              class="btn-modal-form"
-            >
-              <span class="material-symbols-outlined">event_note</span>
-              <span>Formulir Reservasi</span>
-            </router-link>
-
-            <button @click="closeTherapistModal" class="btn-modal-secondary">
-              Tutup
-            </button>
           </div>
         </div>
       </div>
@@ -383,11 +383,11 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useClinicSettings } from '../composables/useClinicSettings'
+import PublicLayout from '../layouts/PublicLayout.vue'
 import api from '../services/api'
+import { useClinicSettings } from '../composables/useClinicSettings'
 
 const { settings, waLink } = useClinicSettings()
-import PublicLayout from '../layouts/PublicLayout.vue'
 
 // Photos from blueprint (google AI-generated images)
 const photos = {
@@ -409,7 +409,7 @@ const categories = [
   { id: 'tw', label: 'Terapi Wicara (TW)', icon: 'record_voice_over' },
   { id: 'ot', label: 'Terapi Okupasi (OT)', icon: 'back_hand' },
   { id: 'si', label: 'Sensori Integrasi (SI)', icon: 'spa' },
-  { id: 'psi', label: 'Psikolog Anak', icon: 'psychology' },
+  { id: 'psi', label: 'Psikologi Anak', icon: 'psychology' },
 ]
 
 const defaultTeamMembers = [
@@ -706,32 +706,40 @@ const standards = [
   },
 ]
 
-// Reactive team members list with local fallback
-const teamMembers = ref(defaultTeamMembers)
+// State loading direktori praktisi (anti-flicker)
+const isLoading = ref(true)
+
+// Reactive team members list (diisi dari database / API saat mounted)
+const teamMembers = ref([])
 
 const formatMemberFromApi = (m) => {
-  let category = 'tw'
+  let category = m.category || ''
   let icon = 'record_voice_over'
   let color = 'blue'
-  const text = ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase()
-  if (text.includes('wicara') || text.includes('tw') || text.includes('speech')) {
-    category = 'tw'
+
+  if (!category) {
+    const text = ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase()
+    if (text.includes('wicara') || text.includes('tw') || text.includes('speech')) category = 'tw'
+    else if (text.includes('okupasi') || text.includes('ot')) category = 'ot'
+    else if (text.includes('sensori') || text.includes('si')) category = 'si'
+    else if (text.includes('psikolog') || text.includes('psi')) category = 'psi'
+    else if (text.includes('fisio') || text.includes('ft')) category = 'ft'
+    else category = 'tw'
+  }
+
+  if (category === 'tw') {
     icon = 'record_voice_over'
     color = 'blue'
-  } else if (text.includes('okupasi') || text.includes('ot')) {
-    category = 'ot'
+  } else if (category === 'ot') {
     icon = 'back_hand'
     color = 'amber'
-  } else if (text.includes('sensori') || text.includes('si')) {
-    category = 'si'
+  } else if (category === 'si') {
     icon = 'spa'
     color = 'teal'
-  } else if (text.includes('psikolog') || text.includes('psi')) {
-    category = 'psi'
+  } else if (category === 'psi') {
     icon = 'psychology'
     color = 'purple'
-  } else if (text.includes('fisio')) {
-    category = 'psi'
+  } else if (category === 'ft') {
     icon = 'accessibility_new'
     color = 'amber'
   }
@@ -795,6 +803,7 @@ const filteredTeamMembers = computed(() => {
 })
 
 const getCategoryCount = (catId) => {
+  if (isLoading.value) return '•'
   if (catId === 'all') return teamMembers.value.length
   return teamMembers.value.filter((m) => m.category === catId).length
 }
@@ -824,13 +833,19 @@ const handleKeyDown = (e) => {
 
 onMounted(async () => {
   window.addEventListener('keydown', handleKeyDown)
+  isLoading.value = true
   try {
     const res = await api.get('/team')
     if (res.data && Array.isArray(res.data) && res.data.length > 0) {
       teamMembers.value = res.data.map(formatMemberFromApi)
+    } else {
+      teamMembers.value = defaultTeamMembers
     }
   } catch (err) {
     console.warn('Gagal memuat data tim dari API, menggunakan fallback lokal:', err)
+    teamMembers.value = defaultTeamMembers
+  } finally {
+    isLoading.value = false
   }
 })
 
@@ -1286,9 +1301,7 @@ const getTherapistWaUrl = (member) => {
 
 /* Member Card Action Row */
 .member-actions-row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.5rem;
+  display: block;
   padding-top: 1rem;
   border-top: 1px solid rgba(191, 200, 206, 0.25);
 }
@@ -1297,54 +1310,36 @@ const getTherapistWaUrl = (member) => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
+  width: 100%;
   background: #f8fafc;
   color: #006384;
-  border: 1px solid #cbd5e1;
+  border: 1.5px solid #cbd5e1;
   border-radius: 999px;
-  padding: 0.55rem 0.75rem;
+  padding: 0.625rem 1rem;
   font-family: var(--font-headline);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
 }
 
 .btn-card-detail:hover {
   background: #e0f2fe;
   border-color: #006384;
+  color: #004d67;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 99, 132, 0.12);
 }
 
 .action-icon {
-  font-size: 16px;
+  font-size: 17px;
+  transition: transform 0.2s ease;
 }
 
-.btn-card-wa {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  background: #25d366;
-  color: #ffffff;
-  border-radius: 999px;
-  padding: 0.55rem 0.85rem;
-  font-family: var(--font-headline);
-  font-size: 12px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s;
-  box-shadow: 0 2px 6px rgba(37, 211, 102, 0.25);
-  white-space: nowrap;
-}
-
-.btn-card-wa:hover {
-  background: #1ebc59;
-  transform: translateY(-1px);
-}
-
-.wa-icon {
-  font-size: 16px;
+.btn-card-detail:hover .action-icon {
+  transform: scale(1.1);
 }
 
 /* ============================================================
@@ -1750,13 +1745,12 @@ const getTherapistWaUrl = (member) => {
   background: #f8fafc;
   border-top: 1px solid #edf2f7;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
 }
 
 .btn-modal-wa {
-  flex: 1;
+  width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1764,57 +1758,20 @@ const getTherapistWaUrl = (member) => {
   background: #25d366;
   color: #ffffff;
   font-family: var(--font-headline);
-  font-size: 13.5px;
+  font-size: 14.5px;
   font-weight: 700;
   padding: 0.85rem 1.5rem;
   border-radius: 999px;
   text-decoration: none;
   box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
 
 .btn-modal-wa:hover {
   background: #1ebc59;
   transform: translateY(-2px);
-}
-
-.btn-modal-form {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: #006384;
-  color: #ffffff;
-  font-family: var(--font-headline);
-  font-size: 13.5px;
-  font-weight: 700;
-  padding: 0.85rem 1.25rem;
-  border-radius: 999px;
-  text-decoration: none;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-
-.btn-modal-form:hover {
-  background: #004d66;
-}
-
-.btn-modal-secondary {
-  background: transparent;
-  border: 1px solid #cbd5e1;
-  color: #475569;
-  font-family: var(--font-headline);
-  font-size: 13.5px;
-  font-weight: 700;
-  padding: 0.85rem 1.25rem;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-modal-secondary:hover {
-  background: #f1f5f9;
-  color: #091d2e;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
 }
 
 /* ============================================================
@@ -2000,6 +1957,114 @@ const getTherapistWaUrl = (member) => {
   .modal-badge-row { justify-content: center; }
   .modal-meta-row { justify-content: center; }
   .modal-footer-actions { flex-direction: column; }
-  .btn-modal-wa, .btn-modal-form, .btn-modal-secondary { width: 100%; text-align: center; }
+  .btn-modal-wa { width: 100%; text-align: center; }
+}
+
+/* ============================================================
+   SKELETON LOADING SHIMMER (ANTI-FLICKER)
+   ============================================================ */
+.skeleton-card {
+  background: #ffffff;
+  border: 1.5px solid rgba(191, 200, 206, 0.35);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 14px rgba(9, 29, 46, 0.04);
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: teamSkeletonShimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes teamSkeletonShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-photo-wrap {
+  width: 100%;
+  height: 210px;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+}
+
+.skeleton-info-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-line {
+  height: 14px;
+  margin-bottom: 0.6rem;
+}
+
+.skeleton-title {
+  width: 80%;
+  height: 20px;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-edu {
+  width: 58%;
+  height: 12px;
+  margin-bottom: 0.85rem;
+}
+
+.skeleton-chip {
+  width: 100%;
+  height: 32px;
+  border-radius: 8px;
+  margin-bottom: 0.85rem;
+}
+
+.skeleton-focus {
+  margin-top: auto;
+  margin-bottom: 1rem;
+}
+
+.skeleton-focus-label {
+  width: 38%;
+  height: 10px;
+  margin-bottom: 0.45rem;
+}
+
+.skeleton-tags-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.skeleton-tag {
+  width: 70px;
+  height: 22px;
+  border-radius: 9999px;
+}
+
+.skeleton-actions-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.6rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(191, 200, 206, 0.25);
+}
+
+.skeleton-btn {
+  height: 38px;
+  border-radius: 10px;
+}
+
+.skeleton-btn-wa {
+  width: 105px;
+  height: 38px;
+  border-radius: 10px;
 }
 </style>

@@ -207,15 +207,26 @@
         </div>
 
         <form @submit.prevent="saveMember" class="modal-body" novalidate>
-          <div class="form-group">
-            <label>Nama Lengkap &amp; Gelar Medis <span class="req">*</span></label>
-            <input
-              v-model="form.name"
-              type="text"
-              required
-              placeholder="Contoh: dr. Nurul Aini, Sp.A / Rahmat Hidayat, S.Tr.Kes"
-              class="form-input"
-            />
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Nama Lengkap &amp; Gelar Medis <span class="req">*</span></label>
+              <input
+                v-model="form.name"
+                type="text"
+                required
+                placeholder="Contoh: dr. Nurul Aini, Sp.A / Rahmat Hidayat, S.Tr.Kes"
+                class="form-input"
+              />
+            </div>
+            <div class="form-group flex-1">
+              <label>Kategori Praktisi <span class="req">*</span></label>
+              <select v-model="form.category" class="form-select" required>
+                <option value="tw">Terapi Wicara (TW)</option>
+                <option value="ot">Terapi Okupasi (OT)</option>
+                <option value="si">Sensori Integrasi (SI)</option>
+                <option value="psi">Psikologi Anak / Dokter Spesialis</option>
+              </select>
+            </div>
           </div>
 
           <div class="form-row">
@@ -225,7 +236,7 @@
                 v-model="form.role"
                 type="text"
                 required
-                placeholder="Terapi Wicara (TW) / Terapi Okupasi (OT)"
+                placeholder="Contoh: Terapi Wicara (TW) / Spesialis Anak"
                 class="form-input"
               />
             </div>
@@ -313,13 +324,59 @@
           </div>
 
           <div class="form-group">
-            <label>URL Foto Profil</label>
+            <label>Foto Profil</label>
             <input
-              v-model="form.image"
-              type="url"
-              placeholder="https://..."
-              class="form-input"
+              ref="photoInput"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              class="photo-up-hidden"
+              @change="onPhotoSelected"
             />
+
+            <!-- Belum ada foto: dropzone -->
+            <div
+              v-if="!displayPhoto"
+              class="photo-up-drop"
+              :class="{ 'is-dragging': isDraggingPhoto }"
+              role="button"
+              tabindex="0"
+              @click="photoInput?.click()"
+              @keydown.enter.prevent="photoInput?.click()"
+              @dragover.prevent="isDraggingPhoto = true"
+              @dragleave.prevent="isDraggingPhoto = false"
+              @drop.prevent="onPhotoDrop"
+            >
+              <span class="material-symbols-outlined photo-up-icon">add_a_photo</span>
+              <strong>Tarik foto ke sini atau klik untuk memilih</strong>
+              <small>JPG, PNG, WEBP &bull; maks. 5 MB &bull; otomatis dipotong rasio 4:3</small>
+            </div>
+
+            <!-- Sudah ada foto: pratinjau -->
+            <div v-else class="photo-up-card">
+              <div class="photo-up-frame">
+                <img :src="displayPhoto" alt="Pratinjau foto terapis" />
+                <span v-if="pendingPhoto" class="photo-up-badge">Belum disimpan</span>
+              </div>
+              <div class="photo-up-actions">
+                <button type="button" class="photo-up-btn" @click="photoInput?.click()">
+                  <span class="material-symbols-outlined">swap_horiz</span> Ganti
+                </button>
+                <button type="button" class="photo-up-btn photo-up-btn-danger" @click="removePhoto">
+                  <span class="material-symbols-outlined">delete</span> Hapus
+                </button>
+              </div>
+              <div v-if="rawPhoto" class="photo-up-focal">
+                <span>Fokus foto:</span>
+                <button
+                  v-for="opt in focalOptions"
+                  :key="opt.id"
+                  type="button"
+                  class="photo-up-chip"
+                  :class="{ active: photoFocal === opt.id }"
+                  @click="setPhotoFocal(opt.id)"
+                >{{ opt.label }}</button>
+              </div>
+            </div>
           </div>
 
           <div class="form-group">
@@ -366,6 +423,20 @@ const currentMemberId = ref(null)
 const certInput = ref('')
 const tagsInput = ref('')
 
+// ===== Upload foto profil terapis =====
+const photoInput = ref(null)
+const isDraggingPhoto = ref(false)
+const rawPhoto = ref(null)       // berkas asli yang dipilih admin
+const pendingPhoto = ref(null)   // hasil potong 4:3, diunggah saat Simpan
+const pendingPreviewUrl = ref('')
+const photoFocal = ref('top')
+const focalOptions = [
+  { id: 'top', label: 'Atas' },
+  { id: 'center', label: 'Tengah' },
+  { id: 'bottom', label: 'Bawah' },
+]
+const displayPhoto = computed(() => pendingPreviewUrl.value || form.image)
+
 const searchQuery = ref('')
 const selectedCategory = ref('all')
 
@@ -374,12 +445,13 @@ const categories = [
   { id: 'tw', label: 'Terapi Wicara (TW)', icon: 'record_voice_over' },
   { id: 'ot', label: 'Terapi Okupasi (OT)', icon: 'front_hand' },
   { id: 'si', label: 'Sensori Integrasi (SI)', icon: 'spa' },
-  { id: 'psi', label: 'Psikologi / Fisioterapi', icon: 'psychology' },
+  { id: 'psi', label: 'Psikologi Anak', icon: 'psychology' },
 ]
 
 const form = reactive({
   name: '',
   role: '',
+  category: 'tw',
   edu: '',
   specialization: '',
   schedule: '',
@@ -392,24 +464,128 @@ const form = reactive({
   order: 0,
 })
 
+function clearPendingPhoto() {
+  if (pendingPreviewUrl.value) URL.revokeObjectURL(pendingPreviewUrl.value)
+  pendingPreviewUrl.value = ''
+  pendingPhoto.value = null
+  rawPhoto.value = null
+  photoFocal.value = 'top'
+}
+
+// Potong gambar ke rasio 4:3 (sesuai kartu terapis) di browser
+function cropTo4x3(file, focal) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file)
+    const img = new Image()
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      const ratio = 4 / 3
+      const w = img.naturalWidth
+      const h = img.naturalHeight
+      let sx = 0, sy = 0, sw = w, sh = h
+      if (w / h > ratio) {
+        sw = h * ratio
+        sx = (w - sw) / 2
+      } else {
+        sh = w / ratio
+        sy = focal === 'top' ? 0 : focal === 'bottom' ? h - sh : (h - sh) / 2
+      }
+      const outW = Math.round(Math.min(1200, sw))
+      const canvas = document.createElement('canvas')
+      canvas.width = outW
+      canvas.height = Math.round(outW / ratio)
+      canvas.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height)
+      canvas.toBlob((blob) => {
+        if (!blob) return reject(new Error('Gagal memproses gambar'))
+        resolve(new File([blob], 'terapis.webp', { type: 'image/webp' }))
+      }, 'image/webp', 0.9)
+    }
+    img.onerror = () => {
+      URL.revokeObjectURL(url)
+      reject(new Error('Berkas gambar tidak dapat dibaca'))
+    }
+    img.src = url
+  })
+}
+
+async function applyCrop() {
+  try {
+    const cropped = await cropTo4x3(rawPhoto.value, photoFocal.value)
+    if (pendingPreviewUrl.value) URL.revokeObjectURL(pendingPreviewUrl.value)
+    pendingPhoto.value = cropped
+    pendingPreviewUrl.value = URL.createObjectURL(cropped)
+  } catch (err) {
+    alert(err.message)
+  }
+}
+
+async function handlePhotoFile(file) {
+  if (!file) return
+  if (!/^image\/(jpeg|png|webp)$/.test(file.type)) {
+    alert('Format foto harus JPG, PNG, atau WEBP.')
+    return
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Ukuran foto maksimal 5 MB.')
+    return
+  }
+  rawPhoto.value = file
+  await applyCrop()
+}
+
+function onPhotoSelected(e) {
+  handlePhotoFile(e.target.files?.[0])
+  e.target.value = ''
+}
+
+function onPhotoDrop(e) {
+  isDraggingPhoto.value = false
+  handlePhotoFile(e.dataTransfer.files?.[0])
+}
+
+function setPhotoFocal(pos) {
+  if (photoFocal.value === pos || !rawPhoto.value) return
+  photoFocal.value = pos
+  applyCrop()
+}
+
+function removePhoto() {
+  clearPendingPhoto()
+  form.image = ''
+}
+
 function getMemberColor(member) {
+  const cat = member.category
+  if (cat === 'tw') return 'blue'
+  if (cat === 'ot') return 'amber'
+  if (cat === 'si') return 'green'
+  if (cat === 'psi') return 'purple'
+  if (cat === 'ft') return 'amber'
+
   const text = ((member.role || '') + ' ' + (member.specialization || '')).toLowerCase()
   if (text.includes('wicara') || text.includes('tw') || text.includes('speech')) return 'blue'
   if (text.includes('okupasi') || text.includes('ot')) return 'amber'
   if (text.includes('sensori') || text.includes('si')) return 'green'
   if (text.includes('psikolog') || text.includes('psi')) return 'purple'
-  if (text.includes('fisioterapi')) return 'amber'
+  if (text.includes('fisioterapi') || text.includes('ft')) return 'amber'
   if (text.includes('dokter') || text.includes('anak') || text.includes('sp.a')) return 'teal'
   return 'blue'
 }
 
 function getMemberIcon(member) {
+  const cat = member.category
+  if (cat === 'tw') return 'record_voice_over'
+  if (cat === 'ot') return 'front_hand'
+  if (cat === 'si') return 'spa'
+  if (cat === 'psi') return 'psychology'
+  if (cat === 'ft') return 'accessibility_new'
+
   const text = ((member.role || '') + ' ' + (member.specialization || '')).toLowerCase()
   if (text.includes('wicara') || text.includes('tw') || text.includes('speech')) return 'record_voice_over'
   if (text.includes('okupasi') || text.includes('ot')) return 'front_hand'
   if (text.includes('sensori') || text.includes('si')) return 'spa'
   if (text.includes('psikolog') || text.includes('psi')) return 'psychology'
-  if (text.includes('fisioterapi')) return 'accessibility_new'
+  if (text.includes('fisioterapi') || text.includes('ft')) return 'accessibility_new'
   if (text.includes('dokter') || text.includes('anak') || text.includes('sp.a')) return 'stethoscope'
   return 'workspace_premium'
 }
@@ -417,11 +593,13 @@ function getMemberIcon(member) {
 function getCategoryCount(catId) {
   if (catId === 'all') return team.value.length
   return team.value.filter(m => {
+    if (m.category) return m.category === catId
     const text = ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase()
     if (catId === 'tw') return text.includes('wicara') || text.includes('tw') || text.includes('speech')
     if (catId === 'ot') return text.includes('okupasi') || text.includes('ot')
     if (catId === 'si') return text.includes('sensori') || text.includes('si')
-    if (catId === 'psi') return text.includes('psikolog') || text.includes('psi') || text.includes('fisio')
+    if (catId === 'psi') return text.includes('psikolog') || text.includes('psi')
+    if (catId === 'ft') return text.includes('fisioterapi') || text.includes('ft')
     return false
   }).length
 }
@@ -430,11 +608,16 @@ const filteredTeam = computed(() => {
   return team.value.filter(member => {
     // Kategori
     if (selectedCategory.value !== 'all') {
-      const text = ((member.role || '') + ' ' + (member.specialization || '')).toLowerCase()
-      if (selectedCategory.value === 'tw' && !(text.includes('wicara') || text.includes('tw') || text.includes('speech'))) return false
-      if (selectedCategory.value === 'ot' && !(text.includes('okupasi') || text.includes('ot'))) return false
-      if (selectedCategory.value === 'si' && !(text.includes('sensori') || text.includes('si'))) return false
-      if (selectedCategory.value === 'psi' && !(text.includes('psikolog') || text.includes('psi') || text.includes('fisio'))) return false
+      if (member.category) {
+        if (member.category !== selectedCategory.value) return false
+      } else {
+        const text = ((member.role || '') + ' ' + (member.specialization || '')).toLowerCase()
+        if (selectedCategory.value === 'tw' && !(text.includes('wicara') || text.includes('tw') || text.includes('speech'))) return false
+        if (selectedCategory.value === 'ot' && !(text.includes('okupasi') || text.includes('ot'))) return false
+        if (selectedCategory.value === 'si' && !(text.includes('sensori') || text.includes('si'))) return false
+        if (selectedCategory.value === 'psi' && !(text.includes('psikolog') || text.includes('psi'))) return false
+        if (selectedCategory.value === 'ft' && !(text.includes('fisioterapi') || text.includes('ft'))) return false
+      }
     }
 
     // Pencarian
@@ -490,6 +673,7 @@ function openCreateModal() {
   currentMemberId.value = null
   form.name = ''
   form.role = ''
+  form.category = 'tw'
   form.edu = ''
   form.specialization = ''
   form.schedule = ''
@@ -497,7 +681,8 @@ function openCreateModal() {
   form.bio = ''
   form.philosophy = ''
   form.experience_years = '3+ Tahun'
-  form.image = 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600'
+  form.image = ''
+  clearPendingPhoto()
   form.is_active = true
   form.order = team.value.length + 1
   certInput.value = ''
@@ -511,6 +696,7 @@ function openEditModal(member) {
   currentMemberId.value = member.id
   form.name = member.name
   form.role = member.role
+  form.category = member.category || 'tw'
   form.edu = member.edu || ''
   form.specialization = member.specialization || ''
   form.schedule = member.schedule || ''
@@ -519,6 +705,7 @@ function openEditModal(member) {
   form.philosophy = member.philosophy || ''
   form.experience_years = member.experience_years || ''
   form.image = member.image || ''
+  clearPendingPhoto()
   form.is_active = !!member.is_active
   form.order = member.order || 0
   certInput.value = Array.isArray(member.certifications) ? member.certifications.join(', ') : ''
@@ -529,6 +716,7 @@ function openEditModal(member) {
 
 function closeModal() {
   showModal.value = false
+  clearPendingPhoto()
   document.body.style.overflow = ''
 }
 
@@ -548,6 +736,16 @@ async function saveMember() {
   }
 
   try {
+    // Unggah foto baru (jika ada) lebih dulu, lalu simpan datanya
+    if (pendingPhoto.value) {
+      const fd = new FormData()
+      fd.append('image', pendingPhoto.value)
+      const up = await api.post('/admin/team/upload-image', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      payload.image = up.data.url
+    }
+
     if (isEditModal.value) {
       const res = await api.put(`/admin/team/${currentMemberId.value}`, payload)
       const idx = team.value.findIndex(m => m.id === currentMemberId.value)
@@ -582,6 +780,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  clearPendingPhoto()
   document.body.style.overflow = ''
 })
 </script>
@@ -1317,7 +1516,7 @@ onUnmounted(() => {
   color: #ba1a1a;
 }
 
-.form-input, .form-textarea {
+.form-input, .form-textarea, .form-select {
   width: 100%;
   padding: 0.7rem 0.875rem;
   border-radius: 10px;
@@ -1329,7 +1528,7 @@ onUnmounted(() => {
   transition: all 0.2s;
 }
 
-.form-input:focus, .form-textarea:focus {
+.form-input:focus, .form-textarea:focus, .form-select:focus {
   outline: none;
   border-color: #006384;
   background: #ffffff;
@@ -1591,5 +1790,165 @@ onUnmounted(() => {
     font-size: 11.5px;
     gap: 0.25rem;
   }
+}
+
+/* ============================================================
+   UPLOAD FOTO PROFIL TERAPIS
+   ============================================================ */
+.photo-up-hidden {
+  display: none;
+}
+
+.photo-up-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1.5rem 1rem;
+  border: 2px dashed rgba(0, 99, 132, 0.35);
+  border-radius: 14px;
+  background: #f7f9ff;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.photo-up-drop:hover,
+.photo-up-drop:focus-visible,
+.photo-up-drop.is-dragging {
+  border-color: #006384;
+  background: rgba(0, 99, 132, 0.05);
+  outline: none;
+}
+
+.photo-up-drop.is-dragging {
+  box-shadow: 0 0 0 4px rgba(0, 99, 132, 0.12);
+}
+
+.photo-up-icon {
+  font-size: 34px;
+  color: #006384;
+}
+
+.photo-up-drop strong {
+  font-size: 0.875rem;
+  color: #091d2e;
+}
+
+.photo-up-drop small {
+  font-size: 0.75rem;
+  color: #70787e;
+}
+
+.photo-up-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(191, 200, 206, 0.6);
+  border-radius: 14px;
+  background: #f7f9ff;
+}
+
+.photo-up-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.photo-up-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-up-badge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  background: rgba(9, 29, 46, 0.78);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.photo-up-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.photo-up-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(0, 99, 132, 0.3);
+  border-radius: 10px;
+  background: #fff;
+  color: #006384;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.photo-up-btn .material-symbols-outlined {
+  font-size: 1.1rem;
+}
+
+.photo-up-btn:hover {
+  background: #006384;
+  color: #fff;
+}
+
+.photo-up-btn-danger {
+  border-color: rgba(186, 26, 26, 0.3);
+  color: #ba1a1a;
+}
+
+.photo-up-btn-danger:hover {
+  background: #ba1a1a;
+  color: #fff;
+}
+
+.photo-up-focal {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #40484d;
+}
+
+.photo-up-chip {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid rgba(191, 200, 206, 0.8);
+  border-radius: 9999px;
+  background: #fff;
+  color: #40484d;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.photo-up-chip:hover {
+  border-color: #006384;
+  color: #006384;
+}
+
+.photo-up-chip.active {
+  background: #006384;
+  border-color: #006384;
+  color: #fff;
 }
 </style>

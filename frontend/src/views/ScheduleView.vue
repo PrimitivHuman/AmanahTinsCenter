@@ -160,57 +160,63 @@
                   </div>
                   <div class="channel-info">
                     <span class="channel-label">WHATSAPP RESMI</span>
-                    <span class="channel-value channel-value--primary">0812-3456-7890</span>
+                    <span class="channel-value channel-value--primary">{{ displayWhatsapp }}</span>
                   </div>
                   <span class="material-symbols-outlined channel-arrow" style="font-size:20px">arrow_forward</span>
                 </a>
 
-                <a href="tel:02112345678" class="channel-item">
+                <a :href="'tel:' + cleanPhone" class="channel-item">
                   <div class="channel-icon channel-icon--blue">
                     <span class="material-symbols-outlined" style="font-size:20px">call</span>
                   </div>
                   <div class="channel-info">
                     <span class="channel-label">TELEPON KLINIK</span>
-                    <span class="channel-value">(021) 1234 5678</span>
+                    <span class="channel-value">{{ settings?.phone || '+62 717 9101234' }}</span>
                   </div>
                   <span class="material-symbols-outlined channel-arrow" style="font-size:20px">arrow_forward</span>
                 </a>
 
-                <a href="mailto:info@amanah-tinscenter.id" class="channel-item">
+                <a :href="'mailto:' + (settings?.email || 'admin@amanahtinscenter.com')" class="channel-item">
                   <div class="channel-icon channel-icon--teal">
                     <span class="material-symbols-outlined" style="font-size:20px">mail</span>
                   </div>
                   <div class="channel-info">
                     <span class="channel-label">SUREL KORESPONDENSI</span>
-                    <span class="channel-value">info@amanah-tinscenter.id</span>
+                    <span class="channel-value">{{ settings?.email || 'admin@amanahtinscenter.com' }}</span>
                   </div>
                   <span class="material-symbols-outlined channel-arrow" style="font-size:20px">arrow_forward</span>
                 </a>
 
-                <div class="channel-item channel-item--static">
+                <a
+                  :href="settings?.maps_url || 'https://maps.app.goo.gl/q96p7NeJuXLPbY5VA'"
+                  target="_blank"
+                  rel="noopener"
+                  class="channel-item"
+                >
                   <div class="channel-icon channel-icon--amber">
                     <span class="material-symbols-outlined" style="font-size:20px">location_on</span>
                   </div>
                   <div class="channel-info">
-                    <span class="channel-label">ALAMAT KLINIK JAGAKARSA</span>
-                    <span class="channel-value">Jl. Raya Jagakarsa No. 12, Jagakarsa, Jakarta Selatan 12620</span>
+                    <span class="channel-label">LOKASI &amp; ALAMAT RESMI</span>
+                    <span class="channel-value">{{ settings?.address || 'Jl. Gudang Baru Jl. Moch. Kahfi II No.5, Jagakarsa, Jakarta Selatan' }}</span>
                     <span class="channel-note">
-                      <span class="material-symbols-outlined" style="font-size:12px">directions_subway</span>
-                      5 menit dari Stasiun Lenteng Agung (Akses Mudah)
+                      <span class="material-symbols-outlined" style="font-size:12px">map</span>
+                      Klik untuk buka rute Google Maps
                     </span>
                   </div>
-                </div>
+                  <span class="material-symbols-outlined channel-arrow" style="font-size:20px">arrow_forward</span>
+                </a>
 
                 <!-- Operating Hours -->
                 <div class="hours-row">
                   <div class="hours-left">
                     <span class="material-symbols-outlined" style="font-size:22px; color: var(--primary)">schedule</span>
                     <div>
-                      <span class="hours-label">Jam Kerja Operasional</span>
-                      <span class="hours-value">Senin – Sabtu: 08.00 – 17.00 WIB</span>
+                      <span class="hours-label">Jam Operasional Pelayanan</span>
+                      <span class="hours-value">{{ settings?.weekday_hours || 'Senin – Jumat: 08.00 – 17.00 WIB' }}</span>
                     </div>
                   </div>
-                  <span class="hours-closed">Minggu: Tutup</span>
+                  <span class="hours-closed">{{ settings?.weekend_hours || 'Sabtu: 08.00 – 15.00 WIB (Minggu Libur)' }}</span>
                 </div>
               </div>
 
@@ -271,6 +277,8 @@
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBW5aiE46CHrY7P30aLPhueJPHbKfo9L51mvGP_VQkrM1PMYKBTu9RO_xNt84_oFH2wun-shmI9OZv5ybYp4x7KPf1VTkgWEb_0VA4auC2Wpfgf_otPSDGE-8LV7nU-quujFnm-JZVwZTPIN6xXNM6czA8fbsGMm5Cp7rBgSHgF2WXJbZVc4ar4pyh19CjtiD6EuGoVAb84tnadvAGMTfBQ_5CfWsaBCEMbdQyadWs"
                   alt="Terapis mendampingi anak bermain dengan blok kayu edukatif"
                   class="motivational-img"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div class="motivational-img-badge">
                   <div class="motivational-img-badge-icon">
@@ -292,11 +300,30 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useClinicSettings } from '../composables/useClinicSettings'
-
-const { waLink } = useClinicSettings()
 import PublicLayout from '../layouts/PublicLayout.vue'
+
+const { settings, whatsappNumber, waLink } = useClinicSettings()
+
+const displayWhatsapp = computed(() => {
+  const num = settings.value?.whatsapp || whatsappNumber.value || '6282188899900'
+  const clean = String(num).replace(/[^0-9]/g, '')
+  if (clean.startsWith('62')) {
+    const local = '0' + clean.slice(2)
+    // Format 0821-8889-9900
+    if (local.length >= 10) {
+      return `${local.slice(0, 4)}-${local.slice(4, 8)}-${local.slice(8)}`
+    }
+    return local
+  }
+  return num
+})
+
+const cleanPhone = computed(() => {
+  const p = settings.value?.phone || '+627179101234'
+  return String(p).replace(/[^0-9+]/g, '')
+})
 </script>
 
 <style scoped>

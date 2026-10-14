@@ -62,14 +62,19 @@
 
               <!-- Hero Action CTAs -->
               <div class="hero-actions">
-                <a href="#daftar-sekarang" class="btn-primary-hero">
+                <a
+                  :href="waLink(`Halo Admin Amanah Tin\'s Center, saya ingin reservasi sesi asesmen ${service.name}`)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-primary-hero"
+                >
                   <span>{{ service.ctaPrimaryText }}</span>
-                  <span class="material-symbols-outlined">calendar_month</span>
-                </a>
-                <a :href="waUrl" target="_blank" rel="noopener noreferrer" class="btn-wa-hero">
                   <span class="material-symbols-outlined">chat</span>
-                  <span>Hubungi via WhatsApp</span>
                 </a>
+                <router-link to="/jadwal-pendaftaran" class="btn-wa-hero">
+                  <span class="material-symbols-outlined">event_available</span>
+                  <span>Jadwal &amp; Pendaftaran</span>
+                </router-link>
               </div>
 
               <!-- Trust Badges Under Hero -->
@@ -96,6 +101,7 @@
                   :src="service.heroImage"
                   :alt="service.titleMain"
                   class="hero-img"
+                  decoding="async"
                 />
                 <!-- Floating Overlay Tag -->
                 <div class="floating-badge-tag">
@@ -322,15 +328,35 @@
             </p>
           </div>
 
-          <div class="therapists-grid">
+          <!-- SKELETON STATE (Memuat dari Database / API) -->
+          <div v-if="isLoadingTeam" class="therapists-grid" aria-label="Memuat data praktisi...">
+            <div v-for="n in 3" :key="'skel-' + n" class="therapist-card skeleton-card">
+              <div class="therapist-img-wrap skeleton-shimmer"></div>
+              <div class="therapist-body">
+                <div>
+                  <div class="skeleton-line skeleton-title skeleton-shimmer"></div>
+                  <div class="skeleton-line skeleton-sub skeleton-shimmer"></div>
+                </div>
+                <div class="skeleton-line skeleton-bio skeleton-shimmer"></div>
+                <div class="skeleton-line skeleton-bio2 skeleton-shimmer"></div>
+                <div class="therapist-footer">
+                  <div class="skeleton-line skeleton-badge skeleton-shimmer"></div>
+                  <div class="skeleton-line skeleton-star skeleton-shimmer"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LOADED THERAPISTS (TERHUBUNG KE PORTAL ADMIN & DATABASE) -->
+          <div v-else class="therapists-grid">
             <div
-              v-for="therapist in service.therapists"
+              v-for="therapist in serviceTherapists"
               :key="therapist.name"
               class="therapist-card"
             >
               <div class="therapist-img-wrap">
-                <img :src="therapist.image" :alt="therapist.name" class="therapist-img" />
-                <div class="str-badge">STR Aktif Kemenkes</div>
+                <img :src="therapist.image" :alt="therapist.name" class="therapist-img" loading="lazy" decoding="async" />
+                <div class="str-badge">{{ therapist.strBadge || 'STR Aktif Kemenkes' }}</div>
               </div>
               <div class="therapist-body">
                 <div>
@@ -340,13 +366,25 @@
                 <p class="therapist-bio">{{ therapist.bio }}</p>
                 <div class="therapist-footer">
                   <span class="therapist-cert">{{ therapist.cert }}</span>
-                  <span class="therapist-rating">
+                  <span class="therapist-rating" v-if="therapist.rating">
                     <span class="material-symbols-outlined fill star-icon">star</span>
                     {{ therapist.rating }}
+                  </span>
+                  <span class="therapist-rating" v-else-if="therapist.experience">
+                    <span class="material-symbols-outlined fill star-icon" style="color: var(--primary);">verified</span>
+                    {{ therapist.experience }}
                   </span>
                 </div>
               </div>
             </div>
+          </div>
+
+          <!-- LINK KE SELURUH TIM MEDIS -->
+          <div class="therapists-action-wrap">
+            <router-link to="/tim-kami" class="btn-all-team">
+              <span>Lihat Seluruh Tim Medis ATC</span>
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </router-link>
           </div>
         </div>
       </section>
@@ -411,22 +449,15 @@
               </div>
 
               <div class="pkg-btn-wrap">
-                <button
-                  type="button"
-                  @click="selectPackage(pkg.title)"
-                  class="btn-pkg"
-                  :class="pkg.isPopular ? 'btn-pkg--primary' : 'btn-pkg--outline'"
-                >
-                  {{ pkg.buttonText }} (Pilih Paket)
-                </button>
                 <a
                   :href="getPackageWaUrl(pkg)"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="btn-pkg-wa-link"
+                  class="btn-pkg"
+                  :class="pkg.isPopular ? 'btn-pkg--primary' : 'btn-pkg--outline'"
                 >
                   <span class="material-symbols-outlined fill wa-btn-icon">chat</span>
-                  <span>Tanya via WhatsApp</span>
+                  <span>{{ pkg.buttonText || 'Pilih Paket via WhatsApp' }}</span>
                 </a>
               </div>
             </div>
@@ -468,120 +499,6 @@
           </div>
         </div>
       </section>
-
-      <!-- ==================== SECTION 8: BANNER CTA & FORM ==================== -->
-      <section class="section-cta-banner" id="daftar-sekarang">
-        <div class="container">
-          <div class="cta-grid">
-            <!-- Left Info -->
-            <div class="cta-left">
-              <span class="cta-pill">
-                Pusat Layanan Jagakarsa, Jakarta Selatan
-              </span>
-              <h2 class="cta-title">
-                Mulai Langkah Pertama Si Kecil {{ service.ctaFocusWord || 'Berbicara' }} Hari Ini
-              </h2>
-              <p class="cta-desc">
-                Konsultasikan kekhawatiran Ayah &amp; Bunda dengan tim terapis {{ service.shortName.toLowerCase() }} kami. Tim admin kami siap membantu pencocokan jadwal asesmen yang paling nyaman untuk keluarga Anda.
-              </p>
-
-              <div class="cta-avatars-row">
-                <div class="cta-avatar-stack">
-                  <div class="cta-avatar cta-avatar--1">ATC</div>
-                  <div class="cta-avatar cta-avatar--2">STR</div>
-                  <div class="cta-avatar cta-avatar--3">1:1</div>
-                </div>
-                <div class="cta-trust-counter">
-                  <strong>500+ Anak Didampingi</strong> sejak 2021 di Amanah Tin's Center
-                </div>
-              </div>
-            </div>
-
-            <!-- Right Form -->
-            <div class="cta-right">
-              <div class="booking-card">
-                <h3 class="booking-title">Formulir Booking Asesmen {{ service.code }}</h3>
-                <p class="booking-sub">
-                  Isi data singkat berikut, tim admin kami akan menghubungi via WhatsApp dalam 1x24 jam.
-                </p>
-
-                <form @submit.prevent="submitBooking" class="booking-form">
-                  <div class="form-row-2">
-                    <div class="form-group">
-                      <label class="form-label">Nama Orang Tua</label>
-                      <input
-                        v-model="bookingForm.parentName"
-                        type="text"
-                        required
-                        class="form-input"
-                        placeholder="Bunda / Ayah..."
-                      />
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">Nomor WhatsApp Aktif</label>
-                      <input
-                        v-model="bookingForm.whatsapp"
-                        type="tel"
-                        required
-                        class="form-input"
-                        placeholder="0812-xxxx-xxxx"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-row-2">
-                    <div class="form-group">
-                      <label class="form-label">Nama Panggilan Anak</label>
-                      <input
-                        v-model="bookingForm.childName"
-                        type="text"
-                        required
-                        class="form-input"
-                        placeholder="Contoh: Kenzo"
-                      />
-                    </div>
-                    <div class="form-group">
-                      <label class="form-label">Usia Anak Saat Ini</label>
-                      <input
-                        v-model="bookingForm.childAge"
-                        type="text"
-                        required
-                        class="form-input"
-                        placeholder="Contoh: 2 Tahun 4 Bulan"
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label">Pilihan Paket Terapi</label>
-                    <select v-model="bookingForm.selectedPackage" class="form-input">
-                      <option value="">-- Pilih Paket Terapi (Opsional) --</option>
-                      <option v-for="pkg in service.packages" :key="pkg.title" :value="pkg.title">
-                        {{ pkg.title }} ({{ pkg.price }})
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label class="form-label">Keluhan / Catatan Tambahan</label>
-                    <textarea
-                      v-model="bookingForm.notes"
-                      rows="2"
-                      class="form-input form-textarea"
-                      placeholder="Contoh: Anak belum mengucap kata bermakna, sering menarik tangan jika ingin sesuatu..."
-                    ></textarea>
-                  </div>
-
-                  <button type="submit" class="btn-submit-booking">
-                    <span>Kirim Pendaftaran &amp; Jadwalkan Sesi</span>
-                    <span class="material-symbols-outlined submit-icon">send</span>
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
 
     <!-- NOT FOUND STATE -->
@@ -599,15 +516,31 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useClinicSettings } from '../composables/useClinicSettings'
-
-const { waLink, waLinkEncoded } = useClinicSettings()
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import api from '../services/api'
+import { useClinicSettings } from '../composables/useClinicSettings'
 import PublicLayout from '../layouts/PublicLayout.vue'
 
+const { waLink, waLinkEncoded } = useClinicSettings()
 const route = useRoute()
 const loading = ref(false)
+const apiTeam = ref([])
+const isLoadingTeam = ref(true)
+
+onMounted(async () => {
+  try {
+    const res = await api.get('/team')
+    const data = Array.isArray(res.data) ? res.data : (res.data?.data || [])
+    if (data.length > 0) {
+      apiTeam.value = data
+    }
+  } catch (err) {
+    console.warn('Gagal memuat tim terapis dari API, menggunakan data fallback lokal:', err)
+  } finally {
+    isLoadingTeam.value = false
+  }
+})
 
 const checkedSymptoms = ref([])
 const activePillarIndex = ref(0)
@@ -640,43 +573,15 @@ const getCheckedSymptomsWaUrl = computed(() => {
   return waLinkEncoded(text)
 })
 
-const selectPackage = (pkgTitle) => {
-  bookingForm.value.selectedPackage = pkgTitle
-  const el = document.getElementById('daftar-sekarang')
-  if (el) el.scrollIntoView({ behavior: 'smooth' })
-}
-
 const getPackageWaUrl = (pkg) => {
   const currentSvc = service.value ? service.value.name : 'Layanan'
-  const text = `Halo Admin Amanah Tin's Center, saya tertarik mendaftar "${pkg.title}" untuk ${currentSvc}. Apakah jadwal terapis masih tersedia?`
+  const text = `Halo Admin Amanah Tin's Center, saya tertarik mendaftar paket "${pkg.title}" untuk ${currentSvc}. Apakah jadwal terapis masih tersedia?`
   return waLink(text)
 }
-
-const bookingForm = ref({
-  parentName: '',
-  whatsapp: '',
-  childName: '',
-  childAge: '',
-  selectedPackage: '',
-  notes: ''
-})
 
 const waUrl = computed(() => {
   return waLink()
 })
-
-const submitBooking = () => {
-  const currentSvc = service.value ? service.value.name : 'Layanan'
-  const text = `Halo Admin Amanah Tin's Center, saya ingin booking Asesmen ${currentSvc}:%0A` +
-    `- Nama Orang Tua: ${bookingForm.value.parentName}%0A` +
-    `- No. WhatsApp: ${bookingForm.value.whatsapp}%0A` +
-    `- Nama Anak: ${bookingForm.value.childName}%0A` +
-    `- Usia Anak: ${bookingForm.value.childAge}%0A` +
-    `- Paket Pilihan: ${bookingForm.value.selectedPackage || '-'}` +
-    `- Catatan/Keluhan: ${bookingForm.value.notes || '-'}`
-  
-  window.open(waLinkEncoded(text), '_blank')
-}
 
 const allServicesData = {
   'terapi-wicara': {
@@ -1643,6 +1548,109 @@ const service = computed(() => {
   }
   // Default fallback to Terapi Wicara if not found or empty
   return allServicesData['terapi-wicara']
+})
+
+const serviceCategoryMap = {
+  'terapi-wicara': {
+    category: 'tw',
+    fallbackRegex: /\b(wicara|speech)\b/i,
+  },
+  'terapi-okupasi': {
+    category: 'ot',
+    fallbackRegex: /\b(okupasi|occupational)\b/i,
+  },
+  'sensori-integrasi': {
+    category: 'si',
+    fallbackRegex: /\b(sensori|sensory)\b/i,
+  },
+  'psikologi-anak': {
+    category: 'psi',
+    fallbackRegex: /\b(psikolog|psikologi)\b/i,
+  },
+  'fisioterapi-anak': {
+    category: 'ft',
+    fallbackRegex: /\b(fisioterapi|fisioterapis)\b/i,
+  },
+}
+
+const serviceTherapists = computed(() => {
+  const currentSlug = route.params.slug || 'terapi-wicara'
+  const filterConfig = serviceCategoryMap[currentSlug]
+
+  if (apiTeam.value && apiTeam.value.length > 0) {
+    const matched = apiTeam.value.filter((member) => {
+      if (member.is_active === false || member.is_active === 0) return false
+
+      if (filterConfig) {
+        // 1. Prioritaskan kecocokan kategori resmi dari database/portal admin
+        if (member.category) {
+          return String(member.category).toLowerCase().trim() === filterConfig.category
+        }
+
+        // 2. Fallback hanya jika data lama tidak memiliki kolom kategori
+        const combined = [
+          member.role,
+          member.specialization,
+          Array.isArray(member.tags) ? member.tags.join(' ') : member.tags
+        ].filter(Boolean).join(' ')
+
+        return filterConfig.fallbackRegex ? filterConfig.fallbackRegex.test(combined) : false
+      }
+      return false
+    })
+
+    if (matched.length > 0) {
+      return matched.slice(0, 3).map((m) => {
+        let certText = ''
+        if (Array.isArray(m.certifications) && m.certifications.length > 0) {
+          certText = m.certifications[0]
+        } else if (typeof m.certifications === 'string' && m.certifications.trim()) {
+          try {
+            const parsed = JSON.parse(m.certifications)
+            certText = Array.isArray(parsed) && parsed.length > 0 ? parsed[0] : m.certifications
+          } catch {
+            certText = m.certifications
+          }
+        }
+        if (!certText) {
+          certText = m.edu || m.specialization || 'Terapis Berlisensi'
+        }
+
+        const isPsi = (m.category && m.category.toLowerCase() === 'psi') ||
+          ((m.role || '').toLowerCase().includes('psikolog'))
+
+        const strBadge = isPsi
+          ? (m.str_number ? 'SIPP Terdaftar HIMPSI' : 'Psikolog Anak')
+          : (m.str_number ? 'STR Aktif Kemenkes' : 'Praktisi Terverifikasi')
+
+        let expText = ''
+        if (m.experience_years) {
+          expText = m.experience_years.includes('Tahun')
+            ? m.experience_years
+            : `${m.experience_years} Pengalaman`
+        } else {
+          expText = 'Praktisi Berpengalaman'
+        }
+
+        return {
+          id: m.id,
+          name: m.name,
+          role: m.role || m.specialization || 'Terapis Klinis ATC',
+          bio: m.bio || 'Praktisi terapis di Amanah Tin\'s Center yang berdedikasi mendampingi tumbuh kembang optimal anak.',
+          image: m.image || 'https://images.unsplash.com/photo-1594824813576-641505c87e5b?auto=format&fit=crop&q=80&w=600',
+          strBadge,
+          strNumber: m.str_number || null,
+          cert: certText,
+          rating: m.rating || null,
+          experience: expText,
+          schedule: m.schedule || null
+        }
+      })
+    }
+  }
+
+  // Graceful fallback to static mock data in allServicesData (maksimal 3)
+  return (service.value?.therapists || []).slice(0, 3)
 })
 </script>
 
@@ -2871,6 +2879,86 @@ const service = computed(() => {
 .star-icon {
   font-size: 16px;
   color: #f59e0b;
+}
+
+.therapists-action-wrap {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-all-team {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  background: var(--surface-container-lowest);
+  border: 1.5px solid rgba(0, 99, 132, 0.25);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-all-team:hover {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 99, 132, 0.2);
+}
+
+/* Skeleton Loading Shimmer */
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f0f3f6 0%, #e6ebf0 50%, #f0f3f6 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-title {
+  height: 18px;
+  width: 75%;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.skeleton-sub {
+  height: 14px;
+  width: 50%;
+  border-radius: 4px;
+}
+
+.skeleton-bio {
+  height: 13px;
+  width: 100%;
+  border-radius: 4px;
+  margin-top: 6px;
+}
+
+.skeleton-bio2 {
+  height: 13px;
+  width: 85%;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.skeleton-badge {
+  height: 14px;
+  width: 40%;
+  border-radius: 4px;
+}
+
+.skeleton-star {
+  height: 14px;
+  width: 25%;
+  border-radius: 4px;
 }
 
 /* ==================== SECTION 6: PAKET TRANSPARAN ==================== */

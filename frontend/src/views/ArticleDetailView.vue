@@ -2,6 +2,7 @@
   <PublicLayout>
     <!-- ==================== STICKY READING PROGRESS BAR ==================== -->
     <div
+      v-if="!isLoading && !isNotFound && activeArticle"
       class="reading-progress-track"
       role="progressbar"
       :aria-valuenow="Math.round(readingProgress)"
@@ -12,26 +13,150 @@
     </div>
 
     <div class="article-detail-page">
-      <!-- ==================== BREADCRUMBS & TOP NAV-BACK STRIP ==================== -->
-      <div class="breadcrumb-strip">
-        <div class="container breadcrumb-container">
-          <nav aria-label="Breadcrumb" class="breadcrumb-nav">
-            <router-link to="/" class="bc-link">
-              <span class="material-symbols-outlined bc-icon">home</span>
-              <span>Beranda</span>
-            </router-link>
-            <span class="bc-sep">/</span>
-            <router-link to="/artikel" class="bc-link">Artikel &amp; Tips</router-link>
-            <span class="bc-sep">/</span>
-            <span class="bc-active">{{ activeArticle.title }}</span>
-          </nav>
-          <router-link to="/artikel" class="back-link">
-            <span class="material-symbols-outlined back-icon">arrow_back</span>
-            <span>Kembali ke Semua Artikel</span>
-          </router-link>
+      <!-- ==================== SKELETON LOADING STATE (ANTI-FLICKER) ==================== -->
+      <div v-if="isLoading" class="article-skeleton-page" aria-busy="true" aria-label="Memuat artikel...">
+        <!-- Skeleton Breadcrumb Strip -->
+        <div class="breadcrumb-strip">
+          <div class="container breadcrumb-container">
+            <div class="skeleton-breadcrumb-row">
+              <div class="skel-bar skel-bc-1"></div>
+              <span class="skel-bc-sep">/</span>
+              <div class="skel-bar skel-bc-2"></div>
+              <span class="skel-bc-sep">/</span>
+              <div class="skel-bar skel-bc-3"></div>
+            </div>
+          </div>
         </div>
+
+        <!-- Skeleton Hero Header -->
+        <section class="article-hero-section">
+          <div class="container">
+            <div class="hero-badges">
+              <div class="skel-bar skel-pill-1"></div>
+              <div class="skel-bar skel-pill-2"></div>
+              <div class="skel-bar skel-pill-3"></div>
+            </div>
+
+            <div class="skel-title-wrap">
+              <div class="skel-bar skel-title-line1"></div>
+              <div class="skel-bar skel-title-line2"></div>
+            </div>
+
+            <div class="meta-bar-card skel-meta-card">
+              <div class="skel-meta-left">
+                <div class="skel-avatar"></div>
+                <div class="skel-meta-text">
+                  <div class="skel-bar skel-line-short"></div>
+                  <div class="skel-bar skel-line-tiny"></div>
+                </div>
+              </div>
+              <div class="skel-meta-right">
+                <div class="skel-circle"></div>
+                <div class="skel-circle"></div>
+              </div>
+            </div>
+
+            <div class="skel-hero-img-wrap">
+              <div class="skel-bar skel-hero-img"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Skeleton Body Grid -->
+        <main class="article-body-section">
+          <div class="container">
+            <div class="article-grid">
+              <div class="article-content-col">
+                <div class="editorial-card skel-card">
+                  <div class="skel-bar skel-line-lead"></div>
+                  <div class="skel-bar skel-line-lead-2"></div>
+                </div>
+
+                <div class="editorial-card skel-card">
+                  <div class="skel-bar skel-h2-line"></div>
+                  <div class="skel-bar skel-p-line"></div>
+                  <div class="skel-bar skel-p-line"></div>
+                  <div class="skel-bar skel-p-line skel-w-85"></div>
+                  <div class="skel-bar skel-p-line skel-w-65"></div>
+
+                  <div style="height: 1.5rem;"></div>
+
+                  <div class="skel-bar skel-h2-line skel-w-50"></div>
+                  <div class="skel-bar skel-p-line"></div>
+                  <div class="skel-bar skel-p-line"></div>
+                  <div class="skel-bar skel-p-line skel-w-80"></div>
+                </div>
+              </div>
+
+              <aside class="sidebar-col">
+                <div class="editorial-card skel-card" style="height: 180px;">
+                  <div class="skel-bar skel-h2-line skel-w-65"></div>
+                  <div class="skel-bar skel-p-line"></div>
+                  <div class="skel-bar skel-p-line skel-w-75"></div>
+                </div>
+
+                <div class="editorial-card skel-card">
+                  <div class="skel-bar skel-h2-line skel-w-65" style="margin-bottom: 1.25rem;"></div>
+                  <div v-for="n in 3" :key="n" class="skel-related-row">
+                    <div class="skel-rel-thumb"></div>
+                    <div class="skel-rel-info">
+                      <div class="skel-bar skel-line-short"></div>
+                      <div class="skel-bar skel-line-tiny"></div>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </main>
       </div>
 
+      <!-- ==================== 404 NOT FOUND STATE ==================== -->
+      <section v-else-if="isNotFound || !activeArticle" class="article-not-found-section">
+        <div class="container not-found-container">
+          <div class="not-found-card">
+            <div class="not-found-icon-wrap">
+              <span class="material-symbols-outlined">menu_book</span>
+            </div>
+            <span class="not-found-badge">404 • Artikel Tidak Tersedia</span>
+            <h1 class="not-found-title">Artikel Tidak Ditemukan</h1>
+            <p class="not-found-desc">
+              Artikel yang Anda cari mungkin telah dipindahkan, dinonaktifkan, atau masih berstatus draf internal redaksi kami.
+            </p>
+            <div class="not-found-actions">
+              <router-link to="/artikel" class="btn-not-found-primary">
+                <span class="material-symbols-outlined">arrow_back</span>
+                <span>Kembali ke Katalog Artikel</span>
+              </router-link>
+              <router-link to="/" class="btn-not-found-secondary">
+                <span class="material-symbols-outlined">home</span>
+                <span>Beranda Klinik</span>
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <template v-else>
+        <!-- ==================== BREADCRUMBS & TOP NAV-BACK STRIP ==================== -->
+        <div class="breadcrumb-strip">
+          <div class="container breadcrumb-container">
+            <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+              <router-link to="/" class="bc-link">
+                <span class="material-symbols-outlined bc-icon">home</span>
+                <span>Beranda</span>
+              </router-link>
+              <span class="bc-sep">/</span>
+              <router-link to="/artikel" class="bc-link">Artikel &amp; Tips</router-link>
+              <span class="bc-sep">/</span>
+              <span class="bc-active">{{ activeArticle.title }}</span>
+            </nav>
+            <router-link to="/artikel" class="back-link">
+              <span class="material-symbols-outlined back-icon">arrow_back</span>
+              <span>Kembali ke Semua Artikel</span>
+            </router-link>
+          </div>
+        </div>
       <!-- ==================== ARTICLE HERO / META HEADER ==================== -->
       <section class="article-hero-section">
         <div class="container">
@@ -116,6 +241,8 @@
               :src="activeArticle.image || activeArticle.thumbnail || 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=1200'"
               :alt="activeArticle.title"
               class="featured-img"
+              decoding="async"
+              fetchpriority="high"
             />
             <div class="image-caption-pill">
               <span class="material-symbols-outlined caption-cam-icon">photo_camera</span>
@@ -138,8 +265,8 @@
                 </p>
               </div>
 
-              <!-- Dynamic Body Content from Database -->
-              <div v-if="activeArticle.content" class="editorial-card article-dynamic-body" v-html="activeArticle.content"></div>
+              <!-- Dynamic Body Content from Database (Disanitasi DOMPurify anti-XSS) -->
+              <div v-if="activeArticle.content" class="editorial-card article-dynamic-body" v-html="sanitizedBody"></div>
 
               <!-- Static 5 Sections Fallback if dummy article -->
               <template v-else>
@@ -487,7 +614,7 @@
                       :to="`/artikel/${item.slug}`"
                       class="related-link-card"
                     >
-                      <img :src="item.thumbnail" :alt="item.title" class="related-thumb" />
+                      <img :src="item.thumbnail" :alt="item.title" class="related-thumb" loading="lazy" decoding="async" />
                       <div>
                         <h5 class="related-card-title">{{ item.title }}</h5>
                         <span class="related-card-date">{{ item.date }}</span>
@@ -517,12 +644,12 @@
 
           <div class="bottom-articles-grid">
             <article
-              v-for="rec in bottomArticles"
+              v-for="rec in displayBottomArticles"
               :key="rec.slug"
               class="rec-card"
             >
               <div class="rec-thumb-wrap">
-                <img :src="rec.thumbnail" :alt="rec.title" class="rec-thumb" />
+                <img :src="rec.thumbnail" :alt="rec.title" class="rec-thumb" loading="lazy" decoding="async" />
               </div>
               <div class="rec-body">
                 <div>
@@ -587,6 +714,8 @@
           </div>
         </div>
       </section>
+      </template>
+
       <!-- ==================== TOAST NOTIFICATION ==================== -->
       <Teleport to="body">
         <Transition name="toast-fade">
@@ -612,10 +741,13 @@ import { useRoute } from 'vue-router'
 import PublicLayout from '../layouts/PublicLayout.vue'
 import { useBookmarks } from '../composables/useBookmarks'
 import { useClinicSettings } from '../composables/useClinicSettings'
+import { useSeo } from '../composables/useSeo'
 import api from '../services/api'
+import { sanitizeHtml } from '../utils/sanitize'
 
 const route = useRoute()
 const { waLink } = useClinicSettings()
+const seo = useSeo()
 
 // Fallback demo article if database doesn't have article
 const currentArticle = {
@@ -633,7 +765,16 @@ const apiArticle = ref(null)
 const apiRelated = ref([])
 const isLoading = ref(true)
 
-const activeArticle = computed(() => apiArticle.value || currentArticle)
+const activeArticle = computed(() => {
+  if (apiArticle.value) return apiArticle.value
+  if (!isLoading.value && route.params.slug === 'tanda-anak-butuh-terapi-wicara') return currentArticle
+  return null
+})
+
+// Sanitasi konten dinamis dengan DOMPurify untuk mencegah stored XSS
+const sanitizedBody = computed(() => {
+  return sanitizeHtml(activeArticle.value?.content || '')
+})
 
 function formatDate(dateStr) {
   if (!dateStr) return 'Terbaru'
@@ -646,23 +787,62 @@ function formatDate(dateStr) {
   }
 }
 
+const isNotFound = ref(false)
+
 async function fetchArticleData() {
   const slug = route.params.slug
   if (!slug) return
   isLoading.value = true
+  isNotFound.value = false
+  apiArticle.value = null
   try {
     const res = await api.get(`/articles/${slug}`)
     if (res.data && res.data.article) {
       apiArticle.value = res.data.article
       if (res.data.related && res.data.related.length > 0) {
         apiRelated.value = res.data.related
+      } else {
+        apiRelated.value = []
       }
+      seo.updateSeo({
+        title: res.data.article.title,
+        description: res.data.article.excerpt || res.data.article.title,
+        image: res.data.article.image || res.data.article.thumbnail,
+        type: 'article',
+      })
     } else {
-      apiArticle.value = null
+      if (slug === 'tanda-anak-butuh-terapi-wicara') {
+        apiArticle.value = currentArticle
+        seo.updateSeo({
+          title: currentArticle.title,
+          description: currentArticle.excerpt,
+          image: currentArticle.thumbnail,
+          type: 'article',
+        })
+      } else {
+        isNotFound.value = true
+        seo.updateSeo({
+          title: 'Artikel Tidak Ditemukan',
+          description: 'Artikel yang Anda cari tidak tersedia atau belum diterbitkan.',
+        })
+      }
     }
   } catch (err) {
-    console.warn('Gagal memuat artikel dari backend, menggunakan konten fallback:', err)
-    apiArticle.value = null
+    if (slug === 'tanda-anak-butuh-terapi-wicara') {
+      apiArticle.value = currentArticle
+      seo.updateSeo({
+        title: currentArticle.title,
+        description: currentArticle.excerpt,
+        image: currentArticle.thumbnail,
+        type: 'article',
+      })
+    } else {
+      isNotFound.value = true
+      seo.updateSeo({
+        title: 'Artikel Tidak Ditemukan',
+        description: 'Artikel yang Anda cari tidak tersedia atau belum diterbitkan.',
+      })
+    }
   } finally {
     isLoading.value = false
   }
@@ -670,7 +850,7 @@ async function fetchArticleData() {
 
 // Persistent Bookmark Composable
 const { isBookmarked, toggleBookmark } = useBookmarks()
-const isCurrentSaved = computed(() => isBookmarked(activeArticle.value.slug))
+const isCurrentSaved = computed(() => activeArticle.value?.slug ? isBookmarked(activeArticle.value.slug) : false)
 
 // Toast state & handler
 const toast = ref({
@@ -691,6 +871,7 @@ function showToast({ title, message, icon = 'check_circle', type = 'success' }) 
 }
 
 function handleToggleSave() {
+  if (!activeArticle.value) return
   const added = toggleBookmark(activeArticle.value)
   if (added) {
     showToast({
@@ -766,12 +947,14 @@ function handleScroll() {
 
 // Social Share & Web Share API
 function shareWhatsApp() {
+  if (!activeArticle.value) return
   const url = window.location.href
   const text = encodeURIComponent(`Rekomendasi bacaan penting untuk Ayah & Bunda dari Klinik Amanah Tin's Center:\n\n"${activeArticle.value.title}"\n\nBaca artikel selengkapnya di: ${url}`)
   window.open(`https://wa.me/?text=${text}`, '_blank')
 }
 
 async function shareGeneral() {
+  if (!activeArticle.value) return
   const url = window.location.href
   const title = `${activeArticle.value.title} - Amanah Tin's Center`
   const text = activeArticle.value.excerpt || 'Panduan tumbuh kembang dan terapi anak terpercaya di Jagakarsa.'
@@ -879,15 +1062,38 @@ const bottomArticles = [
   }
 ]
 
+// Rekomendasi dinamis: Prioritaskan artikel dari database (API) jika ada
+const displayBottomArticles = computed(() => {
+  if (apiRelated.value && apiRelated.value.length > 0) {
+    return apiRelated.value.map(item => {
+      let catClass = 'rec-cat-neutral'
+      if (item.category === 'Sensori Integrasi') catClass = 'rec-cat-green'
+      else if (item.category === 'Terapi Wicara' || item.category === 'Psikologi Anak') catClass = 'rec-cat-blue'
+
+      return {
+        slug: item.slug,
+        category: item.category || 'Tumbuh Kembang',
+        catClass,
+        date: formatDate(item.published_at || item.created_at),
+        title: item.title,
+        desc: item.excerpt || 'Baca panduan terpadu tumbuh kembang anak selengkapnya bersama tim terapis Amanah Tin\'s Center.',
+        thumbnail: item.image || item.thumbnail || 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=800'
+      }
+    })
+  }
+  return bottomArticles
+})
+
 onMounted(() => {
   fetchArticleData()
   window.addEventListener('scroll', handleScroll, { passive: true })
   handleScroll()
 })
 
-watch(() => route.params.slug, () => {
+watch(() => route.params.slug, (newSlug) => {
+  if (!newSlug) return
+  window.scrollTo({ top: 0, behavior: 'instant' })
   fetchArticleData()
-  window.scrollTo({ top: 0, behavior: 'smooth' })
 })
 
 onUnmounted(() => {
@@ -2742,4 +2948,263 @@ onUnmounted(() => {
   opacity: 0;
   transform: translate(-50%, 20px);
 }
+
+/* ==================== 404 NOT FOUND STATE STYLES ==================== */
+.article-not-found-section {
+  padding: 5rem 1rem;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.not-found-container {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.not-found-card {
+  background: var(--surface);
+  border: 1px solid rgba(191, 200, 206, 0.4);
+  border-radius: 20px;
+  padding: 3.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(9, 29, 46, 0.05);
+}
+
+.not-found-icon-wrap {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 1.5rem;
+  background: rgba(0, 99, 132, 0.1);
+  color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.not-found-icon-wrap .material-symbols-outlined {
+  font-size: 38px;
+}
+
+.not-found-badge {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.not-found-title {
+  font-family: var(--font-headline);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--on-surface);
+  margin-bottom: 0.75rem;
+}
+
+.not-found-desc {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--on-surface-variant);
+  margin-bottom: 2rem;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.not-found-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-not-found-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary);
+  color: #ffffff;
+  padding: 0.85rem 1.6rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(0, 99, 132, 0.25);
+}
+
+.btn-not-found-primary:hover {
+  background: #004d67;
+  transform: translateY(-2px);
+  color: #ffffff;
+}
+
+.btn-not-found-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--on-surface);
+  border: 1px solid rgba(191, 200, 206, 0.8);
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-not-found-secondary:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================================
+   ARTICLE DETAIL SKELETON SHIMMER (ANTI-FLICKER)
+   ============================================================ */
+.article-skeleton-page {
+  animation: fadeIn 0.15s ease-out;
+}
+
+.skel-bar {
+  background: linear-gradient(90deg, #eef3f7 25%, #e2e8f0 50%, #eef3f7 75%);
+  background-size: 200% 100%;
+  animation: articleSkeletonShimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+@keyframes articleSkeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-breadcrumb-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 24px;
+}
+.skel-bc-1 { width: 60px; height: 14px; }
+.skel-bc-2 { width: 90px; height: 14px; }
+.skel-bc-3 { width: 180px; height: 14px; }
+.skel-bc-sep { color: #cbd5e1; font-size: 13px; }
+
+.skel-pill-1 { width: 120px; height: 32px; border-radius: 9999px; }
+.skel-pill-2 { width: 150px; height: 32px; border-radius: 9999px; }
+.skel-pill-3 { width: 100px; height: 32px; border-radius: 9999px; }
+
+.skel-title-wrap {
+  margin: 1.25rem 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.skel-title-line1 { width: 85%; height: 40px; border-radius: 8px; }
+.skel-title-line2 { width: 60%; height: 40px; border-radius: 8px; }
+
+.skel-meta-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.skel-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+.skel-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #eef3f7 25%, #e2e8f0 50%, #eef3f7 75%);
+  background-size: 200% 100%;
+  animation: articleSkeletonShimmer 1.5s infinite;
+}
+.skel-meta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.skel-line-short { width: 130px; height: 15px; }
+.skel-line-tiny { width: 90px; height: 12px; }
+
+.skel-meta-right {
+  display: flex;
+  gap: 0.5rem;
+}
+.skel-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #eef3f7 25%, #e2e8f0 50%, #eef3f7 75%);
+  background-size: 200% 100%;
+  animation: articleSkeletonShimmer 1.5s infinite;
+}
+
+.skel-hero-img-wrap {
+  width: 100%;
+  border-radius: var(--radius-lg, 1.25rem);
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+}
+.skel-hero-img {
+  width: 100%;
+  height: 440px;
+  border-radius: var(--radius-lg, 1.25rem);
+}
+
+.skel-card {
+  background: #ffffff;
+  border: 1px solid rgba(191, 200, 206, 0.3);
+  border-radius: var(--radius-md, 1rem);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+.skel-line-lead { width: 100%; height: 20px; margin-bottom: 0.75rem; }
+.skel-line-lead-2 { width: 80%; height: 20px; }
+
+.skel-h2-line { height: 26px; width: 45%; margin-bottom: 1rem; border-radius: 6px; }
+.skel-p-line { height: 16px; width: 100%; margin-bottom: 0.75rem; }
+.skel-w-85 { width: 85%; }
+.skel-w-80 { width: 80%; }
+.skel-w-75 { width: 75%; }
+.skel-w-65 { width: 65%; }
+.skel-w-50 { width: 50%; }
+
+.skel-related-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.skel-rel-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #eef3f7 25%, #e2e8f0 50%, #eef3f7 75%);
+  background-size: 200% 100%;
+  animation: articleSkeletonShimmer 1.5s infinite;
+  flex-shrink: 0;
+}
+.skel-rel-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .skel-hero-img { height: 240px; }
+  .skel-title-line1, .skel-title-line2 { height: 28px; }
+  .skel-meta-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
+}
 </style>
+

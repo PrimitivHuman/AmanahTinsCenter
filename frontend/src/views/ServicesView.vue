@@ -47,6 +47,7 @@
                 src="/ruang-terapi-atc.jpg"
                 alt="Fasilitas Ruang Terapi Ramah Anak Amanah Tin's Center Jagakarsa"
                 class="hero-img"
+                decoding="async"
               />
               <div class="hero-badge-float">
                 <div class="badge-float-icon">
@@ -480,10 +481,10 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import PublicLayout from '../layouts/PublicLayout.vue'
 import { useClinicSettings } from '../composables/useClinicSettings'
 
 const { waLink } = useClinicSettings()
-import PublicLayout from '../layouts/PublicLayout.vue'
 
 const activeSymptomIndex = ref(0)
 

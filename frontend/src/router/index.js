@@ -1,56 +1,141 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-
-// Public pages
-import HomeView from '../views/HomeView.vue'
-import AboutView from '../views/AboutView.vue'
-import ServicesView from '../views/ServicesView.vue'
-import ServiceDetailView from '../views/ServiceDetailView.vue'
-import TeamView from '../views/TeamView.vue'
-import ArticlesView from '../views/ArticlesView.vue'
-import ArticleDetailView from '../views/ArticleDetailView.vue'
-import ScheduleView from '../views/ScheduleView.vue'
-
-// Admin pages
-import AdminLoginView from '../views/admin/LoginView.vue'
-import AdminDashboardView from '../views/admin/DashboardView.vue'
-import AdminArticlesView from '../views/admin/ArticlesView.vue'
-import AdminArticleFormView from '../views/admin/ArticleFormView.vue'
-import AdminTeamView from '../views/admin/TeamView.vue'
-import AdminSettingsView from '../views/admin/SettingsView.vue'
-// import AdminScheduleView from '../views/admin/ScheduleView.vue' // dinonaktifkan: pendaftaran via WhatsApp
+import { useSeo } from '../composables/useSeo'
 
 const routes = [
-  // Public routes
-  { path: '/', name: 'home', component: HomeView },
-  { path: '/tentang-kami', name: 'about', component: AboutView },
-  { path: '/layanan', name: 'services', component: ServicesView },
-  { path: '/layanan/:slug', name: 'service-detail', component: ServiceDetailView },
-  { path: '/tim-kami', name: 'team', component: TeamView },
-  { path: '/artikel', name: 'articles', component: ArticlesView },
-  { path: '/artikel/:slug', name: 'article-detail', component: ArticleDetailView },
-  { path: '/jadwal-pendaftaran', name: 'schedule', component: ScheduleView },
+  // Public routes (Lazy loaded with dynamic import)
+  {
+    path: '/',
+    name: 'home',
+    component: () => import('../views/HomeView.vue'),
+    meta: {
+      title: 'Pusat Terapi Tumbuh Kembang Anak',
+      description: "Amanah Tin's Center - Klinik tumbuh kembang anak di Jagakarsa, Jakarta Selatan. Layanan Terapi Wicara, Terapi Okupasi, Sensori Integrasi, dan Psikologi Anak.",
+    },
+  },
+  {
+    path: '/tentang-kami',
+    name: 'about',
+    component: () => import('../views/AboutView.vue'),
+    meta: {
+      title: 'Tentang Kami - Profil & Komitmen Mutu',
+      description: "Kenali profil klinik, fasilitas berstandar medis ramah anak, dan filosofi pengasuhan penuh empati di Amanah Tin's Center Jagakarsa.",
+    },
+  },
+  {
+    path: '/layanan',
+    name: 'services',
+    component: () => import('../views/ServicesView.vue'),
+    meta: {
+      title: 'Layanan Terapi Terpadu Anak',
+      description: 'Program intervensi klinis: Terapi Wicara, Terapi Okupasi, Sensori Integrasi, Fisioterapi Pediatrik, dan Konsultasi Psikologi Anak.',
+    },
+  },
+  {
+    path: '/layanan/:slug',
+    name: 'service-detail',
+    component: () => import('../views/ServiceDetailView.vue'),
+    meta: {
+      title: 'Detail Layanan Terapi',
+      description: 'Informasi komprehensif indikasi anak, tahapan asesmen, dan pendekatan terapi spesialis di ATC.',
+    },
+  },
+  {
+    path: '/tim-kami',
+    name: 'team',
+    alias: ['/tim', '/tim-medis'],
+    component: () => import('../views/TeamView.vue'),
+    meta: {
+      title: 'Tim Medis & Terapis Spesialis',
+      description: 'Direktori dokter spesialis anak dan terapis klinis berlisensi STR Kemkes RI di Amanah Tin\'s Center.',
+    },
+  },
+  {
+    path: '/artikel',
+    name: 'articles',
+    component: () => import('../views/ArticlesView.vue'),
+    meta: {
+      title: 'Artikel & Panduan Tumbuh Kembang',
+      description: 'Edukasi parenting, stimulasi speech delay, sensori integrasi, dan tips kemandirian anak dari tim terapis profesional.',
+    },
+  },
+  {
+    path: '/artikel/:slug',
+    name: 'article-detail',
+    component: () => import('../views/ArticleDetailView.vue'),
+    meta: {
+      title: 'Artikel Edukasi',
+      description: 'Panduan lengkap tumbuh kembang anak dan stimulasi terarah.',
+    },
+  },
+  {
+    path: '/jadwal-pendaftaran',
+    name: 'schedule',
+    component: () => import('../views/ScheduleView.vue'),
+    meta: {
+      title: 'Jadwal & Pendaftaran Terapi',
+      description: 'Panduan reservasi jadwal konsultasi dan asesmen awal tumbuh kembang anak di klinik ATC via WhatsApp resmi.',
+    },
+  },
 
-  // Admin routes
-  { path: '/admin/login', name: 'admin-login', component: AdminLoginView, meta: { guest: true } },
+  // Admin routes (Lazy loaded)
+  {
+    path: '/admin/login',
+    name: 'admin-login',
+    component: () => import('../views/admin/LoginView.vue'),
+    meta: {
+      guest: true,
+      title: 'Portal Masuk Admin',
+    },
+  },
   {
     path: '/admin',
     meta: { requiresAuth: true },
     children: [
       { path: '', redirect: '/admin/dashboard' },
-      { path: 'dashboard', name: 'admin-dashboard', component: AdminDashboardView },
-      { path: 'artikel', name: 'admin-articles', component: AdminArticlesView },
-      { path: 'artikel/baru', name: 'admin-article-create', component: AdminArticleFormView },
-      { path: 'artikel/:id/edit', name: 'admin-article-edit', component: AdminArticleFormView },
-      { path: 'tim-kami', name: 'admin-team', component: AdminTeamView },
-      // Fitur Janji & Pendaftaran dinonaktifkan (alur pendaftaran diarahkan ke WhatsApp)
+      {
+        path: 'dashboard',
+        name: 'admin-dashboard',
+        component: () => import('../views/admin/DashboardView.vue'),
+        meta: { title: 'Dashboard Ringkasan Admin' },
+      },
+      {
+        path: 'artikel',
+        name: 'admin-articles',
+        component: () => import('../views/admin/ArticlesView.vue'),
+        meta: { title: 'Kelola Artikel & Tips' },
+      },
+      {
+        path: 'artikel/baru',
+        name: 'admin-article-create',
+        component: () => import('../views/admin/ArticleFormView.vue'),
+        meta: { title: 'Tulis Artikel Baru' },
+      },
+      {
+        path: 'artikel/:id/edit',
+        name: 'admin-article-edit',
+        component: () => import('../views/admin/ArticleFormView.vue'),
+        meta: { title: 'Edit Artikel' },
+      },
+      {
+        path: 'tim-kami',
+        name: 'admin-team',
+        component: () => import('../views/admin/TeamView.vue'),
+        meta: { title: 'Kelola Tim Terapis' },
+      },
+      // Fitur Janji & Pendaftaran dialihkan ke WhatsApp resmi
       { path: 'jadwal', redirect: '/admin/dashboard' },
-      { path: 'pengaturan', name: 'admin-settings', component: AdminSettingsView },
-    ]
+      {
+        path: 'pengaturan',
+        name: 'admin-settings',
+        component: () => import('../views/admin/SettingsView.vue'),
+        meta: { title: 'Pengaturan Informasi Klinik' },
+      },
+    ],
   },
 
-  // 404
-  { path: '/:pathMatch(.*)*', redirect: '/' }
+  // 404 fallback
+  { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 
 const router = createRouter({
@@ -60,9 +145,10 @@ const router = createRouter({
     if (savedPosition) return savedPosition
     if (to.hash) return { el: to.hash, behavior: 'smooth' }
     return { top: 0, behavior: 'smooth' }
-  }
+  },
 })
 
+// Navigation Guard untuk Autentikasi Admin
 router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore()
 
@@ -72,6 +158,18 @@ router.beforeEach(async (to, from, next) => {
     next('/admin/dashboard')
   } else {
     next()
+  }
+})
+
+// Dynamic SEO & Title Update Setelah Navigasi
+const seo = useSeo()
+router.afterEach((to) => {
+  // Hanya atur jika bukan halaman detail artikel (karena detail artikel memuat judul dinamis sendiri dari database)
+  if (to.name !== 'article-detail') {
+    seo.updateSeo({
+      title: to.meta.title || '',
+      description: to.meta.description || '',
+    })
   }
 })
 

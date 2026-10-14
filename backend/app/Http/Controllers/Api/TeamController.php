@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\TeamMember;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TeamController extends Controller
 {
@@ -25,12 +26,41 @@ class TeamController extends Controller
         return response()->json($team);
     }
 
+    // Admin: Upload foto profil terapis
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
+        ], [
+            'image.required' => 'Silakan pilih berkas foto yang akan diunggah.',
+            'image.image' => 'Berkas harus berupa gambar valid.',
+            'image.mimes' => 'Format foto yang didukung adalah JPEG, PNG, JPG, atau WEBP.',
+            'image.max' => 'Ukuran foto maksimal adalah 5MB.',
+        ]);
+
+        $path = $request->file('image')->store('team', 'public');
+
+        return response()->json([
+            'message' => 'Foto terapis berhasil diunggah',
+            'url' => '/storage/' . $path,
+        ]);
+    }
+
+    // Hapus berkas foto lokal (hanya yang berada di storage/team)
+    private function deleteLocalImage(?string $url): void
+    {
+        if ($url && str_starts_with($url, '/storage/team/')) {
+            Storage::disk('public')->delete(substr($url, strlen('/storage/')));
+        }
+    }
+
     // Admin: Store
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
+            'category' => 'nullable|string|in:tw,ot,si,psi,ft',
             'edu' => 'nullable|string|max:255',
             'specialization' => 'required|string|max:255',
             'tags' => 'nullable|array',
@@ -44,6 +74,10 @@ class TeamController extends Controller
             'order' => 'integer',
             'is_active' => 'boolean',
         ]);
+
+        if (empty($validated['category'])) {
+            $validated['category'] = 'tw';
+        }
 
         $member = TeamMember::create($validated);
 
@@ -61,6 +95,7 @@ class TeamController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
+            'category' => 'nullable|string|in:tw,ot,si,psi,ft',
             'edu' => 'nullable|string|max:255',
             'specialization' => 'required|string|max:255',
             'tags' => 'nullable|array',
@@ -75,7 +110,16 @@ class TeamController extends Controller
             'is_active' => 'boolean',
         ]);
 
+        if (empty($validated['category'])) {
+            $validated['category'] = $member->category ?? 'tw';
+        }
+
+        $oldImage = $member->image;
         $member->update($validated);
+
+        if ($oldImage && $oldImage !== $member->image) {
+            $this->deleteLocalImage($oldImage);
+        }
 
         return response()->json([
             'message' => 'Data anggota tim berhasil diperbarui',
@@ -87,6 +131,7 @@ class TeamController extends Controller
     public function destroy($id)
     {
         $member = TeamMember::findOrFail($id);
+        $this->deleteLocalImage($member->image);
         $member->delete();
 
         return response()->json([

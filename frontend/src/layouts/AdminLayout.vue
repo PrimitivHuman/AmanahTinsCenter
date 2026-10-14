@@ -21,16 +21,14 @@
             <span class="nav-label" v-if="!isCollapsed">Dashboard Ringkasan</span>
           </router-link>
 
-          <!-- Menu "Janji & Pendaftaran" dinonaktifkan: pendaftaran kini langsung via WhatsApp -->
+          <router-link to="/admin/tim-kami" class="nav-item" active-class="nav-item-active">
+            <span class="material-symbols-outlined">group</span>
+            <span class="nav-label" v-if="!isCollapsed">Kelola Tim Terapis</span>
+          </router-link>
 
           <router-link to="/admin/artikel" class="nav-item" active-class="nav-item-active">
             <span class="material-symbols-outlined">menu_book</span>
             <span class="nav-label" v-if="!isCollapsed">Kelola Artikel & Tips</span>
-          </router-link>
-
-          <router-link to="/admin/tim-kami" class="nav-item" active-class="nav-item-active">
-            <span class="material-symbols-outlined">group</span>
-            <span class="nav-label" v-if="!isCollapsed">Kelola Tim Terapis</span>
           </router-link>
 
           <router-link to="/admin/pengaturan" class="nav-item" active-class="nav-item-active">

@@ -252,12 +252,9 @@
           <div class="form-group">
             <label for="category">Kategori Terapi <span class="req">*</span></label>
             <select id="category" v-model="form.category" class="form-select" required>
-              <option value="Terapi Wicara">Terapi Wicara</option>
-              <option value="Sensori Integrasi">Sensori Integrasi</option>
-              <option value="Terapi Okupasi">Terapi Okupasi</option>
-              <option value="Fisioterapi Pediatrik">Fisioterapi Pediatrik</option>
-              <option value="Tumbuh Kembang">Tumbuh Kembang</option>
-              <option value="Parenting">Parenting &amp; Pola Asuh</option>
+              <option v-for="cat in ARTICLE_CATEGORIES" :key="cat.value" :value="cat.value">
+                {{ cat.label }}
+              </option>
             </select>
           </div>
 
@@ -644,6 +641,8 @@ import { ref, reactive, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AdminLayout from '../../layouts/AdminLayout.vue'
 import api from '../../services/api'
+import { sanitizeHtml } from '../../utils/sanitize'
+import { ARTICLE_CATEGORIES } from '../../constants/categories'
 
 const route = useRoute()
 const router = useRouter()
@@ -741,12 +740,12 @@ const wordCount = computed(() => {
   return plainText.split(/\s+/).filter(Boolean).length
 })
 
-// Render HTML untuk Tab Pratinjau
+// Render HTML untuk Tab Pratinjau (disanitasi dengan DOMPurify anti-XSS)
 const renderedContent = computed(() => {
   if (!form.content.trim()) {
     return '<p class="sim-empty-hint">Konten artikel masih kosong. Tuliskan teks di tab Editor untuk melihat pratinjau lengkap di sini...</p>'
   }
-  return form.content
+  return sanitizeHtml(form.content)
 })
 
 // Generator Slug

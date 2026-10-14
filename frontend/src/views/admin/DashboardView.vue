@@ -388,7 +388,7 @@
         <!-- Team Members List -->
         <div v-else class="team-preview-list">
           <router-link
-            v-for="member in teamMembers"
+            v-for="member in teamMembers.slice(0, 4)"
             :key="member.id"
             to="/admin/tim-kami"
             class="team-member-item"
@@ -498,7 +498,7 @@ async function fetchDashboardData() {
     const res = await api.get('/admin/stats')
     stats.value = res.data.stats || {}
     popularArticles.value = res.data.popular_articles || []
-    teamMembers.value = res.data.team_members || []
+    teamMembers.value = (res.data.team_members || []).slice(0, 4)
     missingSettings.value = res.data.missing_settings || []
     whatsapp.value = res.data.whatsapp || ''
 
@@ -506,7 +506,7 @@ async function fetchDashboardData() {
     if (teamMembers.value.length === 0 && (stats.value.total_team > 0 || !stats.value.total_team)) {
       try {
         const teamRes = await api.get('/team')
-        teamMembers.value = (teamRes.data || []).slice(0, 5)
+        teamMembers.value = (teamRes.data || []).slice(0, 4)
       } catch (e) {
         // Fallback aman
       }

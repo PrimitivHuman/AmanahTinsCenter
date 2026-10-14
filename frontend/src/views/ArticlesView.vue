@@ -39,26 +39,44 @@
       </div>
     </section>
 
-    <!-- ===== CATEGORY FILTER PILLS ===== -->
+    <!-- ===== CATEGORY FILTER PILLS (DRAG TO SLIDE) ===== -->
     <section class="filter-section">
       <div class="container">
-        <div class="filter-pills">
-          <button
-            v-for="cat in categoryTabs"
-            :key="cat.label"
-            :class="['filter-pill', { 'filter-pill--active': activeCategory === cat.label }]"
-            @click="activeCategory = cat.label"
+        <div class="pills-slider-wrapper">
+          <!-- Gradient Fade Left -->
+          <div v-show="canScrollLeft" class="slider-fade fade-left" aria-hidden="true"></div>
+
+          <!-- Scrollable Pills Track (Drag to Scroll) -->
+          <div
+            ref="pillsTrackRef"
+            class="filter-pills"
+            @scroll="updateScrollState"
+            @mousedown="startDrag"
+            @mousemove="onDrag"
+            @mouseup="endDrag"
+            @mouseleave="endDrag"
           >
-            <span class="material-symbols-outlined" style="font-size:16px" :class="cat.iconColor">{{ cat.icon }}</span>
-            <span>{{ cat.label }}</span>
-            <span v-if="cat.badge !== undefined" class="pill-badge">{{ cat.badge }}</span>
-          </button>
+            <button
+              v-for="cat in categoryTabs"
+              :key="cat.label"
+              :class="['filter-pill', { 'filter-pill--active': activeCategory === (cat.value || cat.label) }]"
+              @click="!hasDragged && selectCategory(cat.value || cat.label)"
+              type="button"
+            >
+              <span class="material-symbols-outlined" style="font-size:16px" :class="cat.iconColor">{{ cat.icon }}</span>
+              <span>{{ cat.label }}</span>
+              <span v-if="cat.badge !== undefined" class="pill-badge">{{ cat.badge }}</span>
+            </button>
+          </div>
+
+          <!-- Gradient Fade Right -->
+          <div v-show="canScrollRight" class="slider-fade fade-right" aria-hidden="true"></div>
         </div>
       </div>
     </section>
 
     <!-- ===== ARTICLES GRID ===== -->
-    <section class="articles-section">
+    <section class="articles-section" id="articles-list">
       <div class="container">
 
         <!-- Loading Skeleton -->
@@ -74,65 +92,109 @@
         </div>
 
         <!-- Articles from API or Default -->
-        <div class="articles-grid" v-else-if="filteredArticles.length">
-          <article
-            v-for="article in filteredArticles"
-            :key="article.id || article.slug"
-            class="article-card"
-          >
-            <!-- Thumbnail -->
-            <div class="card-thumb-wrap">
-              <img
-                :src="article.image || article.thumbnail || getDefaultThumb(article.category)"
-                :alt="article.title"
-                class="card-thumb"
-              />
-              <!-- Category overlay badge -->
-              <div class="thumb-cat-badge" :class="getCatClass(article.category)">
-                <span class="material-symbols-outlined" style="font-size:12px">{{ getCatIcon(article.category) }}</span>
-                <span>{{ article.category }}</span>
+        <div v-else-if="filteredArticles.length">
+          <div class="articles-grid">
+            <article
+              v-for="article in filteredArticles"
+              :key="article.id || article.slug"
+              class="article-card"
+            >
+              <!-- Thumbnail -->
+              <div class="card-thumb-wrap">
+                <img
+                  :src="article.image || article.thumbnail || getDefaultThumb(article.category)"
+                  :alt="article.title"
+                  class="card-thumb"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <!-- Category overlay badge -->
+                <div class="thumb-cat-badge" :class="getCatClass(article.category)">
+                  <span class="material-symbols-outlined" style="font-size:12px">{{ getCatIcon(article.category) }}</span>
+                  <span>{{ article.category }}</span>
+                </div>
+                <!-- Interactive Persistent Bookmark button -->
+                <button
+                  @click.stop.prevent="handleCardBookmark(article)"
+                  class="thumb-bookmark"
+                  :class="{ 'is-bookmarked': isBookmarked(article.slug) }"
+                  :aria-label="isBookmarked(article.slug) ? 'Hapus bookmark artikel' : 'Simpan Artikel'"
+                  :title="isBookmarked(article.slug) ? 'Tersimpan di daftar bacaan' : 'Simpan ke daftar bacaan'"
+                >
+                  <span
+                    class="material-symbols-outlined"
+                    :class="{ 'fill': isBookmarked(article.slug) }"
+                    style="font-size:18px"
+                  >bookmark</span>
+                </button>
               </div>
-              <!-- Interactive Persistent Bookmark button -->
+
+              <!-- Card Content -->
+              <div class="card-body">
+                <div class="card-meta">
+                  <span class="meta-item">
+                    <span class="material-symbols-outlined" style="font-size:12px; color: var(--outline)">calendar_today</span>
+                    {{ formatDate(article.published_at || article.created_at) }}
+                  </span>
+                  <span class="meta-dot">•</span>
+                  <span class="meta-item">
+                    <span class="material-symbols-outlined" style="font-size:12px; color: var(--outline)">schedule</span>
+                    {{ article.read_time || '4 min baca' }}
+                  </span>
+                </div>
+                <h2 class="card-title">{{ article.title }}</h2>
+                <p class="card-excerpt">{{ article.excerpt }}</p>
+              </div>
+
+              <!-- Card Footer -->
+              <div class="card-footer">
+                <router-link :to="`/artikel/${article.slug}`" class="read-more-link">
+                  <span>Baca Selengkapnya</span>
+                  <span class="material-symbols-outlined read-more-arrow" style="font-size:16px">arrow_forward</span>
+                </router-link>
+              </div>
+            </article>
+          </div>
+
+          <!-- Server-Side Pagination Bar -->
+          <div v-if="activeCategory !== 'Tersimpan' && pagination.last_page > 1" class="pagination-bar">
+            <div class="pagination-info">
+              Menampilkan <strong>{{ pagination.from || 0 }} - {{ pagination.to || 0 }}</strong> dari <strong>{{ pagination.total || 0 }}</strong> artikel
+            </div>
+            <div class="pagination-controls">
               <button
-                @click.stop.prevent="handleCardBookmark(article)"
-                class="thumb-bookmark"
-                :class="{ 'is-bookmarked': isBookmarked(article.slug) }"
-                :aria-label="isBookmarked(article.slug) ? 'Hapus bookmark artikel' : 'Simpan Artikel'"
-                :title="isBookmarked(article.slug) ? 'Tersimpan di daftar bacaan' : 'Simpan ke daftar bacaan'"
+                class="pagination-btn"
+                :disabled="pagination.current_page <= 1"
+                @click="changePage(pagination.current_page - 1)"
+                aria-label="Halaman Sebelumnya"
               >
-                <span
-                  class="material-symbols-outlined"
-                  :class="{ 'fill': isBookmarked(article.slug) }"
-                  style="font-size:18px"
-                >bookmark</span>
+                <span class="material-symbols-outlined" style="font-size:18px">chevron_left</span>
+                <span>Sebelumnya</span>
+              </button>
+
+              <div class="pagination-pages">
+                <button
+                  v-for="(p, idx) in visiblePages"
+                  :key="idx"
+                  :class="['page-num', { 'page-num--active': p === pagination.current_page, 'page-num--dots': p === '...' }]"
+                  :disabled="p === '...'"
+                  @click="typeof p === 'number' && changePage(p)"
+                >
+                  {{ p }}
+                </button>
+              </div>
+
+              <button
+                class="pagination-btn"
+                :disabled="pagination.current_page >= pagination.last_page"
+                @click="changePage(pagination.current_page + 1)"
+                aria-label="Halaman Berikutnya"
+              >
+                <span>Berikutnya</span>
+                <span class="material-symbols-outlined" style="font-size:18px">chevron_right</span>
               </button>
             </div>
-
-            <!-- Card Content -->
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="meta-item">
-                  <span class="material-symbols-outlined" style="font-size:12px; color: var(--outline)">calendar_today</span>
-                  {{ formatDate(article.published_at || article.created_at) }}
-                </span>
-                <span class="meta-dot">•</span>
-                <span class="meta-item">
-                  <span class="material-symbols-outlined" style="font-size:12px; color: var(--outline)">schedule</span>
-                  {{ article.read_time || '4 min baca' }}
-                </span>
-              </div>
-              <h2 class="card-title">{{ article.title }}</h2>
-              <p class="card-excerpt">{{ article.excerpt }}</p>
-            </div>
-
-            <!-- Card Footer -->
-            <div class="card-footer">
-              <router-link :to="`/artikel/${article.slug}`" class="read-more-link">
-                <span>Baca Selengkapnya</span>
-                <span class="material-symbols-outlined read-more-arrow" style="font-size:16px">arrow_forward</span>
-              </router-link>
-            </div>
-          </article>
+          </div>
         </div>
 
         <!-- Empty state when Bookmarks tab is active but empty -->
@@ -142,15 +204,30 @@
           <p style="color: #64748b; font-size: 14.5px; max-width: 440px; margin: 0 auto 1.25rem;">
             Tekan ikon bookmark pada sudut kartu artikel mana pun untuk menyimpannya ke daftar bacaan pribadi Anda.
           </p>
-          <button @click="activeCategory = 'Semua Topik'" class="btn-reset-saved" type="button">
+          <button @click="selectCategory('Semua Topik')" class="btn-reset-saved" type="button">
             <span>Jelajahi Semua Artikel</span>
           </button>
         </div>
 
-        <!-- Empty state for regular categories -->
+        <!-- Empty state when search query yields 0 results -->
+        <div v-else-if="searchQuery.trim()" class="empty-state">
+          <span class="material-symbols-outlined" style="font-size:64px; color: var(--outline)">search_off</span>
+          <h3 style="font-family: var(--font-headline); font-size: 20px; font-weight: 700; color: #091d2e; margin: 0.5rem 0 0.25rem;">Artikel Tidak Ditemukan</h3>
+          <p style="color: #64748b; font-size: 14.5px; max-width: 440px; margin: 0 auto 1.25rem;">
+            Tidak ditemukan artikel yang cocok dengan kata kunci "{{ searchQuery }}". Silakan coba kata kunci lain.
+          </p>
+          <button @click="resetSearch" class="btn-reset-saved" type="button">
+            <span>Bersihkan Pencarian</span>
+          </button>
+        </div>
+
+        <!-- Empty state for regular categories with no articles -->
         <div v-else class="empty-state">
           <span class="material-symbols-outlined" style="font-size:64px; color: var(--outline)">article</span>
           <p>Belum ada artikel dalam kategori ini.</p>
+          <button @click="selectCategory('Semua Topik')" class="btn-reset-saved" type="button" style="margin-top: 0.5rem;">
+            <span>Lihat Semua Topik</span>
+          </button>
         </div>
 
       </div>
@@ -203,18 +280,72 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import PublicLayout from '../layouts/PublicLayout.vue'
 import api from '../services/api'
 import { useClinicSettings } from '../composables/useClinicSettings'
+import { useBookmarks } from '../composables/useBookmarks'
+import { ARTICLE_CATEGORIES, getCategoryMeta, normalizeCategory } from '../constants/categories'
 
 const { waLink } = useClinicSettings()
-import { useBookmarks } from '../composables/useBookmarks'
 
 const articles = ref([])
 const loading = ref(true)
 const activeCategory = ref('Semua Topik')
 const searchQuery = ref('')
+
+// Filter Pills Slider State
+const pillsTrackRef = ref(null)
+const canScrollLeft = ref(false)
+const canScrollRight = ref(false)
+const hasDragged = ref(false)
+let isMouseDown = false
+let startX = 0
+let scrollLeftStart = 0
+let resizeObserver = null
+
+function updateScrollState() {
+  const el = pillsTrackRef.value
+  if (!el) return
+  canScrollLeft.value = el.scrollLeft > 4
+  canScrollRight.value = el.scrollLeft + el.clientWidth < el.scrollWidth - 4
+}
+
+function startDrag(e) {
+  if (e.button !== 0) return
+  isMouseDown = true
+  hasDragged.value = false
+  startX = e.pageX - (pillsTrackRef.value?.offsetLeft || 0)
+  scrollLeftStart = pillsTrackRef.value?.scrollLeft || 0
+}
+
+function onDrag(e) {
+  if (!isMouseDown || !pillsTrackRef.value) return
+  e.preventDefault()
+  const x = e.pageX - pillsTrackRef.value.offsetLeft
+  const walk = (x - startX) * 1.3
+  if (Math.abs(walk) > 4) {
+    hasDragged.value = true
+  }
+  pillsTrackRef.value.scrollLeft = scrollLeftStart - walk
+}
+
+function endDrag() {
+  isMouseDown = false
+  setTimeout(() => {
+    hasDragged.value = false
+  }, 50)
+}
+
+// Pagination state
+const pagination = ref({
+  current_page: 1,
+  last_page: 1,
+  total: 0,
+  per_page: 9,
+  from: 0,
+  to: 0,
+})
 
 // Persistent Bookmark Composable
 const { bookmarkedArticles, isBookmarked, toggleBookmark } = useBookmarks()
@@ -257,85 +388,71 @@ function handleCardBookmark(article) {
 }
 
 const categoryTabs = computed(() => [
-  { label: 'Semua Topik',     icon: 'apps',               iconColor: '' },
-  { label: 'Terapi Wicara',   icon: 'record_voice_over',  iconColor: 'icon-blue' },
-  { label: 'Sensori & Motorik', icon: 'front_hand',       iconColor: 'icon-green' },
-  { label: 'Parenting Positif', icon: 'favorite',         iconColor: 'icon-amber' },
-  { label: 'Psikologi Anak',  icon: 'psychology',         iconColor: 'icon-blue' },
+  { label: 'Semua Topik', value: 'Semua Topik', icon: 'apps', iconColor: '' },
+  ...ARTICLE_CATEGORIES.map(cat => ({
+    label: cat.label,
+    value: cat.value,
+    icon: cat.icon,
+    iconColor: cat.iconColor,
+  })),
   {
     label: 'Tersimpan',
+    value: 'Tersimpan',
     icon: 'bookmark',
     iconColor: 'icon-amber',
     badge: bookmarkedArticles.value.length
   },
 ])
 
-const catIconMap = {
-  'Terapi Wicara':    'record_voice_over',
-  'Sensori Motorik':  'front_hand',
-  'Sensori & Motorik':'front_hand',
-  'Tumbuh Kembang':   'psychology',
-  'Parenting':        'favorite',
-  'Parenting Positif':'favorite',
-  'Psikologi Anak':   'psychology',
-}
-const catClassMap = {
-  'Terapi Wicara':    'badge-blue',
-  'Sensori Motorik':  'badge-green',
-  'Tumbuh Kembang':   'badge-amber',
-  'Parenting':        'badge-green',
-  'Parenting Positif':'badge-green',
-  'Psikologi Anak':   'badge-amber',
+function getCatIcon(cat) {
+  return getCategoryMeta(cat).icon
 }
 
-function getCatIcon(cat) { return catIconMap[cat] || 'article' }
-function getCatClass(cat) { return catClassMap[cat] || 'badge-blue' }
+function getCatClass(cat) {
+  return getCategoryMeta(cat).badgeClass
+}
 
 function getDefaultThumb(cat) {
   return `https://placehold.co/400x240/e3efff/006384?text=${encodeURIComponent(cat || 'Artikel')}`
 }
 
 const filteredArticles = computed(() => {
-  let list = articles.value
-
   if (activeCategory.value === 'Tersimpan') {
-    const savedSlugs = bookmarkedArticles.value.map(b => b.slug)
-    const map = new Map()
-    articles.value.forEach(a => map.set(a.slug, a))
-    bookmarkedArticles.value.forEach(b => {
-      if (!map.has(b.slug)) map.set(b.slug, b)
-    })
-    list = Array.from(map.values()).filter(a => savedSlugs.includes(a.slug))
-  } else if (activeCategory.value !== 'Semua Topik') {
-    // Map tab labels to possible category values
-    const labelMap = {
-      'Terapi Wicara':    ['Terapi Wicara'],
-      'Sensori & Motorik':['Sensori Motorik', 'Sensori & Motorik', 'Motorik'],
-      'Parenting Positif':['Parenting', 'Parenting Positif'],
-      'Psikologi Anak':   ['Psikologi Anak', 'Psikologi', 'Tumbuh Kembang'],
+    let list = bookmarkedArticles.value
+    if (searchQuery.value.trim()) {
+      const q = searchQuery.value.toLowerCase()
+      list = list.filter(a =>
+        (a.title || '').toLowerCase().includes(q) ||
+        (a.excerpt || '').toLowerCase().includes(q)
+      )
     }
-    const allowed = labelMap[activeCategory.value] || [activeCategory.value]
-    list = list.filter(a => allowed.includes(a.category))
+    return list
   }
-
-  if (searchQuery.value.trim()) {
-    const q = searchQuery.value.toLowerCase()
-    list = list.filter(a =>
-      (a.title || '').toLowerCase().includes(q) ||
-      (a.excerpt || '').toLowerCase().includes(q)
-    )
-  }
-  return list
+  return articles.value
 })
 
-function onSearch() {
-  // Reactivity handles it via computed
-}
-
-function formatDate(dateStr) {
-  if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
-}
+const visiblePages = computed(() => {
+  const current = pagination.value.current_page
+  const total = pagination.value.last_page
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1)
+  }
+  const pages = []
+  pages.push(1)
+  if (current > 3) {
+    pages.push('...')
+  }
+  const start = Math.max(2, current - 1)
+  const end = Math.min(total - 1, current + 1)
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+  if (current < total - 2) {
+    pages.push('...')
+  }
+  pages.push(total)
+  return pages
+})
 
 // Fallback static articles if API is empty
 const defaultArticles = [
@@ -373,16 +490,126 @@ const defaultArticles = [
   },
 ]
 
-onMounted(async () => {
+async function fetchArticles(page = 1) {
+  loading.value = true
   try {
-    const res = await api.get('/articles?published=1&per_page=20')
+    const params = {
+      page,
+      per_page: 9,
+    }
+    if (activeCategory.value && activeCategory.value !== 'Semua Topik') {
+      params.category = activeCategory.value
+    }
+    if (searchQuery.value && searchQuery.value.trim()) {
+      params.search = searchQuery.value.trim()
+    }
+    const res = await api.get('/articles', { params })
     const data = res.data.data || []
-    articles.value = data.length ? data : defaultArticles
-  } catch {
-    articles.value = defaultArticles
+    articles.value = data
+    pagination.value = {
+      current_page: res.data.current_page || 1,
+      last_page: res.data.last_page || 1,
+      total: res.data.total !== undefined ? res.data.total : data.length,
+      per_page: res.data.per_page || 9,
+      from: res.data.from || (data.length ? 1 : 0),
+      to: res.data.to || data.length,
+    }
+    // If first load with no filters has 0 data, fallback to defaultArticles
+    if (data.length === 0 && !params.category && !params.search && page === 1) {
+      articles.value = defaultArticles
+      pagination.value = {
+        current_page: 1,
+        last_page: 1,
+        total: defaultArticles.length,
+        per_page: 9,
+        from: 1,
+        to: defaultArticles.length,
+      }
+    }
+  } catch (err) {
+    console.error('Gagal memuat artikel:', err)
+    if (!activeCategory.value || activeCategory.value === 'Semua Topik') {
+      articles.value = defaultArticles
+      pagination.value = {
+        current_page: 1,
+        last_page: 1,
+        total: defaultArticles.length,
+        per_page: 9,
+        from: 1,
+        to: defaultArticles.length,
+      }
+    } else {
+      articles.value = []
+    }
   } finally {
     loading.value = false
   }
+}
+
+function selectCategory(cat) {
+  activeCategory.value = cat
+  nextTick(() => {
+    const el = pillsTrackRef.value
+    if (el) {
+      const activeEl = el.querySelector('.filter-pill--active')
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+      }
+      updateScrollState()
+    }
+  })
+  if (cat === 'Tersimpan') return
+  fetchArticles(1)
+}
+
+let searchTimer = null
+function onSearch() {
+  if (activeCategory.value === 'Tersimpan') return
+  if (searchTimer) clearTimeout(searchTimer)
+  searchTimer = setTimeout(() => {
+    fetchArticles(1)
+  }, 350)
+}
+
+function resetSearch() {
+  searchQuery.value = ''
+  if (activeCategory.value === 'Tersimpan') return
+  fetchArticles(1)
+}
+
+function changePage(page) {
+  if (page < 1 || page > pagination.value.last_page || page === pagination.value.current_page) return
+  fetchArticles(page)
+  const el = document.getElementById('articles-list')
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return ''
+  return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+}
+
+onMounted(() => {
+  fetchArticles(1)
+  nextTick(() => {
+    updateScrollState()
+    if (pillsTrackRef.value && typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(() => {
+        updateScrollState()
+      })
+      resizeObserver.observe(pillsTrackRef.value)
+    }
+    window.addEventListener('resize', updateScrollState)
+  })
+})
+
+onUnmounted(() => {
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+  }
+  window.removeEventListener('resize', updateScrollState)
 })
 </script>
 
@@ -459,45 +686,122 @@ onMounted(async () => {
 .search-input::placeholder { color: var(--on-surface-variant); }
 
 /* ============================================================
-   FILTER PILLS
+   FILTER PILLS (SLIDER & CONTROLS)
    ============================================================ */
 .filter-section {
-  padding: 1.5rem 0;
-  border-bottom: 1px solid rgba(191,200,206,0.15);
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(191,200,206,0.18);
+  position: relative;
 }
+
+.pills-slider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .filter-pills {
-  display: flex; align-items: center; gap: 0.75rem;
-  overflow-x: auto; padding-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 0.35rem 0.25rem;
   scrollbar-width: none;
+  -ms-overflow-style: none;
+  user-select: none;
+  width: 100%;
+  cursor: grab;
 }
-.filter-pills::-webkit-scrollbar { display: none; }
+.filter-pills:active {
+  cursor: grabbing;
+}
+.filter-pills::-webkit-scrollbar {
+  display: none;
+}
 
 .filter-pill {
-  display: inline-flex; align-items: center; gap: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.625rem 1.25rem;
   border-radius: 9999px;
-  font-size: 15px; font-weight: 700;
+  font-size: 15px;
+  font-weight: 700;
   border: 1.5px solid rgba(191,200,206,0.3);
   background: #fff;
   color: var(--on-surface-variant);
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.15s;
+  flex-shrink: 0;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: var(--font-body);
 }
-.filter-pill:hover { background: var(--surface-container-low); color: var(--primary); }
+.filter-pill:hover {
+  background: var(--surface-container-low);
+  color: var(--primary);
+  border-color: rgba(0, 99, 132, 0.3);
+  transform: translateY(-1px);
+}
 .filter-pill--active {
   background: var(--primary);
   color: #fff;
   border-color: var(--primary);
-  box-shadow: 0 2px 8px rgba(0, 99, 132, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 99, 132, 0.25);
+  transform: translateY(-1px);
 }
+.filter-pill--active:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
 .icon-blue  { color: var(--primary); }
 .icon-green { color: var(--secondary); }
 .icon-amber { color: var(--tertiary); }
 .filter-pill--active .icon-blue,
 .filter-pill--active .icon-green,
 .filter-pill--active .icon-amber { color: #fff; }
+
+.pill-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  margin-left: 0.25rem;
+}
+.filter-pill:not(.filter-pill--active) .pill-badge {
+  background: rgba(180, 83, 9, 0.12);
+  color: #b45309;
+}
+
+/* Gradient Fade Masks */
+.slider-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 54px;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.25s ease;
+}
+.fade-left {
+  left: 0;
+  background: linear-gradient(to right, #ffffff 20%, rgba(255, 255, 255, 0) 100%);
+}
+.fade-right {
+  right: 0;
+  background: linear-gradient(to left, #ffffff 20%, rgba(255, 255, 255, 0) 100%);
+}
+
+@media (max-width: 768px) {
+  .slider-fade {
+    width: 36px;
+  }
+}
 
 /* ============================================================
    ARTICLES GRID
@@ -624,6 +928,111 @@ onMounted(async () => {
 
 /* Empty */
 .empty-state { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 4rem; color: var(--on-surface-variant); font-size: 16px; }
+
+/* ============================================================
+   PAGINATION BAR
+   ============================================================ */
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(191, 200, 206, 0.3);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pagination-info {
+  font-size: 13.5px;
+  color: var(--on-surface-variant);
+}
+
+.pagination-info strong {
+  color: var(--on-surface);
+  font-weight: 700;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(191, 200, 206, 0.4);
+  background: #ffffff;
+  color: var(--on-surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-body);
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: var(--surface-container-low);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: rgba(191, 200, 206, 0.2);
+}
+
+.pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.page-num {
+  min-width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--on-surface);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.page-num:hover:not(:disabled):not(.page-num--dots) {
+  background: var(--surface-container-low);
+  color: var(--primary);
+}
+
+.page-num--active {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 99, 132, 0.3);
+}
+
+.page-num--dots {
+  cursor: default;
+  color: var(--outline);
+}
+
+@media (max-width: 600px) {
+  .pagination-bar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
 
 /* ============================================================
    CTA SECTION

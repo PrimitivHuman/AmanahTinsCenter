@@ -517,16 +517,16 @@
 import { ref, computed, onMounted } from 'vue'
 import AdminLayout from '../../layouts/AdminLayout.vue'
 import api from '../../services/api'
+import { ARTICLE_CATEGORIES } from '../../constants/categories'
 
 // Kategori Filter Options
 const categories = [
   { label: 'Semua Kategori', value: 'Semua', color: '#006384' },
-  { label: 'Terapi Wicara', value: 'Terapi Wicara', color: '#0284c7' },
-  { label: 'Sensori Integrasi', value: 'Sensori Integrasi', color: '#16a34a' },
-  { label: 'Terapi Okupasi', value: 'Terapi Okupasi', color: '#0d9488' },
-  { label: 'Fisioterapi Pediatrik', value: 'Fisioterapi Pediatrik', color: '#9333ea' },
-  { label: 'Tumbuh Kembang', value: 'Tumbuh Kembang', color: '#ea580c' },
-  { label: 'Parenting & Pola Asuh', value: 'Parenting', color: '#d97706' },
+  ...ARTICLE_CATEGORIES.map(c => ({
+    label: c.label,
+    value: c.value,
+    color: c.color,
+  }))
 ]
 
 // State data
@@ -619,6 +619,8 @@ function getCategoryBadgeClass(category) {
       return 'badge-cat-teal'
     case 'Fisioterapi Pediatrik':
       return 'badge-cat-purple'
+    case 'Tumbuh Kembang':
+      return 'badge-cat-amber'
     case 'Parenting':
     case 'Parenting & Pola Asuh':
       return 'badge-cat-amber'
