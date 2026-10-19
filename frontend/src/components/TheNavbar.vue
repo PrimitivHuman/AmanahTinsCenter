@@ -185,7 +185,7 @@ const navLinks = [
   { label: 'Beranda', path: '/', icon: 'home' },
   { label: 'Tentang Kami', path: '/tentang-kami', icon: 'diversity_1' },
   { label: 'Layanan Terapi', path: '/layanan', icon: 'medical_services' },
-  { label: 'Tim Medis', path: '/tim-kami', icon: 'clinical_notes' },
+  { label: 'Tim Kami', path: '/tim-kami', icon: 'clinical_notes' },
   { label: 'Artikel & Tips', path: '/artikel', icon: 'article' },
   { label: 'Jadwal & Reservasi', path: '/jadwal-pendaftaran', icon: 'event_available' },
   { label: 'Kontak', path: '/#kontak', icon: 'support_agent', isAnchor: true },
