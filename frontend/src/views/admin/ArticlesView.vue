@@ -760,8 +760,8 @@ function confirmDelete(item) {
 }
 
 // Tutup Modal Konfirmasi Hapus
-function closeDeleteModal() {
-  if (isDeleting.value) return
+function closeDeleteModal(force = false) {
+  if (isDeleting.value && !force) return
   showDeleteModal.value = false
   articleToDelete.value = null
 }
@@ -796,7 +796,9 @@ async function handleDelete() {
       icon: 'delete',
     })
 
-    closeDeleteModal()
+    // Tutup modal secara langsung
+    showDeleteModal.value = false
+    articleToDelete.value = null
 
     // Jika list halaman ini kosong dan masih ada halaman sebelumnya, ambil halaman sebelumnya
     if (articles.value.length === 0 && pagination.value.current_page > 1) {
@@ -812,6 +814,8 @@ async function handleDelete() {
     })
   } finally {
     isDeleting.value = false
+    showDeleteModal.value = false
+    articleToDelete.value = null
   }
 }
 

@@ -304,6 +304,16 @@
           </div>
 
           <div class="form-group">
+            <label>Sertifikasi &amp; Pelatihan Khusus (Pisahkan tanda koma)</label>
+            <input
+              v-model="certInput"
+              type="text"
+              placeholder="Sertifikasi Oral Placement Therapy (OPT), Hanen Program, SI Certified"
+              class="form-input"
+            />
+          </div>
+
+          <div class="form-group">
             <label>Filosofi / Motto Terapi</label>
             <input
               v-model="form.philosophy"
@@ -758,7 +768,13 @@ async function saveMember() {
     }
     closeModal()
   } catch (err) {
-    alert(err.response?.data?.message || 'Gagal menyimpan data terapis.')
+    const errorDetails = err.response?.data?.errors
+      ? Object.values(err.response.data.errors).flat().join('\n• ')
+      : ''
+    const msg = errorDetails
+      ? `Gagal menyimpan data terapis:\n• ${errorDetails}`
+      : (err.response?.data?.message || 'Gagal menyimpan data terapis.')
+    alert(msg)
   } finally {
     isSaving.value = false
   }

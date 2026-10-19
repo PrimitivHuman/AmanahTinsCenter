@@ -464,7 +464,7 @@
             <!-- Indikator Status Penyimpanan Server -->
             <div class="server-status-pill" v-if="isLocalUploaded">
               <span class="material-symbols-outlined status-pill-icon">verified</span>
-              <span>Tersimpan di Penyimpanan Server ATC</span>
+              <span>{{ pendingCroppedBlob ? 'Pratinjau Siap (Akan diunggah saat disimpan)' : 'Tersimpan di Penyimpanan Server ATC' }}</span>
             </div>
           </div>
 
@@ -660,6 +660,8 @@ const showUploadDropzone = ref(false)
 const previewMode = ref('detail') // 'detail' (Hero) atau 'card' (Katalog)
 const focalPoint = ref('center') // 'top', 'center', 'bottom'
 const rawFile = ref(null)
+const pendingCroppedBlob = ref(null)
+const pendingPreviewUrl = ref('')
 const showAltOptions = ref(false)
 const customUrlInput = ref('')
 
@@ -670,7 +672,7 @@ const currentFocalPosition = computed(() => {
 })
 
 const isLocalUploaded = computed(() => {
-  return typeof form.image === 'string' && form.image.startsWith('/storage/')
+  return (typeof form.image === 'string' && form.image.startsWith('/storage/')) || !!pendingCroppedBlob.value
 })
 
 // Pilihan Cepat Gambar Sampul Bertema Klinik & Terapi (Terverifikasi Aktif)
@@ -840,39 +842,29 @@ function processSelectedFile(file) {
   }
 
   rawFile.value = file
-  executeCropAndUpload(file, focalPoint.value)
+  executeCropPreview(file, focalPoint.value)
 }
 
-// Potong presisi rasio 16:9 dengan Canvas & Unggah ke Server
-async function executeCropAndUpload(fileOrUrl, position = 'center') {
+// Potong presisi rasio 16:9 secara lokal di browser (tanpa upload ke server)
+async function executeCropPreview(fileOrUrl, position = 'center') {
   isUploading.value = true
   try {
     const croppedFile = await cropImageTo16x9(fileOrUrl, position)
+    pendingCroppedBlob.value = croppedFile
 
-    const formData = new FormData()
-    formData.append('image', croppedFile)
-
-    const res = await api.post('/admin/articles/upload-image', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-
-    if (res.data && res.data.url) {
-      form.image = res.data.url
-      showUploadDropzone.value = false
-      showToast({
-        title: 'Gambar Berhasil Disesuaikan',
-        message: 'Gambar dipotong presisi rasio 16:9 dan tersimpan di server klinik.',
-        type: 'success',
-        icon: 'check_circle',
-      })
+    // Bersihkan URL blob lama jika ada
+    if (pendingPreviewUrl.value && pendingPreviewUrl.value.startsWith('blob:')) {
+      URL.revokeObjectURL(pendingPreviewUrl.value)
     }
+
+    pendingPreviewUrl.value = URL.createObjectURL(croppedFile)
+    form.image = pendingPreviewUrl.value
+    showUploadDropzone.value = false
   } catch (err) {
-    console.error('Gagal memproses/mengunggah gambar:', err)
+    console.error('Gagal memproses pratinjau gambar:', err)
     showToast({
-      title: 'Gagal Mengunggah',
-      message: err.response?.data?.message || err.message || 'Terjadi kesalahan saat memproses gambar.',
+      title: 'Gagal Memproses Gambar',
+      message: err.message || 'Terjadi kesalahan saat memotong gambar.',
       type: 'error',
       icon: 'error',
     })
@@ -885,17 +877,22 @@ function setFocalPoint(pos) {
   if (focalPoint.value === pos) return
   focalPoint.value = pos
 
-  // Jika ada raw file atau gambar yang aktif, potong ulang secara instan
+  // Potong ulang secara instan di browser (zero network, tidak membuat file di server)
   if (rawFile.value) {
-    executeCropAndUpload(rawFile.value, pos)
+    executeCropPreview(rawFile.value, pos)
   } else if (form.image) {
-    executeCropAndUpload(form.image, pos)
+    executeCropPreview(form.image, pos)
   }
 }
 
 function removeCoverImage() {
-  form.image = ''
+  if (pendingPreviewUrl.value && pendingPreviewUrl.value.startsWith('blob:')) {
+    URL.revokeObjectURL(pendingPreviewUrl.value)
+  }
+  pendingPreviewUrl.value = ''
+  pendingCroppedBlob.value = null
   rawFile.value = null
+  form.image = ''
   showUploadDropzone.value = true
   showToast({
     title: 'Sampul Dihapus',
@@ -907,8 +904,13 @@ function removeCoverImage() {
 
 function applyCustomUrl() {
   if (!customUrlInput.value.trim()) return
-  form.image = customUrlInput.value.trim()
+  if (pendingPreviewUrl.value && pendingPreviewUrl.value.startsWith('blob:')) {
+    URL.revokeObjectURL(pendingPreviewUrl.value)
+  }
+  pendingPreviewUrl.value = ''
+  pendingCroppedBlob.value = null
   rawFile.value = null
+  form.image = customUrlInput.value.trim()
   showUploadDropzone.value = false
   showToast({
     title: 'URL Diterapkan',
@@ -919,8 +921,13 @@ function applyCustomUrl() {
 }
 
 function applyPreset(url) {
-  form.image = url
+  if (pendingPreviewUrl.value && pendingPreviewUrl.value.startsWith('blob:')) {
+    URL.revokeObjectURL(pendingPreviewUrl.value)
+  }
+  pendingPreviewUrl.value = ''
+  pendingCroppedBlob.value = null
   rawFile.value = null
+  form.image = url
   showUploadDropzone.value = false
   showToast({
     title: 'Preset Foto Dipilih',
@@ -1204,6 +1211,22 @@ async function submitForm(publishStatus) {
   }
 
   try {
+    // Unggah gambar ke server HANYA saat tombol simpan / terbitkan diklik
+    if (pendingCroppedBlob.value) {
+      const formData = new FormData()
+      formData.append('image', pendingCroppedBlob.value)
+
+      const uploadRes = await api.post('/admin/articles/upload-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+
+      if (uploadRes.data && uploadRes.data.url) {
+        form.image = uploadRes.data.url
+        pendingCroppedBlob.value = null
+      }
+    }
     if (isEdit.value) {
       await api.put(`/admin/articles/${route.params.id}`, form)
       showToast({

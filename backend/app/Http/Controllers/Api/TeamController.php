@@ -60,23 +60,29 @@ class TeamController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
-            'category' => 'nullable|string|in:tw,ot,si,psi,ft',
+            'category' => 'nullable|string|max:50',
             'edu' => 'nullable|string|max:255',
             'specialization' => 'required|string|max:255',
             'tags' => 'nullable|array',
             'bio' => 'nullable|string',
             'philosophy' => 'nullable|string',
-            'experience_years' => 'nullable|string',
+            'experience_years' => 'nullable|string|max:100',
             'schedule' => 'nullable|string|max:255',
             'str_number' => 'nullable|string|max:255',
             'certifications' => 'nullable|array',
             'image' => 'nullable|string',
-            'order' => 'integer',
-            'is_active' => 'boolean',
+            'order' => 'nullable|integer',
+            'is_active' => 'nullable|boolean',
         ]);
 
         if (empty($validated['category'])) {
             $validated['category'] = 'tw';
+        }
+        if (!isset($validated['order'])) {
+            $validated['order'] = 0;
+        }
+        if (!isset($validated['is_active'])) {
+            $validated['is_active'] = true;
         }
 
         $member = TeamMember::create($validated);
@@ -95,19 +101,19 @@ class TeamController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
-            'category' => 'nullable|string|in:tw,ot,si,psi,ft',
+            'category' => 'nullable|string|max:50',
             'edu' => 'nullable|string|max:255',
             'specialization' => 'required|string|max:255',
             'tags' => 'nullable|array',
             'bio' => 'nullable|string',
             'philosophy' => 'nullable|string',
-            'experience_years' => 'nullable|string',
+            'experience_years' => 'nullable|string|max:100',
             'schedule' => 'nullable|string|max:255',
             'str_number' => 'nullable|string|max:255',
             'certifications' => 'nullable|array',
             'image' => 'nullable|string',
-            'order' => 'integer',
-            'is_active' => 'boolean',
+            'order' => 'nullable|integer',
+            'is_active' => 'nullable|boolean',
         ]);
 
         if (empty($validated['category'])) {
