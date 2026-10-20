@@ -4,4 +4,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /admin/*
 
-Sitemap: https://klinikatc.id/sitemap.xml
+Sitemap: https://tinsgrowcenter.com/sitemap.xml

@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Halaman Utama & Beranda -->
   <url>
-    <loc>https://klinikatc.id/</loc>
+    <loc>https://tinsgrowcenter.com/</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -10,43 +10,43 @@
 
   <!-- Layanan Terapi -->
   <url>
-    <loc>https://klinikatc.id/layanan</loc>
+    <loc>https://tinsgrowcenter.com/layanan</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://klinikatc.id/layanan/fisioterapi-anak</loc>
+    <loc>https://tinsgrowcenter.com/layanan/fisioterapi-anak</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://klinikatc.id/layanan/terapi-wicara</loc>
+    <loc>https://tinsgrowcenter.com/layanan/terapi-wicara</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://klinikatc.id/layanan/sensori-integrasi</loc>
+    <loc>https://tinsgrowcenter.com/layanan/sensori-integrasi</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://klinikatc.id/layanan/pedagogik</loc>
+    <loc>https://tinsgrowcenter.com/layanan/pedagogik</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://klinikatc.id/layanan/terapi-okupasi</loc>
+    <loc>https://tinsgrowcenter.com/layanan/terapi-okupasi</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://klinikatc.id/layanan/psikologi-anak</loc>
+    <loc>https://tinsgrowcenter.com/layanan/psikologi-anak</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -54,7 +54,7 @@
 
   <!-- Tim Medis & Praktisi -->
   <url>
-    <loc>https://klinikatc.id/tim-kami</loc>
+    <loc>https://tinsgrowcenter.com/tim-kami</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.85</priority>
@@ -62,7 +62,7 @@
 
   <!-- Jadwal & Pendaftaran Screening -->
   <url>
-    <loc>https://klinikatc.id/jadwal-pendaftaran</loc>
+    <loc>https://tinsgrowcenter.com/jadwal-pendaftaran</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -70,7 +70,7 @@
 
   <!-- Artikel & Edukasi Parenting -->
   <url>
-    <loc>https://klinikatc.id/artikel</loc>
+    <loc>https://tinsgrowcenter.com/artikel</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
@@ -78,7 +78,7 @@
 
   <!-- Tentang Kami & Profil Klinik -->
   <url>
-    <loc>https://klinikatc.id/tentang-kami</loc>
+    <loc>https://tinsgrowcenter.com/tentang-kami</loc>
     <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
