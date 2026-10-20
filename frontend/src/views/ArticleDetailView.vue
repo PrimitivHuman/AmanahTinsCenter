@@ -749,6 +749,57 @@ const route = useRoute()
 const { waLink } = useClinicSettings()
 const seo = useSeo()
 
+// ===== JSON-LD Article Schema =====
+// Menyuntikkan structured data ke <head> agar Google menampilkan rich snippets
+const BASE_URL = 'https://tinsgrowcenter.com'
+const JSON_LD_ID = 'article-jsonld-schema'
+
+function injectArticleJsonLd(article) {
+  removeArticleJsonLd()
+  if (!article) return
+
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    'headline': article.title,
+    'description': article.excerpt || article.title,
+    'image': article.image || article.thumbnail || `${BASE_URL}/favicon.svg`,
+    'url': `${BASE_URL}/artikel/${article.slug}`,
+    'datePublished': article.published_at || article.created_at,
+    'dateModified': article.updated_at || article.published_at || article.created_at,
+    'author': {
+      '@type': 'Person',
+      'name': article.author || "Tim Ahli Amanah Tin's Center"
+    },
+    'publisher': {
+      '@type': 'Organization',
+      'name': "Amanah Tin's Center",
+      'url': BASE_URL,
+      'logo': {
+        '@type': 'ImageObject',
+        'url': `${BASE_URL}/favicon.svg`
+      }
+    },
+    'mainEntityOfPage': {
+      '@type': 'WebPage',
+      '@id': `${BASE_URL}/artikel/${article.slug}`
+    },
+    'articleSection': article.category || 'Tumbuh Kembang',
+    'inLanguage': 'id-ID'
+  }
+
+  const script = document.createElement('script')
+  script.type = 'application/ld+json'
+  script.id = JSON_LD_ID
+  script.textContent = JSON.stringify(schema)
+  document.head.appendChild(script)
+}
+
+function removeArticleJsonLd() {
+  const existing = document.getElementById(JSON_LD_ID)
+  if (existing) existing.remove()
+}
+
 // Fallback demo article if database doesn't have article
 const currentArticle = {
   id: 1,
@@ -808,8 +859,10 @@ async function fetchArticleData() {
         title: res.data.article.title,
         description: res.data.article.excerpt || res.data.article.title,
         image: res.data.article.image || res.data.article.thumbnail,
+        url: `${BASE_URL}/artikel/${res.data.article.slug}`,
         type: 'article',
       })
+      injectArticleJsonLd(res.data.article)
     } else {
       if (slug === 'tanda-anak-butuh-terapi-wicara') {
         apiArticle.value = currentArticle
@@ -817,8 +870,10 @@ async function fetchArticleData() {
           title: currentArticle.title,
           description: currentArticle.excerpt,
           image: currentArticle.thumbnail,
+          url: `${BASE_URL}/artikel/${currentArticle.slug}`,
           type: 'article',
         })
+        injectArticleJsonLd(currentArticle)
       } else {
         isNotFound.value = true
         seo.updateSeo({
@@ -834,8 +889,10 @@ async function fetchArticleData() {
         title: currentArticle.title,
         description: currentArticle.excerpt,
         image: currentArticle.thumbnail,
+        url: `${BASE_URL}/artikel/${currentArticle.slug}`,
         type: 'article',
       })
+      injectArticleJsonLd(currentArticle)
     } else {
       isNotFound.value = true
       seo.updateSeo({
@@ -1099,6 +1156,7 @@ watch(() => route.params.slug, (newSlug) => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
   if (toastTimer) clearTimeout(toastTimer)
+  removeArticleJsonLd()
 })
 </script>
 

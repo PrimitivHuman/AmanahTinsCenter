@@ -7,8 +7,8 @@
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $path = parse_url($requestUri, PHP_URL_PATH);
 
-// 1. API and Storage routes go to Laravel backend
-if (str_starts_with($path, '/api') || str_starts_with($path, '/storage')) {
+// 1. API, Storage, and Sitemap routes go to Laravel backend
+if (str_starts_with($path, '/api') || str_starts_with($path, '/storage') || $path === '/sitemap.xml') {
     require_once __DIR__ . '/backend/public/index.php';
     exit;
 }

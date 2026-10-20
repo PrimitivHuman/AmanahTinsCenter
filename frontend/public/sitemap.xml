@@ -76,10 +76,28 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Tentang Kami & Profil Klinik -->
+  <!-- Artikel & Edukasi Parenting Spesifik -->
   <url>
-    <loc>https://tinsgrowcenter.com/tentang-kami</loc>
-    <lastmod>2026-10-14</lastmod>
+    <loc>https://tinsgrowcenter.com/artikel/tanda-anak-butuh-terapi-wicara</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tinsgrowcenter.com/artikel/tips-stimulasi-motorik-halus</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tinsgrowcenter.com/artikel/pentingnya-konsistensi-terapi</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tinsgrowcenter.com/artikel/komunikasi-positif-bebas-tantrum</loc>
+    <lastmod>2026-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

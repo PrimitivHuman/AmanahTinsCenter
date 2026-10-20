@@ -134,8 +134,17 @@ const routes = [
     ],
   },
 
-  // 404 fallback
-  { path: '/:pathMatch(.*)*', redirect: '/' },
+  // 404 Not Found Page (Mencegah Soft 404 di Google Search Console)
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('../views/NotFoundView.vue'),
+    meta: {
+      title: 'Halaman Tidak Ditemukan (404)',
+      description: 'Halaman yang Anda tuju tidak ditemukan pada situs Klinik Amanah Tins Center.',
+      robots: 'noindex, follow',
+    },
+  },
 ]
 
 const router = createRouter({
@@ -164,11 +173,17 @@ router.beforeEach(async (to, from, next) => {
 // Dynamic SEO & Title Update Setelah Navigasi
 const seo = useSeo()
 router.afterEach((to) => {
-  // Hanya atur jika bukan halaman detail artikel (karena detail artikel memuat judul dinamis sendiri dari database)
-  if (to.name !== 'article-detail') {
+  // Hanya atur jika bukan halaman detail artikel / detail layanan (karena keduanya mengatur meta dinamis spesifik sendiri)
+  if (to.name !== 'article-detail' && to.name !== 'service-detail') {
+    const isAdmin = to.path.startsWith('/admin')
+    const robots = to.meta.robots || (isAdmin ? 'noindex, nofollow' : 'index, follow')
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://tinsgrowcenter.com'
+
     seo.updateSeo({
       title: to.meta.title || '',
       description: to.meta.description || '',
+      url: `${origin}${to.path}`,
+      robots,
     })
   }
 })

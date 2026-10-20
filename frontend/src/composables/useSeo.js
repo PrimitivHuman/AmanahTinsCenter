@@ -39,6 +39,7 @@ export function useSeo() {
     image,
     url,
     type = 'website',
+    robots = 'index, follow',
   } = {}) {
     const fullTitle = title
       ? `${title} | Amanah Tin's Center`
@@ -51,6 +52,7 @@ export function useSeo() {
 
     // Standard Meta
     setMetaTag('description', desc, 'name')
+    setMetaTag('robots', robots, 'name')
 
     // Open Graph (WhatsApp, Facebook, Telegram)
     setMetaTag('og:site_name', "Amanah Tin's Center", 'property')

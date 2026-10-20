@@ -516,19 +516,35 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import api from '../services/api'
 import { useClinicSettings } from '../composables/useClinicSettings'
+import { useSeo } from '../composables/useSeo'
 import PublicLayout from '../layouts/PublicLayout.vue'
 
 const { waLink, waLinkEncoded } = useClinicSettings()
 const route = useRoute()
+const seo = useSeo()
 const loading = ref(false)
 const apiTeam = ref([])
 const isLoadingTeam = ref(true)
 
+function updateServiceSeo() {
+  if (!service.value) return
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://tinsgrowcenter.com'
+  const slug = route.params.slug || 'terapi-wicara'
+  seo.updateSeo({
+    title: `${service.value.name} - Layanan Terapi Anak Jagakarsa`,
+    description: service.value.heroDesc || `Layanan ${service.value.name} terpadu berstandar medis ramah anak di Jagakarsa Jakarta Selatan.`,
+    image: service.value.heroImage,
+    url: `${origin}/layanan/${slug}`,
+    type: 'website',
+  })
+}
+
 onMounted(async () => {
+  updateServiceSeo()
   try {
     const res = await api.get('/team')
     const data = Array.isArray(res.data) ? res.data : (res.data?.data || [])
@@ -540,6 +556,10 @@ onMounted(async () => {
   } finally {
     isLoadingTeam.value = false
   }
+})
+
+watch(() => route.params.slug, () => {
+  updateServiceSeo()
 })
 
 const checkedSymptoms = ref([])
