@@ -242,10 +242,9 @@
 
         <div class="team-grid">
           <div v-for="member in displayTeam" :key="member.name" class="team-card">
-            <!-- Photo Frame with Specialty & STR Badges -->
+            <!-- Photo Frame with STR Badge -->
             <div class="team-photo-wrap">
               <img :src="member.photo" :alt="member.name" class="team-real-img" loading="lazy" decoding="async" />
-              <span class="team-photo-badge">{{ member.specialtyBadge }}</span>
               <span class="team-str-badge">
                 <span class="material-symbols-outlined str-icon">verified</span>
                 {{ member.str }}
@@ -305,8 +304,8 @@
           <div class="stat-pill">
             <span class="material-symbols-outlined stat-pill-icon">diversity_1</span>
             <div>
-              <span class="stat-pill-val">400+ Keluarga</span>
-              <span class="stat-pill-lbl">Terdampingi di Jagakarsa</span>
+              <span class="stat-pill-val">15.000+ Sesi</span>
+              <span class="stat-pill-lbl">Terapi Terlaksana di Jagakarsa</span>
             </div>
           </div>
           <div class="stat-pill">
@@ -500,8 +499,8 @@
       <div class="container">
         <div class="contact-header">
           <div class="contact-badge">
-            <span class="material-symbols-outlined">support_agent</span>
-            <span>HUBUNGI KAMI</span>
+            <span class="material-symbols-outlined">distance</span>
+            <span>PUSAT INFORMASI & LOKASI</span>
           </div>
           <h2 class="contact-title">Konsultasi & Kunjungi Klinik Kami</h2>
           <p class="contact-sub">
@@ -509,96 +508,108 @@
           </p>
         </div>
 
-        <div class="contact-card-wrapper">
-          <div class="contact-inner-card">
-            <div class="contact-inner-header">
-              <h3 class="contact-inner-title">Pusat Informasi & Lokasi</h3>
-              <p class="contact-inner-sub">Silakan hubungi kami atau berkunjung ke klinik kami pada jam kerja.</p>
+        <!-- Map Canvas with Floating Info Pop-up Card -->
+        <div class="map-section-wrapper">
+          <div class="map-canvas-container">
+            <!-- Google Maps Embed Iframe -->
+            <iframe
+              :src="mapEmbedUrl"
+              class="map-iframe"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Peta Lokasi Amanah Tin's Center"
+            ></iframe>
+
+            <!-- Pop-up Informasi (Floating Card) -->
+            <div class="map-popup-card">
+              <h3 class="map-popup-title">
+                {{ settings?.clinic_name || "Amanah Tin's Center" }} - Jagakarsa
+              </h3>
+              <div class="map-popup-accent"></div>
+
+              <div class="map-popup-items">
+                <!-- Alamat -->
+                <div class="map-popup-row">
+                  <span class="material-symbols-outlined map-icon-orange">location_on</span>
+                  <div class="map-row-content">
+                    <p class="map-row-text">
+                      {{ settings?.address || 'Jl. Gudang Baru Jl. Moch. Kahfi II No.5, RT.1/RW.4, Jagakarsa, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12620' }}
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Telepon -->
+                <div class="map-popup-row">
+                  <span class="material-symbols-outlined map-icon-orange">call</span>
+                  <div class="map-row-content">
+                    <p class="map-row-text">
+                      <a :href="`tel:${(settings?.phone || '0217262849').replace(/[^0-9+]/g, '')}`" class="map-link">
+                        {{ settings?.phone || '021 – 7262849' }}
+                      </a>
+                      <template v-if="formattedContactWa">
+                        <span class="map-sep">|</span>
+                        <a :href="waLink('Halo Admin Amanah Tin\'s Center, saya ingin bertanya tentang layanan')" target="_blank" rel="noopener noreferrer" class="map-link">
+                          {{ formattedContactWa }}
+                        </a>
+                      </template>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="map-popup-row">
+                  <span class="material-symbols-outlined map-icon-orange">mail</span>
+                  <div class="map-row-content">
+                    <p class="map-row-text">
+                      <a :href="`mailto:${settings?.email || 'informasi@amanahtinscenter.com'}`" class="map-link">
+                        {{ settings?.email || 'informasi@amanahtinscenter.com' }}
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="map-popup-actions">
+                <router-link to="/jadwal-pendaftaran" class="map-popup-btn btn-navy">
+                  Daftar Sekarang
+                </router-link>
+                <a
+                  :href="settings?.maps_url || 'https://maps.app.goo.gl/q96p7NeJuXLPbY5VA'"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="map-popup-btn btn-navy"
+                >
+                  Lihat Lokasi
+                </a>
+              </div>
             </div>
+          </div>
 
-            <div class="contact-items-grid">
-              <!-- Alamat -->
-              <div class="contact-item">
-                <div class="contact-icon-circle bg-primary-soft">
-                  <span class="material-symbols-outlined">location_on</span>
-                </div>
-                <div class="contact-item-info">
-                  <h4 class="contact-item-label">Alamat Klinik</h4>
-                  <p class="contact-item-val">{{ settings?.address || 'Jl. Raya Jagakarsa No. 12, Jagakarsa, Jakarta Selatan 12620' }}</p>
-                  <a :href="settings?.maps_url || 'https://maps.google.com/?q=Amanah+Tins+Center'" target="_blank" rel="noopener noreferrer" class="contact-item-link">
-                    <span class="material-symbols-outlined">map</span>
-                    <span>Buka di Google Maps</span>
-                  </a>
-                </div>
+          <!-- Bottom Operational Strip -->
+          <div class="clinic-quick-strip">
+            <div class="quick-strip-item">
+              <div class="quick-strip-icon bg-primary-soft">
+                <span class="material-symbols-outlined">schedule</span>
               </div>
-
-              <!-- WhatsApp -->
-              <div class="contact-item">
-                <div class="contact-icon-circle bg-secondary-soft">
-                  <span class="material-symbols-outlined">chat</span>
-                </div>
-                <div class="contact-item-info">
-                  <h4 class="contact-item-label">WhatsApp Resmi</h4>
-                  <p class="contact-item-val">{{ formattedContactWa }} (Respon cepat selama jam layanan)</p>
-                  <a :href="waLink('Halo Admin Amanah Tin\'s Center, saya ingin berkonsultasi seputar tumbuh kembang anak')" target="_blank" rel="noopener noreferrer" class="contact-item-link contact-link-wa">
-                    <span class="material-symbols-outlined">chat</span>
-                    <span>Chat WhatsApp Sekarang</span>
-                  </a>
-                </div>
+              <div class="quick-strip-info">
+                <span class="quick-strip-label">Jam Operasional Klinik</span>
+                <span class="quick-strip-val">
+                  {{ settings?.weekday_hours || 'Senin – Jumat: 08.00 – 17.00 WIB' }}
+                  <span class="val-separator">|</span>
+                  {{ settings?.weekend_hours || 'Sabtu: 08.00 – 15.00 WIB (Minggu Libur)' }}
+                </span>
               </div>
-
-              <!-- Telepon -->
-              <div class="contact-item">
-                <div class="contact-icon-circle bg-primary-soft">
-                  <span class="material-symbols-outlined">call</span>
-                </div>
-                <div class="contact-item-info">
-                  <h4 class="contact-item-label">Telepon Klinik</h4>
-                  <p class="contact-item-val">{{ settings?.phone || '(021) 1234 5678' }}</p>
-                  <a :href="`tel:${(settings?.phone || '02112345678').replace(/[^0-9+]/g, '')}`" class="contact-item-link">
-                    <span class="material-symbols-outlined">phone_forwarded</span>
-                    <span>Panggil Telepon Sekarang</span>
-                  </a>
-                </div>
+            </div>
+            <div class="quick-strip-divider"></div>
+            <div class="quick-strip-item">
+              <div class="quick-strip-icon bg-wa-soft">
+                <span class="material-symbols-outlined">chat</span>
               </div>
-
-              <!-- Email -->
-              <div class="contact-item">
-                <div class="contact-icon-circle bg-tertiary-soft">
-                  <span class="material-symbols-outlined">mail</span>
-                </div>
-                <div class="contact-item-info">
-                  <h4 class="contact-item-label">Email Resmi</h4>
-                  <p class="contact-item-val">{{ settings?.email || 'info@amanahtinscenter.com' }}</p>
-                  <a :href="`mailto:${settings?.email || 'info@amanahtinscenter.com'}?subject=Konsultasi%20Tumbuh%20Kembang%20Anak`" class="contact-item-link">
-                    <span class="material-symbols-outlined">outgoing_mail</span>
-                    <span>Kirim Surel Sekarang</span>
-                  </a>
-                </div>
-              </div>
-
-              <!-- Jam Operasional (Full width) -->
-              <div class="contact-item contact-item-wide">
-                <div class="contact-icon-circle bg-tertiary-soft">
-                  <span class="material-symbols-outlined">schedule</span>
-                </div>
-                <div class="contact-item-info">
-                  <h4 class="contact-item-label">Jam Operasional</h4>
-                  <ul class="operating-hours-list">
-                    <li class="hours-row">
-                      <span>Hari Kerja:</span>
-                      <span class="hours-bold">{{ settings?.weekday_hours || 'Senin – Jumat: 08.00 – 17.00 WIB' }}</span>
-                    </li>
-                    <li class="hours-row" v-if="settings?.weekend_hours">
-                      <span>Akhir Pekan:</span>
-                      <span class="hours-bold">{{ settings.weekend_hours }}</span>
-                    </li>
-                    <li class="hours-row hours-closed">
-                      <span>Reservasi Online:</span>
-                      <span>Buka 24 Jam via Website &amp; WhatsApp</span>
-                    </li>
-                  </ul>
-                </div>
+              <div class="quick-strip-info">
+                <span class="quick-strip-label">Reservasi &amp; Konsultasi Online</span>
+                <span class="quick-strip-val">Tersedia 24 Jam via Website &amp; WhatsApp Resmi</span>
               </div>
             </div>
           </div>
@@ -623,6 +634,11 @@ const formattedContactWa = computed(() => {
     return `+62 ${p.slice(2, 5)}-${p.slice(5, 9)}-${p.slice(9)}`
   }
   return p ? `+${p}` : '0821 8889 9900'
+})
+
+const mapEmbedUrl = computed(() => {
+  const addr = settings.value?.address || "Amanah Tin's Center, Jl. Gudang Baru Jl. Moch. Kahfi II No.5, Jagakarsa, Jakarta Selatan"
+  return `https://maps.google.com/maps?q=${encodeURIComponent(addr)}&t=&z=15&ie=UTF8&iwloc=&output=embed`
 })
 
 // 1. Four Pillars
@@ -685,11 +701,11 @@ const services = [
   {
     icon: 'sentiment_very_satisfied',
     iconBg: 'svc-bg-high',
-    title: 'Psikologi Anak',
-    tag: 'Child Psychology',
+    title: 'Psikolog',
+    tag: 'Clinical Psychologist',
     tagColor: 'tag-primary',
-    desc: 'Mendampingi aspek emosional, perilaku, kesiapan masuk sekolah dasar, asesmen IQ, serta konsultasi parenting terpadu.',
-    link: '/layanan/psikologi-anak'
+    desc: 'Layanan konsultasi & asesmen psikologi profesional untuk Anak, Remaja, hingga Dewasa & Keluarga.',
+    link: '/layanan/psikolog'
   }
 ]
 
@@ -1801,6 +1817,12 @@ section[id] {
   }
 }
 
+@media (min-width: 1280px) {
+  .services-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .service-card {
   background-color: var(--surface-container-lowest);
   border-radius: 1.25rem;
@@ -1857,6 +1879,21 @@ section[id] {
   color: var(--primary);
 }
 
+.svc-bg-indigo {
+  background-color: #e0e7ff;
+  color: #4338ca;
+}
+
+.svc-bg-violet {
+  background-color: #ede9fe;
+  color: #7c3aed;
+}
+
+.svc-bg-emerald {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
 .svc-title {
   font-family: var(--font-headline);
   font-size: 17px;
@@ -1882,6 +1919,18 @@ section[id] {
 
 .tag-tertiary {
   color: var(--tertiary);
+}
+
+.tag-indigo {
+  color: #4338ca;
+}
+
+.tag-violet {
+  color: #7c3aed;
+}
+
+.tag-emerald {
+  color: #059669;
 }
 
 .svc-desc {
@@ -2025,21 +2074,6 @@ section[id] {
 
 .team-card:hover .team-real-img {
   transform: scale(1.05);
-}
-
-.team-photo-badge {
-  position: absolute;
-  top: 0.85rem;
-  left: 0.85rem;
-  background: rgba(0, 99, 132, 0.9);
-  color: #ffffff;
-  font-family: var(--font-headline);
-  font-size: 11px;
-  font-weight: 700;
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
-  backdrop-filter: blur(4px);
-  letter-spacing: 0.2px;
 }
 
 .team-str-badge {
@@ -2915,77 +2949,177 @@ section[id] {
   line-height: 1.6;
 }
 
-.contact-card-wrapper {
-  max-width: 860px;
+/* ==================== 9. MAP & POP-UP INFORMASI ==================== */
+.map-section-wrapper {
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.contact-inner-card {
-  background-color: var(--surface-container-low);
-  border-radius: 1.5rem;
-  padding: 2rem;
-  border: 1px solid rgba(191, 200, 206, 0.35);
-  box-shadow: var(--shadow-soft);
+.map-canvas-container {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(191, 200, 206, 0.4);
+  background-color: #e5e7eb;
+}
+
+.map-iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Floating Pop-up Card (As in user reference image) */
+.map-popup-card {
+  position: absolute;
+  top: 50%;
+  right: 36px;
+  transform: translateY(-50%);
+  width: 380px;
+  max-width: calc(100% - 72px);
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 1.75rem 1.6rem;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16), 0 4px 12px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  z-index: 5;
+  transition: box-shadow 0.3s ease;
+}
+
+.map-popup-card:hover {
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.2), 0 6px 16px rgba(15, 23, 42, 0.1);
+}
+
+.map-popup-title {
+  font-family: var(--font-headline);
+  font-size: 1.22rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.3;
+  margin: 0;
+}
+
+/* Orange Accent Bar under Title */
+.map-popup-accent {
+  width: 36px;
+  height: 3.5px;
+  background-color: #e26a2c;
+  border-radius: 2px;
+  margin: 0.75rem 0 1.25rem;
+}
+
+.map-popup-items {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .contact-inner-card {
-    padding: 2.5rem;
-  }
-}
-
-.contact-inner-title {
-  font-family: var(--font-headline);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--primary);
-  margin-bottom: 0.2rem;
-}
-
-.contact-inner-sub {
-  font-size: 13.5px;
-  color: var(--on-surface-variant);
-}
-
-.contact-items-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
-}
-
-@media (min-width: 768px) {
-  .contact-items-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.contact-item {
-  background-color: var(--surface-container-lowest);
-  border-radius: 1rem;
-  padding: 1.25rem;
-  border: 1px solid rgba(191, 200, 206, 0.25);
-  display: flex;
-  align-items: flex-start;
   gap: 1rem;
 }
 
-.contact-item-compact {
+.map-popup-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.map-icon-orange {
+  font-size: 20px;
+  color: #e26a2c;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.map-row-content {
+  flex: 1;
+}
+
+.map-row-text {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #475569;
+  margin: 0;
+}
+
+.map-link {
+  color: #475569;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.map-link:hover {
+  color: #e26a2c;
+  text-decoration: underline;
+}
+
+.map-sep {
+  margin: 0 0.35rem;
+  color: #94a3b8;
+}
+
+/* Action Buttons (Solid Deep Navy Pills) */
+.map-popup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+}
+
+.map-popup-btn {
+  display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
+  width: 100%;
+  padding: 0.78rem 1.25rem;
+  border-radius: var(--radius-full);
+  font-size: 14.5px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.01em;
 }
 
-@media (min-width: 768px) {
-  .contact-item-wide {
-    grid-column: span 2;
-  }
+.btn-navy {
+  background-color: #0d2e4f;
+  color: #ffffff;
+  border: 1px solid #0d2e4f;
 }
 
-.contact-icon-circle {
-  width: 44px;
-  height: 44px;
+.btn-navy:hover {
+  background-color: #061c33;
+  border-color: #061c33;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(13, 46, 79, 0.3);
+  text-decoration: none;
+}
+
+/* Bottom Operational Strip */
+.clinic-quick-strip {
+  margin-top: 1.25rem;
+  background-color: var(--surface-container-low);
+  border: 1px solid rgba(191, 200, 206, 0.35);
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.quick-strip-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+}
+
+.quick-strip-icon {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -2993,22 +3127,8 @@ section[id] {
   flex-shrink: 0;
 }
 
-.contact-icon-circle .material-symbols-outlined {
-  font-size: 22px;
-}
-
-.contact-icon-circle-sm {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.contact-icon-circle-sm .material-symbols-outlined {
-  font-size: 18px;
+.quick-strip-icon .material-symbols-outlined {
+  font-size: 20px;
 }
 
 .bg-primary-soft {
@@ -3016,113 +3136,70 @@ section[id] {
   color: var(--primary);
 }
 
-.bg-secondary-soft {
-  background-color: var(--secondary-fixed);
-  color: var(--secondary);
-}
-
-.bg-tertiary-soft {
-  background-color: var(--tertiary-fixed);
-  color: var(--tertiary);
-}
-
-.contact-item-info {
-  flex: 1;
-}
-
-.contact-item-label {
-  font-family: var(--font-headline);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--on-surface);
-}
-
-.contact-item-val {
-  font-size: 13.5px;
-  color: var(--on-surface-variant);
-  margin-top: 0.2rem;
-  line-height: 1.45;
-}
-
-.contact-item-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: var(--primary);
-  text-decoration: none;
-  margin-top: 0.65rem;
-  padding: 0.35rem 0.85rem;
-  background-color: rgba(0, 99, 132, 0.08);
-  border-radius: 9999px;
-  transition: all 0.2s ease;
-  width: fit-content;
-}
-
-.contact-item-link:hover {
-  background-color: var(--primary);
-  color: #ffffff;
-  transform: translateX(3px);
-  text-decoration: none;
-  box-shadow: 0 2px 8px rgba(0, 99, 132, 0.2);
-}
-
-.contact-item-link.contact-link-wa {
+.bg-wa-soft {
+  background-color: rgba(37, 211, 102, 0.15);
   color: #1b873f;
-  background-color: rgba(37, 211, 102, 0.12);
 }
 
-.contact-item-link.contact-link-wa:hover {
-  background-color: #25D366;
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
-}
-
-.contact-item-link .material-symbols-outlined {
-  font-size: 16px;
-}
-
-.contact-compact-label {
-  display: block;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--on-surface);
-}
-
-.contact-compact-val {
-  font-size: 13.5px;
-  color: var(--on-surface-variant);
-}
-
-.operating-hours-list {
-  list-style: none;
-  padding: 0;
-  margin: 0.5rem 0 0 0;
+.quick-strip-info {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  font-size: 13.5px;
+}
+
+.quick-strip-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--on-surface-variant);
 }
 
-.hours-row {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(191, 200, 206, 0.2);
-  padding-bottom: 0.35rem;
-}
-
-.hours-bold {
+.quick-strip-val {
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--on-surface);
+  margin-top: 0.1rem;
 }
 
-.hours-closed {
-  border-bottom: none;
-  color: var(--tertiary);
-  font-weight: 500;
-  padding-top: 0.2rem;
+.val-separator {
+  margin: 0 0.4rem;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.quick-strip-divider {
+  width: 1px;
+  height: 36px;
+  background-color: rgba(191, 200, 206, 0.4);
+}
+
+@media (max-width: 991px) {
+  .map-canvas-container {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .map-iframe {
+    height: 350px;
+  }
+  .map-popup-card {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    border-top: 1px solid rgba(226, 232, 240, 0.9);
+    padding: 1.5rem 1.25rem;
+  }
+  .clinic-quick-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .quick-strip-divider {
+    display: none;
+  }
 }
 
 /* ==================== COMPREHENSIVE RESPONSIVE STYLES (MOBILE & TABLET) ==================== */
@@ -3589,7 +3666,7 @@ section[id] {
     font-size: 14px;
   }
 
-  /* Contact Section Mobile Polish */
+  /* Map & Pop-up Section Mobile Polish */
   .contact-section {
     padding: 2.25rem 0 3rem;
   }
@@ -3602,52 +3679,41 @@ section[id] {
   .contact-sub {
     font-size: 13.5px;
   }
-  .contact-inner-card {
-    padding: 1.25rem 1rem;
-    border-radius: 1.25rem;
-    gap: 1.15rem;
+  .map-canvas-container {
+    border-radius: 1rem;
   }
-  .contact-inner-title {
+  .map-iframe {
+    height: 300px;
+  }
+  .map-popup-card {
+    padding: 1.35rem 1.15rem;
+  }
+  .map-popup-title {
     font-size: 1.15rem;
   }
-  .contact-inner-sub {
-    font-size: 12.5px;
+  .map-popup-accent {
+    margin: 0.6rem 0 1rem;
   }
-  .contact-items-grid {
+  .map-popup-items {
     gap: 0.85rem;
   }
-  .contact-item {
-    padding: 0.95rem;
+  .map-row-text {
+    font-size: 12.5px;
+  }
+  .map-popup-actions {
+    margin-top: 1.25rem;
+    gap: 0.5rem;
+  }
+  .map-popup-btn {
+    padding: 0.72rem 1rem;
+    font-size: 13.5px;
+  }
+  .clinic-quick-strip {
+    padding: 1rem;
     border-radius: 0.85rem;
-    gap: 0.75rem;
-    word-break: break-word;
   }
-  .contact-icon-circle {
-    width: 38px;
-    height: 38px;
-  }
-  .contact-icon-circle .material-symbols-outlined {
-    font-size: 20px;
-  }
-  .contact-item-label {
-    font-size: 14px;
-  }
-  .contact-item-val {
+  .quick-strip-val {
     font-size: 12.5px;
-    line-height: 1.4;
-    word-break: break-word;
-  }
-  .contact-item-link {
-    font-size: 12px;
-    width: 100%;
-    justify-content: center;
-    padding: 0.45rem 0.75rem;
-    margin-top: 0.5rem;
-  }
-  .operating-hours-list {
-    font-size: 12.5px;
-    gap: 0.3rem;
-    margin-top: 0.35rem;
   }
 }
 </style>

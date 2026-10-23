@@ -763,7 +763,7 @@ function injectArticleJsonLd(article) {
     '@type': 'Article',
     'headline': article.title,
     'description': article.excerpt || article.title,
-    'image': article.image || article.thumbnail || `${BASE_URL}/favicon.svg`,
+    'image': article.image || article.thumbnail || `${BASE_URL}/iconATC.jpeg`,
     'url': `${BASE_URL}/artikel/${article.slug}`,
     'datePublished': article.published_at || article.created_at,
     'dateModified': article.updated_at || article.published_at || article.created_at,
@@ -777,7 +777,7 @@ function injectArticleJsonLd(article) {
       'url': BASE_URL,
       'logo': {
         '@type': 'ImageObject',
-        'url': `${BASE_URL}/favicon.svg`
+        'url': `${BASE_URL}/iconATC.jpeg`
       }
     },
     'mainEntityOfPage': {

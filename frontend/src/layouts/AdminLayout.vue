@@ -6,7 +6,7 @@
         <!-- Clinic Brand Header -->
         <div class="brand-box">
           <div class="brand-avatar">
-            <span class="material-symbols-outlined">child_care</span>
+            <img src="/iconATC.jpeg" alt="Logo Amanah Tin's Center" class="brand-logo-img" />
           </div>
           <div class="brand-text" v-if="!isCollapsed">
             <h2 class="brand-title">Amanah Tin's Center</h2>
@@ -162,12 +162,20 @@ async function handleLogout() {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: var(--primary-fixed, #c1e8ff);
-  color: var(--primary, #006384);
+  overflow: hidden;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 99, 132, 0.12);
+  flex-shrink: 0;
+}
+
+.brand-avatar .brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .brand-title {

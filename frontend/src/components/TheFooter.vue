@@ -7,7 +7,7 @@
         <div class="footer-brand">
           <router-link to="/" class="footer-logo">
             <span class="footer-logo-icon">
-              <span class="material-symbols-outlined">child_care</span>
+              <img src="/iconATC.jpeg" alt="Logo Amanah Tin's Center" class="footer-logo-img" />
             </span>
             <div>
               <span class="footer-brand-name">{{ settings?.clinic_name || "Amanah Tin's Center" }}</span>
@@ -205,13 +205,19 @@ const hasSocialLinks = computed(() => {
 .footer-logo-icon {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background-color: rgba(136, 208, 244, 0.2);
-  color: var(--inverse-primary);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.footer-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .footer-brand-name {

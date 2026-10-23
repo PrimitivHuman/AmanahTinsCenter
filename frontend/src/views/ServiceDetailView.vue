@@ -110,8 +110,8 @@
                       <span class="material-symbols-outlined">sentiment_satisfied</span>
                     </div>
                     <div>
-                      <h4 class="float-tag-title">Metode Fun &amp; Play-Based</h4>
-                      <p class="float-tag-sub">Bebas stres, nyaman, dan disesuaikan minat si Kecil</p>
+                      <h4 class="float-tag-title">{{ service.heroBadgeTitle || 'Metode Fun & Play-Based' }}</h4>
+                      <p class="float-tag-sub">{{ service.heroBadgeSub || 'Bebas stres, nyaman, dan disesuaikan minat si Kecil' }}</p>
                     </div>
                   </div>
                   <span class="float-loc-pill">Jagakarsa Center</span>
@@ -122,12 +122,74 @@
         </div>
       </section>
 
+      <!-- ==================== SECTION: 3 KATEGORI LAYANAN UTAMA (KHUSUS / JIKA TERSEDIA) ==================== -->
+      <section v-if="service.ageCategories" class="section-age-categories">
+        <div class="container">
+          <div class="section-header center">
+            <span class="section-eyebrow eyebrow-primary">{{ service.ageCategoriesEyebrow || '3 Kategori Layanan' }}</span>
+            <h2 class="section-title">{{ service.ageCategoriesTitle || 'Spesialisasi Psikologi Berdasarkan Kategori Usia' }}</h2>
+            <p class="section-desc">
+              {{ service.ageCategoriesDesc || 'Pendampingan kesehatan mental profesional yang dirancang khusus sesuai dinamika perkembangan: Psikologi Anak, Psikologi Remaja, serta Psikologi Dewasa & Konseling Keluarga.' }}
+            </p>
+          </div>
+
+          <div class="age-categories-grid">
+            <div
+              v-for="cat in service.ageCategories"
+              :key="cat.title"
+              class="age-cat-card"
+              :class="cat.cardClass"
+            >
+              <div class="age-cat-top">
+                <div class="age-cat-icon-wrap" :class="cat.iconBgClass">
+                  <span class="material-symbols-outlined">{{ cat.icon }}</span>
+                </div>
+                <span class="age-cat-badge" :class="cat.badgeClass">{{ cat.badge }}</span>
+              </div>
+
+              <h3 class="age-cat-title">{{ cat.title }}</h3>
+              <div class="age-cat-target">
+                <span class="material-symbols-outlined target-icon">schedule</span>
+                <span>Sasaran Usia: <strong>{{ cat.ageTarget }}</strong></span>
+              </div>
+              <p class="age-cat-desc">{{ cat.desc }}</p>
+
+              <div class="age-cat-focus-box">
+                <div class="focus-box-title">
+                  <span class="material-symbols-outlined">checklist</span>
+                  <span>Fokus Penanganan Utama:</span>
+                </div>
+                <ul class="age-cat-list">
+                  <li v-for="point in cat.points" :key="point">
+                    <span class="material-symbols-outlined point-check">check_circle</span>
+                    <span>{{ point }}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="age-cat-footer">
+                <a
+                  :href="waLink(`Halo Admin Amanah Tin\'s Center, saya ingin reservasi konsultasi untuk ${cat.title}`)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-cat-wa"
+                  :class="cat.btnClass"
+                >
+                  <span class="material-symbols-outlined fill">chat</span>
+                  <span>Konsultasi {{ cat.shortTitle || cat.title }}</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- ==================== SECTION 2: INDIKASI & DETEKSI GEJALA (INTERAKTIF) ==================== -->
       <section class="section-indications">
         <div class="container">
           <div class="section-header center">
-            <span class="section-eyebrow eyebrow-secondary">Deteksi Dini Perkembangan</span>
-            <h2 class="section-title">Kapan Si Kecil Perlu Asesmen {{ service.shortName }}?</h2>
+            <span class="section-eyebrow eyebrow-secondary">{{ service.indicationsEyebrow || 'Deteksi Dini Perkembangan' }}</span>
+            <h2 class="section-title">{{ service.indicationsTitle || `Kapan Si Kecil Perlu Asesmen ${service.shortName}?` }}</h2>
             <p class="section-desc">
               {{ service.indicationsDesc }}
             </p>
@@ -137,7 +199,7 @@
           <div class="symptom-check-toolbar">
             <div class="toolbar-info">
               <span class="material-symbols-outlined toolbar-icon">checklist_rtl</span>
-              <span><strong>Panduan Ayah &amp; Bunda:</strong> Klik/tandai keluhan yang saat ini sering diamati pada si Kecil di rumah:</span>
+              <span><strong>{{ service.toolbarGuidanceTitle || 'Panduan Ayah & Bunda' }}:</strong> {{ service.toolbarGuidanceText || 'Klik/tandai keluhan yang saat ini sering diamati pada si Kecil di rumah:' }}</span>
             </div>
             <div class="toolbar-counter" :class="{ 'has-checked': checkedSymptoms.length > 0 }">
               <span class="counter-num">{{ checkedSymptoms.length }}</span>
@@ -181,7 +243,7 @@
               <span class="material-symbols-outlined star-icon">verified</span>
               <div>
                 <h4 class="alert-title">{{ checkedSymptoms.length }} Indikasi Ditandai untuk {{ service.shortName }}</h4>
-                <p class="alert-sub">Intervensi sedini mungkin pada masa emas anak memberikan hasil paling optimal sebelum hambatan menetap.</p>
+                <p class="alert-sub">{{ service.alertSub || 'Intervensi sedini mungkin pada masa emas anak memberikan hasil paling optimal sebelum hambatan menetap.' }}</p>
               </div>
             </div>
             <a :href="getCheckedSymptomsWaUrl" target="_blank" rel="noopener noreferrer" class="btn-alert-wa">
@@ -197,7 +259,7 @@
                 <span class="material-symbols-outlined">lightbulb</span>
               </div>
               <p class="guidance-text">
-                <strong>Catatan Terapis:</strong> Jangan menunggu hingga usia sekolah. "Wait and see" sering kali menunda penanganan masa emas (golden period) otak anak.
+                <strong>{{ service.guidanceAuthor || 'Catatan Terapis' }}:</strong> {{ service.guidanceText || 'Jangan menunggu hingga usia sekolah. "Wait and see" sering kali menunda penanganan masa emas (golden period) otak anak.' }}
               </p>
             </div>
             <a href="#jadwal-biaya" class="guidance-link">
@@ -285,10 +347,10 @@
       <section class="section-process">
         <div class="container">
           <div class="section-header center">
-            <span class="section-eyebrow eyebrow-primary">Tahapan Berkelanjutan</span>
-            <h2 class="section-title">Alur Proses Terapi {{ service.shortName }}</h2>
+            <span class="section-eyebrow eyebrow-primary">{{ service.processEyebrow || 'Tahapan Berkelanjutan' }}</span>
+            <h2 class="section-title">{{ service.processTitle || `Alur Proses Terapi ${service.shortName}` }}</h2>
             <p class="section-desc">
-              Pendampingan terstruktur dari hari pertama asesmen hingga anak mandiri berkomunikasi dan beraktivitas, dengan keterlibatan penuh orang tua.
+              {{ service.processDesc || 'Pendampingan terstruktur dari hari pertama asesmen hingga anak mandiri berkomunikasi dan beraktivitas, dengan keterlibatan penuh orang tua.' }}
             </p>
           </div>
 
@@ -320,11 +382,11 @@
         <div class="container">
           <div class="focus-header">
             <div>
-              <span class="section-eyebrow eyebrow-primary">Praktisi Berpengalaman &amp; Ber-STR</span>
-              <h2 class="section-title">Tim Terapis {{ service.shortName }} Kami</h2>
+              <span class="section-eyebrow eyebrow-primary">{{ service.teamEyebrow || 'Praktisi Berpengalaman & Ber-STR' }}</span>
+              <h2 class="section-title">{{ service.teamTitle || `Tim Terapis ${service.shortName} Kami` }}</h2>
             </div>
             <p class="focus-header-desc">
-              Didukung oleh terapis lulusan program studi resmi dengan sertifikasi keahlian pediatrik dan pendekatan penuh kesabaran.
+              {{ service.teamDesc || 'Didukung oleh terapis lulusan program studi resmi dengan sertifikasi keahlian pediatrik dan pendekatan penuh kesabaran.' }}
             </p>
           </div>
 
@@ -393,10 +455,10 @@
       <section class="section-pricing" id="jadwal-biaya">
         <div class="container">
           <div class="section-header center">
-            <span class="section-eyebrow eyebrow-primary">Jadwal &amp; Investasi Tumbuh Kembang</span>
-            <h2 class="section-title">Paket Terapi Transparan</h2>
+            <span class="section-eyebrow eyebrow-primary">{{ service.pricingEyebrow || 'Jadwal & Investasi Tumbuh Kembang' }}</span>
+            <h2 class="section-title">{{ service.pricingTitle || 'Paket Terapi Transparan' }}</h2>
             <p class="section-desc">
-              Investasi terbaik untuk kemandirian dan rasa percaya diri masa depan anak Anda, tanpa biaya tersembunyi.
+              {{ service.pricingDesc || 'Investasi terbaik untuk kemandirian dan rasa percaya diri masa depan anak Anda, tanpa biaya tersembunyi.' }}
             </p>
           </div>
 
@@ -469,10 +531,10 @@
       <section class="section-faq">
         <div class="container max-w-faq">
           <div class="section-header center">
-            <span class="section-eyebrow eyebrow-primary">Tanya Jawab Orang Tua</span>
-            <h2 class="section-title">FAQ Seputar {{ service.name }}</h2>
+            <span class="section-eyebrow eyebrow-primary">{{ service.faqEyebrow || 'Tanya Jawab Orang Tua' }}</span>
+            <h2 class="section-title">{{ service.faqTitle || `FAQ Seputar ${service.name}` }}</h2>
             <p class="section-desc">
-              Pertanyaan yang paling sering dikonsultasikan orang tua sebelum memulai sesi perdana.
+              {{ service.faqDesc || 'Pertanyaan yang paling sering dikonsultasikan orang tua sebelum memulai sesi perdana.' }}
             </p>
           </div>
 
@@ -1326,240 +1388,1155 @@ const allServicesData = {
 
   'psikologi-anak': {
     code: 'PSI',
-    name: 'Psikologi Anak',
-    shortName: 'Psikologi Anak',
+    name: 'Layanan Psikologi',
+    shortName: 'Psikologi',
     badgeIcon: 'psychology_alt',
-    categoryBadge: 'Program Spesialisasi Klinis • Psikologi Anak',
-    titleMain: 'Psikologi Perkembangan & Emosi Anak',
-    titleAccent: '(Child Psychology)',
-    heroDesc: 'Asesmen perkembangan holistik, tes IQ/kesiapan sekolah, konseling perilaku emosional anak, serta konsultasi parenting terpercaya bagi keluarga.',
+    categoryBadge: 'Program Spesialisasi Klinis • Layanan Psikologi Terpadu (3 Kategori Usia)',
+    titleMain: 'Layanan Asesmen & Konseling Psikologi',
+    titleAccent: '(Anak, Remaja & Dewasa)',
+    heroDesc: 'Pendampingan kesehatan mental profesional, evaluasi perkembangan, dan asesmen psikologis terpadu yang terbagi menjadi 3 kategori: Psikologi Anak, Psikologi Remaja, serta Psikologi Dewasa & Konseling Keluarga bersama tim Psikolog Klinis berizin resmi (SIPP).',
     heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB67b9MYgTLA9wMNy5O-9w6TkEnA6ohATQiH43KYlSlPAmDtbLTXu9B57WwqylRdCzHjZg7YF4bb-q7SJupFjxrp4FuawKotOYM7BPa42N5RxpxS7h6YusSVGHIhzMc89oCMmGfcZMwM64SG8vYil6uUlaDoMhfxkJZwyGiNg29r65HN9Ey3IEqYnmf_CSs1nLyHBOFCOiM9-yjTVs48R71yCk3d9Uzal8zzuTfeK8',
     ctaPrimaryText: 'Konsultasi & Asesmen Psikologi',
-    ctaFocusWord: 'Berkembang Harmonis',
+    ctaFocusWord: 'Kesehatan Mental & Karakter',
+    heroBadgeTitle: 'Ruang Aman & Rahasia (Safe Space)',
+    heroBadgeSub: 'Konseling privat, empatis & berstandar kode etik klinis',
     specs: [
       { icon: 'schedule', label: 'Durasi Sesi', value: '50 - 60 Menit', bgClass: 'spec-bg-blue' },
       { icon: 'person', label: 'Pendekatan', value: 'Konseling & Tes Klinis', bgClass: 'spec-bg-green' },
-      { icon: 'face', label: 'Rekomendasi', value: '2 - 14 Tahun', bgClass: 'spec-bg-orange' },
-      { icon: 'verified_user', label: 'Kualifikasi', value: 'Psikolog Klinis S2 (SIPP)', bgClass: 'spec-bg-blue' }
+      { icon: 'face', label: 'Sasaran Usia', value: 'Anak, Remaja & Dewasa', bgClass: 'spec-bg-orange' },
+      { icon: 'verified_user', label: 'Kualifikasi', value: 'Psikolog S2 (SIPP)', bgClass: 'spec-bg-blue' }
     ],
-    indicationsDesc: 'Kesehatan mental dan emosional adalah fondasi utama bagi tumbuh kembang kognitif serta karakter positif si Kecil.',
+    ageCategoriesEyebrow: '3 Kategori Layanan',
+    ageCategoriesTitle: 'Spesialisasi Psikologi Berdasarkan Kategori Usia',
+    ageCategoriesDesc: 'Pendampingan kesehatan mental profesional yang dirancang khusus sesuai dinamika perkembangan: Psikologi Anak, Psikologi Remaja, serta Psikologi Dewasa & Konseling Keluarga.',
+    ageCategories: [
+      {
+        cardClass: 'age-card-child',
+        iconBgClass: 'icon-bg-blue',
+        icon: 'child_care',
+        badge: 'Kategori 01',
+        badgeClass: 'badge-cat-blue',
+        title: 'Psikologi Anak',
+        shortTitle: 'Psikologi Anak',
+        ageTarget: '2 – 11 Tahun',
+        desc: 'Membantu anak mengenali emosi, melatih regulasi perilaku adaptif, asesmen kesiapan sekolah, stimulasi kognitif, dan terapi bermain yang menyenangkan.',
+        points: [
+          'Tes Kesiapan Masuk SD (NST) & Pemeriksaan IQ',
+          'Play Therapy & Bimbingan Regulasi Emosi',
+          'Penanganan Tantrum Ekstrem & Perilaku Agresif',
+          'Skrining ADHD, Spektrum Autisme & Hambatan Belajar'
+        ],
+        btnClass: 'btn-cat-blue'
+      },
+      {
+        cardClass: 'age-card-teen',
+        iconBgClass: 'icon-bg-green',
+        icon: 'school',
+        badge: 'Kategori 02',
+        badgeClass: 'badge-cat-green',
+        title: 'Psikologi Remaja',
+        shortTitle: 'Psikologi Remaja',
+        ageTarget: '12 – 18 Tahun',
+        desc: 'Mendampingi remaja melewati masa transisi pubertas, gejolak emosi (mood swing), stres akademik ujian, krisis percaya diri, dan penemuan arah masa depan.',
+        points: [
+          'Manajemen Stres Akademik & Kecemasan (Anxiety)',
+          'Krisis Identitas Diri, Percaya Diri & Mood Swing',
+          'Hambatan Relasi Sebaya, Bullying & Komunikasi Ortu',
+          'Tes Minat Bakat Jurusan & Pemetaan Potensi Karier'
+        ],
+        btnClass: 'btn-cat-green'
+      },
+      {
+        cardClass: 'age-card-adult',
+        iconBgClass: 'icon-bg-orange',
+        icon: 'psychology',
+        badge: 'Kategori 03',
+        badgeClass: 'badge-cat-orange',
+        title: 'Psikologi Dewasa & Keluarga',
+        shortTitle: 'Psikologi Dewasa',
+        ageTarget: '19+ Tahun & Orang Tua',
+        desc: 'Ruang konseling profesional dan privat untuk mengurai tekanan beban kerja (burnout), kecemasan, keharmonisan pernikahan, serta bimbingan pola asuh (parenting).',
+        points: [
+          'Konseling Stres Kerja, Burnout & Depresi Ringan',
+          'Parenting Coaching & Konsistensi Pola Asuh Positif',
+          'Konseling Pranikah, Harmonisasi Pasangan & Keluarga',
+          'Regulasi Emosi Dewasa, Overthinking & Self-Healing'
+        ],
+        btnClass: 'btn-cat-orange'
+      }
+    ],
+    indicationsEyebrow: 'Deteksi Kebutuhan & Konseling Sehat',
+    indicationsTitle: 'Kapan Membutuhkan Asesmen atau Konseling Psikologi?',
+    indicationsDesc: 'Kesehatan mental dan emosional merupakan fondasi utama di setiap fase hidup—mulai dari tumbuh kembang si kecil, pencarian jati diri remaja, hingga kematangan mental dewasa dan keharmonisan keluarga.',
+    toolbarGuidanceTitle: 'Panduan Klien & Keluarga',
+    toolbarGuidanceText: 'Klik/tandai kondisi atau keluhan yang saat ini dialami pada si kecil, remaja, maupun diri Anda di rumah:',
+    alertSub: 'Konsultasi dini bersama psikolog klinis membantu mengurai akar permasalahan secara tepat sebelum berdampak lebih jauh.',
+    guidanceAuthor: 'Catatan Psikolog Klinis',
+    guidanceText: 'Menghubungi psikolog adalah langkah positif dan bijak untuk menjaga kesehatan mental. Tidak ada keluhan yang terlalu sepele jika itu sudah mengganggu kenyamanan dan aktivitas sehari-hari.',
     indications: [
       {
         icon: 'sentiment_very_dissatisfied',
         iconBg: 'ind-icon-orange',
-        title: 'Tantrum Berat & Agresivitas',
-        desc: 'Sering meledak-ledak, memukul, melempar barang, atau melukai diri sendiri saat mengalami frustrasi atau keinginannya tidak terpenuhi.',
-        age: '2 - 8 Tahun'
+        title: '[Anak] Tantrum Berat, Hambatan Emosi & Perilaku',
+        desc: 'Sering meledak-ledak tanpa sebab jelas, memukul, melempar barang, melukai diri, atau kesulitan beradaptasi dengan rutinitas harian.',
+        age: '2 - 11 Tahun'
       },
       {
         icon: 'school',
         iconBg: 'ind-icon-blue',
-        title: 'Keraguan Kesiapan Masuk SD',
-        desc: 'Orang tua memerlukan asesmen psikologis untuk melihat kematangan kognitif, emosional, dan sosial anak menjelang masuk sekolah dasar.',
-        age: '5 - 7 Tahun'
-      },
-      {
-        icon: 'heart_broken',
-        iconBg: 'ind-icon-green',
-        title: 'Kecemasan Berpisah (Separation Anxiety)',
-        desc: 'Menangis histeris berkepanjangan saat ditinggal orang tua di sekolah atau sangat takut menghadapi situasi baru.',
-        age: '3 - 8 Tahun'
-      },
-      {
-        icon: 'group_off',
-        iconBg: 'ind-icon-teal',
-        title: 'Hambatan Interaksi Sosial',
-        desc: 'Menarik diri dari teman sebaya, sangat pemalu ekstrem, atau kesulitan membaca norma sosial saat bermain bersama.',
+        title: '[Anak] Kesiapan Masuk SD & Asesmen Tumbuh Kembang',
+        desc: 'Evaluasi kematangan kognitif, tes IQ, kesiapan masuk sekolah dasar, atau skrining kecurigaan ADHD dan kesulitan konsentrasi belajar.',
         age: '4 - 10 Tahun'
       },
       {
         icon: 'psychology',
+        iconBg: 'ind-icon-teal',
+        title: '[Remaja] Stres Akademik, Overthinking & Kecemasan',
+        desc: 'Mengalami tekanan belajar tinggi menjelang ujian, perubahan suasana hati drastis (mood swing), kecemasan berlebih, hingga penarikan diri.',
+        age: '12 - 18 Tahun'
+      },
+      {
+        icon: 'explore',
+        iconBg: 'ind-icon-green',
+        title: '[Remaja] Bingung Minat Bakat & Krisis Percaya Diri',
+        desc: 'Kesulitan menentukan jurusan sekolah/kuliah, krisis identitas diri, rendah diri, atau terdampak tekanan pergaulan teman sebaya (peer pressure).',
+        age: '12 - 18 Tahun'
+      },
+      {
+        icon: 'sentiment_neutral',
         iconBg: 'ind-icon-blue',
-        title: 'Kecurigaan ADHD / Spektrum Autisme',
-        desc: 'Membutuhkan skrining diagnostik formal oleh psikolog klinis untuk mendapatkan diagnosa medis yang valid dan rujukan tepat.',
-        age: '2 - 12 Tahun'
+        title: '[Dewasa] Stres, Burnout Kerja & Gangguan Regulasi Emosi',
+        desc: 'Kelelahan emosional berlebih akibat beban kerja atau kehidupan, kecemasan menetap, insomnia, atau beban pikiran yang mengganggu produktivitas.',
+        age: 'Dewasa (19+ Tahun)'
       },
       {
         icon: 'family_restroom',
         iconBg: 'ind-icon-green',
-        title: 'Konsultasi Pola Asuh (Parenting)',
-        desc: 'Ayah & Bunda memerlukan bimbingan strategi pola asuh positif, konsistensi disiplin, atau pendampingan sibling rivalry.',
-        age: 'Semua Usia'
+        title: '[Dewasa & Keluarga] Pola Asuh Parenting & Konflik Pasangan',
+        desc: 'Membutuhkan panduan parenting menghadapi anak berkebutuhan khusus/remaja, resolusi konflik pasangan, atau bimbingan keharmonisan rumah tangga.',
+        age: 'Orang Tua & Pasangan'
       }
     ],
     pillars: [
       {
-        icon: 'psychology_alt',
+        icon: 'toys',
         bgClass: 'pillar-bg-blue',
-        title: 'Asesmen Psikologis & Tes IQ',
-        desc: 'Pemeriksaan komprehensif kapasitas kognitif, bakat-minat, serta pemetaan profil kecerdasan anak menggunakan alat tes terstandar.',
-        bullets: ['Tes Kesiapan Masuk Sekolah (NST)', 'Pemeriksaan inteligensi baku klinis']
+        title: 'Psikologi Anak & Play Therapy',
+        desc: 'Metode ramah anak yang mengintegrasikan Play Therapy, Art Therapy, dan modifikasi perilaku untuk melatih regulasi emosi, kemandirian, serta interaksi sosial tanpa paksaan.',
+        bullets: [
+          'Play Therapy & pengenalan regulasi emosi anak',
+          'Modifikasi perilaku adaptif & reward system sehat',
+          'Stimulasi fokus perhatian dan interaksi sosial'
+        ]
       },
       {
-        icon: 'sentiment_satisfied_alt',
+        icon: 'record_voice_over',
         bgClass: 'pillar-bg-green',
-        title: 'Konseling Emosi & Play Therapy',
-        desc: 'Membantu anak mengekspresikan ketakutan, kecemasan, atau kemarahan melalui media bermain simbolik dan gambar terarah.',
-        bullets: ['Metode ramah anak tanpa tekanan', 'Pengenalan nama-nama emosi dasar']
+        title: 'Konseling Remaja & Minat Bakat',
+        desc: 'Sesi konseling suportif yang aman dan non-judgmental untuk remaja mengekspresikan dinamika batin, membangun konsep diri positif, serta memetakan arah minat bakat masa depan.',
+        bullets: [
+          'Konseling suportif emosi & penanganan overthinking',
+          'Pemetaan tes minat bakat & penjurusan studi',
+          'Strategi resiliensi menghadapi tekanan sosial dan akademik'
+        ]
       },
       {
-        icon: 'family_restroom',
+        icon: 'psychology',
         bgClass: 'pillar-bg-orange',
-        title: 'Psikoedukasi & Parenting Coaching',
-        desc: 'Sesi mendalam bersama orang tua untuk menyelaraskan pola komunikasi di rumah, manajemen gadget, dan disiplin positif.',
-        bullets: ['Strategi penanganan tantrum di rumah', 'Peningkatan bonding hangat orang tua - anak']
+        title: 'Konseling Dewasa & Harmoni Keluarga',
+        desc: 'Pendampingan profesional bagi dewasa dalam mengurai beban emosi, manajemen stres, pemulihan luka batin (inner child), serta penguatan komunikasi pasangan dan pola asuh anak.',
+        bullets: [
+          'Manajemen stres kerja, kecemasan, dan burnout',
+          'Parenting coaching untuk pola asuh positif',
+          'Konseling relasi pasangan & harmonisasi keluarga'
+        ]
       },
       {
-        icon: 'diversity_1',
+        icon: 'assignment_turned_in',
         bgClass: 'pillar-bg-teal',
-        title: 'Modifikasi Perilaku (Behavior Therapy)',
-        desc: 'Membimbing pembentukan kebiasaan baru yang adaptif, mengurangi perilaku menentang, dan melatih disiplin mandiri.',
-        bullets: ['Reward system yang sehat dan konstruktif', 'Rencana intervensi perilaku terukur']
+        title: 'Asesmen Psikologis & Tes Klinis',
+        desc: 'Pemeriksaan diagnostik komprehensif menggunakan instrumen tes psikologi terstandar dan tervalidasi untuk keperluan pendidikan, klinis, maupun evaluasi kepribadian.',
+        bullets: [
+          'Tes IQ terstandar (WISC, WAIS, Binet, CPM)',
+          'Tes Kesiapan Masuk SD (NST) & evaluasi kognitif',
+          'Laporan psikologis resmi bertanda tangan Psikolog SIPP'
+        ]
       }
     ],
+    processTitle: 'Alur Proses Konseling & Asesmen Psikologi',
+    processDesc: 'Tahapan terstruktur yang menjamin ruang aman, privasi tinggi, dan kenyamanan Anda sejak sesi pertama hingga tindak lanjut evaluasi.',
     processSteps: [
       {
         number: '01',
         numBgClass: 'num-blue',
-        badge: 'Sesi 60 Menit',
+        badge: 'Sesi Intake',
         badgeBgClass: 'badge-blue',
-        title: 'Konsultasi Intake Orang Tua',
-        desc: 'Wawancara klinis mendalam bersama orang tua mengenai riwayat kehamilan, tumbuh kembang, dan dinamika keluarga.',
+        title: 'Konsultasi Intake & Identifikasi Awal',
+        desc: 'Wawancara klinis mendalam bersama orang tua untuk anak, atau sesi konseling privat empatis untuk klien remaja dan dewasa.',
         footerIcon: 'assignment',
-        footerText: 'Output: Analisis Riwayat Tumbuh Kembang'
+        footerText: 'Kerahasiaan Data & Informed Consent'
       },
       {
         number: '02',
         numBgClass: 'num-primary-cont',
-        badge: 'Observasi Anak',
+        badge: 'Asesmen Klinis',
         badgeBgClass: 'badge-green',
-        title: 'Asesmen & Observasi Anak',
-        desc: 'Interaksi tatap muka langsung psikolog dengan anak melalui tes terstandar, aktivitas bermain, atau observasi perilaku.',
+        title: 'Asesmen / Observasi / Tes Psikologi',
+        desc: 'Pelaksanaan tes psikologi terstandar, observasi interaksi anak, atau asesmen diagnostik mendalam sesuai kategori usia dan keluhan utama.',
         footerIcon: 'track_changes',
-        footerText: 'Pemetaan Karakter & Kognitif'
+        footerText: 'Instrumen Tes Terstandar Klinis'
       },
       {
         number: '03',
         numBgClass: 'num-green',
-        badge: 'Sesi Rutin',
+        badge: 'Sesi Intervensi',
         badgeBgClass: 'badge-orange',
-        title: 'Sesi Konseling / Play Therapy',
-        desc: 'Sesi intervensi terarah untuk melatih regulasi emosi, mengatasi kecemasan, dan memperkuat konsep diri positif anak.',
-        footerIcon: 'toys',
+        title: 'Sesi Konseling & Terapi Terarah',
+        desc: 'Sesi intervensi play therapy untuk anak, konseling suportif/CBT untuk remaja dan dewasa, serta psikoedukasi terarah untuk keluarga.',
+        footerIcon: 'psychology',
         footerText: 'Ruang Konseling Nyaman & Privat'
       },
       {
         number: '04',
         numBgClass: 'num-dark-blue',
-        badge: 'Edukasi Lengkap',
+        badge: 'Laporan Resmi',
         badgeBgClass: 'badge-blue',
-        title: 'Laporan Psikologis & Feedback',
-        desc: 'Pemberian laporan tertulis resmi dan sesi diskusi tindak lanjut rekomendasi sekolah maupun pola asuh di rumah.',
-        footerIcon: 'family_restroom',
-        footerText: 'Laporan Psikologi Tertulis Resmi'
+        title: 'Feedback, Laporan Resmi & Rencana Aksi',
+        desc: 'Pemberian laporan psikologis tertulis resmi berstempel SIPP, sesi penjelasan komprehensif, serta panduan praktis penanganan sehari-hari.',
+        footerIcon: 'verified',
+        footerText: 'Laporan Resmi Berizin SIPP'
       }
     ],
+    teamTitle: 'Tim Psikolog Klinis Kami',
+    teamDesc: 'Didukung oleh Psikolog Klinis lulusan Magister Profesi Psikologi terakreditasi dengan Surat Izin Praktik Psikologi (SIPP) aktif dari HIMPSI dan Kemenkes.',
     therapists: [
       {
         name: 'Sarah Wijayanti, M.Psi., Psikolog',
         role: 'Psikolog Klinis Anak & Remaja (SIPP)',
-        bio: 'Fokus pada evaluasi tumbuh kembang anak, penanganan trauma, regulasi emosi, serta kesiapan sekolah anak usia dini.',
-        cert: 'Alumni Magister Profesi Psikologi UI',
-        rating: '5.0 (140+ Sesi)',
+        bio: 'Fokus pada evaluasi tumbuh kembang anak, penanganan trauma, regulasi emosi anak & remaja, serta kesiapan sekolah usia dini.',
+        cert: 'Magister Profesi Psikologi UI • SIPP Aktif',
+        rating: '5.0 (150+ Sesi)',
         image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9TdTX3hAv4l3XEhF6RnRoVq9SrEZWWigruM-Zmmi35kXtkmTMve9H7N1-RIYg5jM937Tx9sEWQyzXR66Neo9Sa7776w3Zo6VajIJukCAkN8s151ZqH9c7PF-4nlF1-SVkqD1DZB7BwB9tpZaUcpcSsq9obGxkdggEXSE_IuVRlN-Fsh23JI2d9iMF_qq9LXNCduvqstqvjnXBb1KvcBfZ0q46z2EUUUP0j15K0do'
       },
       {
         name: 'Farhan Maulana, M.Psi., Psikolog',
-        role: 'Spesialis Asesmen Kognitif & ADHD',
-        bio: 'Keahlian dalam skrining neurologis ringan, asesmen IQ, kesulitan belajar spesifik (disleksia), dan konseling perilaku anak.',
+        role: 'Psikolog Klinis Remaja & Dewasa (SIPP)',
+        bio: 'Keahlian dalam manajemen stres, kecemasan, asesmen kognitif & IQ, tes minat bakat penjurusan, serta konseling dewasa muda.',
         cert: 'Anggota HIMPSI & Ikatan Psikolog Klinis',
-        rating: '4.95 (115+ Sesi)',
+        rating: '4.95 (130+ Sesi)',
         image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCIKvDfJPyVbIyPla4wyzxNhLrF8Ce1fVTVaOqumdJmrh2Bk8V7oAZmxceDSGifuQqVl1kki4aGpoTx11e5k91D13E3IbOLK8wQjn1WI_Sl-7zRbNYinsXJ3V2vevUjDzfQnwz96Sj-elpEFz1TGMDkGcogynWSoUS19_F-iFSPo0EzFQKVk3iSrq6SDGNB96CrjY8D4dfGTmV7xw7183jxJQ6xTu9aQJYX-uGTcYA'
       },
       {
-        name: 'Nabila Maharani, S.Tr.Kes',
-        role: 'Konsultan Kolaborasi Tumbuh Kembang',
-        bio: 'Kolaborasi lintas disiplin antara aspek psikologi anak dan stimulasi perkembangan komunikasi verbal-sosial.',
-        cert: '6+ Tahun Praktik Klinis',
-        rating: '4.9 (120+ Sesi)',
+        name: 'Nabila Maharani, M.Psi., Psikolog',
+        role: 'Konselor Keluarga & Parenting Coach',
+        bio: 'Mendampingi pasangan dan orang tua dalam harmonisasi keluarga, psikoedukasi pola asuh anak, serta konseling hubungan.',
+        cert: 'Praktisi SIPP & Certified Family Coach',
+        rating: '4.9 (125+ Sesi)',
         image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAf4OVUo-Wxnq8f6xSABM4mGtVxKAMm7lICIoE-PAxYxAZi_WeX9xbdVYLOIjzYftHDfEytV-2fKTnkbwLfFeFxQhERvsIwEIwli4j-NnHuby3Z4nZIptqt_qejl-BUIf2bOej8oKcP5I91K6rBDTT3Y_dcU9uGgiexN7tPlJ3Rl4hy_RT46xH8h_J4kmToqINJ4tSlKYrmbz3NaTyHUwpZhBG53oHWwMDE4iKDYXM'
       }
     ],
+    pricingTitle: 'Pilihan Sesi & Paket Layanan Psikologi',
+    pricingDesc: 'Investasi terbaik untuk kesehatan mental, ketenangan keluarga, dan kematangan karakter tanpa biaya tersembunyi.',
     packages: [
       {
-        tag: 'Langkah Wajib',
+        tag: 'Pilihan Populer',
         tagClass: 'tag-blue',
-        title: 'Konsultasi & Asesmen Awal',
-        subtitle: 'Sesi intake psikolog klinis bersama orang tua dan observasi kepribadian anak.',
+        title: 'Konseling Individu (Anak / Remaja / Dewasa)',
+        subtitle: '1 sesi tatap muka 60 menit bersama psikolog klinis berizin untuk konsultasi emosi, stres, atau pengasuhan.',
         priceLabel: 'Mulai dari',
         price: 'Rp 350.000',
         unit: 'sesi',
         features: [
-          'Durasi 60 menit tatap muka psikolog klinis',
-          'Analisis dinamika emosi dan perilaku',
-          'Laporan ringkas asesmen klinis',
-          'Rekomendasi tindak lanjut penanganan'
+          'Durasi 60 menit tatap muka psikolog klinis berizin (SIPP)',
+          'Tersedia untuk Anak (Play therapy), Remaja, maupun Dewasa',
+          'Sesi intake dan identifikasi akar permasalahan secara mendalam',
+          'Rekomendasi langkah praktis tindak lanjut penanganan'
         ],
         buttonText: 'Pilih Jadwal Konsultasi',
         isPopular: false
       },
       {
-        tag: 'Paket Kesiapan',
+        tag: 'Asesmen Diagnostik',
         tagClass: 'tag-green',
-        title: 'Tes Kesiapan Masuk SD',
-        subtitle: 'Asesmen lengkap kematangan kognitif, motorik, dan emosional anak usia 5–7 tahun.',
+        title: 'Tes Psikologi Lengkap (IQ / Kesiapan SD / Minat Bakat)',
+        subtitle: 'Pemeriksaan psikotes terstandar lengkap dengan laporan tertulis resmi bertanda tangan SIPP.',
         priceLabel: 'Total Investasi',
         price: 'Rp 650.000',
         unit: 'paket',
-        savingNote: 'Termasuk Surat Rekomendasi Resmi Sekolah',
+        savingNote: 'Termasuk Surat / Laporan Rekomendasi Resmi Sekolah',
         features: [
-          'Pemeriksaan tes NST / tes kesiapan terstandar',
-          'Sesi feedback 30 menit bersama orang tua',
-          'Sertifikat & surat rekomendasi formal sekolah',
-          'Panduan stimulasi pra-akademik di rumah'
+          'Pilihan: Kesiapan Masuk SD (NST) / Tes IQ / Minat Bakat Jurusan',
+          'Sesi administrasi tes langsung oleh psikolog klinis',
+          'Sesi feedback penjelasan hasil 30 menit bersama orang tua / klien',
+          'Sertifikat & laporan psikologis tertulis resmi berstempel'
         ],
-        buttonText: 'Daftar Tes Kesiapan SD',
+        buttonText: 'Daftar Tes Psikologi',
         isPopular: true
       },
       {
-        tag: 'Paket Konseling',
+        tag: 'Program Terarah',
         tagClass: 'tag-orange',
-        title: 'Paket Konseling & Terapi (4x)',
-        subtitle: '4 sesi konseling rutin / play therapy untuk pemulihan emosi & modifikasi perilaku.',
+        title: 'Paket Terapi & Konseling Berkelanjutan (4x)',
+        subtitle: '4 sesi konseling rutin / play therapy untuk pendampingan pemulihan emosi atau konseling keluarga.',
         priceLabel: 'Total Investasi',
         price: 'Rp 1.300.000',
         unit: 'paket',
-        savingNote: 'Hemat Rp 100.000 + Pendampingan WA',
+        savingNote: 'Hemat Rp 100.000 + Pendampingan WhatsApp',
         features: [
-          '4 sesi tatap muka intensif (50 menit/sesi)',
-          'Kombinasi sesi anak dan sesi parenting orang tua',
-          'Laporan evaluasi perkembangan berkala',
-          'Fleksibilitas jadwal konsultasi'
+          '4 sesi tatap muka intensif terjadwal (50–60 menit/sesi)',
+          'Fleksibel: dapat dikombinasikan antara sesi klien dan parenting',
+          'Laporan evaluasi perkembangan berkala di setiap sesi',
+          'Fleksibilitas jadwal konsultasi & prioritas reservasi'
         ],
         buttonText: 'Pilih Paket Konseling 4x',
         isPopular: false
       }
     ],
+    faqTitle: 'FAQ Layanan Psikologi (Anak, Remaja & Dewasa)',
+    faqDesc: 'Pertanyaan yang paling sering dikonsultasikan seputar layanan psikologi di Amanah Tin\'s Center.',
     faqs: [
       {
-        q: 'Kapan anak perlu dibawa ke psikolog anak?',
-        a: 'Bila anak menunjukkan perubahan perilaku drastis, tantrum ekstrem yang sulit ditenangkan, kecemasan berlebih saat berpisah, kemunduran prestasi belajar mendadak, atau ketika orang tua membutuhkan tes kesiapan sekolah formal.'
+        q: 'Apa saja 3 kategori layanan psikologi di Amanah Tin\'s Center?',
+        a: 'Layanan psikologi kami terbagi menjadi 3 kategori: (1) Psikologi Anak (usia 2–11 tahun) untuk tumbuh kembang, emosi, tantrum, kesiapan sekolah, dan play therapy; (2) Psikologi Remaja (usia 12–18 tahun) untuk penyesuaian diri, kecemasan akademik, mood swing, krisis identitas, dan tes minat bakat jurusan; serta (3) Psikologi Dewasa & Konseling Keluarga (19+ tahun) untuk manajemen stres, burnout, pemulihan trauma, konseling pernikahan, dan parenting coaching.'
       },
       {
-        q: 'Apakah hasil tes psikologi dijamin kerahasiaannya?',
-        a: 'Ya, mutlak. Seluruh data asesmen dan riwayat konseling dilindungi oleh Kode Etik Psikologi Indonesia dan hanya dibagikan kepada pihak lain atas izin tertulis orang tua.'
+        q: 'Kapan sebaiknya anak, remaja, atau orang dewasa berkonsultasi ke psikolog?',
+        a: 'Untuk anak: saat menunjukkan perubahan perilaku drastis, tantrum intens, kesulitan fokus, atau perlu tes kesiapan sekolah formal. Untuk remaja: saat merasa tertekan, cemas berlebih, menarik diri, atau bingung arah masa depan. Untuk dewasa: ketika mengalami stres berkepanjangan, sulit mengelola emosi, masalah relasi/pernikahan, atau butuh panduan mendidik anak.'
       },
       {
-        q: 'Bagaimana pendekatan psikolog terhadap anak yang menolak diajak bicara?',
-        a: 'Psikolog anak kami menggunakan metode Play Therapy dan media gambar. Anak tidak dipaksa untuk langsung bercerita, melainkan diajak bermain dengan nyaman hingga rasa percaya (rapport) terbentuk secara alami.'
+        q: 'Apakah kerahasiaan isi sesi konseling dijamin aman?',
+        a: 'Ya, mutlak. Seluruh data, hasil asesmen, dan cerita yang dibagikan dalam sesi konseling dilindungi penuh oleh Kode Etik Psikologi Indonesia dan asas kerahasiaan medis (confidentiality). Informasi tidak akan dibagikan ke pihak manapun tanpa persetujuan tertulis dari klien atau orang tua.'
       },
       {
-        q: 'Apakah orang tua ikut masuk ke dalam ruang konseling?',
-        a: 'Pada sesi pertama, orang tua dilibatkan penuh untuk wawancara riwayat tumbuh kembang. Pada sesi berikutnya, disesuaikan dengan kebutuhan anak—apakah membutuhkan ruang privat sendiri atau didampingi.'
+        q: 'Bagaimana jika klien (anak atau remaja) menolak diajak bicara atau enggan datang?',
+        a: 'Psikolog kami menggunakan pendekatan yang hangat, empatis, dan tidak memaksa (non-judgmental). Pada anak, kami menggunakan media bermain (Play Therapy) dan gambar. Pada remaja, kami membangun ruang aman yang setara agar mereka merasa didengar dan dihargai tanpa merasa dihakimi.'
+      },
+      {
+        q: 'Apakah tes IQ atau tes kesiapan sekolah bisa digunakan untuk pendaftaran sekolah resmi?',
+        a: 'Bisa. Laporan hasil tes psikologi dari Amanah Tin\'s Center diterbitkan secara resmi dengan tanda tangan dan nomor Surat Izin Praktik Psikologi (SIPP) aktif dari Psikolog Klinis berwenang, sehingga valid dan diakui oleh pihak sekolah maupun instansi pendidikan resmi.'
+      }
+    ]
+  },
+
+  'grup-terapi': {
+    code: 'GT',
+    name: 'Grup Terapi',
+    shortName: 'Grup Terapi',
+    badgeIcon: 'groups',
+    categoryBadge: 'Program Kolaborasi Sosial • Terapi Kelompok Kecil',
+    titleMain: 'Program Grup Terapi Anak & Sosial',
+    titleAccent: '(Social Skills & Group Therapy)',
+    heroDesc: 'Sesi terapi dalam kelompok kecil (3–6 anak) yang difasilitasi oleh terapis multidisiplin, dirancang khusus untuk melatih interaksi teman sebaya, toleransi menunggu giliran (turn-taking), komunikasi pragmatik, serta kepatuhan aturan kelompok dalam suasana menyenangkan.',
+    heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB67b9MYgTLA9wMNy5O-9w6TkEnA6ohATQiH43KYlSlPAmDtbLTXu9B57WwqylRdCzHjZg7YF4bb-q7SJupFjxrp4FuawKotOYM7BPa42N5RxpxS7h6YusSVGHIhzMc89oCMmGfcZMwM64SG8vYil6uUlaDoMhfxkJZwyGiNg29r65HN9Ey3IEqYnmf_CSs1nLyHBOFCOiM9-yjTVs48R71yCk3d9Uzal8zzuTfeK8',
+    ctaPrimaryText: 'Konsultasi Grup Terapi',
+    ctaFocusWord: 'Sosialisasi & Percaya Diri',
+    heroBadgeTitle: 'Kelompok Kecil (3–6 Anak)',
+    heroBadgeSub: 'Fasilitasi intensif terapis dengan peer-matching seimbang',
+    specs: [
+      { icon: 'schedule', label: 'Durasi Sesi', value: '60 - 90 Menit', bgClass: 'spec-bg-blue' },
+      { icon: 'groups', label: 'Format Kelas', value: 'Kelompok 3–6 Anak', bgClass: 'spec-bg-green' },
+      { icon: 'face', label: 'Sasaran Usia', value: 'Usia 4 – 12 Tahun', bgClass: 'spec-bg-orange' },
+      { icon: 'verified_user', label: 'Fasilitator', value: 'TW + OT + Psikolog', bgClass: 'spec-bg-blue' }
+    ],
+    indicationsEyebrow: 'Deteksi Kebutuhan Sosial Anak',
+    indicationsTitle: 'Kapan Anak Memerlukan Program Grup Terapi?',
+    indicationsDesc: 'Interaksi sosial adalah keterampilan kompleks yang membutuhkan latihan nyata bersama teman sebaya. Grup terapi menjadi jembatan aman bagi anak sebelum mandiri di sekolah reguler.',
+    toolbarGuidanceTitle: 'Panduan Pengamatan Ayah & Bunda',
+    toolbarGuidanceText: 'Tandai kendala sosialisasi yang sering terlihat saat anak berada di taman bermain atau acara keluarga:',
+    alertSub: 'Stimulasi sosial terarah dalam kelompok kecil efektif mengurangi kecemasan bergaul dan menumbuhkan rasa percaya diri anak.',
+    guidanceAuthor: 'Catatan Terapis ATC',
+    guidanceText: 'Anak yang sudah tuntas terapi individual 1-on-1 sering kali masih membutuhkan grup terapi sebagai jembatan simulasi sebelum masuk sekolah umum.',
+    indications: [
+      {
+        icon: 'person_off',
+        iconBg: 'ind-icon-orange',
+        title: 'Hanya Bermain Sendiri (Parallel Play Menetap)',
+        desc: 'Cenderung asyik sendiri dan tidak tertarik mendekati teman sebaya meskipun berada di arena bermain yang sama.',
+        age: '3 - 8 Tahun'
+      },
+      {
+        icon: 'front_hand',
+        iconBg: 'ind-icon-blue',
+        title: 'Sulit Menunggu Giliran & Suka Merebut',
+        desc: 'Tantrum saat diminta mengantre giliran mainan, tidak sabar menunggu instruksi, atau belum memahami aturan berbagi.',
+        age: '4 - 10 Tahun'
+      },
+      {
+        icon: 'record_voice_over',
+        iconBg: 'ind-icon-teal',
+        title: 'Hambatan Bahasa Pragmatik Sosial',
+        desc: 'Bisa berbicara lancar namun kesulitan memulai percakapan, kontak mata minim saat bicara kelompok, atau tidak merespon sapaan teman.',
+        age: '4 - 12 Tahun'
+      },
+      {
+        icon: 'sentiment_very_dissatisfied',
+        iconBg: 'ind-icon-green',
+        title: 'Mudah Frustrasi Saat Kalah Permainan',
+        desc: 'Sering meledak marah atau mogok bermain bila aturan permainan tidak sesuai keinginannya atau mengalami kekalahan.',
+        age: '5 - 11 Tahun'
+      },
+      {
+        icon: 'lock',
+        iconBg: 'ind-icon-blue',
+        title: 'Kekakuan Pola Main (Rigid Behavior)',
+        desc: 'Sulit diajak kompromi mengubah alur mainan, menolak ide teman kelompok, dan memaksakan aturan bermain sepihak.',
+        age: '4 - 10 Tahun'
+      },
+      {
+        icon: 'sentiment_neutral',
+        iconBg: 'ind-icon-green',
+        title: 'Kecemasan Sosial & Menarik Diri di Lingkungan Baru',
+        desc: 'Sangat pemalu ekstrem, menempel terus pada orang tua, atau gemetar cemas ketika diminta berinteraksi bersama anak lain.',
+        age: '4 - 12 Tahun'
+      }
+    ],
+    pillars: [
+      {
+        icon: 'record_voice_over',
+        bgClass: 'pillar-bg-blue',
+        title: 'Komunikasi Pragmatik & Asertif',
+        desc: 'Melatih kemampuan memulai obrolan, bertanya giliran, meminta izin pinjam mainan, mendengarkan teman, dan membaca bahasa tubuh lawan bicara secara natural.',
+        bullets: [
+          'Inisiasi percakapan & kontak mata bermakna',
+          'Ekspresi verbal untuk meminta tolong & negosiasi',
+          'Pemahaman humor sederhana dan giliran bicara'
+        ]
+      },
+      {
+        icon: 'handshake',
+        bgClass: 'pillar-bg-green',
+        title: 'Turn-Taking & Regulasi Bersama',
+        desc: 'Stimulasi toleransi penundaan (delay of gratification), kesabaran menunggu antrean giliran, serta menjaga regulasi diri saat berada di tengah dinamika kelompok.',
+        bullets: [
+          'Toleransi menunggu giliran bermain terstruktur',
+          'Regulasi emosi saat menghadapi kekalahan',
+          'Fleksibilitas menerima aturan kompromi bersama'
+        ]
+      },
+      {
+        icon: 'extension',
+        bgClass: 'pillar-bg-orange',
+        title: 'Cooperative Play & Games',
+        desc: 'Aktivitas bermain kooperatif berbasis proyek tim (membangun balok raksasa bersama, permainan estafet, seni kolaboratif) untuk melatih sinergi antar anak.',
+        bullets: [
+          'Proyek seni & permainan tim terkoordinasi',
+          'Pembagian peran tugas yang adil dalam kelompok',
+          'Menumbuhkan empati dan saling menyemangati teman'
+        ]
+      },
+      {
+        icon: 'psychology',
+        bgClass: 'pillar-bg-teal',
+        title: 'Problem Solving & Resolusi Konflik',
+        desc: 'Bimbingan terapis dalam menengahi perselisihan kecil yang wajar terjadi saat bermain, melatih anak menyelesaikan masalah dengan komunikasi verbal tanpa agresi fisik.',
+        bullets: [
+          'Identifikasi akar masalah perselisihan bermain',
+          'Teknik cooling down saat emosi mulai meningkat',
+          'Saling meminta maaf dan membuat kesepakatan baru'
+        ]
+      }
+    ],
+    processTitle: 'Alur Program Grup Terapi ATC',
+    processDesc: 'Setiap anak dipasangkan secara cermat ke dalam kelompok yang seimbang agar stimulasi sosial berjalan suportif dan efektif.',
+    processSteps: [
+      {
+        number: '01',
+        numBgClass: 'num-blue',
+        badge: 'Skrining Kesiapan',
+        badgeBgClass: 'badge-blue',
+        title: 'Skrining Kesiapan & Peer-Matching',
+        desc: 'Evaluasi individual untuk memetakan level regulasi emosi dan komunikasi anak agar ditempatkan pada kelompok dengan usia serta kemampuan yang setara.',
+        footerIcon: 'checklist',
+        footerText: 'Penyesuaian Kelompok Tepat Sasaran'
+      },
+      {
+        number: '02',
+        numBgClass: 'num-primary-cont',
+        badge: 'Orientasi Sesi',
+        badgeBgClass: 'badge-green',
+        title: 'Sesi Pembiasaan & Kontrak Aturan',
+        desc: 'Pengenalan teman kelompok, fasilitator terapis, serta pembentukan kesepakatan aturan main yang ramah dan dipahami bersama anak.',
+        footerIcon: 'diversity_3',
+        footerText: 'Membangun Rapport & Rasa Aman'
+      },
+      {
+        number: '03',
+        numBgClass: 'num-green',
+        badge: 'Terapi Rutin',
+        badgeBgClass: 'badge-orange',
+        title: 'Sesi Terapi Sosial Terstruktur',
+        desc: 'Rangkaian circle time, permainan kooperatif, stimulasi sensorik kelompok, dan simulasi skenario sosial nyata dengan rasio 1 terapis per 2–3 anak.',
+        footerIcon: 'sports_esports',
+        footerText: 'Suasana Ceria & Terarah'
+      },
+      {
+        number: '04',
+        numBgClass: 'num-dark-blue',
+        badge: 'Evaluasi Berkala',
+        badgeBgClass: 'badge-blue',
+        title: 'Laporan Perkembangan & Feedback Ortu',
+        desc: 'Pemberian laporan catatan sosial berkala dan sesi diskusi strategi penguatan keterampilan berteman di lingkungan rumah serta sekolah.',
+        footerIcon: 'assignment',
+        footerText: 'Laporan Progres Sosial Tertulis'
+      }
+    ],
+    teamTitle: 'Tim Fasilitator Grup Terapi Kami',
+    teamDesc: 'Didukung oleh kolaborasi praktisi Terapis Wicara, Terapis Okupasi, dan Psikolog Klinis Anak berpengalaman dalam dinamika kelompok kecil.',
+    therapists: [
+      {
+        name: 'Annisa Larasati, A.Md.TW',
+        role: 'Fasilitator Komunikasi Sosial & TW',
+        bio: 'Fokus pada stimulasi kemampuan bicara pragmatik, inisiasi percakapan, dan ekspresi verbal dalam setting kelompok anak.',
+        cert: 'STR Kemenkes Aktif • 7+ Th Pengalaman',
+        rating: '4.95 (160+ Sesi)',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9TdTX3hAv4l3XEhF6RnRoVq9SrEZWWigruM-Zmmi35kXtkmTMve9H7N1-RIYg5jM937Tx9sEWQyzXR66Neo9Sa7776w3Zo6VajIJukCAkN8s151ZqH9c7PF-4nlF1-SVkqD1DZB7BwB9tpZaUcpcSsq9obGxkdggEXSE_IuVRlN-Fsh23JI2d9iMF_qq9LXNCduvqstqvjnXBb1KvcBfZ0q46z2EUUUP0j15K0do'
+      },
+      {
+        name: 'Budi Santoso, A.Md.OT',
+        role: 'Spesialis Regulasi Perilaku Kelompok',
+        bio: 'Keahlian dalam mengelola dinamika energi sensorik kelompok, toleransi giliran gerak, dan aktivitas motorik kolaboratif.',
+        cert: 'Certified Sensory & Group Play Facilitator',
+        rating: '4.9 (130+ Sesi)',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCIKvDfJPyVbIyPla4wyzxNhLrF8Ce1fVTVaOqumdJmrh2Bk8V7oAZmxceDSGifuQqVl1kki4aGpoTx11e5k91D13E3IbOLK8wQjn1WI_Sl-7zRbNYinsXJ3V2vevUjDzfQnwz96Sj-elpEFz1TGMDkGcogynWSoUS19_F-iFSPo0EzFQKVk3iSrq6SDGNB96CrjY8D4dfGTmV7xw7183jxJQ6xTu9aQJYX-uGTcYA'
+      },
+      {
+        name: 'Sarah Wijayanti, M.Psi., Psikolog',
+        role: 'Konsultan Psikologi Sosial Anak',
+        bio: 'Mengevaluasi kesiapan mental bergaul, penanganan kecemasan sosial anak, dan perancangan strategi peer-matching yang tepat.',
+        cert: 'Psikolog Klinis SIPP Aktif • Magister UI',
+        rating: '5.0 (150+ Sesi)',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAf4OVUo-Wxnq8f6xSABM4mGtVxKAMm7lICIoE-PAxYxAZi_WeX9xbdVYLOIjzYftHDfEytV-2fKTnkbwLfFeFxQhERvsIwEIwli4j-NnHuby3Z4nZIptqt_qejl-BUIf2bOej8oKcP5I91K6rBDTT3Y_dcU9uGgiexN7tPlJ3Rl4hy_RT46xH8h_J4kmToqINJ4tSlKYrmbz3NaTyHUwpZhBG53oHWwMDE4iKDYXM'
+      }
+    ],
+    pricingTitle: 'Pilihan Sesi & Paket Grup Terapi',
+    pricingDesc: 'Investasi terjangkau untuk melatih keterampilan sosial esensial si Kecil dalam lingkungan kelompok kecil yang aman.',
+    packages: [
+      {
+        tag: 'Sesi Trial',
+        tagClass: 'tag-blue',
+        title: 'Trial & Observasi Kelompok',
+        subtitle: '1 sesi uji coba interaksi kelompok bersama terapis untuk menilai kecocokan peer-matching anak.',
+        priceLabel: 'Total Investasi',
+        price: 'Rp 275.000',
+        unit: 'sesi (75 Menit)',
+        features: [
+          'Durasi 75 menit aktivitas kelompok terstruktur',
+          'Rasio intensif (maksimal 4–5 anak per grup)',
+          'Feedback langsung terapis pasca sesi',
+          'Rekomendasi penempatan kelas lanjutan'
+        ],
+        buttonText: 'Daftar Sesi Trial',
+        isPopular: false
+      },
+      {
+        tag: 'Paling Diminati',
+        tagClass: 'tag-green',
+        title: 'Paket Bulanan Reguler (4x)',
+        subtitle: 'Paket 4 sesi terjadwal (1 sesi/minggu) untuk pembentukan kebiasaan sosial dan antre giliran konsisten.',
+        priceLabel: 'Total Investasi',
+        price: 'Rp 950.000',
+        unit: 'paket bulanan',
+        savingNote: 'Hemat Rp 150.000 + Laporan Sosial Bulanan',
+        features: [
+          '4 sesi rutin terjadwal (75–90 menit/sesi)',
+          'Kelompok teman sebaya yang konsisten',
+          'Laporan perkembangan sosial berkala tertulis',
+          'Konsultasi berkala via WhatsApp terapis'
+        ],
+        buttonText: 'Pilih Paket Bulanan 4x',
+        isPopular: true
+      },
+      {
+        tag: 'Program Intensif',
+        tagClass: 'tag-orange',
+        title: 'Paket Akselerasi Sosial (8x)',
+        subtitle: 'Program intensif 8 sesi (2 sesi/minggu) untuk anak yang membutuhkan persiapan cepat adaptasi sekolah.',
+        priceLabel: 'Total Investasi',
+        price: 'Rp 1.800.000',
+        unit: 'paket 8 sesi',
+        savingNote: 'Hemat Rp 400.000 + Sesi Konseling Ortu',
+        features: [
+          '8 sesi intensif (75–90 menit/sesi)',
+          'Simulasi skenario sosial indoor & mini outdoor',
+          '1 sesi feedback psikolog privat untuk orang tua',
+          'Prioritas pemilihan jadwal kelompok'
+        ],
+        buttonText: 'Pilih Paket Intensif 8x',
+        isPopular: false
+      }
+    ],
+    faqTitle: 'FAQ Seputar Grup Terapi Anak',
+    faqDesc: 'Pertanyaan yang sering dikonsultasikan orang tua sebelum mendaftarkan anak ke sesi kelompok.',
+    faqs: [
+      {
+        q: 'Kapan anak dikatakan siap masuk ke dalam Grup Terapi?',
+        a: 'Anak idealnya sudah memiliki rentang atensi dasar minimal 5–10 menit, tidak menunjukkan agresi fisik berat yang membahayakan anak lain, dan mampu mengikuti instruksi satu langkah sederhana. Tim kami akan melakukan skrining awal untuk memastikan kesiapan anak.'
+      },
+      {
+        q: 'Berapa jumlah anak dalam satu kelompok dan bagaimana rasionya?',
+        a: 'Kelompok dibatasi hanya 3 hingga 6 anak per kelas, dan didampingi oleh 2 orang terapis profesional (rasio 1 terapis per 2–3 anak) untuk menjamin setiap anak tetap mendapatkan perhatian individual yang memadai.'
+      },
+      {
+        q: 'Bagaimana jika anak menangis atau tantrum saat sesi berlangsung?',
+        a: 'Hal tersebut sangat wajar terjadi pada proses adaptasi. Terapis kami terlatih dalam teknik de-eskalasi dan regulasi emosi. Anak akan dibimbing dengan tenang ke area cooling-down tanpa paksaan hingga siap bergabung kembali bersama teman-temannya.'
+      },
+      {
+        q: 'Apakah grup terapi bisa menggantikan sesi terapi individual?',
+        a: 'Grup terapi bersifat komplementer (pelengkap lanjutan). Untuk melatih teknik artikulasi bicara spesifik atau modulasi sensori primer, terapi individual tetap diperlukan. Grup terapi berfungsi sebagai panggung latihan mengaplikasikan kemampuan tersebut ke dunia nyata bersama teman sebaya.'
+      }
+    ]
+  },
+
+  'pra-vokasional': {
+    code: 'PV',
+    name: 'Pra Vokasional',
+    shortName: 'Pra Vokasional',
+    badgeIcon: 'work_history',
+    categoryBadge: 'Program Transisi Mandiri • Pra Vokasional Remaja ABK',
+    titleMain: 'Program Pra Vokasional & Keterampilan Kerja',
+    titleAccent: '(Pre-Vocational Training)',
+    heroDesc: 'Program pembekalan keterampilan hidup mandiri (ADL), disiplin kerja terapan, orientasi tugas praktis, serta adaptasi sosial di ruang publik bagi remaja berkebutuhan khusus (usia 12–18+ tahun) menuju fase transisi dewasa yang mandiri dan bermartabat.',
+    heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB67b9MYgTLA9wMNy5O-9w6TkEnA6ohATQiH43KYlSlPAmDtbLTXu9B57WwqylRdCzHjZg7YF4bb-q7SJupFjxrp4FuawKotOYM7BPa42N5RxpxS7h6YusSVGHIhzMc89oCMmGfcZMwM64SG8vYil6uUlaDoMhfxkJZwyGiNg29r65HN9Ey3IEqYnmf_CSs1nLyHBOFCOiM9-yjTVs48R71yCk3d9Uzal8zzuTfeK8',
+    ctaPrimaryText: 'Konsultasi Pra Vokasional',
+    ctaFocusWord: 'Kemandirian & Produktivitas',
+    heroBadgeTitle: 'Pelatihan Kerja Terapan ABK',
+    heroBadgeSub: 'Kurikulum praktis, aman & disesuaikan minat remaja',
+    specs: [
+      { icon: 'schedule', label: 'Durasi Sesi', value: '90 - 120 Menit', bgClass: 'spec-bg-blue' },
+      { icon: 'precision_manufacturing', label: 'Metode', value: 'Project-Based Training', bgClass: 'spec-bg-green' },
+      { icon: 'face', label: 'Sasaran Usia', value: 'Usia 12 – 18+ Tahun', bgClass: 'spec-bg-orange' },
+      { icon: 'verified_user', label: 'Instruktur', value: 'Terapis Okupasi & Vokasi', bgClass: 'spec-bg-blue' }
+    ],
+    indicationsEyebrow: 'Persiapan Menuju Kemandirian Dewasa',
+    indicationsTitle: 'Kapan Remaja ABK Memerlukan Program Pra Vokasional?',
+    indicationsDesc: 'Memasuki usia remaja, fokus stimulasi beralih dari akademis teoritis menuju penguatan keterampilan praktis fungsional agar remaja mampu mandiri tanpa ketergantungan penuh pada keluarga.',
+    toolbarGuidanceTitle: 'Panduan Evaluasi Kemandirian Remaja',
+    toolbarGuidanceText: 'Tandai aspek kemandirian yang saat ini masih memerlukan pendampingan intensif di rumah:',
+    alertSub: 'Pelatihan vokasional yang dimulai sedini mungkin sejak masa remaja memberikan waktu adaptasi yang cukup bagi anak meraih kemandirian hidup optimal.',
+    guidanceAuthor: 'Catatan Tim Vokasi ATC',
+    guidanceText: 'Kemandirian hidup (bina diri dan keuangan dasar) adalah bekal paling berharga bagi masa depan remaja berkebutuhan khusus saat memasuki usia dewasa.',
+    indications: [
+      {
+        icon: 'accessibility_new',
+        iconBg: 'ind-icon-orange',
+        title: 'Ketergantungan Bina Diri Harian (ADL)',
+        desc: 'Masih membutuhkan bantuan penuh dalam menyiapkan pakaian, makan, mencuci tangan, atau menjaga kebersihan diri sendiri.',
+        age: '12 - 18 Tahun'
+      },
+      {
+        icon: 'payments',
+        iconBg: 'ind-icon-green',
+        title: 'Kesulitan Mengenal Nilai Uang & Belanja',
+        desc: 'Belum memahami nominal mata uang rupiah, tidak paham konsep kembalian, atau belum berani bertransaksi di toko/minimarket.',
+        age: '12 - 18 Tahun'
+      },
+      {
+        icon: 'checklist',
+        iconBg: 'ind-icon-blue',
+        title: 'Kesulitan Menyelesaikan Tugas Runtut',
+        desc: 'Bingung saat menerima instruksi kerja bertingkat (misal: melipat, memasukkan ke plastik, lalu menempel stiker label).',
+        age: '12 - 18 Tahun'
+      },
+      {
+        icon: 'storefront',
+        iconBg: 'ind-icon-teal',
+        title: 'Kecemasan Berada di Ruang Publik',
+        desc: 'Merasa sangat cemas atau canggung saat berada di lingkungan baru, tempat umum, atau berinteraksi dengan kasir dan orang luar.',
+        age: '12 - 18 Tahun'
+      },
+      {
+        icon: 'alarm',
+        iconBg: 'ind-icon-orange',
+        title: 'Belum Memahami Konsep Waktu & Disiplin',
+        desc: 'Sulit mengatur jadwal harian mandiri, sering menunda-nunda tugas, atau tidak memahami batasan jam kerja dan istirahat.',
+        age: '12 - 18 Tahun'
+      },
+      {
+        icon: 'school',
+        iconBg: 'ind-icon-blue',
+        title: 'Fase Transisi Menjelang Lulus Sekolah',
+        desc: 'Menjelang lulus dari SLB atau sekolah inklusi dan orang tua membutuhkan wadah pelatihan keterampilan kerja praktis lanjutan.',
+        age: '14 - 18+ Tahun'
+      }
+    ],
+    pillars: [
+      {
+        icon: 'home',
+        bgClass: 'pillar-bg-blue',
+        title: 'Bina Diri & Kemandirian Domestik',
+        desc: 'Melatih kemampuan memasak makanan sederhana aman, membersihkan peralatan makan, melipat dan menyetrika pakaian, serta manajemen barang pribadi di kamar.',
+        bullets: [
+          'Penggunaan peralatan dapur aman & higienis',
+          'Mencuci piring, menyapu, dan merapikan ruangan',
+          'Perawatan kebersihan diri mandiri'
+        ]
+      },
+      {
+        icon: 'local_atm',
+        bgClass: 'pillar-bg-green',
+        title: 'Keterampilan Finansial & Transaksi',
+        desc: 'Simulasi pengenalan mata uang kertas/koin, perhitungan belanja praktis, kalkulasi uang kembalian, hingga simulasi belanja mandiri di minimarket sungguhan.',
+        bullets: [
+          'Identifikasi nominal pecahan uang rupiah',
+          'Simulasi kasir & etika bertransaksi sopan',
+          'Pencatatan uang saku dan daftar belanjaan'
+        ]
+      },
+      {
+        icon: 'precision_manufacturing',
+        bgClass: 'pillar-bg-orange',
+        title: 'Simulasi Tugas Kerja & Perakitan',
+        desc: 'Pelatihan tugas terapan industri sederhana: pengemasan produk (packaging), penyortiran barang (sorting), penempelan stiker label, dan pengarsipan berkas.',
+        bullets: [
+          'Ketelitian tugas repetitive & quality check',
+          'Stamina kerja fokus 45–60 menit tanpa jeda tantrum',
+          'Pembersihan & penataan area kerja (5R/5S)'
+        ]
+      },
+      {
+        icon: 'badge',
+        bgClass: 'pillar-bg-teal',
+        title: 'Etika Kerja & Komunikasi Interpersonal',
+        desc: 'Membimbing pembentukan karakter disiplin: hadir tepat waktu, menyapa rekan kerja, meminta klarifikasi saat bingung, dan menerima umpan balik mentor.',
+        bullets: [
+          'Sopan santun berinteraksi dengan atasan/mentor',
+          'Ketepatan waktu dan kepatuhan SOP kerja',
+          'Manajemen emosi dan resolusi stres saat lelah'
+        ]
+      }
+    ],
+    processTitle: 'Alur Program Pelatihan Pra Vokasional',
+    processDesc: 'Pendekatan terstruktur berbasis observasi minat bakat dan potensi unik setiap remaja ABK.',
+    processSteps: [
+      {
+        number: '01',
+        numBgClass: 'num-blue',
+        badge: 'Asesmen Bakat',
+        badgeBgClass: 'badge-blue',
+        title: 'Asesmen Kapasitas & Minat Vokasi',
+        desc: 'Pemeriksaan kemampuan motorik halus-kasar, atensi kerja, ketahanan fokus, serta pemetaan minat bidang kerja yang paling sesuai bagi remaja.',
+        footerIcon: 'psychology',
+        footerText: 'Pemetaan Profil Vokasi Terarah'
+      },
+      {
+        number: '02',
+        numBgClass: 'num-primary-cont',
+        badge: 'Kurikulum Personalisasi',
+        badgeBgClass: 'badge-green',
+        title: 'Penyusunan Rencana Vokasi Individual',
+        desc: 'Perancangan target keterampilan kerja fungsional yang realistis dan disepakati bersama orang tua sesuai profil kemampuan remaja.',
+        footerIcon: 'assignment_turned_in',
+        footerText: 'Target Kompetensi Terukur'
+      },
+      {
+        number: '03',
+        numBgClass: 'num-green',
+        badge: 'Praktik Kerja',
+        badgeBgClass: 'badge-orange',
+        title: 'Pelatihan Kerja & Proyek Nyata',
+        desc: 'Sesi latihan langsung 90–120 menit: simulasi tugas kerja riil, pembuatan produk kerajinan/kuliner sederhana, dan pembiasaan etika kerja profesional.',
+        footerIcon: 'handyman',
+        footerText: 'Hands-on Learning Berkelanjutan'
+      },
+      {
+        number: '04',
+        numBgClass: 'num-dark-blue',
+        badge: 'Uji Mandiri',
+        badgeBgClass: 'badge-blue',
+        title: 'Field Trip & Portofolio Mandiri',
+        desc: 'Praktik langsung di ruang publik (belanja di supermarket, naik transportasi umum) serta portofolio kompetensi kerja remaja.',
+        footerIcon: 'workspace_premium',
+        footerText: 'Portofolio Hasil Karya & Keterampilan'
+      }
+    ],
+    teamTitle: 'Tim Instruktur Pra Vokasional Kami',
+    teamDesc: 'Didukung oleh Terapis Okupasi klinis pediatrik dan konsultan psikologi vokasional yang sabar dan berpengalaman mendampingi remaja berkebutuhan khusus.',
+    therapists: [
+      {
+        name: 'Budi Santoso, A.Md.OT',
+        role: 'Instruktur Utama Vokasi & Terapi Okupasi',
+        bio: 'Fokus pada pelatihan bina diri (ADL), koordinasi motorik kerja, ketahanan duduk kerja, dan penataan ergonomi aktivitas remaja ABK.',
+        cert: 'STR Kemenkes Aktif • Anggota IOTI',
+        rating: '4.95 (140+ Sesi)',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCIKvDfJPyVbIyPla4wyzxNhLrF8Ce1fVTVaOqumdJmrh2Bk8V7oAZmxceDSGifuQqVl1kki4aGpoTx11e5k91D13E3IbOLK8wQjn1WI_Sl-7zRbNYinsXJ3V2vevUjDzfQnwz96Sj-elpEFz1TGMDkGcogynWSoUS19_F-iFSPo0EzFQKVk3iSrq6SDGNB96CrjY8D4dfGTmV7xw7183jxJQ6xTu9aQJYX-uGTcYA'
+      },
+      {
+        name: 'Farhan Maulana, M.Psi., Psikolog',
+        role: 'Psikolog Remaja & Asesmen Kerja',
+        bio: 'Spesialisasi dalam evaluasi kapasitas kognitif fungsional, regulasi emosi pubertas remaja ABK, dan kesiapan mental memasuki dunia kerja.',
+        cert: 'Psikolog Klinis SIPP Aktif • Anggota HIMPSI',
+        rating: '4.95 (130+ Sesi)',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAf4OVUo-Wxnq8f6xSABM4mGtVxKAMm7lICIoE-PAxYxAZi_WeX9xbdVYLOIjzYftHDfEytV-2fKTnkbwLfFeFxQhERvsIwEIwli4j-NnHuby3Z4nZIptqt_qejl-BUIf2bOej8oKcP5I91K6rBDTT3Y_dcU9uGgiexN7tPlJ3Rl4hy_RT46xH8h_J4kmToqINJ4tSlKYrmbz3NaTyHUwpZhBG53oHWwMDE4iKDYXM'
+      },
+      {
+        name: 'Maya Indah, S.Tr.Kes',
+        role: 'Fasilitator Keterampilan Hidup Mandiri',
+        bio: 'Keahlian dalam simulasi transaksi belanja, keterampilan kuliner sederhana yang aman, dan pendampingan adaptasi ruang publik.',
+        cert: 'Terapis Okupasi Klinis • 6+ Th Praktik',
+        rating: '4.9 (115+ Sesi)',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9TdTX3hAv4l3XEhF6RnRoVq9SrEZWWigruM-Zmmi35kXtkmTMve9H7N1-RIYg5jM937Tx9sEWQyzXR66Neo9Sa7776w3Zo6VajIJukCAkN8s151ZqH9c7PF-4nlF1-SVkqD1DZB7BwB9tpZaUcpcSsq9obGxkdggEXSE_IuVRlN-Fsh23JI2d9iMF_qq9LXNCduvqstqvjnXBb1KvcBfZ0q46z2EUUUP0j15K0do'
+      }
+    ],
+    pricingTitle: 'Investasi Program Pra Vokasional',
+    pricingDesc: 'Bekal kemandirian terbaik yang akan bermanfaat seumur hidup bagi kemandirian dan rasa percaya diri remaja Anda.',
+    packages: [
+      {
+        tag: 'Langkah Awal',
+        tagClass: 'tag-blue',
+        title: 'Asesmen Kesiapan Vokasi',
+        subtitle: 'Sesi evaluasi menyeluruh kapasitas motorik kerja, kemandirian ADL, dan minat vokasional remaja.',
+        priceLabel: 'Total Investasi',
+        price: 'Rp 350.000',
+        unit: 'sesi asesmen',
+        features: [
+          'Durasi 90 menit pemeriksaan tatap muka',
+          'Pemetaan profil keterampilan kerja dasar',
+          'Laporan rekomendasi kurikulum vokasi tertulis',
+          'Sesi konsultasi 30 menit bersama orang tua'
+        ],
+        buttonText: 'Jadwalkan Asesmen Vokasi',
+        isPopular: false
+      },
+      {
+        tag: 'Rekomendasi Utama',
+        tagClass: 'tag-green',
+        title: 'Paket Vokasi Bulanan (4x Sesi)',
+        subtitle: '4 sesi intensif pelatihan kerja terapan @ 90–120 menit dengan modul proyek fungsional terarah.',
+        priceLabel: 'Total Investasi',
+        price: 'Rp 1.100.000',
+        unit: 'paket bulanan',
+        savingNote: 'Termasuk Bahan Praktik & Laporan Progres',
+        features: [
+          '4 sesi tatap muka intensif (90–120 menit/sesi)',
+          'Modul bina diri, tugas kerja & finansial dasar',
+          'Sudah termasuk seluruh alat & bahan praktik',
+          'Laporan capaian kemandirian berkala'
+        ],
+        buttonText: 'Pilih Paket Bulanan',
+        isPopular: true
+      },
+      {
+        tag: 'Program Terpadu',
+        tagClass: 'tag-orange',
+        title: 'Paket Akselerasi Mandiri (8x + Field Trip)',
+        subtitle: 'Program intensif 8 sesi kerja terapan ditambah 1 sesi simulasi belanja & transportasi di ruang publik.',
+        priceLabel: 'Total Investasi',
+        price: 'Rp 2.100.000',
+        unit: 'paket lengkap',
+        savingNote: 'Hemat Rp 300.000 + Didampingi 2 Mentor',
+        features: [
+          '8 sesi praktik kerja intensif di center',
+          '1 sesi field trip praktik belanja minimarket',
+          'Portofolio keterampilan kerja resmi tercetak',
+          'Sesi evaluasi komprehensif bersama keluarga'
+        ],
+        buttonText: 'Pilih Paket Akselerasi 8x',
+        isPopular: false
+      }
+    ],
+    faqTitle: 'FAQ Seputar Program Pra Vokasional',
+    faqDesc: 'Pertanyaan umum mengenai pelaksanaan program vokasi bagi remaja berkebutuhan khusus.',
+    faqs: [
+      {
+        q: 'Remaja dengan diagnosa apa saja yang dapat mengikuti program ini?',
+        a: 'Program ini terbuka untuk remaja usia 12–18+ tahun dengan berbagai latar belakang, termasuk Spektrum Autisme, Down Syndrome, ADHD, Intellectual Disability ringan-sedang, maupun kesulitan belajar spesifik yang membutuhkan kemandirian hidup.'
+      },
+      {
+        q: 'Apa saja output nyata yang didapatkan remaja setelah mengikuti pelatihan?',
+        a: 'Remaja akan memiliki keterampilan bina diri yang lebih mandiri di rumah, pemahaman nominal uang dan transaksi belanja sederhana, ketahanan bekerja fokus pada tugas terstruktur, serta sikap sopan santun dan etika komunikasi di ruang publik.'
+      },
+      {
+        q: 'Bagaimana peran dan keterlibatan orang tua dalam program ini?',
+        a: 'Orang tua adalah mitra utama. Di akhir setiap sesi, terapis memberikan panduan tugas rumah (home program) agar kebiasaan mandiri yang dilatih di klinik dapat langsung diterapkan dan dipertahankan dalam kehidupan sehari-hari di rumah.'
+      },
+      {
+        q: 'Apakah ada ujian atau portofolio yang diberikan?',
+        a: 'Ya. Setiap siswa pra vokasional akan memiliki Buku Portofolio Kemandirian yang mendokumentasikan daftar keterampilan (checklist kompetensi) yang sudah dikuasai beserta dokumentasi karya selama proses pelatihan.'
+      }
+    ]
+  },
+
+  'kelas-persiapan-khusus': {
+    code: 'KPK',
+    name: 'Kelas Persiapan Khusus',
+    shortName: 'Kelas Persiapan',
+    badgeIcon: 'school',
+    categoryBadge: 'Program Transisi Sekolah • Kelas Persiapan Khusus Masuk SD/TK',
+    titleMain: 'Kelas Persiapan Khusus Masuk Sekolah',
+    titleAccent: '(School Readiness & Transition)',
+    heroDesc: 'Program transisi sekolah intensif dalam kelompok kecil (3–5 anak) untuk membekali anak berkebutuhan khusus dengan kesiapan pra-akademik, ketahanan duduk fokus, kepatuhan instruksi kelas, serta kemandirian sosial menjelang masuk TK atau SD formal.',
+    heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB67b9MYgTLA9wMNy5O-9w6TkEnA6ohATQiH43KYlSlPAmDtbLTXu9B57WwqylRdCzHjZg7YF4bb-q7SJupFjxrp4FuawKotOYM7BPa42N5RxpxS7h6YusSVGHIhzMc89oCMmGfcZMwM64SG8vYil6uUlaDoMhfxkJZwyGiNg29r65HN9Ey3IEqYnmf_CSs1nLyHBOFCOiM9-yjTVs48R71yCk3d9Uzal8zzuTfeK8',
+    ctaPrimaryText: 'Daftar Kelas Persiapan',
+    ctaFocusWord: 'Kesiapan Sekolah & Kemandirian',
+    heroBadgeTitle: 'Simulasi Ruang Kelas Nyata',
+    heroBadgeSub: 'Kelompok kecil 3–5 anak dipandu terapis pedagogik',
+    specs: [
+      { icon: 'schedule', label: 'Durasi Sesi', value: '60 - 90 Menit', bgClass: 'spec-bg-blue' },
+      { icon: 'chair_alt', label: 'Setting Kelas', value: 'Simulasi Kelas 3–5 Anak', bgClass: 'spec-bg-green' },
+      { icon: 'face', label: 'Sasaran Usia', value: 'Usia 4 – 9 Tahun', bgClass: 'spec-bg-orange' },
+      { icon: 'verified_user', label: 'Pengajar', value: 'Pedagogik & Terapis Anak', bgClass: 'spec-bg-blue' }
+    ],
+    indicationsEyebrow: 'Evaluasi Kesiapan Masuk Sekolah Formal',
+    indicationsTitle: 'Kapan Anak Memerlukan Kelas Persiapan Khusus?',
+    indicationsDesc: 'Banyak anak mengalami kaget (*culture shock*) saat beralih dari terapi 1-on-1 ke ruang kelas formal yang ramai. Kelas persiapan khusus menjembatani transisi tersebut agar anak siap belajar tanpa stres berlebih.',
+    toolbarGuidanceTitle: 'Panduan Observasi Kesiapan Sekolah',
+    toolbarGuidanceText: 'Tandai tanda-tanda yang saat ini masih menjadi kekhawatiran menjelang pendaftaran sekolah formal:',
+    alertSub: 'Pembiasaan rutinitas sekolah sejak dini sangat membantu mencegah penolakan sekolah (school refusal) dan tantrum di minggu-minggu pertama masuk kelas.',
+    guidanceAuthor: 'Catatan Guru & Terapis ATC',
+    guidanceText: 'Kesiapan sekolah bukan hanya tentang bisa membaca dan berhitung, tetapi terutama kemampuan duduk tenang, memahami aturan kelas, dan regulasi mandiri.',
+    indications: [
+      {
+        icon: 'airline_seat_recline_normal',
+        iconBg: 'ind-icon-orange',
+        title: 'Belum Bisa Duduk Tenang (Inseat Behavior Minim)',
+        desc: 'Hanya mampu duduk kurang dari 5 menit, sering berlari-lari keliling meja, atau mudah terdistraksi benda di sekitar ruangan.',
+        age: '4 - 8 Tahun'
+      },
+      {
+        icon: 'record_voice_over',
+        iconBg: 'ind-icon-blue',
+        title: 'Bingung Mengikuti Instruksi Kelompok',
+        desc: 'Hanya merespon bila dipanggil namanya secara individual 1-on-1, bingung saat guru memberi instruksi serentak pada seisi kelas.',
+        age: '4 - 9 Tahun'
+      },
+      {
+        icon: 'edit_note',
+        iconBg: 'ind-icon-green',
+        title: 'Kelemahan Motorik Halus Menulis (Pencil Grip)',
+        desc: 'Genggaman pensil masih menggunakan kepalan tangan (fisted grip), tulisan sangat tipis, atau cepat mengeluh pegal saat mewarnai.',
+        age: '4 - 8 Tahun'
+      },
+      {
+        icon: 'numbers',
+        iconBg: 'ind-icon-teal',
+        title: 'Hambatan Pra-Membaca & Pra-Berhitung',
+        desc: 'Kesulitan mengenali simbol huruf dasar, angka, membedakan konsep arah (kiri-kanan), atau konsep kuantitas banyak-sedikit.',
+        age: '5 - 9 Tahun'
+      },
+      {
+        icon: 'warning',
+        iconBg: 'ind-icon-orange',
+        title: 'Tantrum Saat Transisi Aktivitas Belajar',
+        desc: 'Menolak keras saat waktu bermain bebas selesai dan harus berganti mengerjakan lembar tugas (*desk work*) di meja.',
+        age: '4 - 8 Tahun'
+      },
+      {
+        icon: 'backpack',
+        iconBg: 'ind-icon-blue',
+        title: 'Belum Mandiri Mengurus Perlengkapan Sendiri',
+        desc: 'Masih bergantung penuh pada orang tua untuk membuka tas, memakai sepatu, mengeluarkan botol minum, atau izin ke toilet.',
+        age: '4 - 9 Tahun'
+      }
+    ],
+    pillars: [
+      {
+        icon: 'chair_alt',
+        bgClass: 'pillar-bg-blue',
+        title: 'Ketahanan Duduk & Fokus Meja (Desk Work)',
+        desc: 'Melatih postur duduk ergonomis, ketahanan atensi fokus menyelesaikan tugas lembar kerja bertahap dari 10 menit hingga 30 menit tanpa terdistraksi.',
+        bullets: [
+          'Postur duduk tegak dan stabilitas core tubuh',
+          'Fokus konsentrasi menyelesaikan tugas sampai tuntas',
+          'Toleransi terhadap instruksi meja bertingkat'
+        ]
+      },
+      {
+        icon: 'notifications_active',
+        bgClass: 'pillar-bg-green',
+        title: 'Pemahaman Rutinitas & Aturan Kelas',
+        desc: 'Simulasi tata tertib sekolah formal: berbaris tertib, merespon bel tanda masuk/istirahat, mengangkat tangan saat ingin bertanya, dan mendengarkan guru.',
+        bullets: [
+          'Kepatuhan instruksi kelompok dari depan kelas',
+          'Rutinitas meletakkan tas dan sepatu pada loker',
+          'Etika bertanya dan menunggu giliran bicara'
+        ]
+      },
+      {
+        icon: 'menu_book',
+        bgClass: 'pillar-bg-orange',
+        title: 'Stimulasi Pra-Akademik Terpadu (Pra-Calistung)',
+        desc: 'Penguatan fondasi belajar: diskriminasi bentuk huruf/angka, koordinasi mata-tangan menulis garis, fonemik awal, serta logika spasial berhitung dasar.',
+        bullets: [
+          'Pematangan tripot grip memegang alat tulis',
+          'Pengenalan bentuk huruf, bunyi fonetik, dan angka',
+          'Diskriminasi visual gambar dan konsep ruang'
+        ]
+      },
+      {
+        icon: 'wc',
+        bgClass: 'pillar-bg-teal',
+        title: 'Kemandirian Bina Diri Sekolah',
+        desc: 'Pelatihan kemandirian praktis tanpa ketergantungan orang tua: toilet training mandiri, membuka dan menutup kotak makan, serta merapikan alat tulis.',
+        bullets: [
+          'Toilet training mandiri & mencuci tangan bersih',
+          'Makan bekal dan minum secara tertib mandiri',
+          'Kesiapan mental berpisah hangat dari orang tua'
+        ]
+      }
+    ],
+    processTitle: 'Tahapan Program Kelas Persiapan Khusus',
+    processDesc: 'Didampingi secara terukur dari skrining kematangan sekolah hingga rekomendasi formal untuk sekolah tujuan.',
+    processSteps: [
+      {
+        number: '01',
+        numBgClass: 'num-blue',
+        badge: 'Tes Kematangan',
+        badgeBgClass: 'badge-blue',
+        title: 'Asesmen Kesiapan Masuk Sekolah (NST)',
+        desc: 'Pemeriksaan standar Nijmeegse Schoolbekwaamheids Test (NST) dan observasi perilaku untuk melihat kematangan motorik, emosi, dan kognitif anak.',
+        footerIcon: 'assignment_turned_in',
+        footerText: 'Pemetaan Tingkat Kesiapan Sekolah'
+      },
+      {
+        number: '02',
+        numBgClass: 'num-primary-cont',
+        badge: 'Setting Kelas',
+        badgeBgClass: 'badge-green',
+        title: 'Penempatan Kelas Simulasi Transisi',
+        desc: 'Anak ditempatkan dalam kelompok kecil (3–5 siswa) dengan jadwal rutin terstruktur yang menyerupai jam sekolah sesungguhnya.',
+        footerIcon: 'meeting_room',
+        footerText: 'Suasana Ruang Kelas Kondusif'
+      },
+      {
+        number: '03',
+        numBgClass: 'num-green',
+        badge: 'Simulasi Rutin',
+        badgeBgClass: 'badge-orange',
+        title: 'Pelaksanaan Pembiasaan Kelas Mandiri',
+        desc: 'Sesi latihan rutin 60–90 menit yang mencakup circle time, instruksi guru di papan tulis, lembar kerja meja, dan waktu istirahat makan bekal bersama.',
+        footerIcon: 'auto_stories',
+        footerText: 'Adaptasi Menyenangkan Tanpa Trauma'
+      },
+      {
+        number: '04',
+        numBgClass: 'num-dark-blue',
+        badge: 'Rekomendasi',
+        badgeBgClass: 'badge-blue',
+        title: 'Laporan Resmi & Rekomendasi Sekolah',
+        desc: 'Penerbitan surat rekomendasi resmi dan laporan profil kesiapan sekolah untuk dilampirkan pada pendaftaran TK/SD inklusi atau reguler.',
+        footerIcon: 'verified',
+        footerText: 'Surat Rekomendasi Formal Sekolah'
+      }
+    ],
+    teamTitle: 'Tim Pengajar Kelas Persiapan Kami',
+    teamDesc: 'Kolaborasi praktisi Pendidikan Khusus (PKh), Terapis Wicara & Okupasi, serta Psikolog Anak berpengalaman mendampingi proses adaptasi sekolah inklusi.',
+    therapists: [
+      {
+        name: 'Sarah Wijayanti, M.Psi., Psikolog',
+        role: 'Evaluator Kesiapan Sekolah & Psikolog Anak',
+        bio: 'Berpengalaman dalam pelaksanaan tes kesiapan sekolah formal (NST), evaluasi profil kecerdasan, dan rekomendasi akomodasi belajar anak di sekolah.',
+        cert: 'Psikolog Klinis SIPP Aktif • Magister UI',
+        rating: '5.0 (150+ Sesi)',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9TdTX3hAv4l3XEhF6RnRoVq9SrEZWWigruM-Zmmi35kXtkmTMve9H7N1-RIYg5jM937Tx9sEWQyzXR66Neo9Sa7776w3Zo6VajIJukCAkN8s151ZqH9c7PF-4nlF1-SVkqD1DZB7BwB9tpZaUcpcSsq9obGxkdggEXSE_IuVRlN-Fsh23JI2d9iMF_qq9LXNCduvqstqvjnXBb1KvcBfZ0q46z2EUUUP0j15K0do'
+      },
+      {
+        name: 'Maya Indah, S.Tr.Kes',
+        role: 'Spesialis Motorik Halus & Pra-Menulis',
+        bio: 'Fokus pada stimulasi penguatan otot tangan, ergonomi pensil (tripot grip), koordinasi visual motorik, dan ketahanan duduk tegak di meja kelas.',
+        cert: 'STR Kemenkes Aktif • Praktisi Okupasi',
+        rating: '4.9 (125+ Sesi)',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCIKvDfJPyVbIyPla4wyzxNhLrF8Ce1fVTVaOqumdJmrh2Bk8V7oAZmxceDSGifuQqVl1kki4aGpoTx11e5k91D13E3IbOLK8wQjn1WI_Sl-7zRbNYinsXJ3V2vevUjDzfQnwz96Sj-elpEFz1TGMDkGcogynWSoUS19_F-iFSPo0EzFQKVk3iSrq6SDGNB96CrjY8D4dfGTmV7xw7183jxJQ6xTu9aQJYX-uGTcYA'
+      },
+      {
+        name: 'Annisa Larasati, A.Md.TW',
+        role: 'Stimulasi Pemahaman Instruksi Kelas',
+        bio: 'Melatih kemampuan menyimak instruksi guru, pemahaman konsep bahasa verbal kelas, serta keberanian bertanya secara asertif di sekolah.',
+        cert: 'Terapis Wicara Berlisensi STR • 7+ Th Pengalaman',
+        rating: '4.95 (145+ Sesi)',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAf4OVUo-Wxnq8f6xSABM4mGtVxKAMm7lICIoE-PAxYxAZi_WeX9xbdVYLOIjzYftHDfEytV-2fKTnkbwLfFeFxQhERvsIwEIwli4j-NnHuby3Z4nZIptqt_qejl-BUIf2bOej8oKcP5I91K6rBDTT3Y_dcU9uGgiexN7tPlJ3Rl4hy_RT46xH8h_J4kmToqINJ4tSlKYrmbz3NaTyHUwpZhBG53oHWwMDE4iKDYXM'
+      }
+    ],
+    pricingTitle: 'Investasi Kelas Persiapan Khusus',
+    pricingDesc: 'Persiapan matang yang menghindarkan anak dari trauma mogok sekolah dan kebingungan di tahun pertama sekolah formal.',
+    packages: [
+      {
+        tag: 'Pemeriksaan Awal',
+        tagClass: 'tag-blue',
+        title: 'Paket Tes Kesiapan Sekolah (NST)',
+        subtitle: 'Pemeriksaan psikotes terstandar kesiapan masuk SD lengkap dengan surat rekomendasi resmi bertanda tangan SIPP.',
+        priceLabel: 'Total Investasi',
+        price: 'Rp 650.000',
+        unit: 'paket asesmen',
+        features: [
+          'Pemeriksaan tes NST / tes kesiapan masuk SD',
+          'Sesi tatap muka psikolog klinis berizin',
+          'Laporan psikologis tertulis resmi berstempel',
+          'Sesi feedback penjelasan 30 menit bersama orang tua'
+        ],
+        buttonText: 'Daftar Tes Kesiapan SD',
+        isPopular: false
+      },
+      {
+        tag: 'Program Utama',
+        tagClass: 'tag-green',
+        title: 'Paket Kelas Transisi Bulanan (4x)',
+        subtitle: '4 sesi kelas simulasi transisi sekolah (@ 60–90 menit) dalam kelompok kecil 3–5 anak dipandu terapis.',
+        priceLabel: 'Total Investasi',
+        price: 'Rp 1.050.000',
+        unit: 'paket bulanan',
+        savingNote: 'Termasuk Lembar Kerja & Laporan Bulanan',
+        features: [
+          '4 sesi rutin terjadwal (60–90 menit/sesi)',
+          'Simulasi kelas formal & pembiasaan aturan sekolah',
+          'Seluruh lembar kerja pra-akademik disediakan',
+          'Laporan evaluasi adaptasi kelas berkala'
+        ],
+        buttonText: 'Pilih Kelas Transisi 4x',
+        isPopular: true
+      },
+      {
+        tag: 'Persiapan Lengkap',
+        tagClass: 'tag-orange',
+        title: 'Paket Intensif Siap Masuk SD (12x Sesi)',
+        subtitle: 'Program intensif 3 bulan (1 sesi/minggu) atau 6 minggu (2 sesi/minggu) untuk akselerasi kesiapan total.',
+        priceLabel: 'Total Investasi',
+        price: 'Rp 2.800.000',
+        unit: 'paket 12 sesi',
+        savingNote: 'Hemat Rp 350.000 + Termasuk Tes NST Resmi',
+        features: [
+          '12 sesi intensif simulasi kelas transisi sekolah',
+          'Sudah termasuk Asesmen Tes NST Resmi SIPP',
+          'Sesi konsultasi persiapan pendaftaran sekolah',
+          'Rekomendasi kebutuhan shadow teacher bila diperlukan'
+        ],
+        buttonText: 'Pilih Paket Intensif 12x',
+        isPopular: false
+      }
+    ],
+    faqTitle: 'FAQ Kelas Persiapan Khusus Masuk Sekolah',
+    faqDesc: 'Pertanyaan yang sering diajukan orang tua seputar kelas persiapan transisi sekolah.',
+    faqs: [
+      {
+        q: 'Apa perbedaan kelas persiapan khusus dengan les calistung biasa?',
+        a: 'Les calistung biasa hanya fokus pada hafalan huruf dan angka tanpa memperhatikan kematangan sensorik, motorik halus, maupun regulasi emosi. Kelas Persiapan Khusus di ATC melatih kesiapan komprehensif: ketahanan duduk tenang, pemahaman instruksi kelas kelompok, kemandirian memakai tas/sepatu, serta interaksi sosial sebaya.'
+      },
+      {
+        q: 'Apakah program ini bisa membantu menentukan sekolah yang tepat bagi anak?',
+        a: 'Bisa. Berdasarkan hasil observasi selama kelas persiapan dan tes NST, tim psikolog kami akan memberikan rekomendasi obyektif mengenai tipe sekolah yang paling cocok (apakah sekolah reguler umum, sekolah inklusi dengan pendampingan, atau sekolah khusus).'
+      },
+      {
+        q: 'Bagaimana jika anak belum tuntas terapi wicara atau okupasi?',
+        a: 'Kelas persiapan khusus dapat dijalankan bersamaan (paralel) dengan terapi individual 1-on-1. Di sesi individual anak melatih organ artikulasi atau modulasi sensori primernya, sedangkan di kelas persiapan khusus anak mempraktikkan keterampilan tersebut dalam suasana ruang kelas mini.'
+      },
+      {
+        q: 'Apakah orang tua mendampingi anak di dalam ruang kelas?',
+        a: 'Pada 1–2 sesi awal penyesuaian, orang tua diperbolehkan memantau dari pintu atau mendampingi jika anak cemas berlebih. Namun target utama program adalah melatih kemandirian, sehingga secara bertahap anak dibimbing mandiri di dalam kelas bersama guru dan teman-temannya.'
       }
     ]
   }
 }
+
+// Alias routes for psychology services
+allServicesData['psikolog'] = allServicesData['psikologi-anak']
+allServicesData['psikologi'] = allServicesData['psikologi-anak']
+allServicesData['psikologi-remaja'] = allServicesData['psikologi-anak']
+allServicesData['psikologi-dewasa'] = allServicesData['psikologi-anak']
+
+// Alias routes for group, vocational, and school preparation
+allServicesData['group-therapy'] = allServicesData['grup-terapi']
+allServicesData['prevocational'] = allServicesData['pra-vokasional']
+allServicesData['vokasional'] = allServicesData['pra-vokasional']
+allServicesData['kelas-persiapan'] = allServicesData['kelas-persiapan-khusus']
 
 const service = computed(() => {
   const slug = route.params.slug
@@ -1587,9 +2564,53 @@ const serviceCategoryMap = {
     category: 'psi',
     fallbackRegex: /\b(psikolog|psikologi)\b/i,
   },
+  'psikolog': {
+    category: 'psi',
+    fallbackRegex: /\b(psikolog|psikologi)\b/i,
+  },
+  'psikologi': {
+    category: 'psi',
+    fallbackRegex: /\b(psikolog|psikologi)\b/i,
+  },
+  'psikologi-remaja': {
+    category: 'psi',
+    fallbackRegex: /\b(psikolog|psikologi)\b/i,
+  },
+  'psikologi-dewasa': {
+    category: 'psi',
+    fallbackRegex: /\b(psikolog|psikologi)\b/i,
+  },
   'fisioterapi-anak': {
     category: 'ft',
     fallbackRegex: /\b(fisioterapi|fisioterapis)\b/i,
+  },
+  'grup-terapi': {
+    category: 'gt',
+    fallbackRegex: /\b(grup|group|sosial|kelompok)\b/i,
+  },
+  'group-therapy': {
+    category: 'gt',
+    fallbackRegex: /\b(grup|group|sosial|kelompok)\b/i,
+  },
+  'pra-vokasional': {
+    category: 'pv',
+    fallbackRegex: /\b(vokasi|vokasional|vocational|remaja)\b/i,
+  },
+  'prevocational': {
+    category: 'pv',
+    fallbackRegex: /\b(vokasi|vokasional|vocational|remaja)\b/i,
+  },
+  'vokasional': {
+    category: 'pv',
+    fallbackRegex: /\b(vokasi|vokasional|vocational|remaja)\b/i,
+  },
+  'kelas-persiapan-khusus': {
+    category: 'kpk',
+    fallbackRegex: /\b(persiapan|transisi|sekolah)\b/i,
+  },
+  'kelas-persiapan': {
+    category: 'kpk',
+    fallbackRegex: /\b(persiapan|transisi|sekolah)\b/i,
   },
 }
 
@@ -1881,7 +2902,7 @@ const serviceTherapists = computed(() => {
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
   gap: 2.5rem;
   align-items: center;
   position: relative;
@@ -1892,6 +2913,7 @@ const serviceTherapists = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  min-width: 0;
 }
 
 .category-badge {
@@ -1936,27 +2958,29 @@ const serviceTherapists = computed(() => {
 /* Specs Bento Bar */
 .specs-bento {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.625rem;
   background: var(--surface-container-lowest);
-  padding: 0.875rem;
+  padding: 0.75rem;
   border-radius: 1rem;
   border: 1px solid rgba(191, 200, 206, 0.4);
   box-shadow: 0 8px 24px -4px rgba(58, 134, 168, 0.08);
+  min-width: 0;
 }
 
 .spec-card {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
-  padding: 0.625rem 0.75rem;
+  gap: 0.5rem;
+  padding: 0.625rem 0.625rem;
   border-radius: 0.75rem;
   background: var(--surface-container-low);
+  min-width: 0;
 }
 
 .spec-icon {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1965,7 +2989,7 @@ const serviceTherapists = computed(() => {
 }
 
 .spec-icon .material-symbols-outlined {
-  font-size: 20px;
+  font-size: 19px;
 }
 
 .spec-bg-blue {
@@ -1986,18 +3010,24 @@ const serviceTherapists = computed(() => {
 .spec-info {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .spec-label {
   font-size: 11px;
   color: var(--on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .spec-val {
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
   color: var(--on-surface);
-  white-space: nowrap;
+  line-height: 1.3;
+  word-break: normal;
 }
 
 /* Hero Action CTAs */
@@ -2076,6 +3106,8 @@ const serviceTherapists = computed(() => {
 /* Hero Visual */
 .hero-visual-col {
   position: relative;
+  min-width: 0;
+  width: 100%;
 }
 
 .visual-frame {
@@ -2085,6 +3117,7 @@ const serviceTherapists = computed(() => {
   background: rgba(209, 228, 251, 0.5);
   border: 4px solid var(--surface-container-lowest);
   box-shadow: 0 16px 36px -6px rgba(43, 61, 79, 0.12);
+  width: 100%;
 }
 
 .hero-img {
@@ -2099,23 +3132,26 @@ const serviceTherapists = computed(() => {
   bottom: 1rem;
   left: 1rem;
   right: 1rem;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 0.875rem 1rem;
   border-radius: 1rem;
   border: 1px solid rgba(191, 200, 206, 0.4);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+  box-sizing: border-box;
 }
 
 .float-tag-left {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
 }
 
 .float-icon-wrap {
@@ -2136,27 +3172,28 @@ const serviceTherapists = computed(() => {
 
 .float-tag-title {
   font-family: var(--font-headline);
-  font-size: 15px;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--on-surface);
   margin-bottom: 2px;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .float-tag-sub {
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--on-surface-variant);
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 .float-loc-pill {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--primary);
-  background: rgba(193, 232, 255, 0.7);
-  padding: 0.35rem 0.75rem;
+  background: rgba(193, 232, 255, 0.75);
+  padding: 0.35rem 0.65rem;
   border-radius: 9999px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* ==================== SECTION 2: INDIKASI (INTERACTIVE CHECKLIST) ==================== */
@@ -3526,13 +4563,19 @@ const serviceTherapists = computed(() => {
 }
 
 /* ==================== RESPONSIVE BREAKPOINTS ==================== */
+@media (max-width: 1200px) {
+  .specs-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 1024px) {
   .hero-grid {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
   .specs-bento {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .indications-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -3619,6 +4662,241 @@ const serviceTherapists = computed(() => {
   .floating-badge-tag {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+/* ==================== SECTION AGE CATEGORIES (3 KATEGORI PSIKOLOGI) ==================== */
+.section-age-categories {
+  padding: 4.5rem 0;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-container-low) 100%);
+  border-bottom: 1px solid rgba(191, 200, 206, 0.3);
+}
+
+.age-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+
+.age-cat-card {
+  background: var(--surface);
+  border: 1px solid rgba(191, 200, 206, 0.4);
+  border-radius: 1.25rem;
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+}
+
+.age-cat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -6px rgba(0, 48, 73, 0.1);
+  border-color: var(--primary);
+}
+
+.age-cat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.age-cat-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.age-cat-icon-wrap .material-symbols-outlined {
+  font-size: 26px;
+}
+
+.icon-bg-blue {
+  background: rgba(0, 99, 132, 0.12);
+  color: var(--primary);
+}
+
+.icon-bg-green {
+  background: rgba(75, 103, 22, 0.12);
+  color: var(--secondary);
+}
+
+.icon-bg-orange {
+  background: rgba(136, 78, 3, 0.12);
+  color: var(--tertiary);
+}
+
+.age-cat-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+}
+
+.badge-cat-blue {
+  background: rgba(0, 99, 132, 0.08);
+  color: var(--primary);
+  border: 1px solid rgba(0, 99, 132, 0.2);
+}
+
+.badge-cat-green {
+  background: rgba(75, 103, 22, 0.08);
+  color: var(--secondary);
+  border: 1px solid rgba(75, 103, 22, 0.2);
+}
+
+.badge-cat-orange {
+  background: rgba(136, 78, 3, 0.08);
+  color: var(--tertiary);
+  border: 1px solid rgba(136, 78, 3, 0.2);
+}
+
+.age-cat-title {
+  font-family: var(--font-headline);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: 0.35rem;
+}
+
+.age-cat-target {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 13px;
+  color: var(--on-surface-variant);
+  margin-bottom: 0.875rem;
+}
+
+.age-cat-target .target-icon {
+  font-size: 16px;
+  color: var(--primary);
+}
+
+.age-cat-desc {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--on-surface-variant);
+  margin-bottom: 1.25rem;
+}
+
+.age-cat-focus-box {
+  background: var(--surface-container-low);
+  border-radius: 0.875rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.focus-box-title {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.625rem;
+}
+
+.focus-box-title .material-symbols-outlined {
+  font-size: 16px;
+  color: var(--primary);
+}
+
+.age-cat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.age-cat-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--on-surface);
+}
+
+.point-check {
+  font-size: 16px;
+  color: var(--secondary);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.age-cat-footer {
+  margin-top: auto;
+}
+
+.btn-cat-wa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-cat-blue {
+  background: rgba(0, 99, 132, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(0, 99, 132, 0.25);
+}
+.btn-cat-blue:hover {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+
+.btn-cat-green {
+  background: rgba(75, 103, 22, 0.1);
+  color: var(--secondary);
+  border: 1px solid rgba(75, 103, 22, 0.25);
+}
+.btn-cat-green:hover {
+  background: var(--secondary);
+  color: var(--on-secondary);
+  border-color: var(--secondary);
+}
+
+.btn-cat-orange {
+  background: rgba(136, 78, 3, 0.1);
+  color: var(--tertiary);
+  border: 1px solid rgba(136, 78, 3, 0.25);
+}
+.btn-cat-orange:hover {
+  background: var(--tertiary);
+  color: #fff;
+  border-color: var(--tertiary);
+}
+
+@media (max-width: 1024px) {
+  .age-categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .age-categories-grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
   }
 }
 </style>

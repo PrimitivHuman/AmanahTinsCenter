@@ -39,7 +39,7 @@
                 <span class="material-symbols-outlined">psychology</span>
               </div>
               <div>
-                <p class="stat-card-title">500+ Anak Terdampingi</p>
+                <p class="stat-card-title">15.000+ Sesi Terlaksana</p>
                 <p class="stat-card-sub">Pendekatan komprehensif & ramah anak</p>
               </div>
             </div>

@@ -54,7 +54,7 @@
           <button
             v-for="cat in categories"
             :key="cat.id"
-            @click="selectedCategory = cat.id"
+            @click="onSelectCategory(cat.id)"
             class="cat-tab-btn"
             :class="{ 'is-active': selectedCategory === cat.id }"
             type="button"
@@ -66,6 +66,29 @@
             <span class="cat-tab-badge">{{ getCategoryCount(cat.id) }}</span>
           </button>
         </div>
+
+        <!-- Sub-Kategori Khusus Psikolog -->
+        <transition name="fade-slide">
+          <div v-if="selectedCategory === 'psi'" class="psi-subnav-bar">
+            <span class="psi-subnav-title">
+              <span class="material-symbols-outlined">psychology</span>
+              <span>Kategori Psikolog:</span>
+            </span>
+            <div class="psi-subnav-pills">
+              <button
+                v-for="sub in psiSubCategories"
+                :key="sub.id"
+                @click="selectedPsiSub = sub.id"
+                class="psi-sub-btn"
+                :class="{ 'is-active': selectedPsiSub === sub.id }"
+                type="button"
+              >
+                <span>{{ sub.label }}</span>
+                <span class="psi-sub-badge">{{ getPsiSubCount(sub.id) }}</span>
+              </button>
+            </div>
+          </div>
+        </transition>
       </div>
     </div>
 
@@ -224,7 +247,17 @@
                 <option value="tw">Terapi Wicara (TW)</option>
                 <option value="ot">Terapi Okupasi (OT)</option>
                 <option value="si">Sensori Integrasi (SI)</option>
-                <option value="psi">Psikologi Anak / Dokter Spesialis</option>
+                <optgroup label="Program Khusus &amp; Kelompok">
+                  <option value="gt">Grup Terapi (GT)</option>
+                  <option value="pv">Pra Vokasional (PV)</option>
+                  <option value="kpk">Kelas Persiapan Khusus (KPK)</option>
+                </optgroup>
+                <optgroup label="Kategori Psikolog">
+                  <option value="psi_anak">Psikolog Anak</option>
+                  <option value="psi_remaja">Psikolog Remaja</option>
+                  <option value="psi_dewasa">Psikolog Dewasa</option>
+                  <option value="psi">Psikolog (Umum)</option>
+                </optgroup>
               </select>
             </div>
           </div>
@@ -449,14 +482,32 @@ const displayPhoto = computed(() => pendingPreviewUrl.value || form.image)
 
 const searchQuery = ref('')
 const selectedCategory = ref('all')
+const selectedPsiSub = ref('all_psi')
 
 const categories = [
   { id: 'all', label: 'Semua Praktisi', icon: 'groups' },
   { id: 'tw', label: 'Terapi Wicara (TW)', icon: 'record_voice_over' },
   { id: 'ot', label: 'Terapi Okupasi (OT)', icon: 'front_hand' },
   { id: 'si', label: 'Sensori Integrasi (SI)', icon: 'spa' },
-  { id: 'psi', label: 'Psikologi Anak', icon: 'psychology' },
+  { id: 'gt', label: 'Grup Terapi (GT)', icon: 'diversity_3' },
+  { id: 'pv', label: 'Pra Vokasional (PV)', icon: 'work_history' },
+  { id: 'kpk', label: 'Kelas Persiapan (KPK)', icon: 'school' },
+  { id: 'psi', label: 'Psikolog', icon: 'psychology' },
 ]
+
+const psiSubCategories = [
+  { id: 'all_psi', label: 'Semua Psikolog' },
+  { id: 'psi_anak', label: 'Psikolog Anak' },
+  { id: 'psi_remaja', label: 'Psikolog Remaja' },
+  { id: 'psi_dewasa', label: 'Psikolog Dewasa' },
+]
+
+const onSelectCategory = (catId) => {
+  selectedCategory.value = catId
+  if (catId !== 'psi') {
+    selectedPsiSub.value = 'all_psi'
+  }
+}
 
 const form = reactive({
   name: '',
@@ -569,13 +620,23 @@ function getMemberColor(member) {
   if (cat === 'tw') return 'blue'
   if (cat === 'ot') return 'amber'
   if (cat === 'si') return 'green'
-  if (cat === 'psi') return 'purple'
+  if (cat === 'gt') return 'indigo'
+  if (cat === 'pv') return 'violet'
+  if (cat === 'kpk') return 'emerald'
+  if (cat === 'psi' || cat === 'psi_anak') return 'purple'
+  if (cat === 'psi_remaja') return 'indigo'
+  if (cat === 'psi_dewasa') return 'violet'
   if (cat === 'ft') return 'amber'
 
   const text = ((member.role || '') + ' ' + (member.specialization || '')).toLowerCase()
   if (text.includes('wicara') || text.includes('tw') || text.includes('speech')) return 'blue'
   if (text.includes('okupasi') || text.includes('ot')) return 'amber'
   if (text.includes('sensori') || text.includes('si')) return 'green'
+  if (text.includes('grup') || text.includes('group')) return 'indigo'
+  if (text.includes('vokasi') || text.includes('vokasional')) return 'violet'
+  if (text.includes('persiapan') || text.includes('sekolah') || text.includes('pkh')) return 'emerald'
+  if (text.includes('dewasa')) return 'violet'
+  if (text.includes('remaja')) return 'indigo'
   if (text.includes('psikolog') || text.includes('psi')) return 'purple'
   if (text.includes('fisioterapi') || text.includes('ft')) return 'amber'
   if (text.includes('dokter') || text.includes('anak') || text.includes('sp.a')) return 'teal'
@@ -587,13 +648,19 @@ function getMemberIcon(member) {
   if (cat === 'tw') return 'record_voice_over'
   if (cat === 'ot') return 'front_hand'
   if (cat === 'si') return 'spa'
-  if (cat === 'psi') return 'psychology'
+  if (cat === 'gt') return 'diversity_3'
+  if (cat === 'pv') return 'work_history'
+  if (cat === 'kpk') return 'school'
+  if (['psi', 'psi_anak', 'psi_remaja', 'psi_dewasa'].includes(cat)) return 'psychology'
   if (cat === 'ft') return 'accessibility_new'
 
   const text = ((member.role || '') + ' ' + (member.specialization || '')).toLowerCase()
   if (text.includes('wicara') || text.includes('tw') || text.includes('speech')) return 'record_voice_over'
   if (text.includes('okupasi') || text.includes('ot')) return 'front_hand'
   if (text.includes('sensori') || text.includes('si')) return 'spa'
+  if (text.includes('grup') || text.includes('group')) return 'diversity_3'
+  if (text.includes('vokasi') || text.includes('vokasional')) return 'work_history'
+  if (text.includes('persiapan') || text.includes('sekolah') || text.includes('pkh')) return 'school'
   if (text.includes('psikolog') || text.includes('psi')) return 'psychology'
   if (text.includes('fisioterapi') || text.includes('ft')) return 'accessibility_new'
   if (text.includes('dokter') || text.includes('anak') || text.includes('sp.a')) return 'stethoscope'
@@ -602,31 +669,85 @@ function getMemberIcon(member) {
 
 function getCategoryCount(catId) {
   if (catId === 'all') return team.value.length
+  if (catId === 'psi') {
+    return team.value.filter(m =>
+      ['psi', 'psi_anak', 'psi_remaja', 'psi_dewasa'].includes(m.category) ||
+      ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase().includes('psikolog')
+    ).length
+  }
   return team.value.filter(m => {
     if (m.category) return m.category === catId
     const text = ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase()
     if (catId === 'tw') return text.includes('wicara') || text.includes('tw') || text.includes('speech')
     if (catId === 'ot') return text.includes('okupasi') || text.includes('ot')
     if (catId === 'si') return text.includes('sensori') || text.includes('si')
-    if (catId === 'psi') return text.includes('psikolog') || text.includes('psi')
+    if (catId === 'gt') return text.includes('grup') || text.includes('group') || text.includes('sosial')
+    if (catId === 'pv') return text.includes('vokasi') || text.includes('vokasional')
+    if (catId === 'kpk') return text.includes('persiapan') || text.includes('sekolah') || text.includes('pkh')
     if (catId === 'ft') return text.includes('fisioterapi') || text.includes('ft')
     return false
   }).length
+}
+
+function getPsiSubCount(subId) {
+  if (subId === 'all_psi') {
+    return team.value.filter(m =>
+      ['psi', 'psi_anak', 'psi_remaja', 'psi_dewasa'].includes(m.category) ||
+      ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase().includes('psikolog')
+    ).length
+  }
+  if (subId === 'psi_anak') {
+    return team.value.filter(m =>
+      m.category === 'psi_anak' ||
+      (['psi', ''].includes(m.category) && ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase().includes('anak') && ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase().includes('psikolog'))
+    ).length
+  }
+  if (subId === 'psi_remaja') {
+    return team.value.filter(m =>
+      m.category === 'psi_remaja' ||
+      (['psi', ''].includes(m.category) && ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase().includes('remaja'))
+    ).length
+  }
+  if (subId === 'psi_dewasa') {
+    return team.value.filter(m =>
+      m.category === 'psi_dewasa' ||
+      (['psi', ''].includes(m.category) && ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase().includes('dewasa'))
+    ).length
+  }
+  return 0
 }
 
 const filteredTeam = computed(() => {
   return team.value.filter(member => {
     // Kategori
     if (selectedCategory.value !== 'all') {
-      if (member.category) {
-        if (member.category !== selectedCategory.value) return false
+      if (selectedCategory.value === 'psi') {
+        const isPsi = ['psi', 'psi_anak', 'psi_remaja', 'psi_dewasa'].includes(member.category) ||
+          ((member.role || '') + ' ' + (member.specialization || '')).toLowerCase().includes('psikolog')
+        if (!isPsi) return false
+        if (selectedPsiSub.value === 'psi_anak') {
+          return member.category === 'psi_anak' || (((member.role || '') + ' ' + (member.specialization || '')).toLowerCase().includes('anak'))
+        }
+        if (selectedPsiSub.value === 'psi_remaja') {
+          return member.category === 'psi_remaja' || (((member.role || '') + ' ' + (member.specialization || '')).toLowerCase().includes('remaja'))
+        }
+        if (selectedPsiSub.value === 'psi_dewasa') {
+          return member.category === 'psi_dewasa' || (((member.role || '') + ' ' + (member.specialization || '')).toLowerCase().includes('dewasa'))
+        }
+        return true
       } else {
-        const text = ((member.role || '') + ' ' + (member.specialization || '')).toLowerCase()
-        if (selectedCategory.value === 'tw' && !(text.includes('wicara') || text.includes('tw') || text.includes('speech'))) return false
-        if (selectedCategory.value === 'ot' && !(text.includes('okupasi') || text.includes('ot'))) return false
-        if (selectedCategory.value === 'si' && !(text.includes('sensori') || text.includes('si'))) return false
-        if (selectedCategory.value === 'psi' && !(text.includes('psikolog') || text.includes('psi'))) return false
-        if (selectedCategory.value === 'ft' && !(text.includes('fisioterapi') || text.includes('ft'))) return false
+        if (member.category) {
+          if (member.category !== selectedCategory.value) return false
+        } else {
+          const text = ((member.role || '') + ' ' + (member.specialization || '')).toLowerCase()
+          if (selectedCategory.value === 'tw' && !(text.includes('wicara') || text.includes('tw') || text.includes('speech'))) return false
+          if (selectedCategory.value === 'ot' && !(text.includes('okupasi') || text.includes('ot'))) return false
+          if (selectedCategory.value === 'si' && !(text.includes('sensori') || text.includes('si'))) return false
+          if (selectedCategory.value === 'gt' && !(text.includes('grup') || text.includes('group') || text.includes('sosial'))) return false
+          if (selectedCategory.value === 'pv' && !(text.includes('vokasi') || text.includes('vokasional'))) return false
+          if (selectedCategory.value === 'kpk' && !(text.includes('persiapan') || text.includes('sekolah') || text.includes('pkh'))) return false
+          if (selectedCategory.value === 'ft' && !(text.includes('fisioterapi') || text.includes('ft'))) return false
+        }
       }
     }
 
@@ -651,6 +772,7 @@ const filteredTeam = computed(() => {
 function resetFilters() {
   searchQuery.value = ''
   selectedCategory.value = 'all'
+  selectedPsiSub.value = 'all_psi'
 }
 
 async function fetchTeam() {
@@ -1053,6 +1175,99 @@ onUnmounted(() => {
   color: #ffffff;
 }
 
+/* Sub-Kategori Psikolog Admin */
+.psi-subnav-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+  padding: 0.65rem 1rem;
+  background: rgba(147, 51, 234, 0.05);
+  border: 1px dashed rgba(147, 51, 234, 0.35);
+  border-radius: 999px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.psi-subnav-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.psi-subnav-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #7e22ce;
+  white-space: nowrap;
+}
+
+.psi-subnav-title .material-symbols-outlined {
+  font-size: 17px;
+}
+
+.psi-subnav-pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.psi-sub-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.38rem 0.9rem;
+  background: #ffffff;
+  border: 1.5px solid rgba(147, 51, 234, 0.25);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b21a8;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(147, 51, 234, 0.08);
+}
+
+.psi-sub-btn:hover {
+  background: rgba(147, 51, 234, 0.1);
+  border-color: #9333ea;
+  transform: translateY(-1px);
+}
+
+.psi-sub-btn.is-active {
+  background: #9333ea;
+  color: #ffffff;
+  border-color: #9333ea;
+  box-shadow: 0 3px 10px rgba(147, 51, 234, 0.3);
+}
+
+.psi-sub-badge {
+  background: rgba(147, 51, 234, 0.15);
+  color: #6b21a8;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+}
+
+.psi-sub-btn.is-active .psi-sub-badge {
+  background: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+}
+
+/* Subnav transition */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.25s ease;
+}
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
 /* ============================================================
    TEAM GRID & MEMBER CARDS
    ============================================================ */
@@ -1143,6 +1358,8 @@ onUnmounted(() => {
 .badge-amber  { color: #d97706; }
 .badge-green  { color: #16a34a; }
 .badge-purple { color: #7c3aed; }
+.badge-indigo { color: #4f46e5; }
+.badge-violet { color: #7c3aed; }
 .badge-teal   { color: #0f766e; }
 
 /* Status Chip (Bottom-Right) */

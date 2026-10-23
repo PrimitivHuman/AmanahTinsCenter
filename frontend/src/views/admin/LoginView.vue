@@ -10,19 +10,7 @@
         <!-- Brand Logo with Official ATC Shield Mark -->
         <router-link to="/" class="brand-link" title="Kembali ke Beranda ATC">
           <div class="brand-logo-frame">
-            <svg class="brand-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="40" height="40" rx="12" fill="url(#brandGradLogin)" />
-              <path d="M20 9C20 9 12 14.5 12 21.5C12 26.5 15.8 29.5 20 31.5C24.2 29.5 28 26.5 28 21.5C28 14.5 20 9 20 9Z" fill="white" fill-opacity="0.22" />
-              <circle cx="20" cy="17" r="3.2" fill="white" />
-              <path d="M14.5 25.5C15.2 22.8 17.4 21.2 20 21.2C22.6 21.2 24.8 22.8 25.5 25.5" stroke="white" stroke-width="2" stroke-linecap="round" />
-              <path d="M20 27L18.8 25.9C15.5 23 14 21.6 14 19.8C14 18.2 15.2 17 16.8 17C17.7 17 18.6 17.4 19.1 18.1L20 19.1L20.9 18.1C21.4 17.4 22.3 17 23.2 17C24.8 17 26 18.2 26 19.8C26 21.6 24.5 23 21.2 25.9L20 27Z" fill="#FFC857" />
-              <defs>
-                <linearGradient id="brandGradLogin" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#006384" />
-                  <stop offset="1" stop-color="#00839e" />
-                </linearGradient>
-              </defs>
-            </svg>
+            <img src="/iconATC.jpeg" alt="Logo Amanah Tin's Center" class="brand-logo-img" />
           </div>
           <div class="brand-text">
             <span class="brand-title">Amanah Tin's Center</span>
@@ -106,7 +94,7 @@
             <!-- Mobile-only Mini Brand Mark -->
             <div class="mobile-brand-banner">
               <div class="mobile-brand-logo">
-                <span class="material-symbols-outlined">health_and_safety</span>
+                <img src="/iconATC.jpeg" alt="Logo ATC" class="mobile-brand-img" />
               </div>
               <span class="mobile-brand-name">Amanah Tin's Center</span>
             </div>
@@ -122,30 +110,6 @@
               </p>
             </div>
 
-            <!-- Interactive Demo Fill Assistant Card -->
-            <div class="demo-card" :class="{ 'demo-filled': isDemoFilled }">
-              <div class="demo-card-left">
-                <div class="demo-icon-circle">
-                  <span class="material-symbols-outlined">{{ isDemoFilled ? 'check_circle' : 'key' }}</span>
-                </div>
-                <div class="demo-info">
-                  <span class="demo-label">Akun Pengujian Demo:</span>
-                  <div class="demo-details">
-                    <span>Email: <code>admin@amanahtinscenter.com</code></span>
-                    <span>Sandi: <code>admin123</code></span>
-                  </div>
-                </div>
-              </div>
-              <button
-                type="button"
-                class="btn-demo-fill"
-                @click="fillDemoCredentials"
-                :title="isDemoFilled ? 'Kredensial sudah terisi' : 'Klik untuk isi otomatis'"
-              >
-                <span class="material-symbols-outlined text-sm">{{ isDemoFilled ? 'done' : 'magic_button' }}</span>
-                <span>{{ isDemoFilled ? 'Terisi' : 'Isi Otomatis' }}</span>
-              </button>
-            </div>
 
             <!-- Error Banner -->
             <transition name="alert-fade">
@@ -258,13 +222,6 @@
               </button>
             </form>
 
-            <!-- Security Trust Footnote -->
-            <div class="security-footnote">
-              <span class="material-symbols-outlined icon-shield">shield</span>
-              <p class="footnote-text">
-                Enkripsi SSL 256-Bit • Autentikasi Berbasis Laravel Sanctum Token Aman
-              </p>
-            </div>
 
           </div>
         </section>
@@ -288,17 +245,6 @@ const showPassword = ref(false)
 const rememberMe = ref(true)
 const isLoading = ref(false)
 const errorMessage = ref('')
-const isDemoFilled = ref(false)
-
-function fillDemoCredentials() {
-  email.value = 'admin@amanahtinscenter.com'
-  password.value = 'admin123'
-  isDemoFilled.value = true
-  errorMessage.value = ''
-  setTimeout(() => {
-    isDemoFilled.value = false
-  }, 2500)
-}
 
 async function handleLogin() {
   if (!email.value || !password.value) {
@@ -411,9 +357,11 @@ async function handleLogin() {
   flex-shrink: 0;
 }
 
-.brand-svg {
+.brand-logo-img {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  background: #ffffff;
   display: block;
 }
 
@@ -656,15 +604,18 @@ async function handleLogin() {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: #006384;
-  color: #ffffff;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(0, 99, 132, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.mobile-brand-logo .material-symbols-outlined {
-  font-size: 18px;
+.mobile-brand-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .mobile-brand-name {

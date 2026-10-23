@@ -5,22 +5,7 @@
         <!-- Brand Logo -->
         <router-link to="/" class="navbar-brand" @click="handleBrandClick">
           <div class="brand-logo-frame">
-            <!-- Medical Shield & Child Joyful Custom SVG Mark -->
-            <svg class="brand-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="40" height="40" rx="12" fill="url(#brandGrad)" />
-              <path d="M20 9C20 9 12 14.5 12 21.5C12 26.5 15.8 29.5 20 31.5C24.2 29.5 28 26.5 28 21.5C28 14.5 20 9 20 9Z" fill="white" fill-opacity="0.2" />
-              <!-- Child & Star Figure -->
-              <circle cx="20" cy="17" r="3.2" fill="white" />
-              <path d="M14.5 25.5C15.2 22.8 17.4 21.2 20 21.2C22.6 21.2 24.8 22.8 25.5 25.5" stroke="white" stroke-width="2" stroke-linecap="round" />
-              <!-- Heart symbol -->
-              <path d="M20 27L18.8 25.9C15.5 23 14 21.6 14 19.8C14 18.2 15.2 17 16.8 17C17.7 17 18.6 17.4 19.1 18.1L20 19.1L20.9 18.1C21.4 17.4 22.3 17 23.2 17C24.8 17 26 18.2 26 19.8C26 21.6 24.5 23 21.2 25.9L20 27Z" fill="#FFC857" />
-              <defs>
-                <linearGradient id="brandGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#006384" />
-                  <stop offset="1" stop-color="#00839e" />
-                </linearGradient>
-              </defs>
-            </svg>
+            <img src="/iconATC.jpeg" alt="Logo Amanah Tin's Center" class="brand-logo-img" />
           </div>
           <div class="brand-text">
             <span class="brand-name">{{ settings?.clinic_name || "Amanah Tin's Center" }}</span>
@@ -319,10 +304,14 @@ onUnmounted(() => {
   transform: scale(1.06);
 }
 
-.brand-svg {
+.brand-logo-img {
   width: 100%;
   height: 100%;
-  filter: drop-shadow(0 2px 6px rgba(0, 99, 132, 0.25));
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 99, 132, 0.15);
+  border: 1px solid rgba(0, 99, 132, 0.1);
+  background: #ffffff;
 }
 
 .brand-text {

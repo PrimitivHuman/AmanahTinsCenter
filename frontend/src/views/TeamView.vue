@@ -77,7 +77,7 @@
             <button
               v-for="cat in categories"
               :key="cat.id"
-              @click="selectedCategory = cat.id"
+              @click="onSelectCategory(cat.id)"
               class="cat-tab-btn"
               :class="{ 'is-active': selectedCategory === cat.id }"
               role="tab"
@@ -88,6 +88,29 @@
               <span class="cat-tab-badge">{{ getCategoryCount(cat.id) }}</span>
             </button>
           </div>
+
+          <!-- Sub-Kategori Khusus Psikolog (Psikolog Anak, Remaja, Dewasa) -->
+          <transition name="fade-slide">
+            <div v-if="selectedCategory === 'psi'" class="psi-subnav-bar">
+              <span class="psi-subnav-title">
+                <span class="material-symbols-outlined">psychology</span>
+                <span>Kategori Psikolog:</span>
+              </span>
+              <div class="psi-subnav-pills">
+                <button
+                  v-for="sub in psiSubCategories"
+                  :key="sub.id"
+                  @click="selectedPsiSub = sub.id"
+                  class="psi-sub-btn"
+                  :class="{ 'is-active': selectedPsiSub === sub.id }"
+                  type="button"
+                >
+                  <span>{{ sub.label }}</span>
+                  <span class="psi-sub-badge">{{ getPsiSubCount(sub.id) }}</span>
+                </button>
+              </div>
+            </div>
+          </transition>
         </div>
 
         <!-- Skeleton Loading Grid (Anti-Flicker) -->
@@ -400,6 +423,7 @@ const photos = {
 }
 
 const selectedCategory = ref('all')
+const selectedPsiSub = ref('all_psi')
 const searchQuery = ref('')
 const selectedTherapist = ref(null)
 const isModalOpen = ref(false)
@@ -409,8 +433,25 @@ const categories = [
   { id: 'tw', label: 'Terapi Wicara (TW)', icon: 'record_voice_over' },
   { id: 'ot', label: 'Terapi Okupasi (OT)', icon: 'back_hand' },
   { id: 'si', label: 'Sensori Integrasi (SI)', icon: 'spa' },
-  { id: 'psi', label: 'Psikologi Anak', icon: 'psychology' },
+  { id: 'gt', label: 'Grup Terapi (GT)', icon: 'diversity_3' },
+  { id: 'pv', label: 'Pra Vokasional (PV)', icon: 'work_history' },
+  { id: 'kpk', label: 'Kelas Persiapan (KPK)', icon: 'school' },
+  { id: 'psi', label: 'Psikolog', icon: 'psychology' },
 ]
+
+const psiSubCategories = [
+  { id: 'all_psi', label: 'Semua Psikolog' },
+  { id: 'psi_anak', label: 'Psikolog Anak' },
+  { id: 'psi_remaja', label: 'Psikolog Remaja' },
+  { id: 'psi_dewasa', label: 'Psikolog Dewasa' },
+]
+
+const onSelectCategory = (catId) => {
+  selectedCategory.value = catId
+  if (catId !== 'psi') {
+    selectedPsiSub.value = 'all_psi'
+  }
+}
 
 const defaultTeamMembers = [
   {
@@ -591,12 +632,12 @@ const defaultTeamMembers = [
   },
   {
     id: 'psi-danang',
-    category: 'psi',
+    category: 'psi_anak',
     name: 'Danang Prasetyo, M.Psi., Psikolog',
     edu: 'Psikolog Perkembangan & Kesiapan Sekolah',
     specialty: 'Psikolog Anak',
     icon: 'psychology',
-    color: 'blue',
+    color: 'purple',
     str: 'SIPP Aktif HIMPSI',
     strNumber: 'SIPP: 1618-21/IPK-HIMPSI',
     experience: '7+ Tahun Pengalaman Klinis',
@@ -610,6 +651,48 @@ const defaultTeamMembers = [
       'Cognitive Behavioral Therapy for Kids'
     ],
     photo: photos.psi1
+  },
+  {
+    id: 'psi-maya',
+    category: 'psi_remaja',
+    name: 'Maya Safitri, M.Psi., Psikolog',
+    edu: 'Magister Psikologi Klinis Anak & Remaja UI',
+    specialty: 'Psikolog Remaja',
+    icon: 'psychology',
+    color: 'indigo',
+    str: 'SIPP Aktif HIMPSI',
+    strNumber: 'SIPP: 1984-22/IPK-HIMPSI',
+    experience: '6+ Tahun Pengalaman Klinis',
+    schedule: 'Selasa & Kamis (13.00 – 18.00 WIB)',
+    tags: ['Konseling Remaja', 'Regulasi Emosi', 'Pencarian Identitas'],
+    bio: 'Fokus mendampingi remaja menghadapi masa transisi pubertas, kecemasan akademis, regulasi emosi, dan komunikasi interpersonal keluarga.',
+    philosophy: '"Masa remaja adalah jembatan emas menuju kedewasaan; kami hadir untuk mendengarkan tanpa menghakimi."',
+    certifications: [
+      'Adolescent Counseling Mastery',
+      'Cognitive Behavior Therapy for Youth'
+    ],
+    photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600'
+  },
+  {
+    id: 'psi-aris',
+    category: 'psi_dewasa',
+    name: 'Aris Munandar, M.Psi., Psikolog',
+    edu: 'Magister Psikologi Profesi Klinis Dewasa UGM',
+    specialty: 'Psikolog Dewasa & Keluarga',
+    icon: 'psychology',
+    color: 'violet',
+    str: 'SIPP Aktif HIMPSI',
+    strNumber: 'SIPP: 2045-20/IPK-HIMPSI',
+    experience: '8+ Tahun Pengalaman Klinis',
+    schedule: 'Rabu & Sabtu (10.00 – 17.00 WIB)',
+    tags: ['Konseling Dewasa', 'Parenting Stress', 'Trauma Healing & Pasangan'],
+    bio: 'Mendampingi orang tua dan individu dewasa dalam mengelola stres pengasuhan (parenting burn-out), konflik peran keluarga, serta pemulihan kesehatan mental.',
+    philosophy: '"Orang tua yang berdaya dan berhati lapang adalah hadiah terbaik bagi tumbuh kembang anak."',
+    certifications: [
+      'Family & Adult Psychotherapy Certified',
+      'Mindfulness-Based Stress Reduction'
+    ],
+    photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600'
   },
   {
     id: 'ot-intan',
@@ -722,9 +805,23 @@ const formatMemberFromApi = (m) => {
     if (text.includes('wicara') || text.includes('tw') || text.includes('speech')) category = 'tw'
     else if (text.includes('okupasi') || text.includes('ot')) category = 'ot'
     else if (text.includes('sensori') || text.includes('si')) category = 'si'
-    else if (text.includes('psikolog') || text.includes('psi')) category = 'psi'
-    else if (text.includes('fisio') || text.includes('ft')) category = 'ft'
+    else if (text.includes('grup') || text.includes('group') || text.includes('sosial kelompok')) category = 'gt'
+    else if (text.includes('vokasi') || text.includes('vokasional') || text.includes('pra vokasional')) category = 'pv'
+    else if (text.includes('persiapan khusus') || text.includes('kelas persiapan') || text.includes('pkh')) category = 'kpk'
+    else if (text.includes('dewasa')) category = 'psi_dewasa'
+    else if (text.includes('remaja')) category = 'psi_remaja'
+    else if (text.includes('anak') && (text.includes('psikolog') || text.includes('psi'))) category = 'psi_anak'
+    else if (text.includes('psikolog') || text.includes('psi')) category = 'psi_anak'
+    else if (text.includes('fisio') || text.includes('ft')) category = 'ot'
     else category = 'tw'
+  }
+
+  // Normalisasi jika data lama tersimpan sebagai 'psi'
+  if (category === 'psi') {
+    const text = ((m.role || '') + ' ' + (m.specialization || '')).toLowerCase()
+    if (text.includes('dewasa')) category = 'psi_dewasa'
+    else if (text.includes('remaja')) category = 'psi_remaja'
+    else category = 'psi_anak'
   }
 
   if (category === 'tw') {
@@ -736,9 +833,24 @@ const formatMemberFromApi = (m) => {
   } else if (category === 'si') {
     icon = 'spa'
     color = 'teal'
-  } else if (category === 'psi') {
+  } else if (category === 'gt') {
+    icon = 'diversity_3'
+    color = 'indigo'
+  } else if (category === 'pv') {
+    icon = 'work_history'
+    color = 'violet'
+  } else if (category === 'kpk') {
+    icon = 'school'
+    color = 'emerald'
+  } else if (category === 'psi_anak') {
     icon = 'psychology'
     color = 'purple'
+  } else if (category === 'psi_remaja') {
+    icon = 'psychology'
+    color = 'indigo'
+  } else if (category === 'psi_dewasa') {
+    icon = 'psychology'
+    color = 'violet'
   } else if (category === 'ft') {
     icon = 'accessibility_new'
     color = 'amber'
@@ -770,7 +882,7 @@ const formatMemberFromApi = (m) => {
     specialty: m.role || 'Terapis Anak',
     icon,
     color,
-    str: m.str_number ? 'STR Aktif Kemenkes' : 'Praktisi Terverifikasi',
+    str: m.str_number ? (m.str_number.includes('SIPP') ? 'SIPP Aktif HIMPSI' : 'STR Aktif Kemenkes') : 'Praktisi Terverifikasi',
     strNumber: m.str_number || 'STR. Terdaftar Kemenkes RI',
     experience: m.experience_years ? (m.experience_years.includes('Pengalaman') ? m.experience_years : `${m.experience_years} Pengalaman Klinis`) : 'Berpengalaman Klinis',
     schedule: m.schedule || 'Senin - Sabtu (Sesuai Reservasi)',
@@ -786,7 +898,28 @@ const formatMemberFromApi = (m) => {
 const filteredTeamMembers = computed(() => {
   return teamMembers.value.filter((m) => {
     // 1. Category filter
-    const matchCat = selectedCategory.value === 'all' || m.category === selectedCategory.value
+    let matchCat = true
+    if (selectedCategory.value === 'all') {
+      matchCat = true
+    } else if (selectedCategory.value === 'psi') {
+      const isPsi = ['psi', 'psi_anak', 'psi_remaja', 'psi_dewasa'].includes(m.category) ||
+        (m.specialty && m.specialty.toLowerCase().includes('psikolog'))
+      if (!isPsi) {
+        matchCat = false
+      } else if (selectedPsiSub.value === 'psi_anak') {
+        matchCat = m.category === 'psi_anak' || (m.specialty && m.specialty.toLowerCase().includes('anak'))
+      } else if (selectedPsiSub.value === 'psi_remaja') {
+        matchCat = m.category === 'psi_remaja' || (m.specialty && m.specialty.toLowerCase().includes('remaja'))
+      } else if (selectedPsiSub.value === 'psi_dewasa') {
+        matchCat = m.category === 'psi_dewasa' || (m.specialty && m.specialty.toLowerCase().includes('dewasa'))
+      } else {
+        matchCat = true
+      }
+    } else if (['gt', 'pv', 'kpk'].includes(selectedCategory.value)) {
+      matchCat = m.category === selectedCategory.value
+    } else {
+      matchCat = m.category === selectedCategory.value
+    }
 
     // 2. Search query filter
     const q = searchQuery.value.trim().toLowerCase()
@@ -805,11 +938,44 @@ const filteredTeamMembers = computed(() => {
 const getCategoryCount = (catId) => {
   if (isLoading.value) return '•'
   if (catId === 'all') return teamMembers.value.length
+  if (catId === 'psi') {
+    return teamMembers.value.filter((m) =>
+      ['psi', 'psi_anak', 'psi_remaja', 'psi_dewasa'].includes(m.category) ||
+      (m.specialty && m.specialty.toLowerCase().includes('psikolog'))
+    ).length
+  }
   return teamMembers.value.filter((m) => m.category === catId).length
+}
+
+const getPsiSubCount = (subId) => {
+  if (isLoading.value) return '•'
+  if (subId === 'all_psi') {
+    return teamMembers.value.filter((m) =>
+      ['psi', 'psi_anak', 'psi_remaja', 'psi_dewasa'].includes(m.category) ||
+      (m.specialty && m.specialty.toLowerCase().includes('psikolog'))
+    ).length
+  }
+  if (subId === 'psi_anak') {
+    return teamMembers.value.filter((m) =>
+      m.category === 'psi_anak' || (m.specialty && m.specialty.toLowerCase().includes('anak'))
+    ).length
+  }
+  if (subId === 'psi_remaja') {
+    return teamMembers.value.filter((m) =>
+      m.category === 'psi_remaja' || (m.specialty && m.specialty.toLowerCase().includes('remaja'))
+    ).length
+  }
+  if (subId === 'psi_dewasa') {
+    return teamMembers.value.filter((m) =>
+      m.category === 'psi_dewasa' || (m.specialty && m.specialty.toLowerCase().includes('dewasa'))
+    ).length
+  }
+  return 0
 }
 
 const resetFilters = () => {
   selectedCategory.value = 'all'
+  selectedPsiSub.value = 'all_psi'
   searchQuery.value = ''
 }
 
@@ -1074,6 +1240,99 @@ const getTherapistWaUrl = (member) => {
   color: #ffffff;
 }
 
+/* Sub-Kategori Psikolog */
+.psi-subnav-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+  padding: 0.65rem 1rem;
+  background: rgba(147, 51, 234, 0.05);
+  border: 1px dashed rgba(147, 51, 234, 0.35);
+  border-radius: 999px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.psi-subnav-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.psi-subnav-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #7e22ce;
+  white-space: nowrap;
+}
+
+.psi-subnav-title .material-symbols-outlined {
+  font-size: 17px;
+}
+
+.psi-subnav-pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.psi-sub-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.38rem 0.9rem;
+  background: #ffffff;
+  border: 1.5px solid rgba(147, 51, 234, 0.25);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b21a8;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(147, 51, 234, 0.08);
+}
+
+.psi-sub-btn:hover {
+  background: rgba(147, 51, 234, 0.1);
+  border-color: #9333ea;
+  transform: translateY(-1px);
+}
+
+.psi-sub-btn.is-active {
+  background: #9333ea;
+  color: #ffffff;
+  border-color: #9333ea;
+  box-shadow: 0 3px 10px rgba(147, 51, 234, 0.3);
+}
+
+.psi-sub-badge {
+  background: rgba(147, 51, 234, 0.15);
+  color: #6b21a8;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+}
+
+.psi-sub-btn.is-active .psi-sub-badge {
+  background: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+}
+
+/* Subnav transition */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.25s ease;
+}
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
 .search-input-box {
   position: relative;
   min-width: 300px;
@@ -1211,6 +1470,9 @@ const getTherapistWaUrl = (member) => {
 .badge-blue   { color: #006384; }
 .badge-amber  { color: #d97706; }
 .badge-green  { color: #16a34a; }
+.badge-purple { color: #9333ea; }
+.badge-indigo { color: #4f46e5; }
+.badge-violet { color: #7c3aed; }
 
 .badge-str {
   position: absolute;
@@ -1295,9 +1557,12 @@ const getTherapistWaUrl = (member) => {
   border-radius: 9999px;
   font-weight: 600;
 }
-.tag-blue  { background: #e0f2fe; color: #006384; }
-.tag-amber { background: #fef3c7; color: #b45309; }
-.tag-green { background: #dcfce7; color: #15803d; }
+.tag-blue   { background: #e0f2fe; color: #006384; }
+.tag-amber  { background: #fef3c7; color: #b45309; }
+.tag-green  { background: #dcfce7; color: #15803d; }
+.tag-purple { background: #f3e8ff; color: #7e22ce; }
+.tag-indigo { background: #e0e7ff; color: #4338ca; }
+.tag-violet { background: #ede9fe; color: #6d28d9; }
 
 /* Member Card Action Row */
 .member-actions-row {

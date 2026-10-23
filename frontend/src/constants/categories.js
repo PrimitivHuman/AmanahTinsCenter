@@ -69,6 +69,10 @@ export const CATEGORY_ALIASES = {
   'Sensori Motorik': 'Sensori Integrasi',
   'Motorik': 'Terapi Okupasi',
   'Psikologi': 'Psikologi Anak',
+  'Psikolog': 'Psikologi Anak',
+  'Psikolog Anak': 'Psikologi Anak',
+  'Psikolog Remaja': 'Psikologi Anak',
+  'Psikolog Dewasa': 'Psikologi Anak',
 }
 
 /**
