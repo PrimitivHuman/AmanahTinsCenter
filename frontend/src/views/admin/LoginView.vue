@@ -10,7 +10,7 @@
         <!-- Brand Logo with Official ATC Shield Mark -->
         <router-link to="/" class="brand-link" title="Kembali ke Beranda ATC">
           <div class="brand-logo-frame">
-            <img src="/iconATC.jpeg" alt="Logo Amanah Tin's Center" class="brand-logo-img" />
+            <img src="/iconATC.png" alt="Logo Amanah Tin's Center" class="brand-logo-img" />
           </div>
           <div class="brand-text">
             <span class="brand-title">Amanah Tin's Center</span>
@@ -94,7 +94,7 @@
             <!-- Mobile-only Mini Brand Mark -->
             <div class="mobile-brand-banner">
               <div class="mobile-brand-logo">
-                <img src="/iconATC.jpeg" alt="Logo ATC" class="mobile-brand-img" />
+                <img src="/iconATC.png" alt="Logo ATC" class="mobile-brand-img" />
               </div>
               <span class="mobile-brand-name">Amanah Tin's Center</span>
             </div>
@@ -346,11 +346,8 @@ async function handleLogin() {
 }
 
 .brand-logo-frame {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 99, 132, 0.2);
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -358,10 +355,9 @@ async function handleLogin() {
 }
 
 .brand-logo-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background: #ffffff;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
   display: block;
 }
 
@@ -601,21 +597,17 @@ async function handleLogin() {
 }
 
 .mobile-brand-logo {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #ffffff;
-  border: 1px solid rgba(0, 99, 132, 0.15);
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .mobile-brand-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .mobile-brand-name {

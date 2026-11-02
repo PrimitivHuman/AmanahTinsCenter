@@ -4,9 +4,7 @@
       <div class="container navbar-inner">
         <!-- Brand Logo -->
         <router-link to="/" class="navbar-brand" @click="handleBrandClick">
-          <div class="brand-logo-frame">
-            <img src="/iconATC.jpeg" alt="Logo Amanah Tin's Center" class="brand-logo-img" />
-          </div>
+          <img src="/iconATC.png" alt="Logo Amanah Tin's Center" class="brand-logo-img" />
           <div class="brand-text">
             <span class="brand-name">{{ settings?.clinic_name || "Amanah Tin's Center" }}</span>
             <span class="brand-tagline">{{ settings?.tagline || "Pusat Terapi & Tumbuh Kembang Anak" }}</span>
@@ -291,27 +289,18 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
-.brand-logo-frame {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.brand-logo-img {
+  height: 48px;
+  width: auto;
+  max-width: 52px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.navbar-brand:hover .brand-logo-frame {
-  transform: scale(1.06);
-}
-
-.brand-logo-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  object-fit: cover;
-  box-shadow: 0 2px 8px rgba(0, 99, 132, 0.15);
-  border: 1px solid rgba(0, 99, 132, 0.1);
-  background: #ffffff;
+.navbar-brand:hover .brand-logo-img {
+  transform: scale(1.05);
 }
 
 .brand-text {
@@ -696,9 +685,9 @@ onUnmounted(() => {
   .brand-tagline {
     display: none;
   }
-  .brand-logo-frame {
-    width: 38px;
-    height: 38px;
+  .brand-logo-img {
+    height: 40px;
+    max-width: 44px;
   }
   .navbar-inner {
     height: 64px;
