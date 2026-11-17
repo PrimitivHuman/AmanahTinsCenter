@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <PublicLayout>
     <!-- ==================== 1. HERO SECTION ==================== -->
     <section class="hero-section" id="beranda">
@@ -69,8 +69,8 @@
             <div class="hero-backdrop-blob"></div>
             <div class="hero-image-card">
               <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSomNiaRch3AG4p8CFoFGVtFLAkrg-N8gEtBcoTao1QojSHQ7L-W-vTrweEtaSa424MxTXmSrsRrwJv8eyCWMkH2pUJRG_H8aZbmsl3VV9Nhec_O5jUwNse-qUJ4gIQTGsRYcAk3kHyIklcxIuCrCYGGZRoTOPdifAmBtyIGV9pIGKaOduHdIY6v2MMFMfShJPubKVQxhXLVhj5Sp9I0NISp-fURn8bOJL7FqZpqI"
-                alt="Terapis mendampingi anak dalam sesi terapi"
+                src="/hero-terapi-anak.jpg"
+                alt="Sesi stimulasi tumbuh kembang anak di Amanah Tin's Center"
                 class="hero-img"
               />
               <!-- Floating Supportive Pill Badge -->
@@ -147,8 +147,8 @@
             <div class="about-media-col">
               <div class="about-img-frame">
                 <img
-                  src="/ruang-terapi-atc.jpg"
-                  alt="Fasilitas Ruang Terapi Ramah Anak Amanah Tin's Center"
+                  src="/aktivitas-terapi-atc.jpg"
+                  alt="Aktivitas stimulasi dan terapi anak di Amanah Tin's Center"
                   class="about-img"
                   loading="lazy"
                   decoding="async"
@@ -821,7 +821,7 @@ const blueprintArticles = [
     link: '/artikel/mengenal-tanda-speech-delay-pada-anak-usia-1-3-tahun'
   },
   {
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPEUVVykApdqKKsDkSnu79sI6NZ35gZjy6qp6mFqk20lYyzEhQ3Avgtwi8cjuh8MjaPsxwvY5wuiLWAXG3EaIU87Axdg8TU8EtP3gLk_o9JfVwiMgdJq1lNrRsfO0jSs4Ju22M1tpsHXmtSwSl45NbVNqAYx_lzh8E0sbTsspE9A5S-hbmwVqAPKBxnsJcsACkvQgUGX-iiJYf9VA2jwb8dTUr3e0R3y70nu7KCFs',
+    image: '/stimulasi-motorik-kasar.jpg',
     date: '5 Mei 2025',
     tagColor: 'tag-secondary',
     title: 'Tips Stimulasi Motorik Anak di Rumah Sederhana',
@@ -829,7 +829,7 @@ const blueprintArticles = [
     link: '/artikel/5-aktivitas-di-rumah-melatih-motorik-halus'
   },
   {
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAZJpUPJo94cKHPW1u8OGMXvL8GHLuZroeNJvTkDh6NTBYwKV0V5QVhaM2XpHEMhkcEqEUX2S2DvQ4oF1BcyJnHBvhniy0ArqeTaJTw1AV6DVKrPY4K9DjPgt5BsurLemLri79U-lA8kkGZcsxkjxmtur9sBxXtP3xXkbWlImHUgZxL7_S6wd8uxciCIbtxU-_sPBZXmbIVKIT3Kd9cfou-Pwg2AVMDXX_DiJpcbRU',
+    image: '/sensori-integrasi-anak.jpg',
     date: '28 April 2025',
     tagColor: 'tag-tertiary',
     title: 'Pentingnya Konsistensi dalam Terapi Tumbuh Kembang',

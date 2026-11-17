@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <AdminLayout title="Kelola Tim Kami">
     <!-- Header Row -->
     <div class="page-top-bar">
@@ -247,6 +247,7 @@
                 <option value="tw">Terapi Wicara (TW)</option>
                 <option value="ot">Terapi Okupasi (OT)</option>
                 <option value="si">Sensori Integrasi (SI)</option>
+                <option value="te">Orthopaedagog / Terapi Edukasi (TE)</option>
                 <optgroup label="Program Khusus &amp; Kelompok">
                   <option value="gt">Grup Terapi (GT)</option>
                   <option value="pv">Pra Vokasional (PV)</option>
@@ -274,7 +275,7 @@
               />
             </div>
             <div class="form-group flex-1">
-              <label>Pengalaman Klinis <span class="req">*</span></label>
+              <label>Pengalaman Klinis</label>
               <input
                 v-model="form.experience_years"
                 type="text"
@@ -316,11 +317,10 @@
           </div>
 
           <div class="form-group">
-            <label>Fokus Spesialisasi <span class="req">*</span></label>
+            <label>Fokus Spesialisasi</label>
             <input
               v-model="form.specialization"
               type="text"
-              required
               placeholder="Speech Delay, Sensori Integrasi, Disfagia, dsb."
               class="form-input"
             />
@@ -489,6 +489,7 @@ const categories = [
   { id: 'tw', label: 'Terapi Wicara (TW)', icon: 'record_voice_over' },
   { id: 'ot', label: 'Terapi Okupasi (OT)', icon: 'front_hand' },
   { id: 'si', label: 'Sensori Integrasi (SI)', icon: 'spa' },
+  { id: 'te', label: 'Terapi Edukasi (TE)', icon: 'menu_book' },
   { id: 'gt', label: 'Grup Terapi (GT)', icon: 'diversity_3' },
   { id: 'pv', label: 'Pra Vokasional (PV)', icon: 'work_history' },
   { id: 'kpk', label: 'Kelas Persiapan (KPK)', icon: 'school' },
@@ -620,6 +621,7 @@ function getMemberColor(member) {
   if (cat === 'tw') return 'blue'
   if (cat === 'ot') return 'amber'
   if (cat === 'si') return 'green'
+  if (cat === 'te') return 'rose'
   if (cat === 'gt') return 'indigo'
   if (cat === 'pv') return 'violet'
   if (cat === 'kpk') return 'emerald'
@@ -632,6 +634,7 @@ function getMemberColor(member) {
   if (text.includes('wicara') || text.includes('tw') || text.includes('speech')) return 'blue'
   if (text.includes('okupasi') || text.includes('ot')) return 'amber'
   if (text.includes('sensori') || text.includes('si')) return 'green'
+  if (text.includes('edukasi') || text.includes('orthopaedagog') || text.includes('remedial') || text.includes('ortopedagog')) return 'rose'
   if (text.includes('grup') || text.includes('group')) return 'indigo'
   if (text.includes('vokasi') || text.includes('vokasional')) return 'violet'
   if (text.includes('persiapan') || text.includes('sekolah') || text.includes('pkh')) return 'emerald'
@@ -648,6 +651,7 @@ function getMemberIcon(member) {
   if (cat === 'tw') return 'record_voice_over'
   if (cat === 'ot') return 'front_hand'
   if (cat === 'si') return 'spa'
+  if (cat === 'te') return 'menu_book'
   if (cat === 'gt') return 'diversity_3'
   if (cat === 'pv') return 'work_history'
   if (cat === 'kpk') return 'school'
@@ -658,6 +662,7 @@ function getMemberIcon(member) {
   if (text.includes('wicara') || text.includes('tw') || text.includes('speech')) return 'record_voice_over'
   if (text.includes('okupasi') || text.includes('ot')) return 'front_hand'
   if (text.includes('sensori') || text.includes('si')) return 'spa'
+  if (text.includes('edukasi') || text.includes('orthopaedagog') || text.includes('remedial') || text.includes('ortopedagog')) return 'menu_book'
   if (text.includes('grup') || text.includes('group')) return 'diversity_3'
   if (text.includes('vokasi') || text.includes('vokasional')) return 'work_history'
   if (text.includes('persiapan') || text.includes('sekolah') || text.includes('pkh')) return 'school'
@@ -681,6 +686,7 @@ function getCategoryCount(catId) {
     if (catId === 'tw') return text.includes('wicara') || text.includes('tw') || text.includes('speech')
     if (catId === 'ot') return text.includes('okupasi') || text.includes('ot')
     if (catId === 'si') return text.includes('sensori') || text.includes('si')
+    if (catId === 'te') return text.includes('edukasi') || text.includes('orthopaedagog') || text.includes('remedial') || text.includes('ortopedagog')
     if (catId === 'gt') return text.includes('grup') || text.includes('group') || text.includes('sosial')
     if (catId === 'pv') return text.includes('vokasi') || text.includes('vokasional')
     if (catId === 'kpk') return text.includes('persiapan') || text.includes('sekolah') || text.includes('pkh')
@@ -743,6 +749,7 @@ const filteredTeam = computed(() => {
           if (selectedCategory.value === 'tw' && !(text.includes('wicara') || text.includes('tw') || text.includes('speech'))) return false
           if (selectedCategory.value === 'ot' && !(text.includes('okupasi') || text.includes('ot'))) return false
           if (selectedCategory.value === 'si' && !(text.includes('sensori') || text.includes('si'))) return false
+          if (selectedCategory.value === 'te' && !(text.includes('edukasi') || text.includes('orthopaedagog') || text.includes('remedial') || text.includes('ortopedagog') || text.includes('te'))) return false
           if (selectedCategory.value === 'gt' && !(text.includes('grup') || text.includes('group') || text.includes('sosial'))) return false
           if (selectedCategory.value === 'pv' && !(text.includes('vokasi') || text.includes('vokasional'))) return false
           if (selectedCategory.value === 'kpk' && !(text.includes('persiapan') || text.includes('sekolah') || text.includes('pkh'))) return false

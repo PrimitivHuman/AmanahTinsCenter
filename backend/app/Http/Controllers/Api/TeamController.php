@@ -60,9 +60,9 @@ class TeamController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
-            'category' => 'nullable|string|max:50',
+            'category' => 'required|string|max:50',
             'edu' => 'nullable|string|max:255',
-            'specialization' => 'required|string|max:255',
+            'specialization' => 'nullable|string|max:255',
             'tags' => 'nullable|array',
             'bio' => 'nullable|string',
             'philosophy' => 'nullable|string',
@@ -77,6 +77,9 @@ class TeamController extends Controller
 
         if (empty($validated['category'])) {
             $validated['category'] = 'tw';
+        }
+        if (!isset($validated['specialization']) || $validated['specialization'] === null) {
+            $validated['specialization'] = '';
         }
         if (!isset($validated['order'])) {
             $validated['order'] = 0;
@@ -101,9 +104,9 @@ class TeamController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'role' => 'required|string|max:255',
-            'category' => 'nullable|string|max:50',
+            'category' => 'required|string|max:50',
             'edu' => 'nullable|string|max:255',
-            'specialization' => 'required|string|max:255',
+            'specialization' => 'nullable|string|max:255',
             'tags' => 'nullable|array',
             'bio' => 'nullable|string',
             'philosophy' => 'nullable|string',
@@ -118,6 +121,9 @@ class TeamController extends Controller
 
         if (empty($validated['category'])) {
             $validated['category'] = $member->category ?? 'tw';
+        }
+        if (!isset($validated['specialization']) || $validated['specialization'] === null) {
+            $validated['specialization'] = '';
         }
 
         $oldImage = $member->image;

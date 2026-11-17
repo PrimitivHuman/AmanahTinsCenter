@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <PublicLayout>
     <div v-if="loading" class="loading-state">
       <div class="spinner"></div>
@@ -451,82 +451,6 @@
         </div>
       </section>
 
-      <!-- ==================== SECTION 6: PAKET TRANSPARAN ==================== -->
-      <section class="section-pricing" id="jadwal-biaya">
-        <div class="container">
-          <div class="section-header center">
-            <span class="section-eyebrow eyebrow-primary">{{ service.pricingEyebrow || 'Jadwal & Investasi Tumbuh Kembang' }}</span>
-            <h2 class="section-title">{{ service.pricingTitle || 'Paket Terapi Transparan' }}</h2>
-            <p class="section-desc">
-              {{ service.pricingDesc || 'Investasi terbaik untuk kemandirian dan rasa percaya diri masa depan anak Anda, tanpa biaya tersembunyi.' }}
-            </p>
-          </div>
-
-          <!-- Schedule Ribbon -->
-          <div class="schedule-ribbon">
-            <div class="ribbon-left">
-              <span class="material-symbols-outlined ribbon-icon">event_available</span>
-              <span class="ribbon-text">Operasional: <strong>Senin &ndash; Sabtu (08.00 &ndash; 17.00 WIB)</strong></span>
-            </div>
-            <div class="ribbon-right">
-              <span class="dot-green"></span>
-              <span>Slot Pagi &amp; Sore Tersedia</span>
-            </div>
-          </div>
-
-          <!-- Package Cards (3 Packages) -->
-          <div class="packages-grid">
-            <div
-              v-for="pkg in service.packages"
-              :key="pkg.title"
-              class="package-card"
-              :class="{ 'package-card--popular': pkg.isPopular }"
-            >
-              <div v-if="pkg.isPopular" class="popular-ribbon">
-                Rekomendasi Utama Ortu
-              </div>
-
-              <div>
-                <div class="pkg-top-tag">
-                  <span class="pkg-tag" :class="pkg.tagClass">{{ pkg.tag }}</span>
-                </div>
-
-                <h3 class="pkg-title">{{ pkg.title }}</h3>
-                <p class="pkg-sub">{{ pkg.subtitle }}</p>
-
-                <div class="pkg-price-block">
-                  <span class="pkg-price-label">{{ pkg.priceLabel || 'Total Investasi' }}</span>
-                  <div class="pkg-price">
-                    {{ pkg.price }} <span class="pkg-price-unit">/ {{ pkg.unit }}</span>
-                  </div>
-                  <span v-if="pkg.savingNote" class="pkg-saving">{{ pkg.savingNote }}</span>
-                </div>
-
-                <ul class="pkg-features">
-                  <li v-for="feat in pkg.features" :key="feat">
-                    <span class="material-symbols-outlined feat-check">check</span>
-                    <span>{{ feat }}</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="pkg-btn-wrap">
-                <a
-                  :href="getPackageWaUrl(pkg)"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn-pkg"
-                  :class="pkg.isPopular ? 'btn-pkg--primary' : 'btn-pkg--outline'"
-                >
-                  <span class="material-symbols-outlined fill wa-btn-icon">chat</span>
-                  <span>{{ pkg.buttonText || 'Pilih Paket via WhatsApp' }}</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- ==================== SECTION 7: FAQ (INTERACTIVE ACCORDION) ==================== -->
       <section class="section-faq">
         <div class="container max-w-faq">
@@ -675,7 +599,7 @@ const allServicesData = {
     titleMain: 'Terapi Wicara & Bahasa Anak',
     titleAccent: '(Speech Therapy)',
     heroDesc: 'Membantu anak mengekspresikan diri, mengatasi speech delay, stimulasi artikulasi bicara, pemahaman bahasa reseptif, serta melatih kelancaran komunikasi sosial dengan metode interaktif & ramah anak.',
-    heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB67b9MYgTLA9wMNy5O-9w6TkEnA6ohATQiH43KYlSlPAmDtbLTXu9B57WwqylRdCzHjZg7YF4bb-q7SJupFjxrp4FuawKotOYM7BPa42N5RxpxS7h6YusSVGHIhzMc89oCMmGfcZMwM64SG8vYil6uUlaDoMhfxkJZwyGiNg29r65HN9Ey3IEqYnmf_CSs1nLyHBOFCOiM9-yjTVs48R71yCk3d9Uzal8zzuTfeK8',
+    heroImage: '/ruang-terapi-wicara.jpg',
     ctaPrimaryText: 'Konsultasi & Asesmen TW',
     ctaFocusWord: 'Berbicara',
     specs: [
@@ -923,7 +847,7 @@ const allServicesData = {
     titleMain: 'Terapi Okupasi & Kemandirian Anak',
     titleAccent: '(Occupational Therapy)',
     heroDesc: 'Mendukung kemandirian anak dalam aktivitas sehari-hari (ADL), penguatan motorik halus, koordinasi bilateral, koordinasi visual motorik, serta fokus belajar di sekolah.',
-    heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB67b9MYgTLA9wMNy5O-9w6TkEnA6ohATQiH43KYlSlPAmDtbLTXu9B57WwqylRdCzHjZg7YF4bb-q7SJupFjxrp4FuawKotOYM7BPa42N5RxpxS7h6YusSVGHIhzMc89oCMmGfcZMwM64SG8vYil6uUlaDoMhfxkJZwyGiNg29r65HN9Ey3IEqYnmf_CSs1nLyHBOFCOiM9-yjTVs48R71yCk3d9Uzal8zzuTfeK8',
+    heroImage: '/terapi-okupasi-meja.jpg',
     ctaPrimaryText: 'Konsultasi & Asesmen TO',
     ctaFocusWord: 'Mandiri',
     specs: [
@@ -1159,7 +1083,7 @@ const allServicesData = {
     titleMain: 'Sensori Integrasi & Regulasi Anak',
     titleAccent: '(Sensory Integration)',
     heroDesc: 'Membantu anak memproses dan merespons rangsangan sensorik secara seimbang, melatih keseimbangan vestibular, stimulasi propioseptif, dan regulasi emosi.',
-    heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB67b9MYgTLA9wMNy5O-9w6TkEnA6ohATQiH43KYlSlPAmDtbLTXu9B57WwqylRdCzHjZg7YF4bb-q7SJupFjxrp4FuawKotOYM7BPa42N5RxpxS7h6YusSVGHIhzMc89oCMmGfcZMwM64SG8vYil6uUlaDoMhfxkJZwyGiNg29r65HN9Ey3IEqYnmf_CSs1nLyHBOFCOiM9-yjTVs48R71yCk3d9Uzal8zzuTfeK8',
+    heroImage: '/sensori-integrasi-anak.jpg',
     ctaPrimaryText: 'Konsultasi & Asesmen SI',
     ctaFocusWord: 'Tenang & Fokus',
     specs: [
@@ -1395,7 +1319,7 @@ const allServicesData = {
     titleMain: 'Layanan Asesmen & Konseling Psikologi',
     titleAccent: '(Anak, Remaja & Dewasa)',
     heroDesc: 'Pendampingan kesehatan mental profesional, evaluasi perkembangan, dan asesmen psikologis terpadu yang terbagi menjadi 3 kategori: Psikologi Anak, Psikologi Remaja, serta Psikologi Dewasa & Konseling Keluarga bersama tim Psikolog Klinis berizin resmi (SIPP).',
-    heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB67b9MYgTLA9wMNy5O-9w6TkEnA6ohATQiH43KYlSlPAmDtbLTXu9B57WwqylRdCzHjZg7YF4bb-q7SJupFjxrp4FuawKotOYM7BPa42N5RxpxS7h6YusSVGHIhzMc89oCMmGfcZMwM64SG8vYil6uUlaDoMhfxkJZwyGiNg29r65HN9Ey3IEqYnmf_CSs1nLyHBOFCOiM9-yjTVs48R71yCk3d9Uzal8zzuTfeK8',
+    heroImage: '/ruang-psikologi-anak.jpg',
     ctaPrimaryText: 'Konsultasi & Asesmen Psikologi',
     ctaFocusWord: 'Kesehatan Mental & Karakter',
     heroBadgeTitle: 'Ruang Aman & Rahasia (Safe Space)',
@@ -1727,7 +1651,7 @@ const allServicesData = {
     titleMain: 'Program Grup Terapi Anak & Sosial',
     titleAccent: '(Social Skills & Group Therapy)',
     heroDesc: 'Sesi terapi dalam kelompok kecil (3–6 anak) yang difasilitasi oleh terapis multidisiplin, dirancang khusus untuk melatih interaksi teman sebaya, toleransi menunggu giliran (turn-taking), komunikasi pragmatik, serta kepatuhan aturan kelompok dalam suasana menyenangkan.',
-    heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB67b9MYgTLA9wMNy5O-9w6TkEnA6ohATQiH43KYlSlPAmDtbLTXu9B57WwqylRdCzHjZg7YF4bb-q7SJupFjxrp4FuawKotOYM7BPa42N5RxpxS7h6YusSVGHIhzMc89oCMmGfcZMwM64SG8vYil6uUlaDoMhfxkJZwyGiNg29r65HN9Ey3IEqYnmf_CSs1nLyHBOFCOiM9-yjTVs48R71yCk3d9Uzal8zzuTfeK8',
+    heroImage: '/grup-terapi-keseimbangan.jpg',
     ctaPrimaryText: 'Konsultasi Grup Terapi',
     ctaFocusWord: 'Sosialisasi & Percaya Diri',
     heroBadgeTitle: 'Kelompok Kecil (3–6 Anak)',
@@ -2265,7 +2189,7 @@ const allServicesData = {
     titleMain: 'Kelas Persiapan Khusus Masuk Sekolah',
     titleAccent: '(School Readiness & Transition)',
     heroDesc: 'Program transisi sekolah intensif dalam kelompok kecil (3–5 anak) untuk membekali anak berkebutuhan khusus dengan kesiapan pra-akademik, ketahanan duduk fokus, kepatuhan instruksi kelas, serta kemandirian sosial menjelang masuk TK atau SD formal.',
-    heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB67b9MYgTLA9wMNy5O-9w6TkEnA6ohATQiH43KYlSlPAmDtbLTXu9B57WwqylRdCzHjZg7YF4bb-q7SJupFjxrp4FuawKotOYM7BPa42N5RxpxS7h6YusSVGHIhzMc89oCMmGfcZMwM64SG8vYil6uUlaDoMhfxkJZwyGiNg29r65HN9Ey3IEqYnmf_CSs1nLyHBOFCOiM9-yjTVs48R71yCk3d9Uzal8zzuTfeK8',
+    heroImage: '/grup-terapi-keseimbangan.jpg',
     ctaPrimaryText: 'Daftar Kelas Persiapan',
     ctaFocusWord: 'Kesiapan Sekolah & Kemandirian',
     heroBadgeTitle: 'Simulasi Ruang Kelas Nyata',
@@ -2523,6 +2447,229 @@ const allServicesData = {
         a: 'Pada 1–2 sesi awal penyesuaian, orang tua diperbolehkan memantau dari pintu atau mendampingi jika anak cemas berlebih. Namun target utama program adalah melatih kemandirian, sehingga secara bertahap anak dibimbing mandiri di dalam kelas bersama guru dan teman-temannya.'
       }
     ]
+  },
+  'terapi-edukasi': {
+    code: 'TE',
+    name: 'Orthopaedagog / Terapi Edukasi (TE)',
+    shortName: 'Terapi Edukasi',
+    badgeIcon: 'menu_book',
+    categoryBadge: 'Program Spesialisasi Pedagogik • Orthopaedagog / Terapi Edukasi (TE)',
+    titleMain: 'Orthopaedagog & Terapi Edukasi Khusus',
+    titleAccent: '(Remedial Teaching & Learning Support)',
+    heroDesc: 'Pendampingan belajar individual (orthopaedagogik) untuk mengatasi kesulitan belajar spesifik (disleksia, disgrafia, diskalkulia), melatih konsentrasi akademik, penguasaan konsep calistung dasar, serta strategi belajar adaptif bagi anak berkebutuhan khusus.',
+    heroImage: '/terapi-okupasi-meja.jpg',
+    ctaPrimaryText: 'Konsultasi & Asesmen Edukasi',
+    ctaFocusWord: 'Belajar & Prestasi',
+    heroBadgeTitle: 'Pendekatan Belajar Ramah Anak',
+    heroBadgeSub: 'Metode multisensori & program pembelajaran individual (IEP)',
+    specs: [
+      { icon: 'schedule', label: 'Durasi Sesi', value: '45 - 60 Menit', bgClass: 'spec-bg-blue' },
+      { icon: 'person', label: 'Pendekatan', value: '1-on-1 Individual', bgClass: 'spec-bg-green' },
+      { icon: 'face', label: 'Sasaran Usia', value: '4 – 15 Tahun', bgClass: 'spec-bg-orange' },
+      { icon: 'verified_user', label: 'Pengajar', value: 'S.Pd. PLB / Orthopaedagog', bgClass: 'spec-bg-blue' }
+    ],
+    indicationsEyebrow: 'Identifikasi Kesulitan Belajar Spesifik',
+    indicationsTitle: 'Kapan Anak Membutuhkan Terapi Edukasi (Orthopaedagog)?',
+    indicationsDesc: 'Kesulitan belajar bukan berarti anak malas atau kurang cerdas, melainkan mekanisme pemrosesan simbol, bahasa, dan angka di otak mereka memerlukan metode pedagogik khusus yang disesuaikan dengan keunikan anak.',
+    indications: [
+      {
+        icon: 'menu_book',
+        iconBg: 'ind-icon-blue',
+        title: 'Hambatan Membaca (Disleksia)',
+        desc: 'Sulit mengenali huruf, mengeja kata, membedakan huruf mirip (b/d, p/q, m/w), atau lambat memahami isi bacaan.',
+        age: '5 – 12 Tahun'
+      },
+      {
+        icon: 'edit_note',
+        iconBg: 'ind-icon-green',
+        title: 'Hambatan Menulis (Disgrafia)',
+        desc: 'Enggan saat diminta menulis tugas, tulisan tidak terbaca, jarak/spasi antar kata tidak teratur, atau sulit menuangkan gagasan ke dalam tulisan.',
+        age: '6 – 12 Tahun'
+      },
+      {
+        icon: 'calculate',
+        iconBg: 'ind-icon-orange',
+        title: 'Hambatan Berhitung (Diskalkulia)',
+        desc: 'Kesulitan memahami konsep nilai angka, operasi matematika dasar (+, -, x), konsep waktu/jam, atau hafalan deret bilangan.',
+        age: '5 – 12 Tahun'
+      },
+      {
+        icon: 'timer',
+        iconBg: 'ind-icon-teal',
+        title: 'Rentang Fokus Belajar Pendek (ADHD/ADD)',
+        desc: 'Sangat mudah terdistraksi di kelas, sering meninggalkan meja belajar, dan tugas sekolah sering terbengkalai tanpa selesai.',
+        age: '5 – 14 Tahun'
+      },
+      {
+        icon: 'hearing',
+        iconBg: 'ind-icon-blue',
+        title: 'Hambatan Pemahaman Instruksi Tugas',
+        desc: 'Memerlukan instruksi berulang-ulang untuk memulai tugas atau bingung saat dihadapkan pada tugas yang memiliki multi-tahapan.',
+        age: '5 – 12 Tahun'
+      },
+      {
+        icon: 'school',
+        iconBg: 'ind-icon-green',
+        title: 'Pendampingan Kurikulum Sekolah Inklusi',
+        desc: 'Memerlukan rancangan program pembelajaran individual (PPI/IEP) untuk mengimbangi target pelajaran di sekolah inklusi atau reguler.',
+        age: '6 – 15 Tahun'
+      }
+    ],
+    pillars: [
+      {
+        icon: 'auto_stories',
+        bgClass: 'pillar-bg-blue',
+        title: 'Remedial Calistung Multisensori',
+        desc: 'Mengajarkan membaca, menulis, dan berhitung melalui stimulasi visual, taktil, dan kinestetik yang menyenangkan agar konsep abstrak mudah dipahami.',
+        bullets: ['Metode fonik interaktif & kartu bergambar', 'Manipulatif matematika konkrit']
+      },
+      {
+        icon: 'psychology',
+        bgClass: 'pillar-bg-green',
+        title: 'Strategi Belajar Adaptif & Memori Kerja',
+        desc: 'Melatih teknik visual mapping, mnemonik, dan strategi pengorganisasian ide untuk memperkuat daya ingat kerja (working memory) anak.',
+        bullets: ['Mind mapping visual ramah anak', 'Latihan pemecahan masalah bertahap']
+      },
+      {
+        icon: 'chair_alt',
+        bgClass: 'pillar-bg-orange',
+        title: 'Ketahanan Duduk & Fokus Belajar di Meja',
+        desc: 'Membiasakan rutinitas belajar terstruktur dengan modifikasi lingkungan dan jeda sensori agar anak mampu bertahan menyelesaikan tugas.',
+        bullets: ['Teknik pomodoro ramah anak', 'Sistem reward motivasi positif']
+      },
+      {
+        icon: 'handshake',
+        bgClass: 'pillar-bg-teal',
+        title: 'Sinkronisasi Kurikulum & Panduan Rumah',
+        desc: 'Menyelaraskan materi intervensi dengan kurikulum sekolah serta memberikan panduan pendampingan tugas belajar yang bebas stres bagi orang tua.',
+        bullets: ['Rekomendasi akomodasi kelas untuk guru', 'Home learning kit harian']
+      }
+    ],
+    processSteps: [
+      {
+        number: '01',
+        numBgClass: 'num-green',
+        badge: 'Sesi 60 Menit',
+        badgeBgClass: 'badge-green',
+        title: 'Asesmen Profil Belajar',
+        desc: 'Pemeriksaan pemahaman konsep calistung dasar, deteksi hambatan belajar spesifik, serta analisis gaya belajar dominan anak.',
+        footerIcon: 'assignment',
+        footerText: 'Output: Peta Gaya Belajar'
+      },
+      {
+        number: '02',
+        numBgClass: 'num-primary-cont',
+        badge: 'Rancangan Target',
+        badgeBgClass: 'badge-blue',
+        title: 'Penyusunan IEP Akademik',
+        desc: 'Menetapkan target pencapaian akademik jangka pendek dan menengah yang realistis sesuai profil kemampuan riil anak.',
+        footerIcon: 'track_changes',
+        footerText: 'Rencana Belajar Individual'
+      },
+      {
+        number: '03',
+        numBgClass: 'num-blue',
+        badge: '1 - 2x Seminggu',
+        badgeBgClass: 'badge-orange',
+        title: 'Sesi Terapi Edukasi 1-on-1',
+        desc: 'Pembelajaran remedial privat dengan media multisensori yang menarik, bebas tekanan, dan menumbuhkan rasa percaya diri anak.',
+        footerIcon: 'menu_book',
+        footerText: 'Media Belajar Multisensori'
+      },
+      {
+        number: '04',
+        numBgClass: 'num-dark-blue',
+        badge: 'Evaluasi Berkala',
+        badgeBgClass: 'badge-blue',
+        title: 'Evaluasi & Home Learning Kit',
+        desc: 'Laporan perkembangan akademik tertulis serta panduan lembar kerja aplikatif yang mudah dipraktikkan bersama orang tua di rumah.',
+        footerIcon: 'family_restroom',
+        footerText: 'Laporan Kemajuan Belajar'
+      }
+    ],
+    therapists: [
+      {
+        name: 'Tim Orthopaedagog & Terapis Edukasi ATC',
+        role: 'Spesialis Pendidikan Khusus & Remedial',
+        bio: 'Berpengalaman mendampingi anak-anak dengan kesulitan belajar spesifik (disleksia, disgrafia, diskalkulia, ADHD) agar siap berprestasi di sekolah.',
+        cert: 'Lulusan Pendidikan Luar Biasa / Pendidikan Khusus',
+        rating: '4.95 (100+ Sesi)',
+        image: '/terapi-okupasi-meja.jpg'
+      }
+    ],
+    packages: [
+      {
+        tag: 'Langkah Awal',
+        tagClass: 'tag-blue',
+        title: 'Asesmen Profil Belajar & Edukasi',
+        subtitle: 'Pemeriksaan menyeluruh kesiapan calistung dasar, deteksi disleksia/disgrafia, dan pemetaan gaya belajar.',
+        priceLabel: 'Mulai dari',
+        price: 'Rp 300.000',
+        unit: 'sesi',
+        features: [
+          'Durasi 60 menit observasi kognitif-edukasi',
+          'Pemetaan gaya belajar (Visual, Auditori, Kinestetik)',
+          'Laporan hasil asesmen tertulis komprehensif',
+          'Penyusunan target prioritas belajar individual'
+        ],
+        buttonText: 'Pilih Jadwal Asesmen',
+        isPopular: false
+      },
+      {
+        tag: 'Paket 4 Sesi',
+        tagClass: 'tag-green',
+        title: 'Paket Terapi Edukasi (4x)',
+        subtitle: '1x per minggu untuk stimulasi remedial berkesinambungan dan penguatan konsep dasar belajar.',
+        priceLabel: 'Total Investasi',
+        price: 'Rp 850.000',
+        unit: 'paket',
+        savingNote: 'Hemat Rp 50.000 dari tarif per sesi',
+        features: [
+          '4 sesi terapi edukasi privat 1-on-1 (50 menit/sesi)',
+          'Konsultasi kemajuan belajar orang tua 10 menit',
+          'Lembar aktivitas latihan di rumah (Home Learning Kit)',
+          'Prioritas slot jadwal konsultasi belajar'
+        ],
+        buttonText: 'Daftar Paket Terapi 4x',
+        isPopular: true
+      },
+      {
+        tag: 'Paket 8 Sesi',
+        tagClass: 'tag-orange',
+        title: 'Paket Optimal Prestasi (8x)',
+        subtitle: '2x per minggu untuk percepatan pemulihan ketertinggalan materi sekolah dan kesiapan ujian.',
+        priceLabel: 'Total Investasi',
+        price: 'Rp 1.600.000',
+        unit: 'paket',
+        savingNote: 'Hemat Rp 200.000 + Bebas Reschedule',
+        features: [
+          '8 sesi terapi edukasi intensif terpadu',
+          'Evaluasi capaian bulanan bersama Lead Orthopaedagog',
+          'Sinkronisasi materi dengan kurikulum sekolah anak',
+          'Fleksibilitas reschedule jadwal praktik'
+        ],
+        buttonText: 'Pilih Paket 8 Sesi',
+        isPopular: false
+      }
+    ],
+    faqs: [
+      {
+        q: 'Apa perbedaan Orthopaedagog / Terapi Edukasi dengan les privat / bimbel biasa?',
+        a: 'Bimbel umum berfokus pada target nilai dan penyelesaian PR sekolah secara umum. Sedangkan Terapi Edukasi (Orthopaedagogik) menangani akar hambatan belajar kognitif dan persepsi anak, memperbaiki cara otak mencerna simbol/angka, serta menggunakan media multisensori yang disesuaikan dengan kebutuhan khusus anak.'
+      },
+      {
+        q: 'Kapan anak sebaiknya mulai mendapatkan Terapi Edukasi?',
+        a: 'Ketika anak usia 5 tahun ke atas menunjukkan kesulitan yang persisten dalam mengingat bentuk huruf/angka, sangat menolak tugas menulis, atau mengalami frustrasi dan tantrum saat waktu belajar di rumah maupun di sekolah.'
+      },
+      {
+        q: 'Apakah anak dengan ADHD atau Autisme bisa mengikuti Terapi Edukasi?',
+        a: 'Sangat bisa. Terapis edukasi kami telah terlatih memodifikasi instruksi, menyederhanakan langkah tugas, dan memberikan jeda stimulasi agar anak dengan ADHD maupun Autisme tetap fokus tanpa merasa terbebani.'
+      },
+      {
+        q: 'Apakah klinik dapat memberikan surat rekomendasi untuk pihak sekolah?',
+        a: 'Bisa. Kami dapat menyusun ringkasan asesmen profil belajar dan saran akomodasi kelas (seperti perpanjangan waktu ujian, instruksi visual, atau pemecahan soal) yang dapat diserahkan orang tua kepada wali kelas atau pihak sekolah.'
+      }
+    ]
   }
 }
 
@@ -2537,6 +2684,10 @@ allServicesData['group-therapy'] = allServicesData['grup-terapi']
 allServicesData['prevocational'] = allServicesData['pra-vokasional']
 allServicesData['vokasional'] = allServicesData['pra-vokasional']
 allServicesData['kelas-persiapan'] = allServicesData['kelas-persiapan-khusus']
+
+// Alias routes for Orthopaedagog / Terapi Edukasi
+allServicesData['orthopaedagog'] = allServicesData['terapi-edukasi']
+allServicesData['terapi-remedial'] = allServicesData['terapi-edukasi']
 
 const service = computed(() => {
   const slug = route.params.slug
@@ -2607,6 +2758,14 @@ const serviceCategoryMap = {
   'kelas-persiapan-khusus': {
     category: 'kpk',
     fallbackRegex: /\b(persiapan|transisi|sekolah)\b/i,
+  },
+  'terapi-edukasi': {
+    category: 'te',
+    fallbackRegex: /\b(edukasi|orthopaedagog|ortopedagog|remedial|pedagogik)\b/i,
+  },
+  'orthopaedagog': {
+    category: 'te',
+    fallbackRegex: /\b(edukasi|orthopaedagog|ortopedagog|remedial|pedagogik)\b/i,
   },
   'kelas-persiapan': {
     category: 'kpk',

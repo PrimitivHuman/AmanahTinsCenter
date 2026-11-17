@@ -1,46 +1,85 @@
-<template>
+﻿<template>
   <div class="admin-shell">
+    <!-- Mobile Drawer Backdrop -->
+    <transition name="fade">
+      <div
+        v-if="isMobileOpen"
+        class="sidebar-backdrop"
+        @click="isMobileOpen = false"
+        aria-hidden="true"
+      ></div>
+    </transition>
+
     <!-- Sidebar -->
-    <aside class="admin-sidebar" :class="{ 'sidebar-collapsed': isCollapsed }">
+    <aside
+      class="admin-sidebar"
+      :class="{
+        'sidebar-collapsed': isCollapsed,
+        'sidebar-mobile-open': isMobileOpen
+      }"
+    >
       <div class="sidebar-top">
         <!-- Clinic Brand Header -->
         <div class="brand-box">
           <div class="brand-avatar">
             <img src="/iconATC.png" alt="Logo Amanah Tin's Center" class="brand-logo-img" />
           </div>
-          <div class="brand-text" v-if="!isCollapsed">
+          <div class="brand-text" v-if="!isCollapsed || isMobileOpen">
             <h2 class="brand-title">Amanah Tin's Center</h2>
             <span class="brand-sub">Portal Admin & Terapis</span>
           </div>
+          <button class="mobile-close-btn" @click="isMobileOpen = false" title="Tutup Menu">
+            <span class="material-symbols-outlined">close</span>
+          </button>
         </div>
 
         <!-- Navigation Menu -->
         <nav class="sidebar-nav">
-          <router-link to="/admin/dashboard" class="nav-item" active-class="nav-item-active">
+          <router-link
+            to="/admin/dashboard"
+            class="nav-item"
+            active-class="nav-item-active"
+            @click="isMobileOpen = false"
+          >
             <span class="material-symbols-outlined">dashboard</span>
-            <span class="nav-label" v-if="!isCollapsed">Dashboard Ringkasan</span>
+            <span class="nav-label" v-if="!isCollapsed || isMobileOpen">Dashboard Ringkasan</span>
           </router-link>
 
-          <router-link to="/admin/tim-kami" class="nav-item" active-class="nav-item-active">
+          <router-link
+            to="/admin/tim-kami"
+            class="nav-item"
+            active-class="nav-item-active"
+            @click="isMobileOpen = false"
+          >
             <span class="material-symbols-outlined">group</span>
-            <span class="nav-label" v-if="!isCollapsed">Kelola Tim Terapis</span>
+            <span class="nav-label" v-if="!isCollapsed || isMobileOpen">Kelola Tim Terapis</span>
           </router-link>
 
-          <router-link to="/admin/artikel" class="nav-item" active-class="nav-item-active">
+          <router-link
+            to="/admin/artikel"
+            class="nav-item"
+            active-class="nav-item-active"
+            @click="isMobileOpen = false"
+          >
             <span class="material-symbols-outlined">menu_book</span>
-            <span class="nav-label" v-if="!isCollapsed">Kelola Artikel & Tips</span>
+            <span class="nav-label" v-if="!isCollapsed || isMobileOpen">Kelola Artikel & Tips</span>
           </router-link>
 
-          <router-link to="/admin/pengaturan" class="nav-item" active-class="nav-item-active">
+          <router-link
+            to="/admin/pengaturan"
+            class="nav-item"
+            active-class="nav-item-active"
+            @click="isMobileOpen = false"
+          >
             <span class="material-symbols-outlined">settings</span>
-            <span class="nav-label" v-if="!isCollapsed">Pengaturan Klinik</span>
+            <span class="nav-label" v-if="!isCollapsed || isMobileOpen">Pengaturan Klinik</span>
           </router-link>
         </nav>
 
-        <div class="nav-divider" v-if="!isCollapsed"></div>
+        <div class="nav-divider" v-if="!isCollapsed || isMobileOpen"></div>
 
         <!-- External Website Link -->
-        <a href="/" target="_blank" class="external-link" v-if="!isCollapsed">
+        <a href="/" target="_blank" class="external-link" v-if="!isCollapsed || isMobileOpen">
           <span class="material-symbols-outlined">open_in_new</span>
           <span>Tinjau Website Utama</span>
         </a>
@@ -51,11 +90,11 @@
         <div class="user-avatar">
           {{ userInitials }}
         </div>
-        <div class="user-meta" v-if="!isCollapsed">
+        <div class="user-meta" v-if="!isCollapsed || isMobileOpen">
           <div class="user-name">{{ auth.user?.name || 'Admin ATC' }}</div>
           <div class="user-role">{{ auth.user?.email || 'admin@amanahtins.id' }}</div>
         </div>
-        <button class="logout-btn" @click="handleLogout" title="Keluar Akun" v-if="!isCollapsed">
+        <button class="logout-btn" @click="handleLogout" title="Keluar Akun" v-if="!isCollapsed || isMobileOpen">
           <span class="material-symbols-outlined">logout</span>
         </button>
       </div>
@@ -66,7 +105,7 @@
       <!-- Topbar Header -->
       <header class="admin-topbar">
         <div class="topbar-left">
-          <button class="toggle-sidebar-btn" @click="isCollapsed = !isCollapsed" title="Toggle Sidebar">
+          <button class="toggle-sidebar-btn" @click="toggleSidebar" title="Toggle Sidebar">
             <span class="material-symbols-outlined">menu</span>
           </button>
           <div class="breadcrumb-trail">
@@ -103,6 +142,20 @@ defineProps({
 const router = useRouter()
 const auth = useAuthStore()
 const isCollapsed = ref(false)
+const isMobileOpen = ref(false)
+
+function toggleSidebar() {
+  if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+    isMobileOpen.value = !isMobileOpen.value
+  } else {
+    isCollapsed.value = !isCollapsed.value
+  }
+}
+
+// Otomatis tutup sidebar mobile saat berpindah halaman
+router.afterEach(() => {
+  isMobileOpen.value = false
+})
 
 const userInitials = computed(() => {
   const name = auth.user?.name || 'Admin'
@@ -156,6 +209,7 @@ async function handleLogout() {
   align-items: center;
   gap: 0.875rem;
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .brand-avatar {
@@ -185,6 +239,17 @@ async function handleLogout() {
 .brand-sub {
   font-size: 0.75rem;
   color: var(--on-surface-variant, #40484d);
+}
+
+.mobile-close-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.35rem;
+  border-radius: 8px;
+  margin-left: auto;
 }
 
 .sidebar-nav {
@@ -318,6 +383,7 @@ async function handleLogout() {
 .admin-topbar {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   position: sticky;
   top: 0;
   z-index: 30;
@@ -345,6 +411,12 @@ async function handleLogout() {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s;
+}
+
+.toggle-sidebar-btn:hover {
+  background: rgba(0, 99, 132, 0.08);
+  border-color: #006384;
 }
 
 .breadcrumb-trail {
@@ -378,13 +450,68 @@ async function handleLogout() {
   margin: 0 auto;
 }
 
+/* Mobile Drawer Backdrop */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 29, 46, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 90;
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 @media (max-width: 768px) {
+  .mobile-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .admin-sidebar {
     position: fixed;
-    left: -280px;
-  }
-  .admin-sidebar.sidebar-collapsed {
+    top: 0;
+    bottom: 0;
     left: 0;
+    width: 280px !important;
+    max-width: 85vw;
+    height: 100vh;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: none;
+  }
+
+  .admin-sidebar.sidebar-mobile-open {
+    transform: translateX(0);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  }
+
+  .admin-sidebar.sidebar-collapsed {
+    width: 280px !important;
+  }
+
+  .admin-topbar {
+    padding: 0.75rem 1rem;
+  }
+
+  .admin-content {
+    padding: 1.25rem 1rem;
+  }
+
+  .breadcrumb-trail .crumb-root,
+  .breadcrumb-trail .crumb-sep {
+    display: none;
   }
 }
 </style>

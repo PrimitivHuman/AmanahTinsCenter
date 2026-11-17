@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <PublicLayout>
 
     <!-- ===== HERO SECTION ===== -->
@@ -470,7 +470,7 @@ const defaultArticles = [
     title: 'Tips Stimulasi Motorik Anak di Rumah',
     excerpt: 'Aktivitas bermain sederhana tanpa gawai untuk melatih koordinasi tangan-mata, keseimbangan tubuh, dan kekuatan jari jemari balita.',
     published_at: '2025-05-05', read_time: '3 min baca',
-    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBVAjj2_99GAssxWy4C6hTn27yt7kYZe2i0qsUsgpGRLAq1dsRAzKGQN9PngQD-eLgAv_j19Tc3Y1D2ZOwLi17idZKvk6tEW5EYD5j4V8Oe2WTWmHgj3NaktVCavHdsCMDaZc0kG5owNajF4MGnh7xHWInfth-r3HLBjrJLLF9X1s1PkwXpVZ-HNaJ4IhQ-ZtKXIBikWwNr1SHDHiavrHJb5bQYR-fQgncvJVq9oPU',
+    thumbnail: '/stimulasi-motorik-kasar.jpg',
   },
   {
     id: 3, slug: 'pentingnya-konsistensi-terapi',
@@ -478,7 +478,7 @@ const defaultArticles = [
     title: 'Pentingnya Konsistensi dalam Terapi Tumbuh Kembang',
     excerpt: 'Mengapa kesinambungan sesi klinik dan pengulangan stimulasi terarah di rumah memegang peranan krusial bagi kemandirian anak.',
     published_at: '2025-04-28', read_time: '5 min baca',
-    thumbnail: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDA6AxaP_1sTKsevX0SNiWyRLSqBTmdOpthTzKUtdw2629F_zlaMj9qXVWQgswk5vS1vNJB6lex_af6gpEcXS26Q6i1UNwwm-hOYueJc0NUuz0KofHGQ4UIEKYpCwrZ0cN_dRkzJP0Xb_XZ19fdPzVRbHxXP_JNQQCjs57FaWxRIxDKyIzA8Itfn7C3kP0upzOwvfBovYcWgXxj-wyKin6fV78ESnwPCkweevSPvAM',
+    thumbnail: '/sensori-integrasi-anak.jpg',
   },
   {
     id: 4, slug: 'komunikasi-positif-dengan-anak',

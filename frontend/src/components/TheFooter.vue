@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <footer class="footer">
     <div class="container">
       <!-- Main footer grid -->
@@ -82,6 +82,7 @@
             <li><router-link to="/layanan/terapi-okupasi">Terapi Okupasi</router-link></li>
             <li><router-link to="/layanan/sensori-integrasi">Sensori Integrasi</router-link></li>
             <li><router-link to="/layanan/psikologi-anak">Psikologi Anak</router-link></li>
+            <li><router-link to="/layanan/terapi-edukasi">Terapi Edukasi (Orthopaedagog)</router-link></li>
           </ul>
         </div>
 

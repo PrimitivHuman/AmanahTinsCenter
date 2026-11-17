@@ -175,6 +175,11 @@ const quickTopics = [
     prompt: 'Halo Admin ATC, saya ingin menanyakan layanan Terapi Sensori Integrasi & Okupasi untuk ananda.'
   },
   {
+    icon: 'menu_book',
+    title: 'Tanya Terapi Edukasi (Orthopaedagog)',
+    prompt: 'Halo Admin ATC, saya ingin bertanya seputar layanan Terapi Edukasi (Orthopaedagog) untuk anak yang mengalami kesulitan belajar / calistung / disleksia.'
+  },
+  {
     icon: 'event_available',
     title: 'Jadwal & Reservasi Pasien Baru',
     prompt: 'Halo Admin ATC, saya ingin mendaftar pasien baru dan menanyakan ketersediaan jadwal terapis yang tersedia.'

@@ -44,7 +44,7 @@
           <div class="hero-image-col">
             <div class="hero-image-frame">
               <img
-                src="/ruang-terapi-atc.jpg"
+                src="/terapi-okupasi-meja.jpg"
                 alt="Fasilitas Ruang Terapi Ramah Anak Amanah Tin's Center Jagakarsa"
                 class="hero-img"
                 decoding="async"
@@ -185,11 +185,11 @@
 
               <!-- Milestones Target -->
               <div class="result-milestones-box">
-                <h4 class="milestones-title">Target Perubahan yang Dilatih:</h4>
+                <h4 class="milestones-title">{{ currentSymptom.milestonesTitle || 'Target Perubahan yang Dilatih:' }}</h4>
                 <ul class="milestones-list">
                   <li v-for="(milestone, mIdx) in currentSymptom.milestones" :key="mIdx">
                     <span class="material-symbols-outlined check-bullet">check_circle</span>
-                    <span>{{ milestone }}</span>
+                    <span v-html="milestone"></span>
                   </li>
                 </ul>
               </div>
@@ -200,49 +200,17 @@
               <div class="action-card-inner">
                 <div class="action-header">
                   <div class="action-price-top-meta">
-                    <span class="action-price-label">{{ currentSymptom.priceLabel || 'Estimasi Biaya Sesi' }}</span>
+                    <span class="action-price-label">INFORMASI SESI</span>
                     <span class="action-duration-chip">
                       <span class="material-symbols-outlined chip-clock">schedule</span>
                       {{ currentSymptom.duration || '60 Menit' }}
                     </span>
                   </div>
 
-                  <!-- Weekday vs Weekend Comparison Grid -->
-                  <div class="price-day-compare">
-                    <!-- Weekday Card -->
-                    <div class="price-day-card price-day-card--weekday">
-                      <div class="price-day-badge-wrap">
-                        <span class="price-day-badge badge-blue">
-                          <span class="material-symbols-outlined badge-icon">calendar_today</span>
-                          Weekday
-                        </span>
-                        <span class="price-day-sub">Senin – Jumat</span>
-                      </div>
-                      <div class="price-day-val-wrap">
-                        <span class="currency">Rp</span>
-                        <span class="amount">{{ currentSymptom.priceWeekday }}</span>
-                        <span class="unit">/sesi</span>
-                      </div>
-                    </div>
-
-                    <!-- Weekend Card -->
-                    <div class="price-day-card price-day-card--weekend">
-                      <div class="price-day-badge-wrap">
-                        <span class="price-day-badge badge-amber">
-                          <span class="material-symbols-outlined badge-icon">weekend</span>
-                          Weekend
-                        </span>
-                        <span class="price-day-sub">Sabtu</span>
-                      </div>
-                      <div class="price-day-val-wrap val-amber">
-                        <span class="currency">Rp</span>
-                        <span class="amount">{{ currentSymptom.priceWeekend }}</span>
-                        <span class="unit">/sesi</span>
-                      </div>
-                    </div>
+                  <div class="action-included-box">
+                    <span class="material-symbols-outlined included-icon">verified</span>
+                    <p class="action-sub">{{ currentSymptom.priceSub || 'Termasuk observasi klinis, konsultasi orang tua & laporan tertulis.' }}</p>
                   </div>
-
-                  <p class="action-sub">{{ currentSymptom.priceSub || 'Termasuk observasi klinis, konsultasi orang tua & laporan tertulis.' }}</p>
                 </div>
 
                 <div class="action-buttons-wrap">
@@ -259,7 +227,7 @@
                     :to="'/layanan/' + currentSymptom.slug"
                     class="btn-result-detail"
                   >
-                    <span>Pelajari Detail Program &amp; Biaya</span>
+                    <span>Pelajari Detail Program</span>
                     <span class="material-symbols-outlined">arrow_forward</span>
                   </router-link>
 
@@ -334,10 +302,10 @@
             <div class="prog-footer">
               <span class="prog-duration">
                 <span class="material-symbols-outlined icon-small">schedule</span>
-                Sesi 45 - 60 Menit (1-on-1)
+                Sesi Terapi ± 50 Menit &amp; Sesi Konsultasi dengan Orang Tua 10 Menit 
               </span>
               <router-link to="/layanan/terapi-wicara" class="prog-link prog-link--blue">
-                <span>Detail &amp; Biaya</span>
+                <span>Detail</span>
                 <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
               </router-link>
             </div>
@@ -380,10 +348,10 @@
             <div class="prog-footer">
               <span class="prog-duration">
                 <span class="material-symbols-outlined icon-small">schedule</span>
-                Sesi 45 - 60 Menit (1-on-1)
+                Sesi Terapi ± 50 Menit &amp; Sesi Konsultasi dengan Orang Tua 10 Menit
               </span>
               <router-link to="/layanan/terapi-okupasi" class="prog-link prog-link--green">
-                <span>Detail &amp; Biaya</span>
+                <span>Detail</span>
                 <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
               </router-link>
             </div>
@@ -426,10 +394,10 @@
             <div class="prog-footer">
               <span class="prog-duration">
                 <span class="material-symbols-outlined icon-small">schedule</span>
-                Sesi 45 - 60 Menit (1-on-1)
+                Sesi Terapi ± 50 Menit &amp; Sesi Konsultasi dengan Orang Tua 10 Menit
               </span>
               <router-link to="/layanan/sensori-integrasi" class="prog-link prog-link--teal">
-                <span>Detail &amp; Biaya</span>
+                <span>Detail</span>
                 <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
               </router-link>
             </div>
@@ -473,10 +441,10 @@
             <div class="prog-footer">
               <span class="prog-duration">
                 <span class="material-symbols-outlined icon-small">schedule</span>
-                Sesi 60 Menit / Konsultasi
+                Terapi ± 50 Menit &amp; Sesi Konsultasi dengan Orang Tua 10 Menitltasi
               </span>
               <router-link to="/layanan/psikolog" class="prog-link prog-link--amber">
-                <span>Detail &amp; Biaya</span>
+                <span>Detail</span>
                 <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
               </router-link>
             </div>
@@ -519,10 +487,10 @@
             <div class="prog-footer">
               <span class="prog-duration">
                 <span class="material-symbols-outlined icon-small">schedule</span>
-                3–6 Anak &bull; Sesi 60 - 90 Menit
+                Sesi Terapi ± 50 Menit &amp; Sesi Konsultasi dengan Orang Tua 10 Menit
               </span>
               <router-link to="/layanan/grup-terapi" class="prog-link prog-link--indigo">
-                <span>Detail &amp; Biaya</span>
+                <span>Detail</span>
                 <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
               </router-link>
             </div>
@@ -565,10 +533,10 @@
             <div class="prog-footer">
               <span class="prog-duration">
                 <span class="material-symbols-outlined icon-small">schedule</span>
-                Usia 12–18 Th &bull; Sesi 90 - 120 Menit
+                Sesi Terapi ± 50 Menit &amp; Sesi Konsultasi dengan Orang Tua 10 Menit
               </span>
               <router-link to="/layanan/pra-vokasional" class="prog-link prog-link--violet">
-                <span>Detail &amp; Biaya</span>
+                <span>Detail</span>
                 <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
               </router-link>
             </div>
@@ -611,10 +579,57 @@
             <div class="prog-footer">
               <span class="prog-duration">
                 <span class="material-symbols-outlined icon-small">schedule</span>
-                Usia 4–9 Th &bull; Sesi 60 - 90 Menit
+                Sesi Terapi ± 50 Menit &amp; Sesi Konsultasi dengan Orang Tua 10 Menit
               </span>
               <router-link to="/layanan/kelas-persiapan-khusus" class="prog-link prog-link--emerald">
-                <span>Detail &amp; Biaya</span>
+                <span>Detail</span>
+                <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+              </router-link>
+            </div>
+          </div>
+
+          <!-- Card 8: Orthopaedagog / Terapi Edukasi -->
+          <div class="prog-card prog-card--rose" id="terapi-edukasi" :class="{ 'is-highlighted': activeSymptomIndex === 7 }">
+            <div class="prog-card-top">
+              <div class="prog-icon prog-icon--rose">
+                <span class="material-symbols-outlined" style="font-size:32px">menu_book</span>
+              </div>
+              <span class="prog-badge prog-badge--rose">TE Program</span>
+            </div>
+            <h3 class="prog-name">Orthopaedagog / Terapi Edukasi</h3>
+            <p class="prog-desc">
+              Pendampingan belajar individual untuk mengatasi kesulitan belajar spesifik (disleksia, disgrafia, diskalkulia), penguatan fokus tugas meja, serta stimulasi remedial calistung adaptif.
+            </p>
+
+            <!-- Parent-Friendly Daily Signs Box -->
+            <div class="prog-parent-box">
+              <div class="parent-box-header">
+                <span class="material-symbols-outlined box-icon">visibility</span>
+                <span>Tanda Khas di Rumah:</span>
+              </div>
+              <p class="parent-box-text">
+                Anak menolak belajar/menulis, sering terbalik membedakan huruf (b/d, p/q), kesulitan berhitung dasar, atau sangat mudah terdistraksi saat mengerjakan tugas sekolah.
+              </p>
+            </div>
+
+            <div class="prog-focus">
+              <div class="prog-focus-label">Fokus Stimulasi:</div>
+              <div class="prog-tags">
+                <span class="prog-tag">Remedial Calistung</span>
+                <span class="prog-tag">Disleksia &amp; Disgrafia</span>
+                <span class="prog-tag">Diskalkulia (Hitung)</span>
+                <span class="prog-tag">Fokus Tugas Meja</span>
+                <span class="prog-tag">Strategi Belajar Adaptif</span>
+              </div>
+            </div>
+
+            <div class="prog-footer">
+              <span class="prog-duration">
+                <span class="material-symbols-outlined icon-small">schedule</span>
+                Sesi Terapi ± 50 Menit &amp; Sesi Konsultasi dengan Orang Tua 10 Menit
+              </span>
+              <router-link to="/layanan/terapi-edukasi" class="prog-link prog-link--rose">
+                <span>Detail</span>
                 <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
               </router-link>
             </div>
@@ -737,11 +752,14 @@ const symptoms = [
     priceWeekday: '275.000',
     priceWeekend: '325.000',
     priceSub: 'Termasuk observasi klinis wicara, konsultasi orang tua & lembar evaluasi tertulis.',
-    whyMatch: 'Program ini melatih artikulasi organ bicara (oral motor), penguasaan kosa kata ekspresif, dan pemahaman bahasa anak dengan metode bermain interaktif tanpa stres.',
+    whyMatch: 'Program stimulasi bicara dan bahasa interaktif tanpa stres yang melatih artikulasi organ bicara (oral motor), penguasaan kosakata ekspresif, dan pemahaman instruksi si Kecil.',
+    milestonesTitle: 'Tanda-Tanda Anak Perlu Terapi Wicara:',
     milestones: [
-      'Mampu menirukan bunyi kata bermakna (mama / papa / mau / susu)',
-      'Pengucapan artikulasi lebih jelas sehingga dipahami orang luar',
-      'Mengurangi frustrasi dan tantrum karena anak mampu mengutarakan keinginannya'
+      '<strong>Usia 1 Tahun:</strong> Belum ada fase <em>babbling</em> (mengoceh suku kata seperti "ba-ba", "da-da", "ma-ma")',
+      '<strong>Respons Panggilan:</strong> Tidak merespons atau tidak menoleh ketika namanya dipanggil',
+      '<strong>Usia 18 Bulan:</strong> Kosakata bermakna masih kurang dari 10 kata',
+      '<strong>Usia 2 Tahun:</strong> Perbendaharaan kata sangat terbatas dan belum merangkai 2 kata sederhana',
+      '<strong>Usia 3 Tahun:</strong> Belum mampu melakukan percakapan interaktif dua arah'
     ],
     targetAge: '1.5 – 12 Tahun',
     cardClass: 'matcher-tw'
@@ -895,6 +913,31 @@ const symptoms = [
     ],
     targetAge: '4 – 9 Tahun',
     cardClass: 'matcher-emerald'
+  },
+  {
+    id: 'edukasi',
+    slug: 'terapi-edukasi',
+    icon: 'menu_book',
+    iconClass: 'icon-rose',
+    title: 'Belajar, Calistung & Prestasi',
+    badge: 'Orthopedagogy',
+    parentWorry: 'Mengalami kesulitan belajar spesifik (disleksia/disgrafia/diskalkulia), mudah hilang fokus saat belajar di meja, atau tertinggal pelajaran sekolah.',
+    matchedTherapy: 'Orthopaedagog / Terapi Edukasi (TE)',
+    focusText: 'Fokus: Remedial Calistung Multisensori & Strategi Belajar Adaptif',
+    sessionType: '1-on-1 Privat Bersama Pendidik Khusus / Orthopaedagog',
+    priceLabel: 'Estimasi Biaya Sesi',
+    duration: '60 Menit',
+    priceWeekday: '275.000',
+    priceWeekend: '325.000',
+    priceSub: 'Observasi profil gaya belajar, pemetaan hambatan kognitif & lembar kerja mandiri.',
+    whyMatch: 'Pendekatan pedagogik khusus individual untuk membongkar akar hambatan belajar, melatih ketahanan konsentrasi tugas meja, serta menumbuhkan kembali rasa percaya diri anak saat belajar.',
+    milestones: [
+      'Peningkatan pemahaman huruf, angka, fonem, dan kelancaran calistung dasar',
+      'Ketahanan duduk fokus yang lebih matang saat mengerjakan tugas meja',
+      'Pengurangan kecemasan dan penolakan belajar terhadap pelajaran sekolah'
+    ],
+    targetAge: '4 – 15 Tahun',
+    cardClass: 'matcher-rose'
   }
 ]
 
@@ -903,7 +946,7 @@ const currentSymptom = computed(() => {
 })
 
 const getWhatsAppMatcherUrl = (sym) => {
-  const text = `Halo Admin Amanah Tin's Center, saya telah membaca panduan di website. Anak saya mengalami tanda pada bidang ${sym.title}: "${sym.parentWorry}". Saya ingin konsultasi ketersediaan jadwal & reservasi (Weekday: Rp ${sym.priceWeekday} / Weekend: Rp ${sym.priceWeekend}) untuk program ${sym.matchedTherapy}.`
+  const text = `Halo Admin Amanah Tin's Center, saya telah membaca panduan di website. Anak saya mengalami tanda pada bidang ${sym.title}: "${sym.parentWorry}". Saya ingin konsultasi ketersediaan jadwal & reservasi untuk program ${sym.matchedTherapy}.`
   return waLink(text)
 }
 
@@ -1297,6 +1340,8 @@ const steps = [
 .matcher-result-card.matcher-indigo  { border-color: #4338ca; box-shadow: 0 16px 40px -8px rgba(67, 56, 202, 0.16); }
 .matcher-result-card.matcher-violet  { border-color: #7c3aed; box-shadow: 0 16px 40px -8px rgba(124, 58, 237, 0.16); }
 .matcher-result-card.matcher-emerald { border-color: #059669; box-shadow: 0 16px 40px -8px rgba(5, 150, 105, 0.16); }
+.matcher-result-card.matcher-rose    { border-color: #e11d48; box-shadow: 0 16px 40px -8px rgba(225, 29, 72, 0.16); }
+.icon-rose    { background: #ffe4e6; color: #e11d48; }
 
 .symptom-cat-badge {
   display: inline-block;
@@ -1694,6 +1739,24 @@ const steps = [
   font-weight: 600;
 }
 
+.action-included-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+}
+
+.action-included-box .included-icon {
+  font-size: 18px;
+  color: #006384;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
 .action-sub {
   font-size: 12px;
   color: #556066;
@@ -1811,6 +1874,7 @@ const steps = [
 .prog-card--indigo:hover  { border-color: rgba(79, 70, 229, 0.5); box-shadow: 0 14px 32px -6px rgba(79, 70, 229, 0.12); }
 .prog-card--violet:hover  { border-color: rgba(124, 58, 237, 0.5); box-shadow: 0 14px 32px -6px rgba(124, 58, 237, 0.12); }
 .prog-card--emerald:hover { border-color: rgba(5, 150, 105, 0.5); box-shadow: 0 14px 32px -6px rgba(5, 150, 105, 0.12); }
+.prog-card--rose:hover    { border-color: rgba(225, 29, 72, 0.5); box-shadow: 0 14px 32px -6px rgba(225, 29, 72, 0.12); }
 
 .prog-card-top {
   display: flex; align-items: flex-start;
@@ -1829,6 +1893,7 @@ const steps = [
 .prog-icon--indigo  { background-color: #e0e7ff; color: #4338ca; }
 .prog-icon--violet  { background-color: #ede9fe; color: #7c3aed; }
 .prog-icon--emerald { background-color: #d1fae5; color: #059669; }
+.prog-icon--rose    { background-color: #ffe4e6; color: #e11d48; }
 
 .prog-badge {
   font-size: 12px; font-weight: 800;
@@ -1843,6 +1908,7 @@ const steps = [
 .prog-badge--indigo  { background-color: #e0e7ff; color: #4338ca; }
 .prog-badge--violet  { background-color: #ede9fe; color: #7c3aed; }
 .prog-badge--emerald { background-color: #d1fae5; color: #059669; }
+.prog-badge--rose   { background-color: #ffe4e6; color: #e11d48; }
 
 .prog-name {
   font-family: var(--font-headline);
@@ -1858,6 +1924,7 @@ const steps = [
 .prog-card--indigo:hover  .prog-name { color: #4338ca; }
 .prog-card--violet:hover  .prog-name { color: #7c3aed; }
 .prog-card--emerald:hover .prog-name { color: #059669; }
+.prog-card--rose:hover    .prog-name { color: #e11d48; }
 
 .prog-name-sub {
   font-size: 15px;
@@ -1952,6 +2019,7 @@ const steps = [
 .prog-link--indigo  { color: #4338ca; }
 .prog-link--violet  { color: #7c3aed; }
 .prog-link--emerald { color: #059669; }
+.prog-link--rose    { color: #e11d48; }
 
 /* Desktop: Center 7th odd card if alone on the last row */
 @media (min-width: 768px) {

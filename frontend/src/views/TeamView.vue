@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <PublicLayout>
 
     <!-- ===== HERO SECTION ===== -->
@@ -72,21 +72,39 @@
             </div>
           </div>
 
-          <!-- Category Pills Tabs (1 Baris Saja) -->
-          <div class="category-tabs-nav" role="tablist">
-            <button
-              v-for="cat in categories"
-              :key="cat.id"
-              @click="onSelectCategory(cat.id)"
-              class="cat-tab-btn"
-              :class="{ 'is-active': selectedCategory === cat.id }"
-              role="tab"
-              :aria-selected="selectedCategory === cat.id"
+          <!-- Category Pills Tabs (Slideable / Drag to Scroll) -->
+          <div class="category-slider-wrapper">
+            <!-- Gradient Fade Left -->
+            <div v-show="canScrollLeft" class="slider-fade fade-left" aria-hidden="true"></div>
+
+            <!-- Scrollable Pills Track -->
+            <div
+              ref="categoryTrackRef"
+              class="category-tabs-nav"
+              role="tablist"
+              @scroll="updateCategoryScrollState"
+              @mousedown="startCategoryDrag"
+              @mousemove="onCategoryDrag"
+              @mouseup="endCategoryDrag"
+              @mouseleave="endCategoryDrag"
             >
-              <span class="material-symbols-outlined cat-tab-icon">{{ cat.icon }}</span>
-              <span>{{ cat.label }}</span>
-              <span class="cat-tab-badge">{{ getCategoryCount(cat.id) }}</span>
-            </button>
+              <button
+                v-for="cat in categories"
+                :key="cat.id"
+                @click="!hasCategoryDragged && onSelectCategory(cat.id)"
+                class="cat-tab-btn"
+                :class="{ 'is-active': selectedCategory === cat.id }"
+                role="tab"
+                :aria-selected="selectedCategory === cat.id"
+              >
+                <span class="material-symbols-outlined cat-tab-icon">{{ cat.icon }}</span>
+                <span>{{ cat.label }}</span>
+                <span class="cat-tab-badge">{{ getCategoryCount(cat.id) }}</span>
+              </button>
+            </div>
+
+            <!-- Gradient Fade Right -->
+            <div v-show="canScrollRight" class="slider-fade fade-right" aria-hidden="true"></div>
           </div>
 
           <!-- Sub-Kategori Khusus Psikolog (Psikolog Anak, Remaja, Dewasa) -->
@@ -405,12 +423,55 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import PublicLayout from '../layouts/PublicLayout.vue'
 import api from '../services/api'
 import { useClinicSettings } from '../composables/useClinicSettings'
 
 const { settings, waLink } = useClinicSettings()
+
+// Category Slider State (Drag to Slide & Smooth Scroll)
+const categoryTrackRef = ref(null)
+const canScrollLeft = ref(false)
+const canScrollRight = ref(false)
+const hasCategoryDragged = ref(false)
+let isCategoryMouseDown = false
+let startCategoryX = 0
+let scrollLeftStart = 0
+let categoryResizeObserver = null
+
+function updateCategoryScrollState() {
+  const el = categoryTrackRef.value
+  if (!el) return
+  canScrollLeft.value = el.scrollLeft > 4
+  canScrollRight.value = el.scrollLeft + el.clientWidth < el.scrollWidth - 4
+}
+
+function startCategoryDrag(e) {
+  if (e.button !== 0) return
+  isCategoryMouseDown = true
+  hasCategoryDragged.value = false
+  startCategoryX = e.pageX - (categoryTrackRef.value?.offsetLeft || 0)
+  scrollLeftStart = categoryTrackRef.value?.scrollLeft || 0
+}
+
+function onCategoryDrag(e) {
+  if (!isCategoryMouseDown || !categoryTrackRef.value) return
+  e.preventDefault()
+  const x = e.pageX - (categoryTrackRef.value.offsetLeft || 0)
+  const walk = (x - startCategoryX) * 1.3
+  if (Math.abs(walk) > 4) {
+    hasCategoryDragged.value = true
+  }
+  categoryTrackRef.value.scrollLeft = scrollLeftStart - walk
+}
+
+function endCategoryDrag() {
+  isCategoryMouseDown = false
+  setTimeout(() => {
+    hasCategoryDragged.value = false
+  }, 50)
+}
 
 // Photos from blueprint (google AI-generated images)
 const photos = {
@@ -433,6 +494,7 @@ const categories = [
   { id: 'tw', label: 'Terapi Wicara (TW)', icon: 'record_voice_over' },
   { id: 'ot', label: 'Terapi Okupasi (OT)', icon: 'back_hand' },
   { id: 'si', label: 'Sensori Integrasi (SI)', icon: 'spa' },
+  { id: 'te', label: 'Terapi Edukasi (TE)', icon: 'menu_book' },
   { id: 'gt', label: 'Grup Terapi (GT)', icon: 'diversity_3' },
   { id: 'pv', label: 'Pra Vokasional (PV)', icon: 'work_history' },
   { id: 'kpk', label: 'Kelas Persiapan (KPK)', icon: 'school' },
@@ -451,6 +513,16 @@ const onSelectCategory = (catId) => {
   if (catId !== 'psi') {
     selectedPsiSub.value = 'all_psi'
   }
+  nextTick(() => {
+    const el = categoryTrackRef.value
+    if (el) {
+      const activeEl = el.querySelector('.cat-tab-btn.is-active')
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+      }
+      updateCategoryScrollState()
+    }
+  })
 }
 
 const defaultTeamMembers = [
@@ -805,6 +877,7 @@ const formatMemberFromApi = (m) => {
     if (text.includes('wicara') || text.includes('tw') || text.includes('speech')) category = 'tw'
     else if (text.includes('okupasi') || text.includes('ot')) category = 'ot'
     else if (text.includes('sensori') || text.includes('si')) category = 'si'
+    else if (text.includes('edukasi') || text.includes('orthopaedagog') || text.includes('ortopedagog') || text.includes('remedial') || text.includes('pedagogik')) category = 'te'
     else if (text.includes('grup') || text.includes('group') || text.includes('sosial kelompok')) category = 'gt'
     else if (text.includes('vokasi') || text.includes('vokasional') || text.includes('pra vokasional')) category = 'pv'
     else if (text.includes('persiapan khusus') || text.includes('kelas persiapan') || text.includes('pkh')) category = 'kpk'
@@ -833,6 +906,9 @@ const formatMemberFromApi = (m) => {
   } else if (category === 'si') {
     icon = 'spa'
     color = 'teal'
+  } else if (category === 'te') {
+    icon = 'menu_book'
+    color = 'rose'
   } else if (category === 'gt') {
     icon = 'diversity_3'
     color = 'indigo'
@@ -999,6 +1075,16 @@ const handleKeyDown = (e) => {
 
 onMounted(async () => {
   window.addEventListener('keydown', handleKeyDown)
+  nextTick(() => {
+    updateCategoryScrollState()
+    if (categoryTrackRef.value && typeof ResizeObserver !== 'undefined') {
+      categoryResizeObserver = new ResizeObserver(() => {
+        updateCategoryScrollState()
+      })
+      categoryResizeObserver.observe(categoryTrackRef.value)
+    }
+    window.addEventListener('resize', updateCategoryScrollState)
+  })
   isLoading.value = true
   try {
     const res = await api.get('/team')
@@ -1012,11 +1098,18 @@ onMounted(async () => {
     teamMembers.value = defaultTeamMembers
   } finally {
     isLoading.value = false
+    nextTick(() => {
+      updateCategoryScrollState()
+    })
   }
 })
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown)
+  if (categoryResizeObserver) {
+    categoryResizeObserver.disconnect()
+  }
+  window.removeEventListener('resize', updateCategoryScrollState)
   document.body.style.overflow = ''
 })
 
@@ -1158,31 +1251,57 @@ const getTherapistWaUrl = (member) => {
   font-weight: 800;
 }
 
+.category-slider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .category-tabs-nav {
   display: flex;
   flex-wrap: nowrap;
   gap: 0.65rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
   /* Headroom vertikal agar efek translateY & box-shadow saat hover tidak terpotong */
   padding: 0.5rem 0.35rem 0.65rem 0.35rem;
   margin: -0.25rem -0.35rem 0 -0.35rem;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  user-select: none;
+  width: 100%;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+}
+
+.category-tabs-nav:active {
+  cursor: grabbing;
 }
 
 .category-tabs-nav::-webkit-scrollbar {
   display: none;
 }
 
-@media (min-width: 1024px) {
-  .category-tabs-nav {
-    overflow: visible; /* Pada desktop tidak ada clipping boundary sama sekali */
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: 0;
-    margin-right: 0;
-  }
+/* Gradient Fade Masks */
+.slider-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 48px;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.25s ease;
+}
+
+.fade-left {
+  left: 0;
+  background: linear-gradient(to right, #ffffff 30%, rgba(255, 255, 255, 0) 100%);
+}
+
+.fade-right {
+  right: 0;
+  background: linear-gradient(to left, #ffffff 30%, rgba(255, 255, 255, 0) 100%);
 }
 
 .cat-tab-btn {
@@ -1249,13 +1368,8 @@ const getTherapistWaUrl = (member) => {
   padding: 0.65rem 1rem;
   background: rgba(147, 51, 234, 0.05);
   border: 1px dashed rgba(147, 51, 234, 0.35);
-  border-radius: 999px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.psi-subnav-bar::-webkit-scrollbar {
-  display: none;
+  border-radius: 16px;
+  flex-wrap: wrap;
 }
 
 .psi-subnav-title {
@@ -1276,6 +1390,7 @@ const getTherapistWaUrl = (member) => {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+  flex-wrap: wrap;
 }
 
 .psi-sub-btn {
@@ -1473,6 +1588,7 @@ const getTherapistWaUrl = (member) => {
 .badge-purple { color: #9333ea; }
 .badge-indigo { color: #4f46e5; }
 .badge-violet { color: #7c3aed; }
+.badge-rose   { color: #e11d48; }
 
 .badge-str {
   position: absolute;
@@ -1563,6 +1679,7 @@ const getTherapistWaUrl = (member) => {
 .tag-purple { background: #f3e8ff; color: #7e22ce; }
 .tag-indigo { background: #e0e7ff; color: #4338ca; }
 .tag-violet { background: #ede9fe; color: #6d28d9; }
+.tag-rose   { background: #ffe4e6; color: #be123c; }
 
 /* Member Card Action Row */
 .member-actions-row {

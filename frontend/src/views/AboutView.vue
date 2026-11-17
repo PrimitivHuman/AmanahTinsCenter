@@ -80,11 +80,11 @@
 
               <!-- Secondary Image Stack (Right) -->
               <div class="showcase-secondary-col">
-                <!-- Secondary 1: Terapis Hangat -->
+                                <!-- Secondary 1: Sensori Integrasi -->
                 <div class="showcase-sub-item">
                   <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxCcerp34ElrQCVyON58j1OscFg5MR9BsX7NdyFuGBoq6gB_FQOvA-lWaeVbV9BvTm2Qcsps-FJ-mncTnN1N9sM92Mv6vWdfqmtu8xL6IgBvEh0EXzr0H6q1rFlZ2O-ihMCyARgKGqHpAN7clyp9nJ1_2y3BJKkXyCLJn0gEnzqrmDFcKNnPQffyN7W6nwv4bm9bQppfRk6_SrOmP3AtjPzGcblTWq-o6urXk1s7I"
-                    alt="Sesi Terapi Interaktif"
+                    src="/sensori-integrasi-anak.jpg"
+                    alt="Sesi Terapi Sensori Integrasi Ramah Anak"
                     class="showcase-sub-img"
                     loading="lazy"
                     decoding="async"
@@ -92,23 +92,23 @@
                   <div class="sub-img-dim"></div>
                   <div class="sub-img-badge">
                     <span class="material-symbols-outlined">sentiment_very_satisfied</span>
-                    <span>Terapis Hangat & Tersertifikasi</span>
+                    <span>Sensori Integrasi &amp; Regulasi</span>
                   </div>
                 </div>
 
-                <!-- Secondary 2: Kemitraan Orang Tua -->
+                                <!-- Secondary 2: Stimulasi Motorik Kasar -->
                 <div class="showcase-sub-item">
                   <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4gtk40GZi1NAmfUL5OIVkQd4vSYwYZR3sEKjDIs0FfoMv4LcutzmKXlSUAM8egPp_D_GhLUxZ-yI7ruxNIQGT_QnLRU8ICZ5TLjm4DIcSdmHdD83O9mLuA840DclKm0nJbdAZ67PiNrlFrbFPPBe0DDLXyaQhZ8oeYHlqB0GNKxLB-tE5ECfXAJHUtVAlRzA7JtFX2VfylDYCo2gf56tMbCACftxjHWOkLoPnsZE"
-                    alt="Ruang Observasi dan Diskusi Keluarga"
+                    src="/stimulasi-motorik-kasar.jpg"
+                    alt="Stimulasi Motorik Kasar &amp; Keseimbangan Anak"
                     class="showcase-sub-img"
                     loading="lazy"
                     decoding="async"
                   />
                   <div class="sub-img-dim"></div>
                   <div class="sub-img-badge">
-                    <span class="material-symbols-outlined">family_restroom</span>
-                    <span>Kemitraan Orang Tua & Anak</span>
+                    <span class="material-symbols-outlined">sports_gymnastics</span>
+                    <span>Stimulasi Motorik &amp; Keseimbangan</span>
                   </div>
                 </div>
               </div>
@@ -235,7 +235,7 @@
                       <span class="material-symbols-outlined">check</span>
                     </div>
                     <p class="mission-text">
-                      <strong>Pelayanan Berkualitas:</strong> Memberikan layanan terapi wicara, sensori integrasi, okupasi, dan psikologi anak yang berkesinambungan dan terstandarisasi.
+                      <strong>Pelayanan Berkualitas:</strong> Memberikan layanan terapi wicara, sensori integrasi, okupasi, terapi edukasi (orthopaedagog), dan psikologi anak yang berkesinambungan dan terstandarisasi.
                     </p>
                   </li>
                   <li class="mission-item">

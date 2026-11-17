@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <PublicLayout>
 
     <!-- ===== HERO CARD ===== -->
@@ -274,8 +274,8 @@
             <div class="motivational-image-wrap">
               <div class="motivational-image-frame">
                 <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBW5aiE46CHrY7P30aLPhueJPHbKfo9L51mvGP_VQkrM1PMYKBTu9RO_xNt84_oFH2wun-shmI9OZv5ybYp4x7KPf1VTkgWEb_0VA4auC2Wpfgf_otPSDGE-8LV7nU-quujFnm-JZVwZTPIN6xXNM6czA8fbsGMm5Cp7rBgSHgF2WXJbZVc4ar4pyh19CjtiD6EuGoVAb84tnadvAGMTfBQ_5CfWsaBCEMbdQyadWs"
-                  alt="Terapis mendampingi anak bermain dengan blok kayu edukatif"
+                  src="/ruang-psikologi-anak.jpg"
+                  alt="Fasilitas Ruang Konsultasi & Terapi Ramah Anak Amanah Tin's Center Jagakarsa"
                   class="motivational-img"
                   loading="lazy"
                   decoding="async"
